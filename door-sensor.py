@@ -8,12 +8,12 @@ button = Button(27)
 led = LED(14)
 
 def door_action_closed():
-    print("The door has ben closed!")
+    print("The door has been closed!")
     led.source = button.values
     sleep(0.2)
 
 def door_action_opened():
-    print("The door has ben opened!")
+    print("The door has been opened!")
     led.source = button.values
     sleep(0.2)
 
