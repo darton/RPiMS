@@ -3,7 +3,6 @@
 #Raspberry Pi script.
 #Read status GPIO27 - PIN13
 
-
 from time import sleep
 import RPi.GPIO as GPIO
 import os
