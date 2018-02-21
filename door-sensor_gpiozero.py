@@ -19,9 +19,11 @@ def door_action_opened():
 
 def door_status_open():
     print("The door is opened!")
-
+    led.source = button.values
+    
 def door_status_close():
     print("The door is closed!")
+    led.source = button.values
 
 if button.value == 0:
     print("The door is opened!")
