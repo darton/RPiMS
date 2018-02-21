@@ -4,7 +4,7 @@ from gpiozero import LED, Button
 from signal import pause
 from time import sleep
 
-button = Button(27)
+button = Button(27,bounce_time=0.1)
 led = LED(14)
 
 def door_action_closed():
