@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 
-#Copyleft dariusz@kowalczyk.it
 #Raspberry Pi script.
 #Read status GPIO27 - PIN13
 
