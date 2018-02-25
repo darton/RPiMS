@@ -28,7 +28,7 @@ if button.value == 0:
 else:
     door_status_close()
 
-button.when_pressed = door_action_closed()
-button.when_released = door_action_opened()
+button.when_pressed = door_action_closed
+button.when_released = door_action_opened
 
 pause()
