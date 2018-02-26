@@ -27,3 +27,8 @@ mkdir /home/pi/scripts
 cd /home/pi/scripts/
 
 sudo wget https://bitbucket.org/MattHawkinsUK/rpispy-misc/raw/master/python/dht11.py
+
+raspivid -o test.h264
+
+raspistill -o test.jpg
+
