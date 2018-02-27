@@ -18,6 +18,8 @@ sudo apt-get install git-core
 
 sudo apt-get install python3-gpiozero
 
+sudo apt-get install -y gpac
+
 sudo apt-get install fbi
 
 sudo git clone https://github.com/adafruit/Adafruit_Python_DHT.git
