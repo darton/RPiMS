@@ -25,12 +25,12 @@ sudo apt-get install fbi
 sudo git clone https://github.com/adafruit/Adafruit_Python_DHT.git
 
 mkdir /home/pi/scripts
+mkdir /home/pi/video
 
 cd /home/pi/scripts/
 
+#test only
 sudo wget https://bitbucket.org/MattHawkinsUK/rpispy-misc/raw/master/python/dht11.py
-
 raspivid -o test.h264
-
 raspistill -o test.jpg
 
