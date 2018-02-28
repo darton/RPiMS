@@ -25,6 +25,7 @@ sudo apt-get install fbi
 sudo git clone https://github.com/adafruit/Adafruit_Python_DHT.git
 
 mkdir /home/pi/scripts
+
 mkdir /home/pi/video
 
 cd /home/pi/scripts/
