@@ -36,7 +36,7 @@ def door_action_opened():
 def door_status_open():
     print("The door is opened!")
     subprocess.call("/home/pi/scripts/zabbix_sender.sh info_when_door_is_opened", shell=True)
-
+    subprocess.call("/home/pi/scripts/stream.sh start", shell=True)
 
 def door_status_close():
     print("The door is closed!")
