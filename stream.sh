@@ -3,17 +3,15 @@
 #raspivid -o - -t 0 -hf -w 640 -h 360 -fps 25 | cvlc -vvv stream:///dev/stdin --sout '#rtp{sdp=rtsp://:8554}' :demux=h264
 
 function stream_on {
-
-raspivid -o - -t 0 -hf -fps 25 | cvlc -vvv stream:///dev/stdin --sout '#rtp{sdp=rtsp://:8554}' :demux=h264 &
-
+    pkill raspivid
+    pkill vlc
+    raspivid -o - -t 0 -n -a 8 -a "Serwerownia_1 %Y-%m-%d %X" -fps 25 | cvlc -vvv stream:///dev/stdin --sout '#rtp{sdp=rtsp://:8554}' :demux=h264 &
 }
 
 function stream_off {
-
-pgrep raspivid | awk '{print "kill -9 "$1}' |bash
-pgrep vlc | awk '{print "kill -9 "$1}'|bash
-exit 0
-
+    pkill raspivid
+    pkill vlc
+    exit 0
 }
 
 
