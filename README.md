@@ -35,6 +35,10 @@ mkdir /home/pi/video
 
 cd /home/pi/scripts/
 
+
+echo "UserParameter=dht.pull[*],sudo /home/pi/Adafruit_Python_DHT/examples/AdafruitDHT.py 11 17 | awk -F[=*%] '{print '$'"$1"}'" >>/etc/zabbix/zabbix_agentd.conf
+
+
 #test only
 
 sudo wget https://bitbucket.org/MattHawkinsUK/rpispy-misc/raw/master/python/dht11.py
