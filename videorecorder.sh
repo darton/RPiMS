@@ -3,7 +3,12 @@
 video_dir=/home/pi/video
 video_file=pivideo
 
-pkill raspivid
+raspivid_pid=$(pidof raspivid)
+
+if [ $raspivid_pid > 0 ]; 
+then
+    pkill raspivid
+fi 
 
 #raspivid -t 5000 -fps 25 -b 6000000  -a 8 -a "Serwerownia_1 %Y-%m-%d %X" -p 0,0,1920,1080 -o $video_dir/$video_file.h264
 raspivid -t 5000 -fps 25 -b 6000000  -a 8 -a "Serwerownia_1 %Y-%m-%d %X" -n -o $video_dir/$video_file.h264
