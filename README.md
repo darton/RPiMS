@@ -40,6 +40,11 @@ cd /home/pi/scripts/
 
 echo "UserParameter=dht.pull[*],sudo /home/pi/Adafruit_Python_DHT/examples/AdafruitDHT.py 11 17 | awk -F[=*%] '{print '$'"$1"}'" >>/etc/zabbix/zabbix_agentd.conf
 
+echo "" > /etc/motd
+
+echo "RPi Monitoring System" >> /etc/motd
+
+echo "" >> /etc/motd
 
 #test only
 
