@@ -19,7 +19,6 @@ def door_action_closed():
     sleep(0.2)
     subprocess.call("/home/pi/scripts/stream.sh stop", shell=True)
 
-
 def door_action_opened():
 
     print("The door has ben opened!")
@@ -32,7 +31,6 @@ def door_action_opened():
     subprocess.call("/home/pi/scripts/stream.sh start", shell=True)
     sleep(1)
 
-
 def door_status_open():
     print("The door is opened!")
     subprocess.call("/home/pi/scripts/zabbix_sender.sh info_when_door_is_opened", shell=True)
@@ -42,8 +40,7 @@ def door_status_close():
     print("The door is closed!")
     subprocess.call("/home/pi/scripts/zabbix_sender.sh info_when_door_is_closed", shell=True)
 
-
-
+    
 if button.value == 0:
     door_status_open()
 else:
