@@ -2,9 +2,20 @@
 
 #raspivid -o - -t 0 -hf -w 640 -h 360 -fps 25 | cvlc -vvv stream:///dev/stdin --sout '#rtp{sdp=rtsp://:8554}' :demux=h264
 
-function stream_on {
+function stream_on { 
+    raspivid_pid=$(pidof raspivid)
+    vlc_pid=$(pidof vlc)
+    
+if [ $raspivid_pid > 0 ]; 
+then
     pkill raspivid
+fi 
+   
+   if [ $vlc_pid > 0 ]; 
+then
     pkill vlc
+fi 
+    
     raspivid -o - -t 0 -n -a 8 -a "Serwerownia_1 %Y-%m-%d %X" -fps 25 | cvlc -vvv stream:///dev/stdin --sout '#rtp{sdp=rtsp://:8554}' :demux=h264 &
 }
 
