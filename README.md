@@ -46,6 +46,15 @@ echo "RPi Monitoring System" >> /etc/motd
 
 echo "" >> /etc/motd
 
+
+echo "echo" >> /home/pi/.bashrc
+
+echo "/home/pi/scripts/dht11.py" >> /home/pi/.bashrc
+
+echo "echo" >> /home/pi/.bashrc
+
+
+
 #test only
 
 sudo wget https://bitbucket.org/MattHawkinsUK/rpispy-misc/raw/master/python/dht11.py
