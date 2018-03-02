@@ -6,12 +6,12 @@ function stream_on {
     raspivid_pid=$(pidof raspivid)
     vlc_pid=$(pidof vlc)
     
-if [ $raspivid_pid > 0 ]; 
+if [ $raspivid_pid -gt 0 ]; 
 then
     pkill raspivid
 fi 
    
-   if [ $vlc_pid > 0 ]; 
+   if [ $vlc_pid -gt 0]; 
 then
     pkill vlc
 fi 
