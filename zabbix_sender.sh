@@ -3,7 +3,6 @@
 zabbix_server=192.168.1.125
 host_ip=`ip -4 addr show eth0 | grep -oP '(?<=inet\s)\d+(\.\d+){3}'`
 
-
 case "$1" in
 
     'info_when_door_is_opened')
