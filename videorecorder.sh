@@ -3,6 +3,8 @@
 video_dir=/home/pi/video
 video_file=pivideo
 
+[[ -d $video_dir ]] || mkdir $video_dir
+
 raspivid_pid=$(pidof raspivid)
 
 if [ $raspivid_pid -gt 0 ]; 
