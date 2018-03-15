@@ -26,7 +26,6 @@ function stream_off {
 }
 
 
-
 case "$1" in
 
     'start')
