@@ -1,13 +1,15 @@
 #!/bin/bash
 
+now=$(date +%H%M%S_%m_%d_%Y)
+
 video_dir=/home/pi/video
-video_file=pivideo
+video_file=pivideo_$now
 
 [[ -d $video_dir ]] || mkdir $video_dir
 
 raspivid_pid=$(pidof raspivid)
 
-if [ $raspivid_pid -gt 0 ]; 
+if [ $raspivid_pid -n]; 
 then
     pkill raspivid
 fi 
@@ -19,6 +21,6 @@ cd $video_dir
 
 MP4Box -add $video_file.h264 $video_file.mp4
 
-rm $video_file.h264
+rm *.h264
 
 exit 0
