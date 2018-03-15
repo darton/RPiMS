@@ -1,6 +1,6 @@
 RPi Monitoring System
 
-When the door is open, a message is sent to the zabbix server. Then a 5-second video sequence is recorded, and then stream rtsp is run. When the door sensor detects that door has been closed, the stream rtsp will be stoped and a message is sent to the zabbix server.
+When the door will opened or closed, a message will sent to the zabbix server. Then a 5-second video sequence will be recorded, and then stream rtsp will run. 
 
 
 sudo apt-get install python-gpiozero
