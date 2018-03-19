@@ -2,6 +2,7 @@ RPi Monitoring System
 
 When the door will opened or closed, a message is sent to the zabbix server. Then a 5-second video sequence is recorded, and then stream rtsp will run. 
 
+###TO INSTALL###
 
 sudo apt-get install python-gpiozero
 
@@ -53,7 +54,7 @@ echo "echo" >> /home/pi/.bashrc
 
 
 
-#test only
+#to test only
 
 sudo wget https://bitbucket.org/MattHawkinsUK/rpispy-misc/raw/master/python/dht11.py
 
