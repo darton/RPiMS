@@ -1,5 +1,16 @@
 #!/bin/bash
 
+#  (C) Copyright 2018 Dariusz Kowalczyk
+#
+#  This program is free software; you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License Version 2 as
+#  published by the Free Software Foundation.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+
 zabbix_server=$(cat /etc/zabbix/zabbix_agentd.conf|grep -v \# |grep ServerActive |awk -F= '{print $2}')
 #zabbix_server=192.168.1.125
 host_ip=$(ip -4 addr show eth0 | grep -oP '(?<=inet\s)\d+(\.\d+){3}')
