@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
-#  (C) Copyright 2018 Dariusz Kowalczyk
-#
+#  Author : Dariusz Kowalczyk
+# 
 #  This program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License Version 2 as
 #  published by the Free Software Foundation.
