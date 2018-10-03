@@ -36,7 +36,6 @@ def door_action_closed():
 
 
 def door_action_opened():
-
     print("The door has ben opened!")
     led.source = button.values
     subprocess.call("/home/pi/scripts/zabbix_sender.sh info_when_door_has_been_opened", shell=True)
