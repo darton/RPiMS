@@ -30,16 +30,13 @@ sudo apt-get install -y gpac
 
 sudo apt-get install fbi
 
-sudo git clone https://github.com/adafruit/Adafruit_Python_DHT.git
-
 mkdir /home/pi/scripts
 
 mkdir /home/pi/video
 
 cd /home/pi/scripts/
 
-
-echo "UserParameter=dht.pull[*],sudo /home/pi/Adafruit_Python_DHT/examples/AdafruitDHT.py 11 17 | awk -F[=*%] '{print '$'"$1"}'" >>/etc/zabbix/zabbix_agentd.conf
+echo "UserParameter=dht.pull[*],sudo /home/pi/scripts/ADHT.py 11 17 | awk -F[=*%] '{print '$'"$1"}'" >>/etc/zabbix/zabbix_agentd.conf
 
 echo "" > /etc/motd
 
@@ -56,11 +53,25 @@ echo "echo" >> /home/pi/.bashrc
 
 
 
-#to test only
+sudo visudo 
 
-sudo wget https://bitbucket.org/MattHawkinsUK/rpispy-misc/raw/master/python/dht11.py
+# add below line 
+
+zabbix ALL=(ALL) NOPASSWD: /home/pi/scripts/ADHT.py
+
+
+# edit /etc/rc.local and add below line before command exit 0
+
+su - pi -c '/home/pi/scripts/door-sensor.py &'
+
+
+#to test only
 
 raspivid -o test.h264
 
 raspistill -o test.jpg
+
+sudo zabbix_get -s 127.0.0.1 -k dht.pull[4]
+
+sudo zabbix_get -s 127.0.0.1 -k dht.pull[2]
 
