@@ -68,7 +68,7 @@ sudo apt-get -y remove fake-hwclock
 
 
 
-#to test only
+# Test only
 
 raspivid -o test.h264
 
@@ -77,6 +77,7 @@ raspistill -o test.jpg
 sudo zabbix_get -s 127.0.0.1 -k dht.pull[4]
 
 sudo zabbix_get -s 127.0.0.1 -k dht.pull[2]
+
 
 # Usefull links
 
