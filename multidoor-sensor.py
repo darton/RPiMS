@@ -20,13 +20,14 @@ led = LED(14)
 
 door_id = 0
 
-#Funcions
+# --- Funcions ---
 
 def door_action_closed(door_id):
     print("The door number " + str(door_id) + " has ben closed!")
     led.source = any_values(door_sensor1.values, door_sensor2.values, door_sensor3.values, door_sensor4.values )
     args ='/home/pi/scripts/zabbix_sender.sh info_when_door_has_been_closed' + " " + str(door_id)
     subprocess.call(args, shell=True)
+# Uncomment the lines below if you have PiCamera
 #    sleep(0.2)
 #    subprocess.call("/home/pi/scripts/stream.sh stop", shell=True)
 #    sleep(0.2)
@@ -40,6 +41,7 @@ def door_action_opened(door_id):
     led.source = any_values(door_sensor1.values, door_sensor2.values, door_sensor3.values, door_sensor4.values )
     args ='/home/pi/scripts/zabbix_sender.sh info_when_door_has_been_opened' + " " + str(door_id)
     subprocess.call(args, shell=True)
+# Uncomment the lines below if you have PiCamera
 #    sleep(0.2)
 #    camera.capture('/home/pi/video/image.jpg')
 #    subprocess.call("/home/pi/scripts/stream.sh stop", shell=True)
@@ -55,6 +57,7 @@ def door_status_open(door_id):
     led.source = any_values(door_sensor1.values, door_sensor2.values, door_sensor3.values, door_sensor4.values )
     args ='/home/pi/scripts/zabbix_sender.sh info_when_door_is_opened' + " " + str(door_id)
     subprocess.call(args, shell=True)
+# Uncomment the lines below if you have PiCamera
 #    subprocess.call("/home/pi/scripts/stream.sh start", shell=True)
 
 
@@ -63,10 +66,11 @@ def door_status_close(door_id):
     led.source = any_values(door_sensor1.values, door_sensor2.values, door_sensor3.values, door_sensor4.values )
     args ='/home/pi/scripts/zabbix_sender.sh info_when_door_is_closed' + " " + str(door_id)
     subprocess.call(args, shell=True)
+# Uncomment the lines below if you have PiCamera
 #    subprocess.call("/home/pi/scripts/stream.sh start", shell=True)
 
 
-#Test sensors when startup
+# --- Test sensors when startup ---
 
 if door_sensor1.value == 0:
     door_status_open(door1_id)
@@ -92,7 +96,7 @@ else:
     door_status_close(door4_id)
 
 
-#Main program
+# --- Main program ---
 
 door_sensor1.when_pressed = lambda : door_action_closed(door1_id)
 door_sensor1.when_released = lambda : door_action_opened(door1_id)
