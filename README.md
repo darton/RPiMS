@@ -2,9 +2,6 @@ RPi Video, Door, Temperature and Humidity Monitoring System
 
 When the door will opened or closed, a message is sent to the zabbix server. Then a 5-second video sequence is recorded, and then stream rtsp will run. 
 
-https://pinout.xyz/pinout/pin5_gpio3#
-
-https://gpiozero.readthedocs.io/en/stable/
 
 ###TO INSTALL###
 
@@ -80,4 +77,11 @@ raspistill -o test.jpg
 sudo zabbix_get -s 127.0.0.1 -k dht.pull[4]
 
 sudo zabbix_get -s 127.0.0.1 -k dht.pull[2]
+
+# Usefull links
+
+https://pinout.xyz/pinout/pin5_gpio3#
+
+https://gpiozero.readthedocs.io/en/stable/
+
 
