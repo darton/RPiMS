@@ -104,11 +104,11 @@ sudo zabbix_get -s 127.0.0.1 -k dht.pull[2]
 
 ## Usefull links
 
-* [Pinout]  https://pinout.xyz/pinout/pin5_gpio3#
+* [Pinout]  (https://pinout.xyz/pinout/pin5_gpio3#)
 
-* [GPIOZERO Docs] https://gpiozero.readthedocs.io/en/stable/
+* [GPIOZERO Docs] (https://gpiozero.readthedocs.io/en/stable/)
 
-* [HWclock tutorial] https://thepihut.com/blogs/raspberry-pi-tutorials/17209332-adding-a-real-time-clock-to-your-raspberry-pi
+* [HWclock tutorial] (https://thepihut.com/blogs/raspberry-pi-tutorials/17209332-adding-a-real-time-clock-to-your-raspberry-pi)
 
 
 ## Hardware setup
