@@ -19,6 +19,8 @@ cd /home/pi/scripts/
 
 echo "UserParameter=dht.pull[*],sudo /home/pi/scripts/ADHT.py 11 17 | awk -F[=*%] '{print '$'"$1"}'" >>/etc/zabbix/zabbix_agentd.conf
 
+echo 'Timeout=5' >> /etc/zabbix/zabbix_agentd.conf
+
 echo "" > /etc/motd
 
 echo "RPi Monitoring System" >> /etc/motd
@@ -66,6 +68,14 @@ mkdir /home/pi/video
 
 sudo apt-get -y remove fake-hwclock
 
+sudo rm /etc/cron.hourly/fake-hwclock
+
+sudo update-rc.d -f fake-hwclock remove
+
+sudo rm /etc/init.d/fake-hwclock
+
+sudo update-rc.d hwclock.sh enable
+
 
 
 # Test only
@@ -84,5 +94,28 @@ sudo zabbix_get -s 127.0.0.1 -k dht.pull[2]
 https://pinout.xyz/pinout/pin5_gpio3#
 
 https://gpiozero.readthedocs.io/en/stable/
+
+https://thepihut.com/blogs/raspberry-pi-tutorials/17209332-adding-a-real-time-clock-to-your-raspberry-pi
+
+# Hardware setup
+
+ -- RPi pinout -- 
+ 
+ Thermal Sensor DHT11/DHT22
+ BCM17 -> DOUT DHT11/DHT22
+
+ -- HWCLOCK -- 
+ 3v3 Power     [pin 1] -> +
+ BCM2 (SDA)    [pin33] -> D
+ BCM3 (SCL)    [pin 5] -> C
+ BCM4 (GPCLK0) [pin 7] -> NC
+ Ground -> GND [pin 9] -> GND
+ 
+ -- Door Sensors --
+ Ground - > GND
+ BCM22 [pin 15] -> Door Sensor 1
+ BCM23 [pin 16] -> Door Sensor 2
+ BCM24 [pin 18] -> Door Sensor 3
+ BCM25 [pin 22] -> Door Sensor 4
 
 
