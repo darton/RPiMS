@@ -35,7 +35,6 @@ def door_action_closed(door_id):
 #    sleep(0.2)
 #    subprocess.call("/home/pi/scripts/stream.sh start", shell=True)
 
-
 def door_action_opened(door_id):
     print("The door number " + str(door_id) + " has ben opened!")
     led.source = any_values(door_sensor1.values, door_sensor2.values, door_sensor3.values, door_sensor4.values )
@@ -50,7 +49,6 @@ def door_action_opened(door_id):
 #    sleep(0.2)
 #    subprocess.call("/home/pi/scripts/stream.sh start", shell=True)
 #    sleep(1)
-
 
 def door_status_open(door_id):
     print("The door number " + str(door_id) + " is opened!")
