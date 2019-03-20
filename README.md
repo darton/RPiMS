@@ -7,6 +7,7 @@ When the door will opened or closed, a message is sent to the zabbix server. The
 
 ## Installing
 
+```
 sudo apt-get install python3-gpiozero
 
 sudo apt-get install build-essential python-dev
@@ -39,18 +40,24 @@ echo "echo" >> /home/pi/.bashrc
 
 sudo visudo 
 
+```
+
 ### add below line 
 
+```
 zabbix ALL=(ALL) NOPASSWD: /home/pi/scripts/ADHT.py
 
+```
 
 ### edit /etc/rc.local and add below line before command exit 0
 
+```
 su - pi -c '/home/pi/scripts/door-sensor.py &'
-
+```
 
 ## If you have PiCamera
 
+```
 sudo apt-get install vlc
 
 sudo apt-get install  libav-tools
@@ -64,10 +71,12 @@ sudo apt-get install -y gpac
 sudo apt-get install fbi
 
 mkdir /home/pi/video
+```
 
 
 ## If you have hwclock
 
+```
 sudo apt-get -y remove fake-hwclock
 
 sudo rm /etc/cron.hourly/fake-hwclock
@@ -77,11 +86,12 @@ sudo update-rc.d -f fake-hwclock remove
 sudo rm /etc/init.d/fake-hwclock
 
 sudo update-rc.d hwclock.sh enable
-
+```
 
 
 ## Test only
 
+```
 raspivid -o test.h264
 
 raspistill -o test.jpg
@@ -89,6 +99,7 @@ raspistill -o test.jpg
 sudo zabbix_get -s 127.0.0.1 -k dht.pull[4]
 
 sudo zabbix_get -s 127.0.0.1 -k dht.pull[2]
+```
 
 
 ## Usefull links
