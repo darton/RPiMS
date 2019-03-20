@@ -3,7 +3,7 @@ RPi Video, Door, Temperature and Humidity Monitoring System
 When the door will opened or closed, a message is sent to the zabbix server. Then a 5-second video sequence is recorded, and then stream rtsp will run. 
 
 
-###TO INSTALL###
+# TO INSTALL
 
 sudo apt-get install python3-gpiozero
 
