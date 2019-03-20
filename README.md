@@ -101,9 +101,9 @@ https://gpiozero.readthedocs.io/en/stable/
 https://thepihut.com/blogs/raspberry-pi-tutorials/17209332-adding-a-real-time-clock-to-your-raspberry-pi
 
 
-# Hardware setup
+## Hardware setup
 
- - RPi pinout
+  RPi pinout
  
  Thermal Sensor DHT11/DHT22
  
