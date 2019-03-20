@@ -99,23 +99,34 @@ https://thepihut.com/blogs/raspberry-pi-tutorials/17209332-adding-a-real-time-cl
 
 # Hardware setup
 
- -- RPi pinout -- 
+ - RPi pinout
  
  Thermal Sensor DHT11/DHT22
+ 
  BCM17 -> DOUT DHT11/DHT22
 
- -- HWCLOCK -- 
+ - HWCLOCK
  3v3 Power     [pin 1] -> +
- BCM2 (SDA)    [pin33] -> D
- BCM3 (SCL)    [pin 5] -> C
- BCM4 (GPCLK0) [pin 7] -> NC
- Ground -> GND [pin 9] -> GND
- 
- -- Door Sensors --
- Ground - > GND
- BCM22 [pin 15] -> Door Sensor 1
- BCM23 [pin 16] -> Door Sensor 2
- BCM24 [pin 18] -> Door Sensor 3
- BCM25 [pin 22] -> Door Sensor 4
+
+BCM2 (SDA)    [pin33] -> D
+
+BCM3 (SCL)    [pin 5] -> C
+
+BCM4 (GPCLK0) [pin 7] -> NC
+
+Ground -> GND [pin 9] -> GND
+
+
+- Door Sensors
+
+Ground - > GND
+
+BCM22 [pin 15] -> Door Sensor 1
+
+BCM23 [pin 16] -> Door Sensor 2
+
+BCM24 [pin 18] -> Door Sensor 3
+
+BCM25 [pin 22] -> Door Sensor 4
 
 
