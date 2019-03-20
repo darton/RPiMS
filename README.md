@@ -17,7 +17,10 @@ mkdir /home/pi/scripts
 
 cd /home/pi/scripts/
 
-echo "UserParameter=dht.pull[*],sudo /home/pi/scripts/ADHT.py 11 17 | awk -F[=*%] '{print '$'"$1"}'" >>/etc/zabbix/zabbix_agentd.conf
+git clone https://github.com/darton/RPi.git
+
+
+echo "UserParameter=dht.pull[*],sudo /home/pi/scripts/RPi/ADHT.py | awk -F[=*%] '{print '$'"$1"}'" >>/etc/zabbix/zabbix_agentd.conf
 
 echo 'Timeout=5' >> /etc/zabbix/zabbix_agentd.conf
 
