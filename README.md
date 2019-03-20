@@ -2,9 +2,13 @@ RPi Video, Door, Temperature and Humidity Monitoring System
 
 When the door will opened or closed, a message is sent to the zabbix server. Then a 5-second video sequence is recorded, and then stream rtsp will run. 
 
+https://pinout.xyz/pinout/pin5_gpio3#
+
+https://gpiozero.readthedocs.io/en/stable/
+
 ###TO INSTALL###
 
-sudo apt-get install python-gpiozero
+sudo apt-get install python3-gpiozero
 
 sudo apt-get install vlc
 
@@ -21,8 +25,6 @@ sudo apt-get install zabbix-agent
 sudo apt-get install build-essential python-dev
 
 sudo apt-get install git-core
-
-sudo apt-get install python3-gpiozero
 
 sudo apt-get install -y gpac
 
