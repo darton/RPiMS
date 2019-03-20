@@ -3,7 +3,9 @@ RPi Video, Door, Temperature and Humidity Monitoring System
 When the door will opened or closed, a message is sent to the zabbix server. Then a 5-second video sequence is recorded, and then stream rtsp will run. 
 
 
-# TO INSTALL
+# Door Sensor monitoring in Zabbix and Video Streming
+
+## Installing
 
 sudo apt-get install python3-gpiozero
 
@@ -19,7 +21,6 @@ cd /home/pi/scripts/
 
 git clone https://github.com/darton/RPi.git
 
-
 echo "UserParameter=dht.pull[*],sudo /home/pi/scripts/RPi/ADHT.py | awk -F[=*%] '{print '$'"$1"}'" >>/etc/zabbix/zabbix_agentd.conf
 
 echo 'Timeout=5' >> /etc/zabbix/zabbix_agentd.conf
@@ -30,27 +31,25 @@ echo "RPi Monitoring System" >> /etc/motd
 
 echo "" >> /etc/motd
 
-
 echo "echo" >> /home/pi/.bashrc
 
 echo "/home/pi/scripts/dht11.py" >> /home/pi/.bashrc
 
 echo "echo" >> /home/pi/.bashrc
 
-
 sudo visudo 
 
-# add below line 
+### add below line 
 
 zabbix ALL=(ALL) NOPASSWD: /home/pi/scripts/ADHT.py
 
 
-# edit /etc/rc.local and add below line before command exit 0
+### edit /etc/rc.local and add below line before command exit 0
 
 su - pi -c '/home/pi/scripts/door-sensor.py &'
 
 
-# If you have PiCamera
+## If you have PiCamera
 
 sudo apt-get install vlc
 
@@ -67,7 +66,7 @@ sudo apt-get install fbi
 mkdir /home/pi/video
 
 
-# If you have hwclock
+## If you have hwclock
 
 sudo apt-get -y remove fake-hwclock
 
@@ -81,7 +80,7 @@ sudo update-rc.d hwclock.sh enable
 
 
 
-# Test only
+## Test only
 
 raspivid -o test.h264
 
@@ -92,7 +91,7 @@ sudo zabbix_get -s 127.0.0.1 -k dht.pull[4]
 sudo zabbix_get -s 127.0.0.1 -k dht.pull[2]
 
 
-# Usefull links
+## Usefull links
 
 https://pinout.xyz/pinout/pin5_gpio3#
 
