@@ -11,9 +11,8 @@
 #  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #  GNU General Public License for more details.
 
-zabbix_server=$(cat /etc/zabbix/zabbix_agentd.conf|grep -v \# |grep ServerActive |awk -F= '{print $2}')
 #zabbix_server=192.168.1.11
-
+zabbix_server=$(cat /etc/zabbix/zabbix_agentd.conf|grep -v \# |grep ServerActive |awk -F= '{print $2}')
 host_ip=$(ip -4 addr show eth0 | grep -oP '(?<=inet\s)\d+(\.\d+){3}')
 
 case "$1" in
