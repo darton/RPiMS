@@ -28,7 +28,7 @@ mkdir /home/pi/scripts
 
 cd /home/pi/scripts/
 
-git clone https://github.com/darton/RPi.git
+git clone https://github.com/darton/RPiMS.git
 
 echo "UserParameter=dht.pull[*],sudo /home/pi/scripts/RPi/ADHT.py | awk -F[=*%] '{print '$'"$1"}'" >>/etc/zabbix/zabbix_agentd.conf
 
