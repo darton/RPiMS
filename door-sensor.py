@@ -18,18 +18,23 @@ from signal import pause
 from time import sleep
 import subprocess
 
-door1_id = 1
-door2_id = 2
-door3_id = 3
-door4_id = 4
-
+# Door sensors inputs 
 door_sensor1 = Button(22,bounce_time=0.05)
 door_sensor2 = Button(23,bounce_time=0.05)
 door_sensor3 = Button(24,bounce_time=0.05)
 door_sensor4 = Button(25,bounce_time=0.05)
 
+# Led Lamp on GPIO 14
 led = LED(14)
 
+# Door sensors identity numbers declaration
+door1_id = 1
+door2_id = 2
+door3_id = 3
+door4_id = 4
+
+
+#Variable declaration
 door_id = 0
 
 # --- Funcions ---
