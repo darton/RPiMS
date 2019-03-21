@@ -27,7 +27,7 @@ sudo apt-get install git-core
 sudo apt-get install zabbix-agent
 ```
 
-### Prepare to install from repository
+### Install from repository
 
 ```
 mkdir /home/pi/scripts
@@ -35,7 +35,11 @@ mkdir /home/pi/scripts
 cd /home/pi/scripts/
 
 git clone https://github.com/darton/RPiMS.git
+```
 
+### Setup
+
+```
 echo "UserParameter=dht.pull[*],sudo /home/pi/scripts/RPiMS/ADHT.py | awk -F[=*%] '{print '$'"$1"}'" >>/etc/zabbix/zabbix_agentd.conf
 
 echo 'Timeout=5' >> /etc/zabbix/zabbix_agentd.conf
