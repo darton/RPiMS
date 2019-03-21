@@ -198,14 +198,15 @@ BCM25 [pin 22] -> Input Sensor 4
 
 ## B.o.M - Bill of Materials
 
-* Rapsberry Pi - 1 pcs
-* Raspberri Pi Case - 1 pcs
-* PiCamera - 1pcs
-* PiCamera Case - 1pcs
-* RTC - 1 pcs
-* Power Adapter (5V/2.5A) - 1 pcs
 * DHT22 - 1 pcs
 * Door Sensor - 4 pcs
+* PiCamera - 1 pcs
+* PiCamera Case - 1pcs
+* Power Adapter (5V/2.5A) - 1 pcs
+* Rapsberry Pi - 1 pcs
+* Raspberri Pi Case - 1 pcs
+* RTC - 1 pcs
+
 
 ## Usefull links
 
