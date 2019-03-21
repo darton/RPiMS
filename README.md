@@ -196,9 +196,15 @@ BCM24 [pin 18] -> Input Sensor 3
 BCM25 [pin 22] -> Input Sensor 4
 ```
 
-## B.O.M
+## B.o.M - Bill of Materials
 
-*[RPI]
+* Rapsberry Pi
+* Raspberri Pi Case
+* PiCamera
+* RTC
+* Power Adapter (5V/2.5A)
+* DHT22
+* Door Sensor
 
 ## Usefull links
 
