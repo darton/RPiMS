@@ -26,7 +26,7 @@ echo "UserParameter=dht.pull[*],sudo /home/pi/scripts/RPi/ADHT.py | awk -F[=*%] 
 
 echo 'Timeout=5' >> /etc/zabbix/zabbix_agentd.conf
 
-Server= 127.0.0.1, zabbix.example.com
+Modify /etc/zabbix/zabbix_agentd.conf to Server= 127.0.0.1, zabbix.example.com
 
 echo "" > /etc/motd
 
