@@ -77,7 +77,7 @@ zabbix ALL=(ALL) NOPASSWD: /home/pi/scripts/RPiMS/ADHT.py
 ### edit /etc/rc.local and add below line before command exit 0
 
 ```
-su - pi -c '/home/pi/scripts/door-sensor.py &'
+su - pi -c '/home/pi/scripts/RPiMS/door-sensor.py &'
 ```
 
 ## If you have PiCamera
