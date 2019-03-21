@@ -39,18 +39,41 @@ git clone https://github.com/darton/RPiMS.git
 
 ### Setup
 
+
+Prepare zabbix agent
+
 ```
 echo "UserParameter=dht.pull[*],sudo /home/pi/scripts/RPiMS/ADHT.py | awk -F[=*%] '{print '$'"$1"}'" >>/etc/zabbix/zabbix_agentd.conf
 
 echo 'Timeout=5' >> /etc/zabbix/zabbix_agentd.conf
 
-Modify /etc/zabbix/zabbix_agentd.conf 
+sudo nano /etc/zabbix/zabbix_agentd.conf 
+```
 
+Modify Server and ServerActive to:
+
+```
 Server=127.0.0.1, zabbix.example.com
 
 ServerActive=zabbix.example.com
+```
 
+Run command
 
+```
+sudo visudo 
+
+```
+
+Add this line
+
+```
+zabbix ALL=(ALL) NOPASSWD: /home/pi/scripts/RPiMS/ADHT.py
+```
+
+Mofify MOTD and .bashhrc
+
+```
 echo "" > /etc/motd
 
 echo "RPi Monitoring System" >> /etc/motd
@@ -62,25 +85,21 @@ echo "echo" >> /home/pi/.bashrc
 echo "/home/pi/scripts/ADHT.py" >> /home/pi/.bashrc
 
 echo "echo" >> /home/pi/.bashrc
-
-sudo visudo 
-
 ```
 
-### add below line 
+Prepare to run RPiMS scrip after restart
 
 ```
-zabbix ALL=(ALL) NOPASSWD: /home/pi/scripts/RPiMS/ADHT.py
+sudo nano /etc/rc.local
+````
 
-```
-
-### edit /etc/rc.local and add below line before command exit 0
+and add below line before command exit 0
 
 ```
 su - pi -c '/home/pi/scripts/RPiMS/door-sensor.py &'
 ```
 
-## If you have PiCamera
+## Setup if you have PiCamera
 
 ```
 sudo apt-get install vlc
@@ -99,7 +118,7 @@ mkdir /home/pi/video
 ```
 
 
-## If you have RTC (DS3231 I2C)
+## Setup if you have RTC (DS3231 I2C)
 
 ```
 sudo apt-get -y remove fake-hwclock
