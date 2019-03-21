@@ -10,7 +10,7 @@
     <hosts>
         <host>
             <host>192.168.252.7</host>
-            <name>SERWEROWNIA_NR_1</name>
+            <name>SERVER_ROOM_NR_1</name>
             <description/>
             <proxy/>
             <status>0</status>
