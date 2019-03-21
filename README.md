@@ -30,11 +30,16 @@ cd /home/pi/scripts/
 
 git clone https://github.com/darton/RPiMS.git
 
-echo "UserParameter=dht.pull[*],sudo /home/pi/scripts/RPi/ADHT.py | awk -F[=*%] '{print '$'"$1"}'" >>/etc/zabbix/zabbix_agentd.conf
+echo "UserParameter=dht.pull[*],sudo /home/pi/scripts/RPiMS/ADHT.py | awk -F[=*%] '{print '$'"$1"}'" >>/etc/zabbix/zabbix_agentd.conf
 
 echo 'Timeout=5' >> /etc/zabbix/zabbix_agentd.conf
 
-Modify /etc/zabbix/zabbix_agentd.conf to Server= 127.0.0.1, zabbix.example.com
+Modify /etc/zabbix/zabbix_agentd.conf 
+
+Server= 127.0.0.1, zabbix.example.com
+
+ServerActive=zabbix.example.com
+
 
 echo "" > /etc/motd
 
@@ -55,7 +60,7 @@ sudo visudo
 ### add below line 
 
 ```
-zabbix ALL=(ALL) NOPASSWD: /home/pi/scripts/ADHT.py
+zabbix ALL=(ALL) NOPASSWD: /home/pi/scripts/RPiMS/ADHT.py
 
 ```
 
