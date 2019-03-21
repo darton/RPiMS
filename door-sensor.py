@@ -80,7 +80,7 @@ def door_status_close(door_id):
 #    subprocess.call("/home/pi/scripts/stream.sh start", shell=True)
 
 
-# --- Test sensors when startup ---
+# --- Read sensors when startup ---
 
 if door_sensor1.value == 0:
     door_status_open(door1_id)
