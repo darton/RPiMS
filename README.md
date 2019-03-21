@@ -1,9 +1,10 @@
-RPi Video, Door, Temperature and Humidity Monitoring System
+# RPiMS
 
-When the door will opened or closed, a message is sent to the zabbix server. Then a 5-second video sequence is recorded, and then stream rtsp will run. 
+RPiMS is Raspberry Pi based video, door sensor, move sensor, temperature and humidity Monitoring System
 
+When the door will opened or closed, a trap message is sent to the zabbix server. 
+Then a 5-second video sequence is recorded, and then stream rtsp will run. 
 
-# Door Sensor monitoring in Zabbix and Video Streming
 
 ## Installing
 
