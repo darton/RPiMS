@@ -8,6 +8,7 @@ Then a 5-second video sequence is recorded, and then stream rtsp will run.
 
 ## Installing
 
+### Dependencies
 ```
 sudo apt-get update
 
