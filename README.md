@@ -201,6 +201,7 @@ BCM25 [pin 22] -> Input Sensor 4
 * Rapsberry Pi - 1 pcs
 * Raspberri Pi Case - 1 pcs
 * PiCamera - 1pcs
+* PiCamera Case - 1pcs
 * RTC - 1 pcs
 * Power Adapter (5V/2.5A) - 1 pcs
 * DHT22 - 1 pcs
