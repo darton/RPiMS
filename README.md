@@ -112,8 +112,13 @@ sudo rm /etc/init.d/fake-hwclock
 
 sudo update-rc.d hwclock.sh enable
 
-sudo nano /etc/rc.local
+sudo nano /etc/modules
+```
 
+Add rtc-ds1307 at the end of the file
+
+```
+sudo nano /etc/rc.local
 ```
 
 Add the following lines to the file:
