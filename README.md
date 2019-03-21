@@ -77,7 +77,7 @@ mkdir /home/pi/video
 ```
 
 
-## If you have hwclock
+## If you have RTC (DS3231 I2C)
 
 ```
 sudo apt-get -y remove fake-hwclock
