@@ -36,7 +36,7 @@ echo 'Timeout=5' >> /etc/zabbix/zabbix_agentd.conf
 
 Modify /etc/zabbix/zabbix_agentd.conf 
 
-Server= 127.0.0.1, zabbix.example.com
+Server=127.0.0.1, zabbix.example.com
 
 ServerActive=zabbix.example.com
 
