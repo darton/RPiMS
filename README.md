@@ -9,13 +9,20 @@ Then a 5-second video sequence is recorded, and then stream rtsp will run.
 ## Installing
 
 ```
+sudo apt-get update
+
 sudo apt-get install python3-gpiozero
+
+sudo apt-get install python3-pip
+
+sudo python3 -m pip install --upgrade pip setuptools wheel
 
 sudo apt-get install build-essential python-dev
 
 sudo apt-get install git-core
 
 sudo apt-get install zabbix-agent
+
 
 mkdir /home/pi/scripts
 
