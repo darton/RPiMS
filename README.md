@@ -111,8 +111,20 @@ sudo update-rc.d -f fake-hwclock remove
 sudo rm /etc/init.d/fake-hwclock
 
 sudo update-rc.d hwclock.sh enable
+
+sudo nano /etc/rc.local
+
 ```
 
+Add the following lines to the file:
+
+```
+echo ds1307 0x68 > /sys/class/i2c-adapter/i2c-1/new_device
+sudo hwclock -s
+
+date
+```
+Just before the exit 0
 
 ## Test only
 
