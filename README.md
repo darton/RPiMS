@@ -1,6 +1,6 @@
 # RPiMS
 
-RPiMS is Raspberry Pi based video, door sensor, move sensor, temperature and humidity Monitoring System
+RPiMS is Raspberry Pi based Monitoring System (door sensor, temperature and humidity sensor, video streamer/recorder)
 
 When the door will opened or closed, a trap message is sent to the zabbix server. 
 Then a 5-second video sequence is recorded, and then stream rtsp will run. 
@@ -117,12 +117,12 @@ sudo zabbix_get -s 127.0.0.1 -k dht.pull[2]
 ## Hardware setup - Raspberry Pi
 
  
- - Thermal Sensor DHT11/DHT22
+ - Temperature and Humidity Sensor DHT11/DHT22
  
  BCM17 -> DOUT DHT11/DHT22
  
 
- - HWCLOCK
+ - Hardware Clock
  
  3v3 Power     [pin 1] -> +
 
@@ -135,16 +135,16 @@ BCM4 (GPCLK0) [pin 7] -> NC
 Ground -> GND [pin 9] -> GND
 
 
-- Door Sensors
+- Input Sensors (door sensors)
 
 Ground - > GND
 
-BCM22 [pin 15] -> Door Sensor 1
+BCM22 [pin 15] -> Input Sensor 1
 
-BCM23 [pin 16] -> Door Sensor 2
+BCM23 [pin 16] -> Input Sensor 2
 
-BCM24 [pin 18] -> Door Sensor 3
+BCM24 [pin 18] -> Input Sensor 3
 
-BCM25 [pin 22] -> Door Sensor 4
+BCM25 [pin 22] -> Input Sensor 4
 
 
