@@ -196,6 +196,9 @@ BCM24 [pin 18] -> Input Sensor 3
 BCM25 [pin 22] -> Input Sensor 4
 ```
 
+## B.O.M
+
+*[RPI]
 
 ## Usefull links
 
