@@ -120,6 +120,7 @@ sudo zabbix_get -s 127.0.0.1 -k dht.pull[2]
  Thermal Sensor DHT11/DHT22
  
  BCM17 -> DOUT DHT11/DHT22
+ 
 
  - HWCLOCK
  3v3 Power     [pin 1] -> +
