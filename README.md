@@ -113,11 +113,10 @@ sudo zabbix_get -s 127.0.0.1 -k dht.pull[2]
 * [HWclock tutorial](https://thepihut.com/blogs/raspberry-pi-tutorials/17209332-adding-a-real-time-clock-to-your-raspberry-pi)
 
 
-## Hardware setup
+## Hardware setup - Raspberry Pi
 
-  RPi pinout
  
- Thermal Sensor DHT11/DHT22
+ - Thermal Sensor DHT11/DHT22
  
  BCM17 -> DOUT DHT11/DHT22
  
