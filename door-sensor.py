@@ -27,7 +27,7 @@ door_sensor4 = Button(25,bounce_time=0.05)
 # Led Lamp on GPIO 14
 led = LED(14)
 
-# Door sensors identity numbers declaration
+# Door sensors identity numbers
 door1_id = 1
 door2_id = 2
 door3_id = 3
