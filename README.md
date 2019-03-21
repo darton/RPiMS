@@ -104,7 +104,7 @@ su - pi -c '/home/pi/scripts/RPiMS/door-sensor.py &'
 ```
 sudo apt-get install vlc
 
-sudo apt-get install  libav-tools
+sudo apt-get install libav-tools
 
 sudo apt-get install python-picamera
 
