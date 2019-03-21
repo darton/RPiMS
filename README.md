@@ -107,6 +107,8 @@ sudo zabbix_get -s 127.0.0.1 -k dht.pull[2]
 
 ## Usefull links
 
+* [Raspberry Pi Documentaion](https://www.raspberrypi.org/documentation/hardware/raspberrypi/README.md)
+
 * [Pinout](https://pinout.xyz/pinout/pin5_gpio3#)
 
 * [GPIOZERO Docs](https://gpiozero.readthedocs.io/en/stable/)
