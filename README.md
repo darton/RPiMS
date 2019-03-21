@@ -37,7 +37,7 @@ echo "" >> /etc/motd
 
 echo "echo" >> /home/pi/.bashrc
 
-echo "/home/pi/scripts/dht11.py" >> /home/pi/.bashrc
+echo "/home/pi/scripts/ADHT.py" >> /home/pi/.bashrc
 
 echo "echo" >> /home/pi/.bashrc
 
