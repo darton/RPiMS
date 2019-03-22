@@ -92,6 +92,8 @@ echo "RPi Monitoring System" >> /etc/motd
 
 echo "" >> /etc/motd
 
+exit
+
 echo "echo" >> /home/pi/.bashrc
 
 echo "/home/pi/scripts/ADHT.py" >> /home/pi/.bashrc
