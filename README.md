@@ -18,7 +18,7 @@ To writing an image to the SD card, use [Etcher](https://etcher.io/) an image wr
 
 If you're not using Etcher, you'll need to unzip .zip downloads to get the image file (.img) to write to your SD card.
 
-### Dependencies
+### Installing dependencies
 ```
 sudo apt-get update
 
