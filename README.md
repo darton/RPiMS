@@ -103,7 +103,7 @@ Prepare to run RPiMS scrip after restart
 sudo nano /etc/rc.local
 ````
 
-and add below line before command exit 0
+and add below line before command `exit 0`
 
 ```
 su - pi -c '/home/pi/scripts/RPiMS/door-sensor.py &'
