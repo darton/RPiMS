@@ -160,19 +160,7 @@ sudo hwclock -s
 ```
 sudo hwclock -r; date
 ```
-First we should detect the I2C state using this command: 
-```
-i2cdetect -y 1
-```
-We cannot control such a I2C device until we uncomment a certain line in the config.txt file. 
-```
-sudo vi /boot/config.txt
-```
-Uncomment this line with a hash (#) 
-```
-#dtoverlay=i2c-rtc,ds3231
-```
-Restart your Pi and check the I2C state again with i2cdetect -y 1. Now the 0x68 is not UU anymore. 
+Remove fake-hwclock
 
 ```
 sudo apt-get -y remove fake-hwclock
@@ -196,6 +184,9 @@ sudo hwclock -s
 date
 ```
 Just before the exit 0
+
+Restart your Pi and check the I2C state again with i2cdetect -y 1. Now the 0x68 is not UU anymore. 
+
 
 ## Test only
 
