@@ -184,7 +184,10 @@ date
 Just before the exit 0
 
 Restart your Pi and check the I2C state again with i2cdetect -y 1. Now the 0x68 is not UU anymore. 
-
+```
+sudo sync
+sudo reboot
+```
 
 ## Test only
 
