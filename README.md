@@ -122,7 +122,7 @@ mkdir /home/pi/video
 
 ## Setup if you have RTC (DS3231 I2C)
 
-1. Raspberry Pi will be reads/writes time information from DS3231 via I2C interface, so the I2C interface should be enabled. 
+1. I2C interface should be enabled. 
 
 ```
 sudo raspi-config
