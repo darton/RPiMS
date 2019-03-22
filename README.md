@@ -122,6 +122,58 @@ mkdir /home/pi/video
 
 ## Setup if you have RTC (DS3231 I2C)
 
+1. Raspberry Pi will be reads/writes time information from DS3231 via I2C interface, so the I2C interface should be enabled. 
+
+```
+sudo raspi-config
+```
+Select Advaced Options -> I2C -> <Yes> 
+
+2. Edit the configuration file to add a new device. 
+
+```
+sudo vi /boot/config.txt
+```
+Add a new RTC device DS3231 to the device tree 
+
+```
+dtoverlay=i2c-rtc,ds3231
+```
+Reboot to take effect. About Device Tree, see: /boot/overlay/README 
+3. Read the Hardware Clock. 
+```
+sudo hwclock –r
+```
+Read the system time: 
+```
+date
+```
+4. Set the Hardware Clock to the time given by the --date option. 
+```
+sudo hwclock --set --date="Aug-22-2019 08:29:00"
+```
+5. Set the System Time from the Hardware Clock. 
+```
+sudo hwclock -s
+```
+6. Read the RTC and system times. 
+```
+sudo hwclock -r; date
+```
+First we should detect the I2C state using this command: 
+```
+i2cdetect -y 1
+```
+We cannot control such a I2C device until we uncomment a certain line in the config.txt file. 
+```
+sudo vi /boot/config.txt
+```
+Uncomment this line with a hash (#) 
+```
+#dtoverlay=i2c-rtc,ds3231
+```
+Restart your Pi and check the I2C state again with i2cdetect -y 1. Now the 0x68 is not UU anymore. 
+
 ```
 sudo apt-get -y remove fake-hwclock
 
@@ -133,19 +185,12 @@ sudo rm /etc/init.d/fake-hwclock
 
 sudo update-rc.d hwclock.sh enable
 
-sudo nano /etc/modules
-```
-
-Add rtc-ds1307 at the end of the file
-
 ```
 sudo nano /etc/rc.local
-```
-
+```-
 Add the following lines to the file:
 
 ```
-echo ds1307 0x68 > /sys/class/i2c-adapter/i2c-1/new_device
 sudo hwclock -s
 
 date
