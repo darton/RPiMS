@@ -165,11 +165,9 @@ Remove fake-hwclock
 ```
 sudo apt-get -y remove fake-hwclock
 
-sudo rm /etc/cron.hourly/fake-hwclock
-
 sudo update-rc.d -f fake-hwclock remove
 
-sudo rm /etc/init.d/fake-hwclock
+sudo systemctl disable fake-hwclock 
 
 sudo update-rc.d hwclock.sh enable
 
