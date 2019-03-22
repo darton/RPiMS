@@ -223,8 +223,8 @@ sudo zabbix_get -s 127.0.0.1 -k dht.pull[2]
  ```
 
  - Hardware Clock
- ```
- [3v3 Power     [pin 1] -> +
+ 
+ 3v3 Power     [pin 1] -> +
 
 BCM2 (SDA)    [pin33] -> D
 
@@ -232,11 +232,11 @@ BCM3 (SCL)    [pin 5] -> C
 
 BCM4 (GPCLK0) [pin 7] -> NC
 
-Ground -> GND [pin 9] -> GND]
-```
+Ground -> GND [pin 9] -> GND
+
 
 - Input Sensors (door sensors)
-```
+
 Ground - > GND
 
 BCM22 [pin 15] -> Input Sensor 1
@@ -246,7 +246,7 @@ BCM23 [pin 16] -> Input Sensor 2
 BCM24 [pin 18] -> Input Sensor 3
 
 BCM25 [pin 22] -> Input Sensor 4
-```
+
 
 ## B.o.M - Bill of Materials
 
