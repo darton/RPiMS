@@ -84,6 +84,8 @@ zabbix ALL=(ALL) NOPASSWD: /home/pi/scripts/RPiMS/ADHT.py
 Mofify MOTD and .bashhrc
 
 ```
+sudo bash
+
 echo "" > /etc/motd
 
 echo "RPi Monitoring System" >> /etc/motd
