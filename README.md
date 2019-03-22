@@ -180,11 +180,15 @@ sudo systemctl disable fake-hwclock
 
 sudo update-rc.d hwclock.sh enable
 
-```
 sudo nano /etc/rc.local
 ```
-Add the following lines to the file:
 
+Add the following lines to the file: `/etc/rc.local`
+
+```
+sudo nano /etc/rc.local 
+```
+Add this commnads
 ```
 sudo hwclock -s
 
