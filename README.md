@@ -218,9 +218,9 @@ sudo zabbix_get -s 127.0.0.1 -k dht.pull[2]
 
  
  - Temperature and Humidity Sensor DHT11/DHT22
- ```
+ 
  BCM17 -> DOUT DHT11/DHT22
- ```
+ 
 
  - Hardware Clock
  
