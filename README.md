@@ -10,6 +10,16 @@ Then a 5-second video sequence is recorded, and then stream rtsp will run.
 
 ## Installing
 
+### Installing operating system images 
+
+Download the image
+Official images for recommended operating systems are available to download from the Raspberry Pi website [Downloads page](https://www.raspberrypi.org/downloads/)
+If you're not using Etcher (see below), you'll need to unzip .zip downloads to get the image file (.img) to write to your SD card.
+
+Download [Raspbian Lite](https://downloads.raspberrypi.org/raspbian_lite_latest)
+
+To writing an image to the SD card, use [Etcher](https://etcher.io/) an image writing tool.
+
 ### Dependencies
 ```
 sudo apt-get update
