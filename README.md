@@ -147,7 +147,8 @@ Add a new RTC device DS3231 to the device tree
 ```
 dtoverlay=i2c-rtc,ds3231
 ```
-Reboot to take effect. About Device Tree, see: /boot/overlay/README 
+Reboot to take effect. About Device Tree, see: `cat /boot/overlay/README` 
+
 3. Read the Hardware Clock. 
 ```
 sudo hwclock –r
@@ -156,7 +157,7 @@ Read the system time:
 ```
 date
 ```
-4. Set the Hardware Clock to the time given by the --date option. 
+4. Set the Hardware Clock to the time given by the `--date` option. 
 ```
 sudo hwclock --set --date="Aug-22-2019 08:29:00"
 ```
@@ -181,7 +182,7 @@ sudo update-rc.d hwclock.sh enable
 
 ```
 sudo nano /etc/rc.local
-```-
+```
 Add the following lines to the file:
 
 ```
@@ -189,9 +190,9 @@ sudo hwclock -s
 
 date
 ```
-Just before the exit 0
+Just before the `exit 0`
 
-Restart your Pi and check the I2C state again with i2cdetect -y 1. Now the 0x68 is not UU anymore. 
+Restart your Pi and check the I2C state again with `i2cdetect -y 1`. Now the 0x68 is not UU anymore. 
 ```
 sudo sync
 sudo reboot
