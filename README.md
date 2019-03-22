@@ -16,7 +16,7 @@ Download the image [Raspbian Lite](https://downloads.raspberrypi.org/raspbian_li
 
 To writing an image to the SD card, use [Etcher](https://etcher.io/) an image writing tool.
 
-If you're not using Etcher (see below), you'll need to unzip .zip downloads to get the image file (.img) to write to your SD card.
+If you're not using Etcher, you'll need to unzip .zip downloads to get the image file (.img) to write to your SD card.
 
 ### Dependencies
 ```
