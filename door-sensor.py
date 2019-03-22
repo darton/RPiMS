@@ -27,7 +27,6 @@ door_sensor4 = Button(25,bounce_time=0.05)
 # picamera yes/no
 picamera = "no"
 
-
 # Led Lamp on GPIO 14
 led = LED(14)
 
