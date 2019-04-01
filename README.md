@@ -209,6 +209,10 @@ sudo reboot
 ## Test only
 
 ```
+sudo apt-get install i2c-tools
+
+i2cdetect -y 1
+
 raspivid -o test.h264
 
 raspistill -o test.jpg
