@@ -152,10 +152,6 @@ Add a new RTC device DS3231 to the device tree
 dtoverlay=i2c-rtc,ds3231
 ```
 
-Add a new user to the i2c group
-```
-sudo adduser pi i2c
-```
 Reboot to take effect. About Device Tree, see: `cat /boot/overlay/README` 
 
 ```
