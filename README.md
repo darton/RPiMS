@@ -160,7 +160,7 @@ sudo shutdown -r now
 
 3. Read the Hardware Clock. 
 ```
-sudo hwclock –r
+sudo hwclock –-show
 ```
 Read the system time: 
 ```
