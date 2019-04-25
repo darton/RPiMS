@@ -44,7 +44,7 @@ door_id = 0
 # --- Funcions ---
 
 def door_action_closed(door_id):
-    print("The door number " + str(door_id) + " has ben closed!")
+    print("The door number " + str(door_id) + " has been closed!")
     led.source = any_values(door_sensor1.values, door_sensor2.values, door_sensor3.values, door_sensor4.values )
     zabbix_sender_cmd ='/home/pi/scripts/RPiMS/zabbix_sender.sh info_when_door_has_been_closed' + " " + str(door_id)
     subprocess.call(zabbix_sender_cmd, shell=True)
@@ -58,7 +58,7 @@ if picamera is 'yes':
     subprocess.call("/home/pi/scripts/RPiMS/stream.sh start", shell=True)
 
 def door_action_opened(door_id):
-    print("The door number " + str(door_id) + " has ben opened!")
+    print("The door number " + str(door_id) + " has been opened!")
     led.source = any_values(door_sensor1.values, door_sensor2.values, door_sensor3.values, door_sensor4.values )
     zabbix_sender_cmd ='/home/pi/scripts/RPiMS/zabbix_sender.sh info_when_door_has_been_opened' + " " + str(door_id)
     subprocess.call(zabbix_sender_cmd, shell=True)
