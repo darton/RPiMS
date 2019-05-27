@@ -8,7 +8,8 @@ import numpy
 import threading
 from time import sleep
 
-
+#Adafruit_DHT.DHT11
+#Adafruit_DHT.DHT22
 sensor = Adafruit_DHT.AM2302
 gpiopin = 17
 
