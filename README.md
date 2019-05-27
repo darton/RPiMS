@@ -35,6 +35,9 @@ sudo apt-get install build-essential python-dev
 sudo apt-get install git-core
 
 sudo apt-get install zabbix-agent
+
+sudo apt-get install python3-numpy
+
 ```
 
 ### Install from repository
