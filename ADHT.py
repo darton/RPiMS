@@ -38,7 +38,7 @@ def eliminateNoise(values, std_factor = 2):
 # function for processing the data
 # filtering, periods of time, yada yada
 def readingValues():
-    seconds_window = 10 # after this many second we make a record
+    seconds_window = 12 # after this many second we make a record
     values = []
 
     while not event.is_set():
@@ -56,7 +56,7 @@ def readingValues():
                 values.append({"temp" : temp, "hum" : humidity})
                 counter += 1
 
-            sleep(2)
+#            sleep(2)
 
         lock.acquire()
         filtered_temperature.append(numpy.mean(eliminateNoise([x["temp"] for x in values])))
@@ -79,7 +79,7 @@ def Main():
             humidity = filtered_humidity.pop()
             print('Temp={0:0.1f}*C  Humidity={1:0.1f}%'.format(temperature, humidity))
             lock.release()
-            sleep(1)
+ #           sleep(1)
             event.set()
 
 
