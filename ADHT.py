@@ -77,11 +77,8 @@ def Main():
             humidity = filtered_humidity.pop()
             print('Temp={0:0.1f}*C  Humidity={1:0.1f}%'.format(temperature, humidity))
             lock.release()
-
-# wait until the thread is finished
+            sleep(1)
             event.set()
-            data_collector.join()
-
 
 
 if __name__ == "__main__":
@@ -89,3 +86,5 @@ if __name__ == "__main__":
         Main()
 
     except KeyboardInterrupt:
+        event.set()
+
