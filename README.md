@@ -38,6 +38,14 @@ sudo apt-get install zabbix-agent
 
 sudo apt-get install python3-numpy
 
+sudo apt-get install redis-server
+
+sudo systemctl enable redis-server.service
+
+#sudo pip install python3-redis
+
+sudo pip3 install redis
+
 ```
 
 ### Install from repository
@@ -58,7 +66,7 @@ Prepare zabbix agent
 ```
 echo "UserParameter=dht.pull[*],sudo /home/pi/scripts/RPiMS/ADHT.py | awk -F[=*%] '{print '$'"$1"}'" >>/etc/zabbix/zabbix_agentd.conf
 
-echo 'Timeout=29' >> /etc/zabbix/zabbix_agentd.conf
+echo 'Timeout=5' >> /etc/zabbix/zabbix_agentd.conf
 
 sudo nano /etc/zabbix/zabbix_agentd.conf 
 ```
@@ -81,7 +89,7 @@ sudo visudo
 Add this line
 
 ```
-zabbix ALL=(ALL) NOPASSWD: /home/pi/scripts/RPiMS/ADHT.py
+zabbix ALL=(ALL) NOPASSWD: /home/pi/scripts/RPiMS/redis-get.py
 ```
 
 Mofify MOTD and .bashhrc
