@@ -58,7 +58,7 @@ Prepare zabbix agent
 ```
 echo "UserParameter=dht.pull[*],sudo /home/pi/scripts/RPiMS/ADHT.py | awk -F[=*%] '{print '$'"$1"}'" >>/etc/zabbix/zabbix_agentd.conf
 
-echo 'Timeout=5' >> /etc/zabbix/zabbix_agentd.conf
+echo 'Timeout=29' >> /etc/zabbix/zabbix_agentd.conf
 
 sudo nano /etc/zabbix/zabbix_agentd.conf 
 ```
