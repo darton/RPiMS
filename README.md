@@ -64,7 +64,7 @@ git clone https://github.com/darton/RPiMS.git
 Prepare zabbix agent
 
 ```
-echo "UserParameter=dht.pull[*],sudo /home/pi/scripts/RPiMS/ADHT.py | awk -F[=*%] '{print '$'"$1"}'" >>/etc/zabbix/zabbix_agentd.conf
+echo "UserParameter=dht.pull[*],sudo /home/pi/scripts/RPiMS/redis-get.py | awk -F[=*%] '{print '$'"$1"}'" >>/etc/zabbix/zabbix_agentd.conf
 
 echo 'Timeout=5' >> /etc/zabbix/zabbix_agentd.conf
 
