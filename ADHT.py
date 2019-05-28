@@ -38,12 +38,12 @@ def eliminateNoise(values, std_factor = 2):
 # function for processing the data
 # filtering, periods of time, yada yada
 def readingValues():
-    seconds_window = 5 # after this many second we make a record
+    number_of_measurements = 5
     values = []
 
     while not event.is_set():
         counter = 0
-        while counter < seconds_window and not event.is_set():
+        while counter < number_of_measurements and not event.is_set():
             temp = None
             humidity = None
             try:
