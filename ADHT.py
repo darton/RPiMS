@@ -56,7 +56,7 @@ def readingValues():
                 values.append({"temp" : temp, "hum" : humidity})
                 counter += 1
 
-#            sleep(2)
+            sleep(2)
 
         lock.acquire()
         filtered_temperature.append(numpy.mean(eliminateNoise([x["temp"] for x in values])))
