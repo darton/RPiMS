@@ -1,16 +1,16 @@
 #!/usr/bin/python3
 
-#Based on Robert Lucian's source code from https://forum.dexterindustries.com/t/solved-dht-sensor-occasionally-returning-spurious-values/2939/5
-
+import redis
 import Adafruit_DHT
 import math
 import numpy
 import threading
 from time import sleep
 
-#Adafruit_DHT.DHT11, Adafruit_DHT.DHT22, Adafruit_DHT.AM2302
 sensor = Adafruit_DHT.AM2302
 gpiopin = 17
+
+redis_db = redis.StrictRedis(host="localhost", port=6379, db=0, charset="utf-8", decode_responses=True)
 
 filtered_temperature = [] # here we keep the temperature values after removing outliers
 filtered_humidity = [] # here we keep the filtered humidity values after removing the outliers
@@ -38,7 +38,7 @@ def eliminateNoise(values, std_factor = 2):
 # function for processing the data
 # filtering, periods of time, yada yada
 def readingValues():
-    number_of_measurements = 5
+    number_of_measurements = 10
     values = []
 
     while not event.is_set():
@@ -77,9 +77,13 @@ def Main():
             # here you can do whatever you want with the variables: print them, file them out, anything
             temperature = filtered_temperature.pop()
             humidity = filtered_humidity.pop()
-            print('Temp={0:0.1f}*C  Humidity={1:0.1f}%'.format(temperature, humidity))
+#            print(temperature)
+#            print(humidity)
+#            print('Temp={0:0.1f}*C  Humidity={1:0.1f}%'.format(temperature, humidity))
+            redis_db.set('Humidity', humidity)
+            redis_db.set('Temperature', temperature)
             lock.release()
- #           sleep(1)
+            sleep(1)
             event.set()
 
 
@@ -89,4 +93,3 @@ if __name__ == "__main__":
 
     except KeyboardInterrupt:
         event.set()
-
