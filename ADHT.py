@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-#Based on RobertLucian's source code from https://forum.dexterindustries.com/t/solved-dht-sensor-occasionally-returning-spurious-values/2939/5
+#Based on Robert Lucian's source code from https://forum.dexterindustries.com/t/solved-dht-sensor-occasionally-returning-spurious-values/2939/5
 
 import Adafruit_DHT
 import math
@@ -38,7 +38,7 @@ def eliminateNoise(values, std_factor = 2):
 # function for processing the data
 # filtering, periods of time, yada yada
 def readingValues():
-    seconds_window = 12 # after this many second we make a record
+    seconds_window = 5 # after this many second we make a record
     values = []
 
     while not event.is_set():
