@@ -48,6 +48,8 @@ sudo systemctl start redis-server.service
 
 sudo pip3 install redis
 
+sudo swapoff --all
+
 ```
 
 ### Install from repository
@@ -61,7 +63,6 @@ git clone https://github.com/darton/RPiMS.git
 ```
 
 ### Setup
-
 
 Prepare zabbix agent
 
