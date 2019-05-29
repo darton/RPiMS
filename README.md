@@ -42,6 +42,8 @@ sudo apt-get install redis-server
 
 sudo systemctl enable redis-server.service
 
+sudo systemctl start redis-server.service
+
 #sudo pip install python3-redis
 
 sudo pip3 install redis
