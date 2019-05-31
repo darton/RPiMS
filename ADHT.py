@@ -20,8 +20,7 @@ filtered_humidity = [] # here we keep the filtered humidity values after removin
 lock = threading.Lock() # we are using locks so we don't have conflicts while accessing the shared variables
 event = threading.Event() # we are using an event so we can close the thread as soon as KeyboardInterrupt is raised
 
-# function which eliminates the noise
-# by using a statistical model
+# function which eliminates the noise by using a statistical model
 # we determine the standard normal deviation and we exclude anything that goes beyond a threshold
 # think of a probability distribution plot - we remove the extremes
 # the greater the std_factor, the more "forgiving" is the algorithm with the extreme values
