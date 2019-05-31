@@ -1,5 +1,7 @@
 #!/usr/bin/python3
 
+# based on Robert Lucian source code: https://forum.dexterindustries.com/t/solved-dht-sensor-occasionally-returning-spurious-values/2939/4
+
 import redis
 import Adafruit_DHT
 import math
