@@ -110,7 +110,7 @@ exit
 
 echo "echo" >> /home/pi/.bashrc
 
-echo "/home/pi/scripts/RPiMS/ADHT.py" >> /home/pi/.bashrc
+echo "/home/pi/scripts/RPiMS/redis-get.py" >> /home/pi/.bashrc
 
 echo "echo" >> /home/pi/.bashrc
 ```
