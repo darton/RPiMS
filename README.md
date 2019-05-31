@@ -246,7 +246,7 @@ sudo zabbix_get -s 127.0.0.1 -k dht.pull[2]
  
  - Temperature and Humidity Sensor DHT11/DHT22
  
- BCM17 -> DOUT DHT11/DHT22
+ BCM17 -> DOUT DHT11/DHT22/AM2302
  
 
  - Hardware Clock
@@ -277,7 +277,7 @@ BCM25 [pin 22] -> Input Sensor 4
 
 ## B.o.M - Bill of Materials
 
-* DHT22 - 1 pcs
+* DHT1/DHT22/AM2302 - 1 pcs
 * Door Sensor - 4 pcs
 * PiCamera - 1 pcs
 * PiCamera Case - 1pcs
