@@ -62,9 +62,36 @@ sudo apt install php-redis
 
 echo "cgi.fix_pathinfo=0" >> /etc/php/7.0/fpm/php.ini
 
-sudo systemctl restart nginx
-
 sudo systemctl restart php7.0-fpm
+
+sudo nano /etc/nginx/sites-available/default
+
+server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
+
+    root /var/www/html;
+    index index.php index.html index.htm index.nginx-debian.html;
+
+    server_name server_domain_or_IP;
+
+    location / {
+        try_files $uri $uri/ =404;
+    }
+
+    location ~ \.php$ {
+        include snippets/fastcgi-php.conf;
+        fastcgi_pass unix:/run/php/php7.0-fpm.sock;
+    }
+
+    location ~ /\.ht {
+        deny all;
+    }
+}
+
+sudo nginx -t
+
+sudo systemctl restart nginx
 
 ```
 
