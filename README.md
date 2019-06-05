@@ -48,6 +48,12 @@ sudo systemctl start redis-server.service
 
 sudo pip3 install redis
 
+sudo apt-get install nginx
+
+sudo systemctl enable nginx
+
+sudo apt install php-redis
+
 sudo swapoff --all
 
 ```
