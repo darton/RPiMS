@@ -15,8 +15,8 @@
    $door3 = $redis->get('Door3');
    $door4 = $redis->get('Door4');
 
-   print "<p>Temperature: " . number_format($temperature,2) ."</p>";
-   print "<p>Humidity: " . number_format($humidity,2) ."</p>";
+   print "<p>Temperature: " . number_format($temperature,2) ." °C</p>";
+   print "<p>Humidity: " . number_format($humidity,2) ." %</p>";
 
    print "<p>Door1: " . $door1 ."</p>";
    print "<p>Door2: " . $door2 ."</p>";
