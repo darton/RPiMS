@@ -50,11 +50,21 @@ sudo pip3 install redis
 
 sudo apt-get install nginx
 
+sudo apt install php
+
+sudo apt-get install php-fpm
+
+sudo systemctl enable php7.0-fpm
+
 sudo systemctl enable nginx
 
 sudo apt install php-redis
 
+echo "cgi.fix_pathinfo=0" >> /etc/php/7.0/fpm/php.ini
 
+sudo systemctl restart nginx
+
+sudo systemctl restart php7.0-fpm
 
 ```
 
