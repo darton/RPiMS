@@ -54,7 +54,7 @@ sudo systemctl enable nginx
 
 sudo apt install php-redis
 
-sudo swapoff --all
+
 
 ```
 
