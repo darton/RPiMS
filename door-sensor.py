@@ -20,6 +20,7 @@ from time import sleep
 import subprocess
 
 # Door sensors inputs
+#door_sensor1 = Button(22,bounce_time=0.05, pull_up=False)
 door_sensor1 = Button(22,bounce_time=0.05)
 door_sensor2 = Button(23,bounce_time=0.05)
 door_sensor3 = Button(24,bounce_time=0.05)
@@ -48,7 +49,7 @@ redis_db = redis.StrictRedis(host="localhost", port=6379, db=0, charset="utf-8",
 # --- Funcions ---
 
 def door_action_closed(door_id):
-    print("The door number " + str(door_id) + " has ben closed!")
+    print("The door number " + str(door_id) + " has been closed!")
     redis_db.set("Door" + str(door_id), 'closed')
     led.source = any_values(door_sensor1.values, door_sensor2.values, door_sensor3.values, door_sensor4.values )
     zabbix_sender_cmd ='/home/pi/scripts/RPiMS/zabbix_sender.sh info_when_door_has_been_closed' + " " + str(door_id)
@@ -63,7 +64,7 @@ if picamera is 'yes':
     subprocess.call("/home/pi/scripts/RPiMS/stream.sh start", shell=True)
 
 def door_action_opened(door_id):
-    print("The door number " + str(door_id) + " has ben opened!")
+    print("The door number " + str(door_id) + " has been opened!")
     redis_db.set("Door" + str(door_id), 'opened')
     led.source = any_values(door_sensor1.values, door_sensor2.values, door_sensor3.values, door_sensor4.values )
     zabbix_sender_cmd ='/home/pi/scripts/RPiMS/zabbix_sender.sh info_when_door_has_been_opened' + " " + str(door_id)
