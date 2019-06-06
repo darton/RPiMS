@@ -60,7 +60,7 @@ sudo systemctl enable nginx
 
 sudo apt install php-redis
 
-echo "cgi.fix_pathinfo=0" >> /etc/php/7.0/fpm/php.ini
+echo "cgi.fix_pathinfo=0" |sudo tee -a /etc/php/7.0/fpm/php.ini
 
 sudo systemctl restart php7.0-fpm
 
