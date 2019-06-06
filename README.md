@@ -103,6 +103,8 @@ mkdir /home/pi/scripts
 cd /home/pi/scripts/
 
 git clone https://github.com/darton/RPiMS.git
+
+sudo cp /home/pi/scripts/RPiMS/index.php /var/www/html
 ```
 
 ### Setup
