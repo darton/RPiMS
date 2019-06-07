@@ -175,17 +175,7 @@ su - pi -c '/home/pi/scripts/RPiMS/door-sensor.py &'
 ## Setup if you have PiCamera
 
 ```
-sudo apt-get install vlc
-
-sudo apt-get install libav-tools
-
-sudo apt-get install python-picamera
-
-sudo apt-get install omxplayer
-
-sudo apt-get install -y gpac
-
-sudo apt-get install fbi
+sudo apt-get install -y vlc libav-tools python-picamera omxplayer gpac fbi
 
 mkdir /home/pi/video
 ```
