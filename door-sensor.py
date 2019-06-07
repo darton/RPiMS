@@ -75,7 +75,7 @@ def door_action_opened(door_id):
 
     if picamera is 'yes':
         sleep(0.2)
-        camera.capture('/home/pi/video/image.jpg')
+        #camera.capture('/home/pi/video/image.jpg')
         subprocess.call("/home/pi/scripts/RPiMS/stream.sh stop", shell=True)
         sleep(0.2)
         subprocess.call("/home/pi/scripts/RPiMS/videorecorder.sh", shell=True)
