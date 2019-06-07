@@ -20,7 +20,7 @@ video_file=pivideo_$now
 
 raspivid_pid=$(pidof raspivid)
 
-if [ $raspivid_pid -n]; 
+if [ $raspivid_pid -n ]
 then
     pkill raspivid
 fi 
