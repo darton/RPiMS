@@ -12,12 +12,13 @@
 #  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #  GNU General Public License for more details.
 
-import redis
+#from picamera import PiCamera
 from gpiozero import LED, Button
 from gpiozero.tools import any_values
 from signal import pause
 from time import sleep
 import subprocess
+import redis
 
 # Door sensors inputs
 #door_sensor1 = Button(22,bounce_time=0.05, pull_up=False)
@@ -29,7 +30,6 @@ door_sensor4 = Button(25,bounce_time=0.05)
 # picamera yes/no
 picamera = "no"
 
-
 # Led Lamp on GPIO 14
 led = LED(14)
 
@@ -39,13 +39,15 @@ door2_id = 2
 door3_id = 3
 door4_id = 4
 
-
 #Variable declaration
 door_id = 0
 
+# Connect to Redis db
 redis_db = redis.StrictRedis(host="localhost", port=6379, db=0, charset="utf-8", decode_responses=True)
 
+# Set location
 redis_db.set("Location", 'My home')
+
 
 # --- Funcions ---
 
@@ -55,14 +57,14 @@ def door_action_closed(door_id):
     led.source = any_values(door_sensor1.values, door_sensor2.values, door_sensor3.values, door_sensor4.values )
     zabbix_sender_cmd ='/home/pi/scripts/RPiMS/zabbix_sender.sh info_when_door_has_been_closed' + " " + str(door_id)
     subprocess.call(zabbix_sender_cmd, shell=True)
-
-if picamera is 'yes':
-    sleep(0.2)
-    subprocess.call("/home/pi/scripts/RPiMS/stream.sh stop", shell=True)
-    sleep(0.2)
-    subprocess.call("/home/pi/scripts/RPiMS/videorecorder.sh", shell=True)
-    sleep(0.2)
-    subprocess.call("/home/pi/scripts/RPiMS/stream.sh start", shell=True)
+    
+    if picamera is 'yes':
+        sleep(0.2)
+        subprocess.call("/home/pi/scripts/RPiMS/stream.sh stop", shell=True)
+        sleep(0.2)
+        subprocess.call("/home/pi/scripts/RPiMS/videorecorder.sh", shell=True)
+        sleep(0.2)
+        subprocess.call("/home/pi/scripts/RPiMS/stream.sh start", shell=True)
 
 def door_action_opened(door_id):
     print("The door number " + str(door_id) + " has been opened!")
@@ -70,15 +72,16 @@ def door_action_opened(door_id):
     led.source = any_values(door_sensor1.values, door_sensor2.values, door_sensor3.values, door_sensor4.values )
     zabbix_sender_cmd ='/home/pi/scripts/RPiMS/zabbix_sender.sh info_when_door_has_been_opened' + " " + str(door_id)
     subprocess.call(zabbix_sender_cmd, shell=True)
-if picamera is 'yes':
-    sleep(0.2)
-    camera.capture('/home/pi/video/image.jpg')
-    subprocess.call("/home/pi/scripts/RPiMS/stream.sh stop", shell=True)
-    sleep(0.2)
-    subprocess.call("/home/pi/scripts/RPiMS/videorecorder.sh", shell=True)
-    sleep(0.2)
-    subprocess.call("/home/pi/scripts/RPiMS/stream.sh start", shell=True)
-    sleep(1)
+
+    if picamera is 'yes':
+        sleep(0.2)
+        camera.capture('/home/pi/video/image.jpg')
+        subprocess.call("/home/pi/scripts/RPiMS/stream.sh stop", shell=True)
+        sleep(0.2)
+        subprocess.call("/home/pi/scripts/RPiMS/videorecorder.sh", shell=True)
+        sleep(0.2)
+        subprocess.call("/home/pi/scripts/RPiMS/stream.sh start", shell=True)
+        sleep(1)
 
 def door_status_open(door_id):
     print("The door number " + str(door_id) + " is opened!")
@@ -86,8 +89,8 @@ def door_status_open(door_id):
     led.source = any_values(door_sensor1.values, door_sensor2.values, door_sensor3.values, door_sensor4.values )
     zabbix_sender_cmd ='/home/pi/scripts/RPiMS/zabbix_sender.sh info_when_door_is_opened' + " " + str(door_id)
     subprocess.call(zabbix_sender_cmd, shell=True)
-if picamera is 'yes':
-    subprocess.call("/home/pi/scripts/RPiMS/stream.sh start", shell=True)
+    if picamera is 'yes':
+        subprocess.call("/home/pi/scripts/RPiMS/stream.sh start", shell=True)
 
 
 def door_status_close(door_id):
@@ -96,8 +99,8 @@ def door_status_close(door_id):
     led.source = any_values(door_sensor1.values, door_sensor2.values, door_sensor3.values, door_sensor4.values )
     zabbix_sender_cmd ='/home/pi/scripts/RPiMS/zabbix_sender.sh info_when_door_is_closed' + " " + str(door_id)
     subprocess.call(zabbix_sender_cmd, shell=True)
-if picamera is 'yes':
-    subprocess.call("/home/pi/scripts/RPiMS/stream.sh start", shell=True)
+    if picamera is 'yes':
+        subprocess.call("/home/pi/scripts/RPiMS/stream.sh start", shell=True)
 
 
 # --- Read sensors when startup ---
