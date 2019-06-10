@@ -89,6 +89,7 @@ def door_status_open(door_id):
     led.source = any_values(door_sensor1.values, door_sensor2.values, door_sensor3.values, door_sensor4.values )
     zabbix_sender_cmd ='/home/pi/scripts/RPiMS/zabbix_sender.sh info_when_door_is_opened' + " " + str(door_id)
     subprocess.call(zabbix_sender_cmd, shell=True)
+    
     if picamera is 'yes':
         subprocess.call("/home/pi/scripts/RPiMS/stream.sh start", shell=True)
 
@@ -99,6 +100,7 @@ def door_status_close(door_id):
     led.source = any_values(door_sensor1.values, door_sensor2.values, door_sensor3.values, door_sensor4.values )
     zabbix_sender_cmd ='/home/pi/scripts/RPiMS/zabbix_sender.sh info_when_door_is_closed' + " " + str(door_id)
     subprocess.call(zabbix_sender_cmd, shell=True)
+    
     if picamera is 'yes':
         subprocess.call("/home/pi/scripts/RPiMS/stream.sh start", shell=True)
 
