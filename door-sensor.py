@@ -45,7 +45,7 @@ active_sensor_list = {
 
 redis_db = redis.StrictRedis(host="localhost", port=6379, db=0, charset="utf-8", decode_responses=True)
 
-redis_db.set("Location", 'Serwerownia Z2')
+redis_db.set("Location", 'My Home')
 
 
 # --- Funcions ---
