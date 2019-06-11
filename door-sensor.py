@@ -26,6 +26,9 @@ picamera = "no"
 # Led Lamp on GPIO 14
 led = LED(14)
 
+#Motion Sensor on GPIO 27
+pir = MotionSensor(27)
+
 # Door sensors inputs (store the ref of functions in variable)
 sensor1 = Button(22,bounce_time=0.05)
 sensor2 = Button(23,bounce_time=0.05)
@@ -109,8 +112,23 @@ def sensors_read():
 
 # --- Main program ---
 
-for s in active_sensor_list:
-        active_sensor_list[s].when_pressed = lambda : door_action_closed(s)
-        active_sensor_list[s].when_released = lambda : door_action_opened(s)
+#for s in active_sensor_list:
+#        active_sensor_list[s].when_pressed = lambda : door_action_closed(s)
+#        active_sensor_list[s].when_released = lambda : door_action_opened(s)
+
+sensor1.when_pressed = lambda : door_action_closed("sensor1")
+sensor1.when_released = lambda : door_action_opened("sensor1")
+
+sensor2.when_pressed = lambda : door_action_closed("sensor2")
+sensor2.when_released = lambda : door_action_opened("sensor2")
+
+sensor3.when_pressed = lambda : door_action_closed("sensor3")
+sensor3.when_released = lambda : door_action_opened("sensor3")
+
+sensor4.when_pressed = lambda : door_action_closed("sensor4")
+sensor4.when_released = lambda : door_action_opened("sensor4")
+
+pir.when_motion = lambda : print("motion yes")
+pir.when_no_motion = lambda : print("motion no")
 
 pause()
