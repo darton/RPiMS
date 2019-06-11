@@ -30,6 +30,6 @@ echo "cgi.fix_pathinfo=0" |sudo tee -a /etc/php/7.0/fpm/php.ini
 
 sudo systemctl restart php7.0-fpm
 
-mv $installdir/index.php /var/www/html/
+sudo mv $installdir/index.php /var/www/html/
 
 exit
