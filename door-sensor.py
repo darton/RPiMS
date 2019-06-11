@@ -99,7 +99,7 @@ def door_status_close(door_id):
     if picamera is 'yes':
         subprocess.call("/home/pi/scripts/RPiMS/stream.sh start", shell=True)
 
-def sensors_read():
+def sensors_read_once():
     for s in active_sensor_list:
         if active_sensor_list[s].value == 0:
             door_status_open(s)
@@ -107,8 +107,9 @@ def sensors_read():
             door_status_close(s)
         active_sensor_list[s].when_pressed = lambda : door_action_closed(s)
         active_sensor_list[s].when_released = lambda : door_action_opened(s)
+
 # --- Read sensors when startup ---
-#sensors_read()
+sensors_read_once()
 
 # --- Main program ---
 
