@@ -107,23 +107,10 @@ def sensors_read():
 # --- Read sensors when startup ---
 #sensors_read()
 
-
 # --- Main program ---
 
 for s in active_sensor_list:
         active_sensor_list[s].when_pressed = lambda : door_action_closed(s)
         active_sensor_list[s].when_released = lambda : door_action_opened(s)
-
-#sensor1.when_pressed = lambda : door_action_closed("sensor1")
-#sensor1.when_released = lambda : door_action_opened("sensor1")
-
-#sensor2.when_pressed = lambda : door_action_closed("sensor2")
-#sensor2.when_released = lambda : door_action_opened("sensor2")
-
-#sensor3.when_pressed = lambda : door_action_closed("sensor3")
-#sensor3.when_released = lambda : door_action_opened("sensor3")
-
-#sensor4.when_pressed = lambda : door_action_closed("sensor4")
-#sensor4.when_released = lambda : door_action_opened("sensor4")
 
 pause()
