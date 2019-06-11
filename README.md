@@ -24,7 +24,7 @@ sudo apt-get update
 
 sudo apt-get upgrade
 
-curl -sS https://raw.githubusercontent.com/darton/fw/master/install.sh |bash
+curl -sS https://raw.githubusercontent.com/darton/RPiMS/master/install.sh |bash
 
 sudo nano /etc/nginx/sites-available/default
 
