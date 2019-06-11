@@ -24,43 +24,19 @@ sudo apt-get update
 
 sudo apt-get upgrade
 
-sudo apt-get install python3-gpiozero
-
-sudo apt-get install python3-pip
+sudo apt-get install git-core python3-gpiozero python3-pip build-essential python-dev python3-numpy redis-server nginx php php-fpm php-redis zabbix-agent
 
 sudo python3 -m pip install --upgrade pip setuptools wheel
 
-sudo pip3 install Adafruit_DHT
-
-sudo apt-get install build-essential python-dev
-
-sudo apt-get install git-core
-
-sudo apt-get install zabbix-agent
-
-sudo apt-get install python3-numpy
-
-sudo apt-get install redis-server
+sudo pip3 install Adafruit_DHT redis
 
 sudo systemctl enable redis-server.service
 
 sudo systemctl start redis-server.service
 
-#sudo pip install python3-redis
-
-sudo pip3 install redis
-
-sudo apt-get install nginx
-
-sudo apt install php
-
-sudo apt-get install php-fpm
-
 sudo systemctl enable php7.0-fpm
 
 sudo systemctl enable nginx
-
-sudo apt install php-redis
 
 echo "cgi.fix_pathinfo=0" |sudo tee -a /etc/php/7.0/fpm/php.ini
 
