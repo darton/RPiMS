@@ -1,6 +1,6 @@
 #!/bin/bash
 
-installdir=/home/pi/RPiMS
+installdir=/home/pi/scripts/RPiMS
 
 [[ -d $installdir ]] || mkdir -p $installdir
 
