@@ -26,45 +26,34 @@ picamera = "no"
 # Led Lamp on GPIO 14
 led = LED(14)
 
-# Door sensors inputs
-#door_sensor1 = Button(22,bounce_time=0.05, pull_up=False)
-door_sensor1 = Button(22,bounce_time=0.05)
-door_sensor2 = Button(23,bounce_time=0.05)
-door_sensor3 = Button(24,bounce_time=0.05)
-door_sensor4 = Button(25,bounce_time=0.05)
+# Door sensors inputs (store the ref of functions in variable)
+sensor1 = Button(22,bounce_time=0.05)
+sensor2 = Button(23,bounce_time=0.05)
+sensor3 = Button(24,bounce_time=0.05)
+sensor4 = Button(25,bounce_time=0.05)
 
 active_sensor_list = {
-    "door_sensor_1": door_sensor1,
-    "door_sensor_2": door_sensor2,
-    "door_sensor_3": door_sensor3,
-    "door_sensor_4": door_sensor4
+    "door_sensor_1": sensor1,
+    "door_sensor_2": sensor2,
+    "door_sensor_3": sensor3,
+    "door_sensor_4": sensor4
 }
 
-# Door sensors identity numbers
-door1_id = 1
-door2_id = 2
-door3_id = 3
-door4_id = 4
 
-#Variable declaration
-door_id = 0
-
-# Connect to Redis db
 redis_db = redis.StrictRedis(host="localhost", port=6379, db=0, charset="utf-8", decode_responses=True)
 
-# Set location
-redis_db.set("Location", 'My home')
+redis_db.set("Location", 'Serwerownia Z2')
 
 
 # --- Funcions ---
 
 def door_action_closed(door_id):
-    print("The door number " + str(door_id) + " has been closed!")
-    redis_db.set("Door" + str(door_id), 'closed')
-    led.source = any_values(door_sensor1.values, door_sensor2.values, door_sensor3.values, door_sensor4.values )
+    print("The " + str(door_id) + " has been closed!")
+    redis_db.set(str(door_id), 'closed')
+    led.source = any_values(sensor1.values, sensor2.values, sensor3.values, sensor4.values )
     zabbix_sender_cmd ='/home/pi/scripts/RPiMS/zabbix_sender.sh info_when_door_has_been_closed' + " " + str(door_id)
     subprocess.call(zabbix_sender_cmd, shell=True)
-    
+
     if picamera is 'yes':
         sleep(0.2)
         subprocess.call("/home/pi/scripts/RPiMS/stream.sh stop", shell=True)
@@ -74,15 +63,13 @@ def door_action_closed(door_id):
         subprocess.call("/home/pi/scripts/RPiMS/stream.sh start", shell=True)
 
 def door_action_opened(door_id):
-    print("The door number " + str(door_id) + " has been opened!")
-    redis_db.set("Door" + str(door_id), 'opened')
-    led.source = any_values(door_sensor1.values, door_sensor2.values, door_sensor3.values, door_sensor4.values )
+    print("The " + str(door_id) + " has been opened!")
+    redis_db.set(str(door_id), 'opened')
+    led.source = any_values(sensor1.values, sensor2.values, sensor3.values, sensor4.values )
     zabbix_sender_cmd ='/home/pi/scripts/RPiMS/zabbix_sender.sh info_when_door_has_been_opened' + " " + str(door_id)
     subprocess.call(zabbix_sender_cmd, shell=True)
-
     if picamera is 'yes':
         sleep(0.2)
-        #camera.capture('/home/pi/video/image.jpg')
         subprocess.call("/home/pi/scripts/RPiMS/stream.sh stop", shell=True)
         sleep(0.2)
         subprocess.call("/home/pi/scripts/RPiMS/videorecorder.sh", shell=True)
@@ -91,23 +78,21 @@ def door_action_opened(door_id):
         sleep(1)
 
 def door_status_open(door_id):
-    print("The door number " + str(door_id) + " is opened!")
-    redis_db.set("Door" + str(door_id), 'open')
-    led.source = any_values(door_sensor1.values, door_sensor2.values, door_sensor3.values, door_sensor4.values )
+    print("The " + str(door_id) + " is opened!")
+    redis_db.set(str(door_id), 'open')
+    led.source = any_values(sensor1.values, sensor2.values, sensor3.values, sensor4.values )
     zabbix_sender_cmd ='/home/pi/scripts/RPiMS/zabbix_sender.sh info_when_door_is_opened' + " " + str(door_id)
     subprocess.call(zabbix_sender_cmd, shell=True)
-    
     if picamera is 'yes':
         subprocess.call("/home/pi/scripts/RPiMS/stream.sh start", shell=True)
 
 
 def door_status_close(door_id):
-    print("The door number " + str(door_id) + " is closed!")
-    redis_db.set("Door" + str(door_id), 'close')
-    led.source = any_values(door_sensor1.values, door_sensor2.values, door_sensor3.values, door_sensor4.values )
+    print("The " + str(door_id) + " is closed!")
+    redis_db.set(str(door_id), 'close')
+    led.source = any_values(sensor1.values, sensor2.values, sensor3.values, sensor4.values )
     zabbix_sender_cmd ='/home/pi/scripts/RPiMS/zabbix_sender.sh info_when_door_is_closed' + " " + str(door_id)
     subprocess.call(zabbix_sender_cmd, shell=True)
-    
     if picamera is 'yes':
         subprocess.call("/home/pi/scripts/RPiMS/stream.sh start", shell=True)
 
@@ -118,47 +103,23 @@ def sensors_read():
         else:
             door_status_close(s)
 
-# --- Read sensors when startup ---
-# sensors_read()
 
 # --- Read sensors when startup ---
-
-if door_sensor1.value == 0:
-    door_status_open(door1_id)
-else:
-    door_status_close(door1_id)
-
-
-if door_sensor2.value == 0:
-    door_status_open(door2_id)
-else:
-    door_status_close(door2_id)
-
-
-if door_sensor3.value == 0:
-    door_status_open(door3_id)
-else:
-    door_status_close(door3_id)
-
-
-if door_sensor4.value == 0:
-    door_status_open(door4_id)
-else:
-    door_status_close(door4_id)
+sensors_read()
 
 
 # --- Main program ---
 
-door_sensor1.when_pressed = lambda : door_action_closed(door1_id)
-door_sensor1.when_released = lambda : door_action_opened(door1_id)
+sensor1.when_pressed = lambda : door_action_closed(door1_id)
+sensor1.when_released = lambda : door_action_opened(door1_id)
 
-door_sensor2.when_pressed = lambda : door_action_closed(door2_id)
-door_sensor2.when_released = lambda : door_action_opened(door2_id)
+sensor2.when_pressed = lambda : door_action_closed(door2_id)
+sensor2.when_released = lambda : door_action_opened(door2_id)
 
-door_sensor3.when_pressed = lambda : door_action_closed(door3_id)
-door_sensor3.when_released = lambda : door_action_opened(door3_id)
+sensor3.when_pressed = lambda : door_action_closed(door3_id)
+sensor3.when_released = lambda : door_action_opened(door3_id)
 
-door_sensor4.when_pressed = lambda : door_action_closed(door4_id)
-door_sensor4.when_released = lambda : door_action_opened(door4_id)
+sensor4.when_pressed = lambda : door_action_closed(door4_id)
+sensor4.when_released = lambda : door_action_opened(door4_id)
 
 pause()
