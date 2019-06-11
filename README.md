@@ -22,6 +22,8 @@ If you're not using Etcher, you'll need to unzip .zip downloads to get the image
 ```
 sudo apt-get update
 
+sudo apt-get upgrade
+
 sudo apt-get install python3-gpiozero
 
 sudo apt-get install python3-pip
