@@ -20,6 +20,12 @@ from time import sleep
 import subprocess
 import redis
 
+# picamera yes/no
+picamera = "no"
+
+# Led Lamp on GPIO 14
+led = LED(14)
+
 # Door sensors inputs
 #door_sensor1 = Button(22,bounce_time=0.05, pull_up=False)
 door_sensor1 = Button(22,bounce_time=0.05)
@@ -27,11 +33,12 @@ door_sensor2 = Button(23,bounce_time=0.05)
 door_sensor3 = Button(24,bounce_time=0.05)
 door_sensor4 = Button(25,bounce_time=0.05)
 
-# picamera yes/no
-picamera = "no"
-
-# Led Lamp on GPIO 14
-led = LED(14)
+active_sensor_list = {
+    "door_sensor_1": door_sensor1,
+    "door_sensor_2": door_sensor2,
+    "door_sensor_3": door_sensor3,
+    "door_sensor_4": door_sensor4
+}
 
 # Door sensors identity numbers
 door1_id = 1
@@ -104,6 +111,18 @@ def door_status_close(door_id):
     if picamera is 'yes':
         subprocess.call("/home/pi/scripts/RPiMS/stream.sh start", shell=True)
 
+def sensors_read():
+    for s in active_sensor_list:
+        x = active_sensor_list[s].value
+        if x == 0:
+            door_status_open(s)
+        else:
+            door_status_close(s)
+
+
+# --- Read sensors when startup ---
+
+# sensors_read()
 
 # --- Read sensors when startup ---
 
