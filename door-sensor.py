@@ -105,8 +105,6 @@ def sensors_read_once():
             door_status_open(s)
         else:
             door_status_close(s)
-        active_sensor_list[s].when_pressed = lambda : door_action_closed(s)
-        active_sensor_list[s].when_released = lambda : door_action_opened(s)
 
 # --- Read sensors when startup ---
 sensors_read_once()
