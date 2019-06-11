@@ -6,7 +6,7 @@ installdir=/home/pi/RPiMS
 
 for file in ADHT.py door-sensor.py redis-get.py redis-get-logdata.py stream.sh videorecorder.sh zabbix_sender.sh README.md index.php; do
 
-  curl -sS https://raw.githubusercontent.com/darton/RPiMS/master/$file > $scriptsdir/$file
+  curl -sS https://raw.githubusercontent.com/darton/RPiMS/master/$file > $installdir/$file
 
 done
 
