@@ -113,15 +113,12 @@ def door_status_close(door_id):
 
 def sensors_read():
     for s in active_sensor_list:
-        x = active_sensor_list[s].value
-        if x == 0:
+        if active_sensor_list[s].value == 0:
             door_status_open(s)
         else:
             door_status_close(s)
 
-
 # --- Read sensors when startup ---
-
 # sensors_read()
 
 # --- Read sensors when startup ---
