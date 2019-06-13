@@ -12,10 +12,10 @@
     $location = $redis->get('Location');
     $temperature = $redis->get('Temperature');
     $humidity = $redis->get('Humidity');
-    $door1 = $redis->get('Door1');
-    $door2 = $redis->get('Door2');
-    $door3 = $redis->get('Door3');
-    $door4 = $redis->get('Door4');
+    $sensor1 = $redis->get('door_sensor_1');
+    $sensor2 = $redis->get('door_sensor_2');
+    $sensor3 = $redis->get('door_sensor_3');
+    $sensor4 = $redis->get('door_sensor_4');
 
     print "<p>Lokalizacja: " . $location ."</p>";
     print "<p>Hostname: " . $hostname ."</p><br>";
