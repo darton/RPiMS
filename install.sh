@@ -14,7 +14,7 @@ curl -sS https://raw.githubusercontent.com/darton/RPiMS/master/nginx/default > $
 
 chmod u+x *.py *.sh
 
-sudo apt-get -y install git-core python3-gpiozero python3-pip build-essential python-dev python3-numpy redis-server nginx php php-fpm php-redis zabbix-agent
+sudo apt-get -y install git-core python3-gpiozero python3-pip build-essential python-dev python3-numpy redis-server php php-fpm php-redis zabbix-agent
 
 sudo python3 -m pip install --upgrade pip setuptools wheel
 
@@ -24,21 +24,25 @@ sudo systemctl enable redis-server.service
 
 sudo systemctl start redis-server.service
 
-sudo systemctl enable php7.0-fpm
-
-sudo systemctl enable nginx
-
 echo "cgi.fix_pathinfo=0" |sudo tee -a /etc/php/7.0/fpm/php.ini
+
+sudo a2enmod proxy_fcgi setenvif
+
+sudo a2enconf php7.0-fpm
 
 sudo systemctl restart php7.0-fpm
 
+sudo systemctl enable php7.0-fpm
+
 sudo mv $installdir/index.php /var/www/html/
 
-sudo mv /etc/nginx/sites-available/default /etc/nginx/sites-available/default.org
+#sudo systemctl enable nginx
 
-sudo mv $installdir/nginx.default /etc/nginx/sites-available/
+#sudo mv /etc/nginx/sites-available/default /etc/nginx/sites-available/default.org
 
-sudo systemctl restart nginx
+#sudo mv $installdir/nginx.default /etc/nginx/sites-available/
+
+#sudo systemctl restart nginx
 
 echo 'zabbix ALL=(ALL) NOPASSWD: /home/pi/scripts/RPiMS/redis-get.py' | sudo EDITOR='tee -a' visudo
 
