@@ -159,6 +159,9 @@ raspivid -o test.h264
 
 raspistill -o test.jpg
 
+
+sudo apt-get  install zabbix-proxy-sqlite
+
 sudo zabbix_get -s 127.0.0.1 -k dht.pull[4]
 
 sudo zabbix_get -s 127.0.0.1 -k dht.pull[2]
