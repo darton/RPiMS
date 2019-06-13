@@ -1,0 +1,19 @@
+#!/bin/bash
+
+echo "$(tput setaf 2)
+   .~~.   .~~.
+  '. \ ' ' / .'$(tput setaf 1)
+   .~ .~~~..~.
+  : .~.'~'.~. :
+ ~ (   ) (   ) ~
+( : '~'.~.'~' : )
+ ~ .~ (   ) ~. ~
+  (  : '~' :  ) $(tput sgr0)Raspberry Pi$(tput setaf 1)
+   '~ .~~~. ~'
+       '~'
+$(tput sgr0)"
+
+SENSOR_1=$(/home/pi/scripts/RPiMS/redis-get.py)
+CPU_TEMP=$(vcgencmd measure_temp)
+echo "Room: $SENSOR_1"
+echo "CPU $CPU_TEMP"
