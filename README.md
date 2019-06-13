@@ -18,7 +18,7 @@ To writing an image to the SD card, use [Etcher](https://etcher.io/) an image wr
 
 If you're not using Etcher, you'll need to unzip .zip downloads to get the image file (.img) to write to your SD card.
 
-### Installing dependencies
+### Run installation script
 ```
 sudo apt-get update
 
@@ -26,47 +26,6 @@ sudo apt-get upgrade
 
 curl -sS https://raw.githubusercontent.com/darton/RPiMS/master/install.sh |bash
 
-sudo nano /etc/nginx/sites-available/default
-
-server {
-    listen 80 default_server;
-    listen [::]:80 default_server;
-
-    root /var/www/html;
-    index index.php index.html index.htm index.nginx-debian.html;
-
-    server_name server_domain_or_IP;
-
-    location / {
-        try_files $uri $uri/ =404;
-    }
-
-    location ~ \.php$ {
-        include snippets/fastcgi-php.conf;
-        fastcgi_pass unix:/run/php/php7.0-fpm.sock;
-    }
-
-    location ~ /\.ht {
-        deny all;
-    }
-}
-
-sudo nginx -t
-
-sudo systemctl restart nginx
-
-```
-
-### Install from repository
-
-```
-mkdir /home/pi/scripts
-
-cd /home/pi/scripts/
-
-git clone https://github.com/darton/RPiMS.git
-
-sudo cp /home/pi/scripts/RPiMS/index.php /var/www/html
 ```
 
 ### Setup
