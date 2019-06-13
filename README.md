@@ -48,8 +48,6 @@ Server=127.0.0.1, zabbix.example.com
 ServerActive=zabbix.example.com
 ```
 
-Mofify MOTD and .bashhrc
-
 Prepare to run RPiMS scrip after restart
 
 ```
