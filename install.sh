@@ -40,4 +40,6 @@ sudo mv $installdir/nginx.default /etc/nginx/sites-available/
 
 sudo systemctl restart nginx
 
+echo 'zabbix ALL=(ALL) NOPASSWD: /home/pi/scripts/RPiMS/redis-get.py' | sudo EDITOR='tee -a' visudo
+
 exit
