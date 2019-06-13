@@ -65,7 +65,6 @@ su - pi -c '/home/pi/scripts/RPiMS/sensors.py &'
 ```
 sudo apt-get install -y vlc libav-tools python-picamera omxplayer gpac fbi
 
-mkdir /home/pi/video
 ```
 
 
