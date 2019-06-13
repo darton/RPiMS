@@ -33,10 +33,6 @@ curl -sS https://raw.githubusercontent.com/darton/RPiMS/master/install.sh |bash
 Prepare zabbix agent
 
 ```
-echo "UserParameter=dht.pull[*],sudo /home/pi/scripts/RPiMS/redis-get.py | awk -F[=*%] '{print '$'"$1"}'" >>/etc/zabbix/zabbix_agentd.conf
-
-echo 'Timeout=5' >> /etc/zabbix/zabbix_agentd.conf
-
 sudo nano /etc/zabbix/zabbix_agentd.conf 
 ```
 
