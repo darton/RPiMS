@@ -1,6 +1,6 @@
 # RPiMS
 
-RPiMS is Raspberry Pi based Monitoring System (door sensor, temperature and humidity sensor, video streamer/recorder)
+RPiMS is Raspberry Pi based Monitoring System (door sensor, motion sensor, temperature and humidity sensor, video streamer/recorder)
 
 ## Description
 
