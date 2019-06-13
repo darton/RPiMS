@@ -90,7 +90,7 @@ sudo nano /etc/rc.local
 and add below line before command `exit 0`
 
 ```
-su - pi -c '/home/pi/scripts/RPiMS/door-sensor.py &'
+su - pi -c '/home/pi/scripts/RPiMS/sensors.py &'
 ```
 
 ## Setup if you have PiCamera
