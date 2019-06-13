@@ -52,13 +52,7 @@ echo "echo" >> /home/pi/.bashrc
 
 echo "/home/pi/scripts/RPiMS/redis-get.py" >> /home/pi/.bashrc
 
-echo "echo" >> /home/pi/.bashrc
-
-echo "" |sudo tee /etc/motd
-
-echo "RPi Monitoring System" | sudo tee -a  /etc/motd
-
-echo "" | sudo tee -a /etc/motd
+sudo mv motd /etc/update-motd.d/20-rpims
 
 
 
