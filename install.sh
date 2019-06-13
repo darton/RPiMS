@@ -38,4 +38,6 @@ sudo mv /etc/nginx/sites-available/default /etc/nginx/sites-available/default.or
 
 sudo mv $installdir/nginx.default /etc/nginx/sites-available/
 
+sudo systemctl restart nginx
+
 exit
