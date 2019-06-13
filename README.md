@@ -48,38 +48,7 @@ Server=127.0.0.1, zabbix.example.com
 ServerActive=zabbix.example.com
 ```
 
-Run command
-
-```
-sudo visudo 
-
-```
-
-Add this line
-
-```
-zabbix ALL=(ALL) NOPASSWD: /home/pi/scripts/RPiMS/redis-get.py
-```
-
 Mofify MOTD and .bashhrc
-
-```
-sudo bash
-
-echo "" > /etc/motd
-
-echo "RPi Monitoring System" >> /etc/motd
-
-echo "" >> /etc/motd
-
-exit
-
-echo "echo" >> /home/pi/.bashrc
-
-echo "/home/pi/scripts/RPiMS/redis-get.py" >> /home/pi/.bashrc
-
-echo "echo" >> /home/pi/.bashrc
-```
 
 Prepare to run RPiMS scrip after restart
 
