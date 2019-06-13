@@ -48,23 +48,18 @@ sudo mv $installdir/index.php /var/www/html/
 
 echo 'zabbix ALL=(ALL) NOPASSWD: /home/pi/scripts/RPiMS/redis-get.py' | sudo EDITOR='tee -a' visudo
 
-
 echo "echo" >> /home/pi/.bashrc
 
 echo "/home/pi/scripts/RPiMS/redis-get.py" >> /home/pi/.bashrc
 
 echo "echo" >> /home/pi/.bashrc
 
+echo "" |sudo tee /etc/motd
 
-sudo bash
+echo "RPi Monitoring System" | sudo tee -a  /etc/motd
 
-echo "" > /etc/motd
+echo "" | sudo tee -a /etc/motd
 
-echo "RPi Monitoring System" >> /etc/motd
-
-echo "" >> /etc/motd
-
-exit
 
 
 
