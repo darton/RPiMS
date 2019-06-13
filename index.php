@@ -20,8 +20,8 @@
     print "<p>Lokalizacja: " . $location ."</p>";
     print "<p>Hostname: " . $hostname ."</p><br>";
 
-    print "<p style='color:blue;'>Temperature: " . number_format($temperature,2) ." °C</p>";
-    print "<p style='color:blue;'>Humidity: " . number_format($humidity,2) ." %</p><br>";
+    print "<p style='color:blue;'>Temperature: " . number_format($temperature,1) ." °C</p>";
+    print "<p style='color:blue;'>Humidity: " . number_format($humidity,1) ." %</p><br>";
 
     print "<p style='color:red;'>Door1: " . $door1 ."</p>";
     print "<p style='color:red;'>Door2: " . $door2 ."</p>";
