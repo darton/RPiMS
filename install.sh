@@ -10,6 +10,8 @@ for file in ADHT.py door-sensor.py redis-get.py redis-get-logdata.py stream.sh v
 
 done
 
+curl -sS https://raw.githubusercontent.com/darton/RPiMS/master/nginx/default > $installdir/nginx.default
+
 chmod u+x *.py *.sh
 
 sudo apt-get -y install git-core python3-gpiozero python3-pip build-essential python-dev python3-numpy redis-server nginx php php-fpm php-redis zabbix-agent
@@ -31,5 +33,9 @@ echo "cgi.fix_pathinfo=0" |sudo tee -a /etc/php/7.0/fpm/php.ini
 sudo systemctl restart php7.0-fpm
 
 sudo mv $installdir/index.php /var/www/html/
+
+sudo mv /etc/nginx/sites-available/default /etc/nginx/sites-available/default.org
+
+sudo mv $installdir/nginx.default /etc/nginx/sites-available/
 
 exit
