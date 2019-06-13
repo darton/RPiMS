@@ -10,7 +10,7 @@ for file in ADHT.py sensors.py redis-get.py redis-get-logdata.py stream.sh video
 
 done
 
-curl -sS https://raw.githubusercontent.com/darton/RPiMS/master/nginx/default > $installdir/nginx.default
+#curl -sS https://raw.githubusercontent.com/darton/RPiMS/master/nginx/default > $installdir/nginx.default
 
 chmod u+x *.py *.sh
 
@@ -33,6 +33,8 @@ sudo a2enconf php7.0-fpm
 sudo systemctl restart php7.0-fpm
 
 sudo systemctl enable php7.0-fpm
+
+sudo systemctl restart apache2
 
 sudo mv $installdir/index.php /var/www/html/
 
