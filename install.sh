@@ -49,4 +49,6 @@ sudo mv $installdir/index.php /var/www/html/
 
 echo 'zabbix ALL=(ALL) NOPASSWD: /home/pi/scripts/RPiMS/redis-get.py' | sudo EDITOR='tee -a' visudo
 
+sudo mv zabbix-rpims.conf /etc/zabbix/zabbix_agentd.conf.d/zabbix-rpims.conf
+
 sudo mv motd /etc/update-motd.d/20-rpims
