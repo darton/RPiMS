@@ -11,6 +11,9 @@ for file in ADHT.py sensors.py redis-get.py redis-get-logdata.py stream.sh video
 
 done
 
+
+cd $installdir
+
 chmod u+x *.py *.sh
 
 sudo apt-get -y install git-core python3-gpiozero python3-pip build-essential python-dev python3-numpy redis-server php php-fpm php-redis zabbix-agent
