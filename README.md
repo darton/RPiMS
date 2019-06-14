@@ -33,27 +33,15 @@ curl -sS https://raw.githubusercontent.com/darton/RPiMS/master/install.sh |bash
 Prepare zabbix agent
 
 ```
-sudo nano /etc/zabbix/zabbix_agentd.conf 
+sudo nano /etc/zabbix/zabbix_agentd.conf/zabbix-rpims.conf 
 ```
 
-Modify Server and ServerActive to:
+Modify Server and ServerActive:
 
 ```
 Server=127.0.0.1, zabbix.example.com
 
 ServerActive=zabbix.example.com
-```
-
-Prepare to run RPiMS scrip after restart
-
-```
-sudo nano /etc/rc.local
-````
-
-and add below line before command `exit 0`
-
-```
-su - pi -c '/home/pi/scripts/RPiMS/sensors.py &'
 ```
 
 ## Setup if you have PiCamera
