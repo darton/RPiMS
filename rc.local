@@ -18,5 +18,6 @@ if [ "$_IP" ]; then
   printf "My IP address is %s\n" "$_IP"
 fi
 
+su - pi -c '/home/pi/scripts/RPiMS/sensors.py &'
 
 exit 0
