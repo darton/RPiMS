@@ -49,18 +49,18 @@ sudo mv $installdir/index.php /var/www/html/
 
 echo 'zabbix ALL=(ALL) NOPASSWD: /home/pi/scripts/RPiMS/redis-get.py' | sudo EDITOR='tee -a' visudo
 
-sudo mv zabbix-rpims.conf /etc/zabbix/zabbix_agentd.conf.d/zabbix-rpims.conf
+sudo mv $installdir/zabbix-rpims.conf /etc/zabbix/zabbix_agentd.conf.d/zabbix-rpims.conf
 
 sudo systemctl restart zabbix-agent.service
 
-sudo mv motd /etc/update-motd.d/20-rpims
+sudo mv $installdir/motd /etc/update-motd.d/20-rpims
 
-sudo cat rc.local > /etc/rc.local
+sudo cat $installdir/rc.local > /etc/rc.local
 
 echo "# Add the sensors.py as cron jobs
 
 * * * * * pi $installdir/ADHT.py  > /dev/null 2>&1
-" > /etc/cron.d/rpims
+" |sudo tee /etc/cron.d/rpims
 
 
 
