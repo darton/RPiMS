@@ -69,8 +69,6 @@ def program_remote_control():
         verbose = "no"
     return verbose
 
-# --- Funcions ---
-
 def door_action_closed(door_id):
     verbose = program_remote_control()
     if verbose is 'yes' :
