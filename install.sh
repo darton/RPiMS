@@ -59,7 +59,7 @@ sudo cat rc.local > /etc/rc.local
 
 echo "# Add the sensors.py as cron jobs
 
-*/2 * * * * pi $installdir/sensors.py  > /dev/null 2>&1
+*/2 * * * * pi $installdir/ADHT.py  > /dev/null 2>&1
 " > /etc/cron.d/rpims
 
 
