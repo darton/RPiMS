@@ -75,12 +75,12 @@ dtoverlay=i2c-rtc,ds3231
 Reboot to take effect. About Device Tree, see: `cat /boot/overlay/README` 
 
 ```
-sudo shutdown -r now
+sudo reboot
 ```
 
 3. Read the Hardware Clock. 
 ```
-sudo hwclock –-show
+sudo hwclock –r
 ```
 Read the system time: 
 ```
