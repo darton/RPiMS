@@ -25,6 +25,8 @@ sudo systemctl start redis-server.service
 
 echo "cgi.fix_pathinfo=0" |sudo tee -a /etc/php/7.0/fpm/php.ini
 
+sudo rm /var/www/html/index.html
+
 sudo a2enmod proxy_fcgi setenvif
 
 sudo a2enconf php7.0-fpm
