@@ -3,7 +3,7 @@
 installdir=/home/pi/scripts/RPiMS
 
 [[ -d $installdir ]] || mkdir -p $installdir
-[[ -d /home/pi/video ]] || mkdir -p /home/pi/video
+[[ -d /home/pi/Videos ]] || mkdir -p /home/pi/Videos
 
 for file in ADHT.py sensors.py redis-get.py redis-get-logdata.py stream.sh videorecorder.sh zabbix_sender.sh zabbix-rpims.conf README.md index.php; do
 
@@ -50,5 +50,7 @@ sudo mv $installdir/index.php /var/www/html/
 echo 'zabbix ALL=(ALL) NOPASSWD: /home/pi/scripts/RPiMS/redis-get.py' | sudo EDITOR='tee -a' visudo
 
 sudo mv zabbix-rpims.conf /etc/zabbix/zabbix_agentd.conf.d/zabbix-rpims.conf
+
+sudo systemctl restart zabbix-agent.service
 
 sudo mv motd /etc/update-motd.d/20-rpims
