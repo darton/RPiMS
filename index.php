@@ -19,7 +19,7 @@
     $sensor3 = $redis->get('door_sensor_3');
     $sensor4 = $redis->get('door_sensor_4');
 
-    print "<p>Lokalizacja: " . $location ."</p>";
+    print "<p>Location: " . $location ."</p>";
     print "<p>Hostname: " . $hostname ."</p><br>";
 
     print "<p style='color:blue;'>Temperature: " . number_format($temperature,1) ." °C</p>";
