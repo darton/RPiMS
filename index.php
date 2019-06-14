@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html>
+<head>
+<title>RPiMS</title>
 <meta http-equiv="refresh" content="30"/>
+</head>
 <body>
-
 <?php
     $hostname = gethostname();
     
@@ -29,6 +31,5 @@
     print "<p style='color:red;'>Door4: " . $door4 ."</p>";
 
 ?>
-
 </body>
 </html>
