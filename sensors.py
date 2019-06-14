@@ -99,20 +99,20 @@ def door_status_close(door_id):
         subprocess.call("/home/pi/scripts/RPiMS/stream.sh start", shell=True)
 
 def motion_sensor_movement(pir_id):
-    #print("The " + str(pir_id) + ": movement was detected!")
+    print("The " + str(pir_id) + ": movement was detected!")
     redis_db.set(str(pir_id), 'movement')
-#    zabbix_sender_cmd ='/home/pi/scripts/RPiMS/zabbix_sender.sh info_when_door_is_closed' + " " + str(door_id)
-#    subprocess.call(zabbix_sender_cmd, shell=True)
-    #if picamera is 'yes':
-    #    subprocess.call("/home/pi/scripts/RPiMS/stream.sh start", shell=True)
+    zabbix_sender_cmd ='/home/pi/scripts/RPiMS/zabbix_sender.sh info_when_motion' + " " + str(pir_id)
+    subprocess.call(zabbix_sender_cmd, shell=True)
+    if picamera is 'yes':
+        subprocess.call("/home/pi/scripts/RPiMS/stream.sh start", shell=True)
 
 def motion_sensor_nomovement(pir_id):
-    #print("The " + str(pir_id) + ": no movement detected!")
+    print("The " + str(pir_id) + ": no movement detected!")
     redis_db.set(str(pir_id), 'nomovement')
-#    zabbix_sender_cmd ='/home/pi/scripts/RPiMS/zabbix_sender.sh info_when_door_is_closed' + " " + str(door_id)
-#    subprocess.call(zabbix_sender_cmd, shell=True)
-    #if picamera is 'yes':
-     #   subprocess.call("/home/pi/scripts/RPiMS/stream.sh start", shell=True)
+    zabbix_sender_cmd ='/home/pi/scripts/RPiMS/zabbix_sender.sh info_when_no_motion' + " " + str(pir_id)
+    subprocess.call(zabbix_sender_cmd, shell=True)
+    if picamera is 'yes':
+        subprocess.call("/home/pi/scripts/RPiMS/stream.sh start", shell=True)
 
 def sensors_read_once():
     for s in active_sensor_list:
@@ -142,7 +142,7 @@ sensor3.when_released = lambda : door_action_opened("door_sensor_3")
 sensor4.when_pressed = lambda : door_action_closed("door_sensor_4")
 sensor4.when_released = lambda : door_action_opened("door_sensor_4")
 
-pir.when_motion = lambda : motion_sensor_movement("pir")
-pir.when_no_motion = lambda : motion_sensor_nomovement("pir")
+pir.when_motion = lambda : motion_sensor_movement("pir_id")
+pir.when_no_motion = lambda :  motion_sensor_nomovement("pir_id")
 
 pause()
