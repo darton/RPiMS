@@ -62,7 +62,6 @@ redis_db.set("verbose", '0')
 # --- Funcions ---
 
 def program_remote_control():
-    redis_db = redis.StrictRedis(host="localhost", port=6379, db=0, charset="utf-8", decode_responses=True)
     aaa = redis_db.get('verbose')
     if aaa is '1' :
         verbose = "yes"
