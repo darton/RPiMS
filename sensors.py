@@ -57,15 +57,29 @@ active_sensor_list = {
 
 redis_db = redis.StrictRedis(host="localhost", port=6379, db=0, charset="utf-8", decode_responses=True)
 redis_db.set("Location", 'My Home')
+redis_db.set("verbose", '0')
 
+# --- Funcions ---
+
+def program_remote_control():
+    redis_db = redis.StrictRedis(host="localhost", port=6379, db=0, charset="utf-8", decode_responses=True)
+    aaa = redis_db.get('verbose')
+    if aaa is '1' :
+        verbose = "yes"
+    if aaa is '0' :
+        verbose = "no"
+    return verbose
 
 # --- Funcions ---
 
 def door_action_closed(door_id):
+    verbose = program_remote_control()
     if verbose is 'yes' :
         print("The " + str(door_id) + " has been closed!")
+
     redis_db.set(str(door_id), 'closed')
     led.source = any_values(sensor1.values, sensor2.values, sensor3.values, sensor4.values )
+
     if zabbix_sender is 'yes' :
         zabbix_sender_cmd ='/home/pi/scripts/RPiMS/zabbix_sender.sh info_when_door_has_been_closed' + " " + str(door_id)
         subprocess.call(zabbix_sender_cmd, shell=True)
@@ -79,6 +93,7 @@ def door_action_closed(door_id):
         subprocess.call("/home/pi/scripts/RPiMS/stream.sh start", shell=True)
 
 def door_action_opened(door_id):
+    verbose = program_remote_control()
     if verbose is 'yes' :
         print("The " + str(door_id) + " has been opened!")
     redis_db.set(str(door_id), 'opened')
@@ -96,6 +111,7 @@ def door_action_opened(door_id):
         sleep(1)
 
 def door_status_open(door_id):
+    verbose = program_remote_control()
     if verbose is 'yes' :
         print("The " + str(door_id) + " is opened!")
     redis_db.set(str(door_id), 'open')
@@ -107,6 +123,7 @@ def door_status_open(door_id):
         subprocess.call("/home/pi/scripts/RPiMS/stream.sh start", shell=True)
 
 def door_status_close(door_id):
+    verbose = program_remote_control()
     if verbose is 'yes' :
         print("The " + str(door_id) + " is closed!")
     redis_db.set(str(door_id), 'close')
@@ -118,6 +135,7 @@ def door_status_close(door_id):
         subprocess.call("/home/pi/scripts/RPiMS/stream.sh start", shell=True)
 
 def motion_sensor_movement(pir_id):
+    verbose = program_remote_control()
     if verbose is 'yes' :
         print("The " + str(pir_id) + ": movement was detected!")
     redis_db.set(str(pir_id), 'movement')
@@ -128,6 +146,7 @@ def motion_sensor_movement(pir_id):
         subprocess.call("/home/pi/scripts/RPiMS/stream.sh start", shell=True)
 
 def motion_sensor_nomovement(pir_id):
+    verbose = program_remote_control()
     if verbose is 'yes' :
         print("The " + str(pir_id) + ": no movement detected!")
     redis_db.set(str(pir_id), 'nomovement')
