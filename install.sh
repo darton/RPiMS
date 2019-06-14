@@ -11,10 +11,7 @@ for file in ADHT.py sensors.py redis-get.py redis-get-logdata.py stream.sh video
 
 done
 
-
-cd $installdir
-
-chmod u+x *.py *.sh
+chmod u+x $installdir/*.py $installdir/*.sh
 
 sudo apt-get -y install git-core python3-gpiozero python3-pip build-essential python-dev python3-numpy redis-server php php-fpm php-redis zabbix-agent
 
@@ -57,6 +54,8 @@ sudo cat $installdir/zabbix-rpims.conf |sudo tee /etc/zabbix/zabbix_agentd.conf.
 sudo systemctl restart zabbix-agent.service
 
 sudo cat $installdir/motd |sudo tee /etc/update-motd.d/20-rpims
+
+sudo chmod ugo+x  /etc/update-motd.d/20-rpims
 
 sudo cat $installdir/rc.local |sudo tee /etc/rc.local
 
