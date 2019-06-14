@@ -30,10 +30,10 @@ led = LED(14)
 pir = MotionSensor(27)
 
 # Door sensors inputs (store the ref of functions in variable)
-sensor1 = Button(22,bounce_time=0.05)
-sensor2 = Button(23,bounce_time=0.05)
-sensor3 = Button(24,bounce_time=0.05)
-sensor4 = Button(25,bounce_time=0.05)
+sensor1 = Button(22)
+sensor2 = Button(23)
+sensor3 = Button(24)
+sensor4 = Button(25)
 
 active_sensor_list = {
     "door_sensor_1": sensor1,
