@@ -5,7 +5,7 @@ installdir=/home/pi/scripts/RPiMS
 [[ -d $installdir ]] || mkdir -p $installdir
 [[ -d /home/pi/Videos ]] || mkdir -p /home/pi/Videos
 
-for file in ADHT.py sensors.py redis-get.py redis-get-logdata.py stream.sh videorecorder.sh zabbix_sender.sh zabbix-rpims.conf README.md index.php; do
+for file in ADHT.py sensors.py redis-get.py redis-get-logdata.py stream.sh videorecorder.sh zabbix_sender.sh zabbix-rpims.conf README.md index.php rc.local; do
 
    curl -sS https://raw.githubusercontent.com/darton/RPiMS/master/$file > $installdir/$file
 
@@ -54,3 +54,6 @@ sudo mv zabbix-rpims.conf /etc/zabbix/zabbix_agentd.conf.d/zabbix-rpims.conf
 sudo systemctl restart zabbix-agent.service
 
 sudo mv motd /etc/update-motd.d/20-rpims
+
+sudo cat rc.local > /etc/rc.local
+
