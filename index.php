@@ -25,11 +25,10 @@
     print "<p style='color:blue;'>Temperature: " . number_format($temperature,1) ." °C</p>";
     print "<p style='color:blue;'>Humidity: " . number_format($humidity,1) ." %</p><br>";
 
-    print "<p style='color:red;'>Door1: " . $door1 ."</p>";
-    print "<p style='color:red;'>Door2: " . $door2 ."</p>";
-    print "<p style='color:red;'>Door3: " . $door3 ."</p>";
-    print "<p style='color:red;'>Door4: " . $door4 ."</p>";
-
+    print "<p style='color:red;'>Door 1 : " . $sensor1 ."</p>";
+    print "<p style='color:red;'>Door 2 : " . $sensor2 ."</p>";
+    print "<p style='color:red;'>Door 3 : " . $sensor3 ."</p>";
+    print "<p style='color:red;'>Door 4 : " . $sensor4 ."</p>";
 ?>
 </body>
 </html>
