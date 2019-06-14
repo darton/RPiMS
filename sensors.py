@@ -99,20 +99,20 @@ def door_status_close(door_id):
         subprocess.call("/home/pi/scripts/RPiMS/stream.sh start", shell=True)
 
 def motion_sensor_movement(pir_id):
-    print("The " + str(pir_id) + ": movement was detected!")
+    #print("The " + str(pir_id) + ": movement was detected!")
     redis_db.set(str(pir_id), 'movement')
 #    zabbix_sender_cmd ='/home/pi/scripts/RPiMS/zabbix_sender.sh info_when_door_is_closed' + " " + str(door_id)
 #    subprocess.call(zabbix_sender_cmd, shell=True)
-    if picamera is 'yes':
-        subprocess.call("/home/pi/scripts/RPiMS/stream.sh start", shell=True)
+    #if picamera is 'yes':
+    #    subprocess.call("/home/pi/scripts/RPiMS/stream.sh start", shell=True)
 
 def motion_sensor_nomovement(pir_id):
-    print("The " + str(pir_id) + ": no movement detected!")
+    #print("The " + str(pir_id) + ": no movement detected!")
     redis_db.set(str(pir_id), 'nomovement')
 #    zabbix_sender_cmd ='/home/pi/scripts/RPiMS/zabbix_sender.sh info_when_door_is_closed' + " " + str(door_id)
 #    subprocess.call(zabbix_sender_cmd, shell=True)
-    if picamera is 'yes':
-        subprocess.call("/home/pi/scripts/RPiMS/stream.sh start", shell=True)
+    #if picamera is 'yes':
+     #   subprocess.call("/home/pi/scripts/RPiMS/stream.sh start", shell=True)
 
 def sensors_read_once():
     for s in active_sensor_list:
