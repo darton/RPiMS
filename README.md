@@ -24,7 +24,7 @@ sudo apt-get update
 
 sudo apt-get upgrade
 
-curl -sS https://raw.githubusercontent.com/darton/RPiMS/master/install.sh |bash
+sudo curl -sS https://raw.githubusercontent.com/darton/RPiMS/master/install.sh |bash
 
 ```
 
