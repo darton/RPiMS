@@ -66,5 +66,6 @@ echo "# Add the sensors.py as cron jobs
 * * * * * pi $installdir/ADHT.py  > /dev/null 2>&1
 " |sudo tee /etc/cron.d/rpims
 
+sudo su - pi -c '/home/pi/scripts/RPiMS/sensors.py &'
 
 
