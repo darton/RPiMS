@@ -20,8 +20,8 @@ from time import sleep
 import subprocess
 import redis
 
-#debug: 0 - disable, 1 - enable
-debug_level = 1
+#verbose mode: yes/no
+verbose = "yes"
 
 #use zabbix_sender: yues/no
 zabbix_sender = "no"
@@ -29,11 +29,11 @@ zabbix_sender = "no"
 # picamera yes/no
 use_picamera = "no"
 
-#use motion sensor yes/no
-use_motion_sensor = "no"
-
 #use door sensor yes/no
-use_door_sensor = "no"
+use_door_sensor = "yes"
+
+#use motion sensor
+use_motion_sensor = "no"
 
 # Led Lamp on GPIO 14
 led = LED(14)
@@ -56,14 +56,14 @@ active_sensor_list = {
 
 
 redis_db = redis.StrictRedis(host="localhost", port=6379, db=0, charset="utf-8", decode_responses=True)
-
 redis_db.set("Location", 'My Home')
 
 
 # --- Funcions ---
 
 def door_action_closed(door_id):
-    if debug_level > 0 :  print("The " + str(door_id) + " has been closed!")
+    if verbose is 'yes' :
+        print("The " + str(door_id) + " has been closed!")
     redis_db.set(str(door_id), 'closed')
     led.source = any_values(sensor1.values, sensor2.values, sensor3.values, sensor4.values )
     if zabbix_sender is 'yes' :
@@ -79,7 +79,8 @@ def door_action_closed(door_id):
         subprocess.call("/home/pi/scripts/RPiMS/stream.sh start", shell=True)
 
 def door_action_opened(door_id):
-    if debug_level > 0 : print("The " + str(door_id) + " has been opened!")
+    if verbose is 'yes' :
+        print("The " + str(door_id) + " has been opened!")
     redis_db.set(str(door_id), 'opened')
     led.source = any_values(sensor1.values, sensor2.values, sensor3.values, sensor4.values )
     if zabbix_sender is 'yes' :
@@ -95,7 +96,8 @@ def door_action_opened(door_id):
         sleep(1)
 
 def door_status_open(door_id):
-    if debug_level > 0 : print("The " + str(door_id) + " is opened!")
+    if verbose is 'yes' :
+        print("The " + str(door_id) + " is opened!")
     redis_db.set(str(door_id), 'open')
     led.source = any_values(sensor1.values, sensor2.values, sensor3.values, sensor4.values )
     if zabbix_sender is 'yes' :
@@ -105,7 +107,8 @@ def door_status_open(door_id):
         subprocess.call("/home/pi/scripts/RPiMS/stream.sh start", shell=True)
 
 def door_status_close(door_id):
-    if debug_level > 0 : print("The " + str(door_id) + " is closed!")
+    if verbose is 'yes' :
+        print("The " + str(door_id) + " is closed!")
     redis_db.set(str(door_id), 'close')
     led.source = any_values(sensor1.values, sensor2.values, sensor3.values, sensor4.values )
     if zabbix_sender is 'yes' :
@@ -115,7 +118,8 @@ def door_status_close(door_id):
         subprocess.call("/home/pi/scripts/RPiMS/stream.sh start", shell=True)
 
 def motion_sensor_movement(pir_id):
-    if debug_level > 0 : print("The " + str(pir_id) + ": movement was detected!")
+    if verbose is 'yes' :
+        print("The " + str(pir_id) + ": movement was detected!")
     redis_db.set(str(pir_id), 'movement')
     if zabbix_sender is 'yes' :
         zabbix_sender_cmd ='/home/pi/scripts/RPiMS/zabbix_sender.sh info_when_motion' + " " + str(pir_id)
@@ -124,7 +128,8 @@ def motion_sensor_movement(pir_id):
         subprocess.call("/home/pi/scripts/RPiMS/stream.sh start", shell=True)
 
 def motion_sensor_nomovement(pir_id):
-    if debug_level > 0 : print("The " + str(pir_id) + ": no movement detected!")
+    if verbose is 'yes' :
+        print("The " + str(pir_id) + ": no movement detected!")
     redis_db.set(str(pir_id), 'nomovement')
     if zabbix_sender is 'yes' :
         zabbix_sender_cmd ='/home/pi/scripts/RPiMS/zabbix_sender.sh info_when_no_motion' + " " + str(pir_id)
@@ -148,7 +153,7 @@ sensors_read_once()
 #        active_sensor_list[s].when_pressed = lambda : door_action_closed(s)
 #        active_sensor_list[s].when_released = lambda : door_action_opened(s)
 
-if use_door_sensor is "yes":
+if use_door_sensor is 'yes' :
     sensor1.when_pressed = lambda : door_action_closed("door_sensor_1")
     sensor1.when_released = lambda : door_action_opened("door_sensor_1")
 
@@ -161,7 +166,7 @@ if use_door_sensor is "yes":
     sensor4.when_pressed = lambda : door_action_closed("door_sensor_4")
     sensor4.when_released = lambda : door_action_opened("door_sensor_4")
 
-if use_motion_sensor is "yes":
+if use_motion_sensor is 'yes' :
     pir.when_motion = lambda : motion_sensor_movement("pir_id")
     pir.when_no_motion = lambda :  motion_sensor_nomovement("pir_id")
 
