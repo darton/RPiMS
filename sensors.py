@@ -89,13 +89,28 @@ def door_status_open(door_id):
     if picamera is 'yes':
         subprocess.call("/home/pi/scripts/RPiMS/stream.sh start", shell=True)
 
-
 def door_status_close(door_id):
     print("The " + str(door_id) + " is closed!")
     redis_db.set(str(door_id), 'close')
     led.source = any_values(sensor1.values, sensor2.values, sensor3.values, sensor4.values )
     zabbix_sender_cmd ='/home/pi/scripts/RPiMS/zabbix_sender.sh info_when_door_is_closed' + " " + str(door_id)
     subprocess.call(zabbix_sender_cmd, shell=True)
+    if picamera is 'yes':
+        subprocess.call("/home/pi/scripts/RPiMS/stream.sh start", shell=True)
+
+def motion_sensor_movement(sensor_id):
+    print("The " + str(sensor_id) + ": movement was detected!")
+    redis_db.set(str(sensor_id), 'movement')
+#    zabbix_sender_cmd ='/home/pi/scripts/RPiMS/zabbix_sender.sh info_when_door_is_closed' + " " + str(door_id)
+#    subprocess.call(zabbix_sender_cmd, shell=True)
+    if picamera is 'yes':
+        subprocess.call("/home/pi/scripts/RPiMS/stream.sh start", shell=True)
+
+def motion_sensor_nomovement(sensor_id):
+    print("The " + str(sensor_id) + ": no movement was detected!")
+    redis_db.set(str(sensor_id), 'nomovement')
+#    zabbix_sender_cmd ='/home/pi/scripts/RPiMS/zabbix_sender.sh info_when_door_is_closed' + " " + str(door_id)
+#    subprocess.call(zabbix_sender_cmd, shell=True)
     if picamera is 'yes':
         subprocess.call("/home/pi/scripts/RPiMS/stream.sh start", shell=True)
 
@@ -127,7 +142,7 @@ sensor3.when_released = lambda : door_action_opened("sensor3")
 sensor4.when_pressed = lambda : door_action_closed("sensor4")
 sensor4.when_released = lambda : door_action_opened("sensor4")
 
-pir.when_motion = lambda : print("motion yes")
-pir.when_no_motion = lambda : print("motion no")
+pir.when_motion = lambda : motion_sensor_movement("pir")
+pir.when_no_motion = lambda : motion_sensor_nomovement("pir")
 
 pause()
