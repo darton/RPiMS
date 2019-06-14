@@ -20,6 +20,9 @@ from time import sleep
 import subprocess
 import redis
 
+#Localization
+location = "My Home"
+
 #verbose mode: yes/no
 verbose = "yes"
 
@@ -56,8 +59,33 @@ active_sensor_list = {
 
 
 redis_db = redis.StrictRedis(host="localhost", port=6379, db=0, charset="utf-8", decode_responses=True)
-redis_db.set("Location", 'My Home')
-redis_db.set("verbose", '0')
+redis_db.set("Location", location)
+
+if verbose is "yes" :
+    redis_db.set("verbose", '1')
+else:
+    redis_db.set("verbose", '0')
+
+if zabbix_sender is "yes" :
+    redis_db.set("zabbix_sender", '1')
+else:
+    redis_db.set("zabbix_sender", '0')
+
+if use_picamera is "yes" :
+    redis_db.set("use_picamera", '1')
+else:
+    redis_db.set("use_picamera", '0')
+
+if use_door_sensor is "yes" :
+    redis_db.set("use_door_sensor", '1')
+else:
+    redis_db.set("use_door_sensor", '0')
+
+if use_motion_sensor is "yes" :
+    redis_db.set("use_motion_sensor", '1')
+else:
+    redis_db.set("use_motion_sensor", '0')
+
 
 # --- Funcions ---
 
@@ -70,7 +98,7 @@ def program_remote_control():
     return verbose
 
 def door_action_closed(door_id):
-    verbose = program_remote_control()
+    verbose =  program_remote_control()
     if verbose is 'yes' :
         print("The " + str(door_id) + " has been closed!")
 
