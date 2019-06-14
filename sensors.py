@@ -130,17 +130,17 @@ sensors_read_once()
 #        active_sensor_list[s].when_pressed = lambda : door_action_closed(s)
 #        active_sensor_list[s].when_released = lambda : door_action_opened(s)
 
-sensor1.when_pressed = lambda : door_action_closed("sensor1")
-sensor1.when_released = lambda : door_action_opened("sensor1")
+sensor1.when_pressed = lambda : door_action_closed("door_sensor_1")
+sensor1.when_released = lambda : door_action_opened("door_sensor_1")
 
-sensor2.when_pressed = lambda : door_action_closed("sensor2")
-sensor2.when_released = lambda : door_action_opened("sensor2")
+sensor2.when_pressed = lambda : door_action_closed("door_sensor_2")
+sensor2.when_released = lambda : door_action_opened("door_sensor_2")
 
-sensor3.when_pressed = lambda : door_action_closed("sensor3")
-sensor3.when_released = lambda : door_action_opened("sensor3")
+sensor3.when_pressed = lambda : door_action_closed("door_sensor_3")
+sensor3.when_released = lambda : door_action_opened("door_sensor_3")
 
-sensor4.when_pressed = lambda : door_action_closed("sensor4")
-sensor4.when_released = lambda : door_action_opened("sensor4")
+sensor4.when_pressed = lambda : door_action_closed("door_sensor_4")
+sensor4.when_released = lambda : door_action_opened("door_sensor_4")
 
 pir.when_motion = lambda : motion_sensor_movement("pir")
 pir.when_no_motion = lambda : motion_sensor_nomovement("pir")
