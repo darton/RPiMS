@@ -13,6 +13,10 @@ done
 
 chmod u+x $installdir/*.py $installdir/*.sh
 
+sudo apt-get update
+
+sudo apt-get dist-upgrade
+
 sudo apt-get -y install git-core python3-gpiozero python3-pip build-essential python-dev python3-numpy redis-server php php-fpm php-redis zabbix-agent
 
 sudo python3 -m pip install --upgrade pip setuptools wheel
