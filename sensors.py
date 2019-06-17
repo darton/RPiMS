@@ -49,7 +49,8 @@ sensor3 = Button(24)
 sensor4 = Button(25)
 
 #Motion Sensor type inputs: PIR
-pir = MotionSensor(27)
+pir1 = MotionSensor(5)
+pir2 = MotionSensor(6)
 
 button_sensor_list = {
     "door_sensor_1": sensor1,
@@ -57,6 +58,12 @@ button_sensor_list = {
     "water_sensor_1": sensor3,
     "smoke_sensor_1" : sensor4
 }
+
+motion_sensor_list = {
+    "motion_sensor_1": sensor1,
+    "motion_sensor_2": sensor2
+}
+
 
 redis_db = redis.StrictRedis(host="localhost", port=6379, db=0, charset="utf-8", decode_responses=True)
 redis_db.set("Location", location)
@@ -199,7 +206,10 @@ if use_door_sensor is 'yes' :
             button_sensor_list[s].when_released = lambda s=s : door_action_opened(s)
 
 if use_motion_sensor is 'yes' :
-    pir.when_motion = lambda : motion_sensor_movement("pir_id")
-    pir.when_no_motion = lambda :  motion_sensor_nomovement("pir_id")
+    for s in motion_sensor_list:
+            motion_sensor_list[s].when_pressed = lambda s=s : motion_action_closed(s)
+            motion_sensor_list[s].when_released = lambda s=s : motion_action_opened(s)           
+#    pir.when_motion = lambda : motion_sensor_movement("pir_id")
+#    pir.when_no_motion = lambda :  motion_sensor_nomovement("pir_id")
 
 pause()
