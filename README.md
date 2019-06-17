@@ -170,19 +170,22 @@ Ground -> GND [pin 9] -> GND
 
 Ground - > GND
 
-BCM22 [pin 15] -> Input Sensor 1
+BCM22 [pin 15] -> Input Sensor 1 (Door/window sensor)
 
-BCM23 [pin 16] -> Input Sensor 2
+BCM23 [pin 16] -> Input Sensor 2 (Door/window sensor)
 
-BCM24 [pin 18] -> Input Sensor 3
+BCM24 [pin 18] -> Input Sensor 3 (Door/window sensor)
 
-BCM25 [pin 22] -> Input Sensor 4
+BCM25 [pin 22] -> Input Sensor 4 (Door/window sensor)
+
+BCM25 [pin 27] -> Input Sensor 5 (PIR sensor)
 
 
 ## B.o.M - Bill of Materials
 
 * DHT1/DHT22/AM2302 - 1 pcs
-* Door Sensor - 4 pcs
+* Door/window Sensor - 4 pcs
+* PIR Sensor - 1 pcs
 * PiCamera - 1 pcs
 * PiCamera Case - 1pcs
 * Power Adapter (5V/2.5A) - 1 pcs
