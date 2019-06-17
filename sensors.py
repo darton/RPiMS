@@ -44,7 +44,7 @@ led = LED(14)
 #Motion Sensor on GPIO 27
 pir = MotionSensor(27)
 
-# Door sensors inputs (store the ref of functions in variable)
+# Door/wall sensors inputs (store the ref of functions in variable)
 sensor1 = Button(22)
 sensor2 = Button(23)
 sensor3 = Button(24)
