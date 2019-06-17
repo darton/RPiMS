@@ -20,10 +20,6 @@ If you're not using Etcher, you'll need to unzip .zip downloads to get the image
 
 ### Run installation script
 ```
-sudo apt-get update
-
-sudo apt-get upgrade
-
 sudo curl -sS https://raw.githubusercontent.com/darton/RPiMS/master/install.sh |bash
 
 ```
