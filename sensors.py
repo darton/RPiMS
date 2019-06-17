@@ -198,18 +198,6 @@ if use_door_sensor is 'yes' :
             button_sensor_list[s].when_pressed = lambda s=s : door_action_closed(s)
             button_sensor_list[s].when_released = lambda s=s : door_action_opened(s)
 
-    #sensor1.when_pressed = lambda : door_action_closed("door_sensor_1")
-    #sensor1.when_released = lambda : door_action_opened("door_sensor_1")
-
-    #sensor2.when_pressed = lambda : door_action_closed("door_sensor_2")
-    #sensor2.when_released = lambda : door_action_opened("door_sensor_2")
-
-    #sensor3.when_pressed = lambda : door_action_closed("door_sensor_3")
-    #sensor3.when_released = lambda : door_action_opened("door_sensor_3")
-
-    #sensor4.when_pressed = lambda : door_action_closed("door_sensor_4")
-    #sensor4.when_released = lambda : door_action_opened("door_sensor_4")
-
 if use_motion_sensor is 'yes' :
     pir.when_motion = lambda : motion_sensor_movement("pir_id")
     pir.when_no_motion = lambda :  motion_sensor_nomovement("pir_id")
