@@ -15,5 +15,7 @@ $(tput sgr0)"
 
 SENSOR_1=$(/home/pi/scripts/RPiMS/redis-get.py)
 CPU_TEMP=$(vcgencmd measure_temp)
+HOST_IP=$(ip -4 addr show eth0 | grep -oP '(?<=inet\s)\d+(\.\d+){3}')
+echo "IP: $HOST_IP"
 echo "Room: $SENSOR_1"
 echo "CPU $CPU_TEMP"
