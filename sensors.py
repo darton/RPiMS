@@ -48,9 +48,9 @@ sensor2 = Button(23)
 sensor3 = Button(24)
 sensor4 = Button(25)
 
-#Motion Sensor type inputs: PIR
-pir1 = MotionSensor(5)
-pir2 = MotionSensor(6)
+#Motion Sensor inputs: (type PIR)
+Motion_Sensor_1 = MotionSensor(5)
+Motion_Sensor_2 = MotionSensor(6)
 
 button_sensor_list = {
     "door_sensor_1": sensor1,
@@ -60,8 +60,8 @@ button_sensor_list = {
 }
 
 motion_sensor_list = {
-    "motion_sensor_1": sensor1,
-    "motion_sensor_2": sensor2
+    "Motion_Sensor_1": Motion_Sensor_1,
+    "Motion_Sensor_2": Motion_Sensor_2
 }
 
 
@@ -180,7 +180,7 @@ def motion_sensor_movement(pir_id):
 def motion_sensor_nomovement(pir_id):
     verbose = program_remote_control()
     if verbose is 'yes' :
-        print("The " + str(pir_id) + ": no movement detected!")
+        print("The " + str(pir_id) + ": no movement detected")
     redis_db.set(str(pir_id), 'nomovement')
     if zabbix_sender is 'yes' :
         zabbix_sender_cmd ='/home/pi/scripts/RPiMS/zabbix_sender.sh info_when_no_motion' + " " + str(pir_id)
