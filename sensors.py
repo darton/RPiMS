@@ -55,9 +55,8 @@ button_sensor_list = {
     "door_sensor_1": sensor1,
     "door_sensor_2": sensor2,
     "door_sensor_3": sensor3,
-    "smoke_alarm" : sensor4, 
+    "smoke_sensor_1" : sensor4
 }
-
 
 redis_db = redis.StrictRedis(host="localhost", port=6379, db=0, charset="utf-8", decode_responses=True)
 redis_db.set("Location", location)
@@ -195,21 +194,21 @@ sensors_read_once()
 # --- Main program ---
 
 if use_door_sensor is 'yes' :
-    #for s in button_sensor_list:
-    #        button_sensor_list[s].when_pressed = lambda s=s : door_action_closed(s)
-    #        button_sensor_list[s].when_released = lambda s=s : door_action_opened(s)
+    for s in button_sensor_list:
+            button_sensor_list[s].when_pressed = lambda s=s : door_action_closed(s)
+            button_sensor_list[s].when_released = lambda s=s : door_action_opened(s)
 
-    sensor1.when_pressed = lambda : door_action_closed("door_sensor_1")
-    sensor1.when_released = lambda : door_action_opened("door_sensor_1")
+    #sensor1.when_pressed = lambda : door_action_closed("door_sensor_1")
+    #sensor1.when_released = lambda : door_action_opened("door_sensor_1")
 
-    sensor2.when_pressed = lambda : door_action_closed("door_sensor_2")
-    sensor2.when_released = lambda : door_action_opened("door_sensor_2")
+    #sensor2.when_pressed = lambda : door_action_closed("door_sensor_2")
+    #sensor2.when_released = lambda : door_action_opened("door_sensor_2")
 
-    sensor3.when_pressed = lambda : door_action_closed("door_sensor_3")
-    sensor3.when_released = lambda : door_action_opened("door_sensor_3")
+    #sensor3.when_pressed = lambda : door_action_closed("door_sensor_3")
+    #sensor3.when_released = lambda : door_action_opened("door_sensor_3")
 
-    sensor4.when_pressed = lambda : door_action_closed("door_sensor_4")
-    sensor4.when_released = lambda : door_action_opened("door_sensor_4")
+    #sensor4.when_pressed = lambda : door_action_closed("door_sensor_4")
+    #sensor4.when_released = lambda : door_action_opened("door_sensor_4")
 
 if use_motion_sensor is 'yes' :
     pir.when_motion = lambda : motion_sensor_movement("pir_id")
