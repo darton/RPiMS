@@ -40,15 +40,14 @@ Server=127.0.0.1, zabbix.example.com
 ServerActive=zabbix.example.com
 ```
 
-## Setup if you have PiCamera
+## Install if you have PiCamera
 
 ```
 sudo apt-get install -y vlc libav-tools python-picamera omxplayer gpac fbi
 
 ```
 
-
-## Setup if you have RTC (DS3231 I2C)
+## Configure if you have RTC (DS3231 I2C)
 
 1. I2C interface should be enabled. 
 
