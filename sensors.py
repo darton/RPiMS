@@ -41,14 +41,14 @@ use_motion_sensor = "no"
 # Led Lamp on GPIO 14
 led = LED(14)
 
-#Sensors inputs: Door/Window, Smoke Alarm, CO Alarm, CO2 Alarm, Heat Alarm, Water Alarm sensors inputs (store the ref of functions in variable)
+#Button type sensors inputs: Door/Window, Smoke Alarm, CO Alarm, CO2 Alarm, Heat Alarm, Water Alarm sensors inputs (store the ref of functions in variable)
 
 sensor1 = Button(22)
 sensor2 = Button(23)
 sensor3 = Button(24)
 sensor4 = Button(25)
 
-#Motion Sensor on GPIO 27
+#Motion Sensor type inputs: PIR
 pir = MotionSensor(27)
 
 button_sensor_list = {
