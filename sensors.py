@@ -49,8 +49,8 @@ sensor3 = Button(24)
 sensor4 = Button(25)
 
 #Motion Sensor inputs: (type PIR)
-Motion_Sensor_1 = MotionSensor(5)
-Motion_Sensor_2 = MotionSensor(6)
+MotionSensor_1 = MotionSensor(5)
+MotionSensor_2 = MotionSensor(6)
 
 button_sensor_list = {
     "door_sensor_1": sensor1,
@@ -60,8 +60,8 @@ button_sensor_list = {
 }
 
 motion_sensor_list = {
-    "Motion_Sensor_1": Motion_Sensor_1,
-    "Motion_Sensor_2": Motion_Sensor_2
+    "MotionSensor_1": MotionSensor_1,
+    "MotionSensor_2": MotionSensor_2
 }
 
 
