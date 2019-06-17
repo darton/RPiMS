@@ -27,7 +27,7 @@ location = "My Home"
 verbose = "yes"
 
 #use zabbix_sender: yes/no
-zabbix_sender = "no"
+zabbix_sender = "yes"
 
 #use picamera: yes/no
 use_picamera = "no"
@@ -36,7 +36,7 @@ use_picamera = "no"
 use_door_sensor = "yes"
 
 #use motion sensor: yes/no
-use_motion_sensor = "no"
+use_motion_sensor = "yes"
 
 # Led Lamp on GPIO 14
 led = LED(14)
@@ -48,8 +48,8 @@ sensor2 = Button(23)
 sensor3 = Button(24)
 sensor4 = Button(25)
 
-#Motion Sensor inputs: (type PIR)
-MotionSensor_1 = MotionSensor(5)
+#Motion Sensor inputs:
+MotionSensor_1 = MotionSensor(27)
 MotionSensor_2 = MotionSensor(6)
 
 button_sensor_list = {
@@ -166,27 +166,28 @@ def door_status_close(door_id):
     if use_picamera is 'yes':
         subprocess.call("/home/pi/scripts/RPiMS/stream.sh start", shell=True)
 
-def motion_sensor_movement(pir_id):
+def motion_sensor_when_motion(ms_id):
     verbose = program_remote_control()
     if verbose is 'yes' :
-        print("The " + str(pir_id) + ": movement was detected!")
-    redis_db.set(str(pir_id), 'movement')
+        print("The " + str(ms_id) + ": motion was detected")
+    redis_db.set(str(ms_id), 'motion')
     if zabbix_sender is 'yes' :
-        zabbix_sender_cmd ='/home/pi/scripts/RPiMS/zabbix_sender.sh info_when_motion' + " " + str(pir_id)
+        zabbix_sender_cmd ='/home/pi/scripts/RPiMS/zabbix_sender.sh info_when_motion' + " " + str(ms_id)
         subprocess.call(zabbix_sender_cmd, shell=True)
     if use_picamera is 'yes':
         subprocess.call("/home/pi/scripts/RPiMS/stream.sh start", shell=True)
 
-def motion_sensor_nomovement(pir_id):
+def motion_sensor_when_no_motion(ms_id):
     verbose = program_remote_control()
     if verbose is 'yes' :
-        print("The " + str(pir_id) + ": no movement detected")
-    redis_db.set(str(pir_id), 'nomovement')
+        print("The " + str(ms_id) + ": no motion")
+    redis_db.set(str(ms_id), 'nomotion')
     if zabbix_sender is 'yes' :
-        zabbix_sender_cmd ='/home/pi/scripts/RPiMS/zabbix_sender.sh info_when_no_motion' + " " + str(pir_id)
+        zabbix_sender_cmd ='/home/pi/scripts/RPiMS/zabbix_sender.sh info_when_no_motion' + " " + str(ms_id)
         subprocess.call(zabbix_sender_cmd, shell=True)
     if use_picamera is 'yes':
         subprocess.call("/home/pi/scripts/RPiMS/stream.sh start", shell=True)
+
 
 def sensors_read_once():
     for s in button_sensor_list:
@@ -196,7 +197,9 @@ def sensors_read_once():
             door_status_close(s)
 
 # --- Read sensors when startup ---
+
 sensors_read_once()
+
 
 # --- Main program ---
 
@@ -207,7 +210,6 @@ if use_door_sensor is 'yes' :
 
 if use_motion_sensor is 'yes' :
     for s in motion_sensor_list:
-            motion_sensor_list[s].when_motion = lambda s=s : motion_sensor_movement(s)
-            motion_sensor_list[s].when_no_motion = lambda s=s : motion_sensor_nomovement(s)           
-
+            motion_sensor_list[s].when_motion = lambda s=s : motion_sensor_when_motion(s)
+            motion_sensor_list[s].when_no_motion = lambda s=s : motion_sensor_when_no_motion(s)
 pause()
