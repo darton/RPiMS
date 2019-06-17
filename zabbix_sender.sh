@@ -19,29 +19,29 @@ case "$1" in
     'info_when_door_is_opened')
         zabbix_sender -z $zabbix_server -p 10051 -s "$host_ip" -k trap -o "The $2 is opened"
     ;;
-    
+
     'info_when_door_is_closed')
         zabbix_sender -z $zabbix_server -p 10051 -s "$host_ip" -k trap -o "The $2 is closed"
     ;;
-    
+
     'info_when_door_has_been_opened')
         zabbix_sender -z $zabbix_server -p 10051 -s "$host_ip" -k trap -o "The $2 has been opened"
     ;;
-    
+
     'info_when_door_has_been_closed')
         zabbix_sender -z $zabbix_server -p 10051 -s "$host_ip" -k trap -o "The $2 has been closed"
     ;;
- 
-        'info_when_motion')
-        zabbix_sender -z $zabbix_server -p 10051 -s "$host_ip" -k trap -o "The $2 motion detected"
+
+    'info_when_motion')
+        zabbix_sender -z $zabbix_server -p 10051 -s "$host_ip" -k trap -o "The $2 motion was detected"
     ;;
 
-    'info_when_nomotion')
-        zabbix_sender -z $zabbix_server -p 10051 -s "$host_ip" -k trap -o "The $2 no motion detected"
+    'info_when_no_motion')
+        zabbix_sender -z $zabbix_server -p 10051 -s "$host_ip" -k trap -o "The $2 no motion"
     ;;
 
            *)
-        echo -e "\nUsage: zabbix_sender.sh info_when_door_is_opened|info_when_door_is_closed|info_when_door_has_been_opened|info_when_door_has_been_closed"
+        echo -e "\nUsage: zabbix_sender.sh info_when_door_is_opened|info_when_door_is_closed|info_when_door_has_been_opened|info_when_door_has_been_closed|info_when_motion|info_when_no_motion"
     ;;
 
 esac
