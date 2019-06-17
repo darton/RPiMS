@@ -54,7 +54,7 @@ pir = MotionSensor(27)
 button_sensor_list = {
     "door_sensor_1": sensor1,
     "door_sensor_2": sensor2,
-    "door_sensor_3": sensor3,
+    "water_sensor_1": sensor3,
     "smoke_sensor_1" : sensor4
 }
 
