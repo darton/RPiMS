@@ -51,12 +51,11 @@ sensor4 = Button(25)
 #Motion Sensor on GPIO 27
 pir = MotionSensor(27)
 
-active_sensor_list = {
+button_sensor_list = {
     "door_sensor_1": sensor1,
     "door_sensor_2": sensor2,
     "door_sensor_3": sensor3,
-    "smoke_alarm" : sensor4,
-    "motion_sensor": pir
+    "smoke_alarm" : sensor4, 
 }
 
 
@@ -184,8 +183,8 @@ def motion_sensor_nomovement(pir_id):
         subprocess.call("/home/pi/scripts/RPiMS/stream.sh start", shell=True)
 
 def sensors_read_once():
-    for s in active_sensor_list:
-        if active_sensor_list[s].value == 0:
+    for s in button_sensor_list:
+        if button_sensor_list[s].value == 0:
             door_status_open(s)
         else:
             door_status_close(s)
@@ -196,9 +195,9 @@ sensors_read_once()
 # --- Main program ---
 
 if use_door_sensor is 'yes' :
-    #for s in active_sensor_list:
-    #        active_sensor_list[s].when_pressed = lambda : door_action_closed(s)
-    #        active_sensor_list[s].when_released = lambda : door_action_opened(s)
+    #for s in button_sensor_list:
+    #        button_sensor_list[s].when_pressed = lambda s=s : door_action_closed(s)
+    #        button_sensor_list[s].when_released = lambda s=s : door_action_opened(s)
 
     sensor1.when_pressed = lambda : door_action_closed("door_sensor_1")
     sensor1.when_released = lambda : door_action_opened("door_sensor_1")
