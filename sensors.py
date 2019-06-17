@@ -207,9 +207,7 @@ if use_door_sensor is 'yes' :
 
 if use_motion_sensor is 'yes' :
     for s in motion_sensor_list:
-            motion_sensor_list[s].when_pressed = lambda s=s : motion_action_closed(s)
-            motion_sensor_list[s].when_released = lambda s=s : motion_action_opened(s)           
-#    pir.when_motion = lambda : motion_sensor_movement("pir_id")
-#    pir.when_no_motion = lambda :  motion_sensor_nomovement("pir_id")
+            motion_sensor_list[s].when_motion = lambda s=s : motion_sensor_movement(s)
+            motion_sensor_list[s].when_no_motion = lambda s=s : motion_sensor_nomovement(s)           
 
 pause()
