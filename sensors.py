@@ -195,11 +195,11 @@ sensors_read_once()
 
 # --- Main program ---
 
-#for s in active_sensor_list:
-#        active_sensor_list[s].when_pressed = lambda : door_action_closed(s)
-#        active_sensor_list[s].when_released = lambda : door_action_opened(s)
-
 if use_door_sensor is 'yes' :
+    #for s in active_sensor_list:
+    #        active_sensor_list[s].when_pressed = lambda : door_action_closed(s)
+    #        active_sensor_list[s].when_released = lambda : door_action_opened(s)
+
     sensor1.when_pressed = lambda : door_action_closed("door_sensor_1")
     sensor1.when_released = lambda : door_action_opened("door_sensor_1")
 
