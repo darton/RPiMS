@@ -1,9 +1,9 @@
 #!/bin/bash
 
 export TERM=xterm-256color
-
-SENSOR_TEMP=$(/home/pi/scripts/RPiMS/redis-get.py | sed -e 's/Temp=//' -e 's/Humidity=//' |awk '{print $1}')
-SENSOR_HUM=$(/home/pi/scripts/RPiMS/redis-get.py | sed -e 's/Temp=//' -e 's/Humidity=//' |awk '{print $2}')
+arr=($(/home/pi/scripts/RPiMS/redis-get.py))
+SENSOR_TEMP=$(echo ${arr[0]} | sed s/Temp=// |awk '{print $1}')
+SENSOR_HUM=$(echo ${arr[1]} | sed s/Humidity=// |awk '{print $1}')
 CPU_TEMP=$(vcgencmd measure_temp|awk -F\= '{print $2}')
 
 echo "$(tput setaf 2)
@@ -12,9 +12,9 @@ echo "$(tput setaf 2)
    .~ .~~~..~.
   : .~.'~'.~. :$(tput sgr0)  Raspberry Pi Monitoring System$(tput setaf 1)
  ~ (   ) (   ) ~
-( : '~'.~.'~' : )Room Humidity.....: $SENSOR_HUM
- ~ .~ (   ) ~. ~ Room Temperature..: $SENSOR_TEMP
-  (  : '~' :  )  CPU Temperature...: $CPU_TEMP
+( : '~'.~.'~' : )$(tput sgr0)Room Humidity.....: $SENSOR_HUM$(tput setaf 1)
+ ~ .~ (   ) ~. ~ $(tput sgr0)Room Temperature..: $SENSOR_TEMP$(tput setaf 1)
+  (  : '~' :  )  $(tput sgr0)CPU Temperature...: $CPU_TEMP$(tput setaf 1)
    '~ .~~~. ~'
        '~'
 $(tput sgr0)"
