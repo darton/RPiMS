@@ -1,21 +1,20 @@
 #!/bin/bash
 
+SENSOR_TEMP=$(/home/pi/scripts/RPiMS/redis-get.py | sed -e 's/Temp=//' -e 's/Humidity=//' |awk '{print $1}')
+SENSOR_HUM=$(/home/pi/scripts/RPiMS/redis-get.py | sed -e 's/Temp=//' -e 's/Humidity=//' |awk '{print $2}')
+CPU_TEMP=$(vcgencmd measure_temp|awk -F\= '{print $2}')
+
 echo "$(tput setaf 2)
    .~~.   .~~.
   '. \ ' ' / .'$(tput setaf 1)
    .~ .~~~..~.
-  : .~.'~'.~. ;
+  : .~.'~'.~. :$(tput sgr0)  Raspberry Pi Monitoring System$(tput setaf 1)
  ~ (   ) (   ) ~
-( : '~'.~.'~' ; )
- ~ .~ (   ) ~. ~
-  (  : '~' ;  ) $(tput sgr0)Raspberry Pi Monitoring System$(tput setaf 1)
+( : '~'.~.'~' : )Room Humidity.....: $SENSOR_HUM
+ ~ .~ (   ) ~. ~ Room Temperature..: $SENSOR_TEMP
+  (  : '~' :  )  CPU Temperature...: $CPU_TEMP
    '~ .~~~. ~'
        '~'
 $(tput sgr0)"
 
-SENSOR_1=$(/home/pi/scripts/RPiMS/redis-get.py)
-CPU_TEMP=$(vcgencmd measure_temp)
-HOST_IP=$(ip -4 addr show eth0 | grep -oP '(?<=inet\s)\d+(\.\d+){3}')
-echo "IP: $HOST_IP"
-echo "Room: $SENSOR_1"
-echo "CPU $CPU_TEMP"
+echo
