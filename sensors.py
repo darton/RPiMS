@@ -12,7 +12,7 @@
 #  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #  GNU General Public License for more details.
 
-#from picamera import PiCamera
+from picamera import PiCamera
 from gpiozero import LED, Button, MotionSensor
 from gpiozero.tools import any_values
 from signal import pause
