@@ -30,7 +30,7 @@ verbose = "yes"
 zabbix_sender = "yes"
 
 #use picamera: yes/no
-use_picamera = "no"
+use_picamera = "yes"
 
 #use door sensor: yes/no
 use_door_sensor = "yes"
