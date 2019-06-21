@@ -110,8 +110,7 @@ def door_action_closed(door_id):
         print("The " + str(door_id) + " has been closed!")
 
     redis_db.set(str(door_id), 'closed')
-    led.source = any_values(sensor1.values, sensor2.values, sensor3.values, sensor4.values )
-
+    
     if zabbix_sender is 'yes' :
         zabbix_sender_cmd ='/home/pi/scripts/RPiMS/zabbix_sender.sh info_when_door_has_been_closed' + " " + str(door_id)
         subprocess.call(zabbix_sender_cmd, shell=True)
@@ -147,7 +146,7 @@ def door_status_open(door_id):
     if verbose is 'yes' :
         print("The " + str(door_id) + " is opened!")
     redis_db.set(str(door_id), 'open')
-    led.source = any_values(sensor1.values, sensor2.values, sensor3.values, sensor4.values )
+    
     if zabbix_sender is 'yes' :
         zabbix_sender_cmd ='/home/pi/scripts/RPiMS/zabbix_sender.sh info_when_door_is_opened' + " " + str(door_id)
         subprocess.call(zabbix_sender_cmd, shell=True)
