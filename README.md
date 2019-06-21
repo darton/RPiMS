@@ -185,7 +185,7 @@ BCM25 [pin 27] -> Input Sensor 5 (PIR sensor)
 
 * DHT1/DHT22/AM2302 - 1 pcs
 * Door/window Sensor - 4 pcs
-* PIR Sensor - 1 pcs
+* Motion Sensor - 1 pcs
 * PiCamera - 1 pcs
 * PiCamera Case - 1pcs
 * Power Adapter (5V/2.5A) - 1 pcs
