@@ -27,16 +27,16 @@ location = "My Home"
 verbose = "yes"
 
 #use zabbix_sender: yes/no
-zabbix_sender = "yes"
+zabbix_sender = "no"
 
 #use picamera: yes/no
-use_picamera = "yes"
+use_picamera = "no"
 
 #use door sensor: yes/no
 use_door_sensor = "yes"
 
 #use motion sensor: yes/no
-use_motion_sensor = "yes"
+use_motion_sensor = "no"
 
 # Led Lamp on GPIO 14
 led = LED(14)
