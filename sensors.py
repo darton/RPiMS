@@ -58,16 +58,16 @@ button10 = Button(26)
 MotionSensor_1 = MotionSensor(12)
 
 button_sensor_list = {
-    "door_sensor_1": button1,
-    "door_sensor_2": button2,
-    "button_1"     : button3,
-    "button_2"     : button4,
-    "button_2"     : button5,
-    "joystick_1"   : button6,
-    "joystick_2"   : button7,
-    "joystick_3"   : button8,
-    "joystick_4"   : button9,
-    "joystick_5"   : button10
+    "door_sensor_1" : button1,
+    "door_sensor_2" : button2,
+    "button_1"      : button3,
+    "button_2"      : button4,
+    "button_2"      : button5,
+    "joystick_left" : button6,
+    "joystick_up"   : button7,
+    "joystick_fire" : button8,
+    "joystick_down" : button9,
+    "joystick_right": button10
 }
 
 motion_sensor_list = {
