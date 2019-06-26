@@ -43,27 +43,36 @@ led = LED(14)
 
 #Button type sensors inputs: Door/Window, Smoke Alarm, CO Alarm, CO2 Alarm, Heat Alarm, Water Alarm sensors inputs (store the ref of functions in variable)
 
-sensor1 = Button(22)
-sensor2 = Button(23)
-sensor3 = Button(24)
-sensor4 = Button(25)
+button1 = Button(22)
+button2 = Button(23)
+button3 = Button(16)
+button4 = Button(20)
+button5 = Button(21)
+button6 = Button(5)
+button7 = Button(6)
+button8 = Button(13)
+button9 = Button(19)
+button10 = Button(26)
 
 #Motion Sensor inputs:
-MotionSensor_1 = MotionSensor(27)
-MotionSensor_2 = MotionSensor(6)
+MotionSensor_1 = MotionSensor(12)
 
 button_sensor_list = {
-    "door_sensor_1": sensor1,
-    "door_sensor_2": sensor2,
-    "water_sensor_1": sensor3,
-    "smoke_sensor_1" : sensor4
+    "door_sensor_1": button1,
+    "door_sensor_2": button2,
+    "button_1"     : button3,
+    "button_2"     : button4,
+    "button_2"     : button5,
+    "joystick_1"   : button6,
+    "joystick_2"   : button7,
+    "joystick_3"   : button8,
+    "joystick_4"   : button9,
+    "joystick_5"   : button10
 }
 
 motion_sensor_list = {
     "MotionSensor_1": MotionSensor_1,
-    "MotionSensor_2": MotionSensor_2
 }
-
 
 redis_db = redis.StrictRedis(host="localhost", port=6379, db=0, charset="utf-8", decode_responses=True)
 redis_db.set("Location", location)
