@@ -62,7 +62,7 @@ button_sensor_list = {
     "door_sensor_2" : button2,
     "button_1"      : button3,
     "button_2"      : button4,
-    "button_2"      : button5,
+    "button_3"      : button5,
     "joystick_left" : button6,
     "joystick_up"   : button7,
     "joystick_fire" : button8,
