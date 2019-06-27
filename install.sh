@@ -17,11 +17,13 @@ sudo apt-get update
 
 sudo apt-get dist-upgrade
 
-sudo apt-get -y install git-core python3-gpiozero python3-pip build-essential python-dev python3-numpy redis-server php php-fpm php-redis zabbix-agent
+sudo apt-get -y install git-core python3-gpiozero python3-pip build-essential python3-dev python3-numpy redis-server php php-fpm php-redis zabbix-agent libfreetype6-dev libjpeg-dev build-essential
 
 sudo python3 -m pip install --upgrade pip setuptools wheel
 
 sudo pip3 install Adafruit_DHT redis
+
+sudo -H pip3 install --upgrade luma.oled
 
 sudo systemctl enable redis-server.service
 
