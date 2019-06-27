@@ -67,11 +67,9 @@ sudo chmod ugo+x  /etc/update-motd.d/20-rpims
 
 cat $installdir/rc.local |sudo tee /etc/rc.local
 
-echo "# Add the sensors.py as cron jobs
+echo "# Add the ADHT.py as cron jobs
 
 * * * * * pi $installdir/ADHT.py  > /dev/null 2>&1
 " |sudo tee /etc/cron.d/rpims
 
 sudo su - pi -c '/home/pi/scripts/RPiMS/sensors.py &'
-
-
