@@ -40,8 +40,8 @@ def main():
         draw.rectangle([(5,10),(120,35)],fill = "BLACK")
 
 #       ******draw text******
-        draw.text((10, 10), 'RPiMS ', fill = "WHITE")
-        draw.text((10, 24), 'Serwerownia Z1', fill = "WHITE")
+        draw.text((10, 10), 'RPiMS', fill = "WHITE")
+        draw.text((10, 24), 'IP:' + str(hostip), fill='WHITE')
         draw.text((10, 48), 'Temperature.' + str(temperature) + 'C', fill = "RED")
         draw.text((10, 60), 'Humidity....' + str(humidity) + '%', fill = "BLUE")
         draw.text((10, 72), 'Door 1......' + str(door_sensor_1), fill = "BLACK")
