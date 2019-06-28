@@ -3,6 +3,7 @@
 import LCD_1in44
 import LCD_Config
 import redis
+import socket
 from PIL import Image
 from PIL import ImageDraw
 from PIL import ImageFont
@@ -11,8 +12,10 @@ from PIL import ImageColor
 #try:
 def main():
 #       ******Init redis DB*******  
+        hostname = socket.gethostname()
+        hostip = socket.gethostbyname(hostname)
+        
         redis_db = redis.StrictRedis(host="localhost", port=6379, db=0, charset="utf-8", decode_responses=True)
-
         temperature = round(float(redis_db.get('Temperature')),1)
         humidity = round(float(redis_db.get('Humidity')),1)
         door_sensor_1 = redis_db.get('button_1')
