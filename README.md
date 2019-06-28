@@ -191,8 +191,9 @@ BCM25 [pin 27] -> Input Sensor 5 (PIR sensor)
 * Power Adapter (5V/2.5A) - 1 pcs
 * Rapsberry Pi - 1 pcs
 * Raspberri Pi Case - 1 pcs
-* Waveshare OLED 1,3'' 128x64px SPI I2C -1 pcs 
+* Waveshare OLED 1,3'' 128x64px SPI I2C - 1 pcs 
 * ITALTRONIC 25.0410000.RP3 
+* Male Headers 1x40 raster 2,54mm angle - 2 pcs
 * RTC - 1 pcs
 
 
