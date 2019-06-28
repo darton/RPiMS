@@ -116,16 +116,13 @@ def program_remote_control():
     return verbose
 
 def door_action_closed(door_id):
+    redis_db.set(str(door_id), 'close')
     verbose =  program_remote_control()
     if verbose is 'yes' :
         print("The " + str(door_id) + " has been closed!")
-
-    redis_db.set(str(door_id), 'closed')
-    
     if zabbix_sender is 'yes' :
         zabbix_sender_cmd ='/home/pi/scripts/RPiMS/zabbix_sender.sh info_when_door_has_been_closed' + " " + str(door_id)
         subprocess.call(zabbix_sender_cmd, shell=True)
-
     if use_picamera is 'yes':
         sleep(0.2)
         subprocess.call("/home/pi/scripts/RPiMS/stream.sh stop", shell=True)
@@ -135,11 +132,11 @@ def door_action_closed(door_id):
         subprocess.call("/home/pi/scripts/RPiMS/stream.sh start", shell=True)
 
 def door_action_opened(door_id):
+    redis_db.set(str(door_id), 'open')
+    led.source = any_values(door_sensor_1.values, door_sensor_2.values, door_sensor_3.values)   
     verbose = program_remote_control()
     if verbose is 'yes' :
-        print("The " + str(door_id) + " has been opened!")
-    redis_db.set(str(door_id), 'opened')
-    led.source = any_values(door_sensor_1.values, door_sensor_2.values, door_sensor_3.values)
+        print("The " + str(door_id) + " has been opened!") 
     if zabbix_sender is 'yes' :
         zabbix_sender_cmd ='/home/pi/scripts/RPiMS/zabbix_sender.sh info_when_door_has_been_opened' + " " + str(door_id)
         subprocess.call(zabbix_sender_cmd, shell=True)
@@ -153,11 +150,10 @@ def door_action_opened(door_id):
         sleep(1)
 
 def door_status_open(door_id):
+    redis_db.set(str(door_id), 'open')
     verbose = program_remote_control()
     if verbose is 'yes' :
-        print("The " + str(door_id) + " is opened!")
-    redis_db.set(str(door_id), 'open')
-    
+        print("The " + str(door_id) + " is opened!")   
     if zabbix_sender is 'yes' :
         zabbix_sender_cmd ='/home/pi/scripts/RPiMS/zabbix_sender.sh info_when_door_is_opened' + " " + str(door_id)
         subprocess.call(zabbix_sender_cmd, shell=True)
@@ -165,11 +161,11 @@ def door_status_open(door_id):
         subprocess.call("/home/pi/scripts/RPiMS/stream.sh start", shell=True)
 
 def door_status_close(door_id):
+    redis_db.set(str(door_id), 'close')
+    led.source = any_values(door_sensor_1.values, door_sensor_2.values, door_sensor_3.values)
     verbose = program_remote_control()
     if verbose is 'yes' :
         print("The " + str(door_id) + " is closed!")
-    redis_db.set(str(door_id), 'close')
-    led.source = any_values(door_sensor_1.values, door_sensor_2.values, door_sensor_3.values)
     if zabbix_sender is 'yes' :
         zabbix_sender_cmd ='/home/pi/scripts/RPiMS/zabbix_sender.sh info_when_door_is_closed' + " " + str(door_id)
         subprocess.call(zabbix_sender_cmd, shell=True)
@@ -177,10 +173,10 @@ def door_status_close(door_id):
         subprocess.call("/home/pi/scripts/RPiMS/stream.sh start", shell=True)
 
 def motion_sensor_when_motion(ms_id):
+    redis_db.set(str(ms_id), 'motion')
     verbose = program_remote_control()
     if verbose is 'yes' :
         print("The " + str(ms_id) + ": motion was detected")
-    redis_db.set(str(ms_id), 'motion')
     if zabbix_sender is 'yes' :
         zabbix_sender_cmd ='/home/pi/scripts/RPiMS/zabbix_sender.sh info_when_motion' + " " + str(ms_id)
         subprocess.call(zabbix_sender_cmd, shell=True)
@@ -188,16 +184,15 @@ def motion_sensor_when_motion(ms_id):
         subprocess.call("/home/pi/scripts/RPiMS/stream.sh start", shell=True)
 
 def motion_sensor_when_no_motion(ms_id):
+    redis_db.set(str(ms_id), 'nomotion')
     verbose = program_remote_control()
     if verbose is 'yes' :
         print("The " + str(ms_id) + ": no motion")
-    redis_db.set(str(ms_id), 'nomotion')
     if zabbix_sender is 'yes' :
         zabbix_sender_cmd ='/home/pi/scripts/RPiMS/zabbix_sender.sh info_when_no_motion' + " " + str(ms_id)
         subprocess.call(zabbix_sender_cmd, shell=True)
     if use_picamera is 'yes':
         subprocess.call("/home/pi/scripts/RPiMS/stream.sh start", shell=True)
-
 
 def sensors_read_once():
     for s in button_sensor_list:
@@ -209,7 +204,6 @@ def sensors_read_once():
 # --- Read sensors when startup ---
 
 sensors_read_once()
-
 
 # --- Main program ---
 
