@@ -39,35 +39,37 @@ use_door_sensor = "yes"
 use_motion_sensor = "no"
 
 # Led Lamp on GPIO 14
-led = LED(14)
+led = LED(18)
 
 #Button type sensors inputs: Door/Window, Smoke Alarm, CO Alarm, CO2 Alarm, Heat Alarm, Water Alarm sensors inputs (store the ref of functions in variable)
 
-button1 = Button(22)
-button2 = Button(23)
-button3 = Button(21)
-button4 = Button(20)
-button5 = Button(16)
-button6 = Button(5)
-button7 = Button(6)
-button8 = Button(13)
-button9 = Button(19)
-button10 = Button(26)
+door_sensor_1 = Button(27)
+door_sensor_2 = Button(22)
+door_sensor_3 = Button(23)
+button1 = Button(21)
+button2 = Button(20)
+button3 = Button(16)
+joystick_left = Button(5)
+joystick_up = Button(6)
+joystick_fire = Button(13)
+joystick_down = Button(19)
+joystick_right = Button(26)
 
 #Motion Sensor inputs:
 MotionSensor_1 = MotionSensor(12)
 
 button_sensor_list = {
-    "door_sensor_1" : button1,
-    "door_sensor_2" : button2,
-    "button_1"      : button3,
-    "button_2"      : button4,
-    "button_3"      : button5,
-    "joystick_left" : button6,
-    "joystick_up"   : button7,
-    "joystick_fire" : button8,
-    "joystick_down" : button9,
-    "joystick_right": button10
+    "door_sensor_1" : door_sensor_1,
+    "door_sensor_2" : door_sensor_2,
+    "door_sensor_3" : door_sensor_3,
+    "button_1"      : button1,
+    "button_2"      : button2,
+    "button_3"      : button3,
+    "joystick_left" : joystick_left,
+    "joystick_up"   : joystick_up,
+    "joystick_fire" : joystick_fire,
+    "joystick_down" : joystick_down,
+    "joystick_right": joystick_right
 }
 
 motion_sensor_list = {
@@ -137,7 +139,7 @@ def door_action_opened(door_id):
     if verbose is 'yes' :
         print("The " + str(door_id) + " has been opened!")
     redis_db.set(str(door_id), 'opened')
-    led.source = any_values(sensor1.values, sensor2.values, sensor3.values, sensor4.values )
+    led.source = any_values(door_sensor_1.values, door_sensor_2.values, door_sensor_3.values)
     if zabbix_sender is 'yes' :
         zabbix_sender_cmd ='/home/pi/scripts/RPiMS/zabbix_sender.sh info_when_door_has_been_opened' + " " + str(door_id)
         subprocess.call(zabbix_sender_cmd, shell=True)
@@ -167,7 +169,7 @@ def door_status_close(door_id):
     if verbose is 'yes' :
         print("The " + str(door_id) + " is closed!")
     redis_db.set(str(door_id), 'close')
-    led.source = any_values(sensor1.values, sensor2.values, sensor3.values, sensor4.values )
+    led.source = any_values(door_sensor_1.values, door_sensor_2.values, door_sensor_3.values)
     if zabbix_sender is 'yes' :
         zabbix_sender_cmd ='/home/pi/scripts/RPiMS/zabbix_sender.sh info_when_door_is_closed' + " " + str(door_id)
         subprocess.call(zabbix_sender_cmd, shell=True)
