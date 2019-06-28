@@ -183,7 +183,7 @@ BCM25 [pin 27] -> Input Sensor 5 (PIR sensor)
 
 ## B.o.M - Bill of Materials
 
-* DHT1/DHT22/AM2302 - 1 pcs
+* DHT1/DHT22/AM2302 or BME280 - 1 pcs
 * Door/window Sensor - 4 pcs
 * Motion Sensor - 1 pcs
 * PiCamera - 1 pcs
@@ -191,6 +191,7 @@ BCM25 [pin 27] -> Input Sensor 5 (PIR sensor)
 * Power Adapter (5V/2.5A) - 1 pcs
 * Rapsberry Pi - 1 pcs
 * Raspberri Pi Case - 1 pcs
+* Waveshare OLED 1,3'' 128x64px SPI I2C -1 pcs 
 * RTC - 1 pcs
 
 
