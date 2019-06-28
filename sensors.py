@@ -13,7 +13,7 @@
 #  GNU General Public License for more details.
 
 from picamera import PiCamera
-from gpiozero import LED, Button, MotionSensor
+from gpiozero import LED, Button, MotionSensor, CPUTemperature
 from gpiozero.tools import any_values
 from signal import pause
 from time import sleep
@@ -206,6 +206,10 @@ def sensors_read_once():
 sensors_read_once()
 
 # --- Main program ---
+
+cpu = CPUTemperature()
+#print('CPU temperature: {}C'.format(cpu.temperature))
+redis_db.set('CPUtemperature', cpu.temperature)
 
 if use_door_sensor is 'yes' :
     for s in button_sensor_list:
