@@ -25,6 +25,8 @@ sudo pip3 install Adafruit_DHT redis
 
 sudo -H pip3 install --upgrade luma.oled
 
+sudo pip3 install RPi.bme280
+
 sudo systemctl enable redis-server.service
 
 sudo systemctl start redis-server.service
