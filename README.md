@@ -207,3 +207,11 @@ BCM25 [pin 27] -> Input Sensor 5 (PIR sensor)
 
 * [HWclock tutorial](https://thepihut.com/blogs/raspberry-pi-tutorials/17209332-adding-a-real-time-clock-to-your-raspberry-pi)
 
+* [BME280 Tutorial](https://pypi.org/project/RPi.bme280/)
+
+* [Luma Core](https://pypi.org/project/luma.core/)
+
+* [TME Italtronic Case](https://www.tme.eu/pl/en/details/it-25.0410000.rp3/enclosure-for-embedded-systems/italtronic/25-0410000-rp3/)
+
+* [Zabbix](https://zabbix.org/wiki/Main_Page)
+
