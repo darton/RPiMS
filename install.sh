@@ -17,7 +17,7 @@ sudo apt-get update
 
 sudo apt-get dist-upgrade
 
-sudo apt-get -y install git-core python3-gpiozero python3-pip build-essential python3-dev python3-numpy python3-picamera redis-server php php-fpm php-redis zabbix-agent libfreetype6-dev libjpeg-dev build-essential
+sudo apt-get -y install git-core python3-gpiozero python3-pip build-essential python3-dev python3-numpy python3-picamera redis-server php php-fpm php-redis zabbix-agent libfreetype6-dev libjpeg-dev build-essential p7zip-full
 
 sudo python3 -m pip install --upgrade pip setuptools wheel
 
