@@ -75,3 +75,5 @@ echo "# Add the ADHT.py as cron jobs
 " |sudo tee /etc/cron.d/rpims
 
 sudo su - pi -c '/home/pi/scripts/RPiMS/sensors.py &'
+
+wget https://www.waveshare.com/w/upload/1/10/Bcm2835-1.39.tar.gz
