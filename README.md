@@ -43,7 +43,7 @@ ServerActive=zabbix.example.com
 ## Install if you have PiCamera
 
 ```
-sudo apt-get install -y vlc libav-tools python-picamera omxplayer gpac fbi
+sudo apt-get install -y vlc libav-tools omxplayer gpac fbi
 
 ```
 
