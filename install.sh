@@ -76,12 +76,12 @@ echo "# Add the ADHT.py as cron jobs
 
 sudo su - pi -c '/home/pi/scripts/RPiMS/sensors.py &'
 
-wget https://www.waveshare.com/w/upload/1/10/Bcm2835-1.39.tar.gtar -xvf Bcm*.tar.gz
+#wget https://www.waveshare.com/w/upload/1/10/Bcm2835-1.39.tar.gtar -xvf Bcm*.tar.gz
 
-cd bcm2835-*/
+#cd bcm2835-*/
 
-./configure
+#./configure
 
-make
+#make
 
-sudo make install
+#sudo make install
