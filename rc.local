@@ -1,5 +1,5 @@
 
-#!/bin/sh -e
+#!/bin/bash
 #
 # rc.local
 #
