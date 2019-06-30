@@ -217,6 +217,8 @@ BCM25 [pin 27] -> Input Sensor 5 (PIR sensor)
 
 * [WaveShare 1.3inch oled](https://www.waveshare.com/product/mini-pc/raspberry-pi/displays/1.3inch-oled-hat.htm)
 
+* [WaveShare 1.44inch oled](https://www.waveshare.com/wiki/1.44inch_LCD_HAT)
+
 * [Pi Camera](https://picamera.readthedocs.io/en/release-1.13/quickstart.html)
 
 * [WaveShare Libraries for RPi](https://www.waveshare.com/wiki/Libraries_Installation_for_RPi)
