@@ -71,7 +71,7 @@ cat $installdir/rc.local |sudo tee /etc/rc.local
 
 echo "# Add the ADHT.py as cron jobs
 
-* * * * * pi $installdir/ADHT.py  > /dev/null 2>&1
+#* * * * * pi $installdir/ADHT.py  > /dev/null 2>&1
 " |sudo tee /etc/cron.d/rpims
 
 sudo su - pi -c '/home/pi/scripts/RPiMS/sensors.py &'
