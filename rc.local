@@ -19,9 +19,6 @@ if [ "$_IP" ]; then
 fi
 
 su - pi -c '/home/pi/scripts/RPiMS/sensors.py &'
-
 sleep 5
-
 su - pi -c '/home/pi/scripts/RPiMS/oled_1in3.py &'
-
 exit 0
