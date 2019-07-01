@@ -222,3 +222,5 @@ BCM25 [pin 27] -> Input Sensor 5 (PIR sensor)
 * [Pi Camera](https://picamera.readthedocs.io/en/release-1.13/quickstart.html)
 
 * [WaveShare Libraries for RPi](https://www.waveshare.com/wiki/Libraries_Installation_for_RPi)
+
+* [RPi GPIO](https://elinux.org/RPi_BCM2835_GPIOs)
