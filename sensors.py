@@ -207,10 +207,6 @@ sensors_read_once()
 
 # --- Main program ---
 
-cpu = CPUTemperature()
-#print('CPU temperature: {}C'.format(cpu.temperature))
-redis_db.set('CPUtemperature', cpu.temperature)
-
 if use_door_sensor is 'yes' :
     for s in button_sensor_list:
             button_sensor_list[s].when_pressed = lambda s=s : door_action_closed(s)
