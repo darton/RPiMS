@@ -76,9 +76,9 @@ echo "# Add the ADHT.py as cron jobs
 
 sudo su - pi -c '/home/pi/scripts/RPiMS/sensors.py &'
 
-wget https://www.waveshare.com/w/upload/f/fa/1.44inch-LCD-HAT-Code.7z
+curl -sS https://www.waveshare.com/w/upload/f/fa/1.44inch-LCD-HAT-Code.7z > /tmp/1.44inch-LCD-HAT-Code.7z
 
-7zip x 1.44inch-LCD-HAT-Code.7z
+7zip x /tmp/1.44inch-LCD-HAT-Code.7z $installdir 
 
 #wget https://www.waveshare.com/w/upload/1/10/Bcm2835-1.39.tar.gtar -xvf Bcm*.tar.gz
 
