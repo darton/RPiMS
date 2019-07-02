@@ -12,7 +12,7 @@ echo "$(tput setaf 2)
   '. \ ' ' / .'$(tput setaf 1)
    .~ .~~~..~.
   : .~.'~'.~. :$(tput sgr0)  Raspberry Pi Monitoring System$(tput setaf 1)
- ~ (   ) (   ) ~ $(tput sgr0)Room Pressure..: $SENSOR_PRESSURE$(tput setaf 1)
+ ~ (   ) (   ) ~ $(tput sgr0)Room Pressure.....: $SENSOR_PRESSURE$(tput setaf 1)
 ( : '~'.~.'~' : )$(tput sgr0)Room Humidity.....: $SENSOR_HUM$(tput setaf 1)
  ~ .~ (   ) ~. ~ $(tput sgr0)Room Temperature..: $SENSOR_TEMP$(tput setaf 1)
   (  : '~' :  )  $(tput sgr0)CPU Temperature...: $CPU_TEMP$(tput setaf 1)
