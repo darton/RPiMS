@@ -224,3 +224,5 @@ BCM25 [pin 27] -> Input Sensor 5 (PIR sensor)
 * [WaveShare Libraries for RPi](https://www.waveshare.com/wiki/Libraries_Installation_for_RPi)
 
 * [RPi GPIO](https://elinux.org/RPi_BCM2835_GPIOs)
+
+* [raspivid](https://www.raspberrypi.org/documentation/usage/camera/raspicam/raspivid.md)
