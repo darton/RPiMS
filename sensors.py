@@ -197,20 +197,14 @@ def motion_sensor_when_no_motion(ms_id):
     if use_picamera is 'yes':
         subprocess.call("/home/pi/scripts/RPiMS/stream.sh start", shell=True)
 
-def sensors_read_once():
+# --- Main program ---
+
+if use_door_sensor is 'yes' :
     for s in door_sensor_list:
         if door_sensor_list[s].value == 0:
             door_status_open(s)
         else:
             door_status_close(s)
-
-# --- Read sensors when startup ---
-
-sensors_read_once()
-
-# --- Main program ---
-
-if use_door_sensor is 'yes' :
     for s in door_sensor_list:
             door_sensor_list[s].when_pressed = lambda s=s : door_action_closed(s)
             door_sensor_list[s].when_released = lambda s=s : door_action_opened(s)
