@@ -17,15 +17,23 @@ sudo apt-get update
 
 sudo apt-get dist-upgrade
 
-sudo apt-get -y install git-core python3-gpiozero python3-pip build-essential python3-dev python3-numpy python3-picamera redis-server php php-fpm php-redis zabbix-agent libfreetype6-dev libopenjp2-7 libtiff5 libjpeg-dev build-essential p7zip-full
+sudo apt-get -y install git-core python3-gpiozero python-gpiozero python3-pip python-pip build-essential python3-dev python-dev python3-numpy python-numpy python3-picamera ython-picamera redis-server php php-fpm php-redis zabbix-agent libfreetype6-dev libopenjp2-7 libtiff5 libjpeg-dev build-essential p7zip-full
 
 sudo python3 -m pip install --upgrade pip setuptools wheel
 
+sudo python -m pip install --upgrade pip setuptools wheel
+
 sudo pip3 install Adafruit_DHT redis
+
+sudo pip install Adafruit_DHT redis
 
 sudo -H pip3 install --upgrade luma.oled
 
+sudo -H pip install --upgrade luma.oled
+
 sudo pip3 install RPi.bme280
+
+sudo pip install RPi.bme280
 
 sudo systemctl enable redis-server.service
 
