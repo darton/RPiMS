@@ -196,7 +196,7 @@ def av_stream(state):
     if use_picamera is 'yes':
         subprocess.call("/home/pi/scripts/RPiMS/stream.sh" + " " +  state, shell=True)
 
-        
+
 # --- Main program ---
 
 if use_door_sensor is 'yes' :
