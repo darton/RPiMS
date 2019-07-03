@@ -191,11 +191,10 @@ def motion_sensor_when_no_motion(ms_id):
     verbose = program_remote_control()
     if verbose is 'yes' :
         print("The " + str(ms_id) + ": no motion")
-    if zabbix_sender is 'yes' :
-        zabbix_sender_cmd ='/home/pi/scripts/RPiMS/zabbix_sender.sh info_when_no_motion' + " " + str(ms_id)
-        subprocess.call(zabbix_sender_cmd, shell=True)
+
+def av_stream(state):
     if use_picamera is 'yes':
-        subprocess.call("/home/pi/scripts/RPiMS/stream.sh start", shell=True)
+        subprocess.call("/home/pi/scripts/RPiMS/stream.sh" + " " +  state, shell=True)
 
 # --- Main program ---
 
