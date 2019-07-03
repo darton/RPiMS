@@ -213,4 +213,5 @@ if use_motion_sensor is 'yes' :
     for s in motion_sensor_list:
             motion_sensor_list[s].when_motion = lambda s=s : motion_sensor_when_motion(s)
             motion_sensor_list[s].when_no_motion = lambda s=s : motion_sensor_when_no_motion(s)
+            
 pause()
