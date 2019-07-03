@@ -206,7 +206,7 @@ if use_door_sensor is 'yes' :
         else:
             door_status_close(s)
     for s in door_sensor_list:
-            door_sensor_list[s].when_pressed = lambda s=s : door_action_closed(s)
+            door_sensor_list[s].when_held = lambda s=s : door_action_closed(s)
             door_sensor_list[s].when_released = lambda s=s : door_action_opened(s)
 
 if use_motion_sensor is 'yes' :
