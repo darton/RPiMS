@@ -43,7 +43,7 @@ led = LED(18)
 
 #Button type sensors inputs: Door/Window, Smoke Alarm, CO Alarm, CO2 Alarm, Heat Alarm, Water Alarm sensors inputs (store the ref of functions in variable)
 
-door_sensor_1 = Button(27, hold_time=3)
+door_sensor_1 = Button(4, hold_time=3)
 door_sensor_2 = Button(22, hold_time=3)
 door_sensor_3 = Button(23, hold_time=3)
 button1 = Button(21)
