@@ -53,7 +53,7 @@ def GPIO_Init():
     GPIO.setup(LCD_DC_PIN, GPIO.OUT)
     GPIO.setup(LCD_CS_PIN, GPIO.OUT)
     GPIO.setup(LCD_BL_PIN, GPIO.OUT)
-    SPI.max_speed_hz = 9000000
+    SPI.max_speed_hz = 8000000
     SPI.mode = 0b00
     return 0;
 
