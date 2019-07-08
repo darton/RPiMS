@@ -38,7 +38,7 @@ RST = 25
 CS = 8      
 DC = 24
 
-serial = spi(device=0, port=0, bus_speed_hz = 8000000, transfer_size = 4096, gpio_DC = 24, gpio_RST = 25)
+serial = spi(device=0, port=0, bus_speed_hz = 8000000, transfer_size = 4096, gpio_DC = 25, gpio_RST = 27)
 device = ST7735(serial, rotate=1) 
 
 try:
