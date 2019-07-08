@@ -38,8 +38,6 @@ DC = 24
 
 USER_I2C = 0
 
-redis_db = redis.StrictRedis(host="localhost", port=6379, db=0, charset="utf-8", decode_responses=True)
-
 if  USER_I2C == 1:
     GPIO.setmode(GPIO.BCM)
     GPIO.setup(RST,GPIO.OUT)    
@@ -52,6 +50,7 @@ else:
 device = sh1106(serial, rotate=2) #sh1106  
 
 try:
+    redis_db = redis.StrictRedis(host="localhost", port=6379, db=0, charset="utf-8", decode_responses=True)
     while True:
         with canvas(device) as draw:
             hostname = socket.gethostname()
