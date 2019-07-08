@@ -38,7 +38,7 @@ use_door_sensor = "yes"
 #use motion sensor: yes/no
 use_motion_sensor = "no"
 
-# Led Lamp on GPIO 14
+# Led Lamp on GPIO 18
 led = LED(18)
 
 #Button type sensors inputs: Door/Window, Smoke Alarm, CO Alarm, CO2 Alarm, Heat Alarm, Water Alarm sensors inputs (store the ref of functions in variable)
