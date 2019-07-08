@@ -18,9 +18,9 @@ def main():
         redis_db = redis.StrictRedis(host="localhost", port=6379, db=0, charset="utf-8", decode_responses=True)
         temperature = round(float(redis_db.get('Temperature')),1)
         humidity = round(float(redis_db.get('Humidity')),1)
-        door_sensor_1 = redis_db.get('button_1')
-        door_sensor_2 = redis_db.get('button_2')
-        door_sensor_3 = redis_db.get('button_3')
+        door_sensor_1 = redis_db.get('door_sensor_1')
+        door_sensor_2 = redis_db.get('door_sensor_2')
+        door_sensor_3 = redis_db.get('door_sensor_3')
 
         LCD = LCD_1in44.LCD()
 
