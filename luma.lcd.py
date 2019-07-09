@@ -22,8 +22,6 @@ from PIL import ImageColor
 # Load default font.
 font = ImageFont.load_default()
 
-#font = ImageFont.truetype('/usr/share/fonts/truetype/liberation/LiberationMono-Bold.ttf', 10)
-
 # Create blank image for drawing.
 # Make sure to create image with mode '1' for 1-bit color.
 width = 128
@@ -37,11 +35,11 @@ bottom = height-padding
 # Move left to right keeping track of the current x position for drawing shapes.
 x = 3
 
-
 serial = spi(device=0, port=0, bus_speed_hz = 16000000, transfer_size = 4096, gpio_DC = 25, gpio_RST = 27)
 device = st7735(serial)
 
 try:
+    #font = ImageFont.truetype('/usr/share/fonts/truetype/liberation/LiberationMono-Bold.ttf', 10)
     redis_db = redis.StrictRedis(host="localhost", port=6379, db=0, charset="utf-8", decode_responses=True)
     while True:
         with canvas(device) as draw:
