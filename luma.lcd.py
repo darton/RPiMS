@@ -44,25 +44,16 @@ try:
         with canvas(device) as draw:
             hostname = socket.gethostname()
             hostip = socket.gethostbyname(hostname)
-            #get data from redis db
+ 
+#get data from redis db
             temperature = round(float(redis_db.get('Temperature')),1)
             humidity = round(float(redis_db.get('Humidity')),1)
             pressure = round(float(redis_db.get('Pressure')),1)
             door_sensor_1 = redis_db.get('door_sensor_1')
             door_sensor_2 = redis_db.get('door_sensor_2')
             door_sensor_3 = redis_db.get('door_sensor_3')
-            #draw on lcd
-#            image = Image.new("RGB", (width, height), "white")
-#            draw = ImageDraw.Draw(image)
-#          
-#       ******draw line*******
-#            draw.line([(0,0),(127,0)], fill = "BLUE",width = 5)
-#            draw.line([(127,0),(127,127)], fill = "BLUE",width = 5)
-#            draw.line([(127,127),(0,127)], fill = "BLUE",width = 5)
-#            draw.line([(0,127),(0,0)], fill = "BLUE",width = 5)
-#       *****draw rectangle*****
-#            draw.rectangle([(5,10),(120,35)],fill = "BLACK")
 
+#draw on lcd
             draw.text((x, top),       'IP:' + str(hostip), font=font, fill="red")
             draw.text((x, top+20),    'Temperature..' + str(temperature) + '*C', font=font, fill="red")
             draw.text((x, top+31),    'Humidity.....' + str(humidity) + '%',  font=font, fill="red")
