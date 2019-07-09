@@ -29,7 +29,11 @@ sudo pip install Adafruit_DHT redis
 
 sudo -H pip3 install --upgrade luma.oled
 
+sudo -H pip3 install --upgrade luma.lcd
+
 sudo -H pip install --upgrade luma.oled
+
+sudo -H pip install --upgrade luma.lcd
 
 sudo pip3 install RPi.bme280
 
