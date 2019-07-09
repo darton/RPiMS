@@ -31,7 +31,6 @@ bottom = height-padding
 # Move left to right keeping track of the current x position for drawing shapes.
 x = 10
 
-
 serial = spi(device=0, port=0, bus_speed_hz = 16000000, transfer_size = 4096, gpio_DC = 25, gpio_RST = 27)
 device = st7735(serial)
 
