@@ -7,7 +7,7 @@
 from luma.core.interface.serial import spi
 from luma.core.render import canvas
 from luma.core import lib
-from luma.oled.device import ST7735
+from luma.oled.device import st7735
 import RPi.GPIO as GPIO
 
 import time
@@ -39,7 +39,7 @@ CS = 8
 DC = 24
 
 serial = spi(device=0, port=0, bus_speed_hz = 8000000, transfer_size = 4096, gpio_DC = 25, gpio_RST = 27)
-device = ST7735(serial, rotate=1) 
+device = st7735(serial, rotate=1) 
 
 try:
     redis_db = redis.StrictRedis(host="localhost", port=6379, db=0, charset="utf-8", decode_responses=True)
