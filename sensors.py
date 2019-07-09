@@ -51,7 +51,7 @@ button2 = Button(20)
 button3 = Button(16)
 joystick_left = Button(5)
 joystick_up = Button(6)
-joystick_fire = Button(13)
+joystick_fire = Button(13, hold_time=5)
 joystick_down = Button(19)
 joystick_right = Button(26)
 
@@ -196,6 +196,9 @@ def av_stream(state):
     if use_picamera is 'yes':
         subprocess.call("/home/pi/scripts/RPiMS/stream.sh" + " " +  state, shell=True)
 
+def shutdown():
+    check_call(['sudo', 'poweroff'])
+
 
 # --- Main program ---
 
@@ -213,5 +216,7 @@ if use_motion_sensor is 'yes' :
     for s in motion_sensor_list:
             motion_sensor_list[s].when_motion = lambda s=s : motion_sensor_when_motion(s)
             motion_sensor_list[s].when_no_motion = lambda s=s : motion_sensor_when_no_motion(s)
-     
+
+joystick_fire.when_held = shutdown
+
 pause()
