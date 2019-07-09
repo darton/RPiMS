@@ -215,9 +215,9 @@ BCM25 [pin 27] -> Input Sensor 5 (PIR sensor)
 
 * [Zabbix](https://zabbix.org/wiki/Main_Page)
 
-* [WaveShare 1.3inch oled](https://www.waveshare.com/product/mini-pc/raspberry-pi/displays/1.3inch-oled-hat.htm)
+* [WaveShare 1.3inch OLED HAT](https://www.waveshare.com/product/mini-pc/raspberry-pi/displays/1.3inch-oled-hat.htm)
 
-* [WaveShare 1.44inch oled](https://www.waveshare.com/wiki/1.44inch_LCD_HAT)
+* [WaveShare 1.44inch TFT HAT](https://www.waveshare.com/wiki/1.44inch_LCD_HAT)
 
 * [Pi Camera](https://picamera.readthedocs.io/en/release-1.13/quickstart.html)
 
