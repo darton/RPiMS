@@ -20,5 +20,7 @@ fi
 
 su - pi -c '/home/pi/scripts/RPiMS/sensors.py &'
 sleep 5
-su - pi -c '/home/pi/scripts/RPiMS/oled_1in3.py &'
+#remove the comment from the correct line  
+#su - pi -c '/home/pi/scripts/RPiMS/luma_oled.py &'
+su - pi -c '/home/pi/scripts/RPiMS/luma_lcd.py &'
 exit 0
