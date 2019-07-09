@@ -22,13 +22,9 @@ from PIL import ImageColor
 # Load default font.
 font = ImageFont.load_default()
 
-#font = ImageFont.truetype('/usr/share/fonts/truetype/liberation/LiberationMono-Bold.ttf', 10)
-
-# Create blank image for drawing.
-# Make sure to create image with mode '1' for 1-bit color.
 width = 128
 height = 128
-#image = Image.new('1', (width, height))
+
 
 # First define some constants to allow easy resizing of shapes.
 padding = 3
@@ -42,6 +38,7 @@ serial = spi(device=0, port=0, bus_speed_hz = 16000000, transfer_size = 4096, gp
 device = st7735(serial)
 
 try:
+    #font = ImageFont.truetype('/usr/share/fonts/truetype/liberation/LiberationMono-Regular.ttf', 10)
     redis_db = redis.StrictRedis(host="localhost", port=6379, db=0, charset="utf-8", decode_responses=True)
     while True:
         with canvas(device) as draw:
@@ -55,15 +52,25 @@ try:
             door_sensor_2 = redis_db.get('door_sensor_2')
             door_sensor_3 = redis_db.get('door_sensor_3')
             #draw on lcd
+#            image = Image.new("RGB", (width, height), "white")
+#            draw = ImageDraw.Draw(image)
+#          
+#       ******draw line*******
+#            draw.line([(0,0),(127,0)], fill = "BLUE",width = 5)
+#            draw.line([(127,0),(127,127)], fill = "BLUE",width = 5)
+#            draw.line([(127,127),(0,127)], fill = "BLUE",width = 5)
+#            draw.line([(0,127),(0,0)], fill = "BLUE",width = 5)
+#       *****draw rectangle*****
+#            draw.rectangle([(5,10),(120,35)],fill = "BLACK")
+
             draw.text((x, top),       'IP:' + str(hostip), font=font, fill="red")
             draw.text((x, top+20),    'Temperature..' + str(temperature) + '*C', font=font, fill="red")
             draw.text((x, top+31),    'Humidity.....' + str(humidity) + '%',  font=font, fill="red")
             draw.text((x, top+41),    'Pressure.....' + str(pressure) + 'hPa',  font=font, fill="red")
-            draw.text((x, top+61),    'Door 1.......' + str(door_sensor_1),  font=font, fill="white")
-            draw.text((x, top+71),    'Door 2.......' + str(door_sensor_2),  font=font, fill="white")
-            draw.text((x, top+81),    'Door 3.......' + str(door_sensor_3),  font=font, fill="white")
+            draw.text((x, top+61),    'Door 1.......' + str(door_sensor_1),  font=font, fill="red")
+            draw.text((x, top+71),    'Door 2.......' + str(door_sensor_2),  font=font, fill="red")
+            draw.text((x, top+81),    'Door 3.......' + str(door_sensor_3),  font=font, fill="red")
 
 except KeyboardInterrupt:
     print("Error")
 GPIO.cleanup()
-
