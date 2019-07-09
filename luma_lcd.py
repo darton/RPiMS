@@ -50,7 +50,6 @@ try:
             door_sensor_3 = redis_db.get('door_sensor_3')
 
 #*****draw on lcd********
-
             draw.line([(0,0),(127,0)], fill = "red",width = 6)
             draw.line([(127,0),(127,127)], fill = "red",width = 3)
             draw.line([(127,127),(0,127)], fill = "red",width = 3)
