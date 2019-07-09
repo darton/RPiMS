@@ -72,5 +72,5 @@ try:
             draw.text((x, top+54),    'Door 3.......' + str(door_sensor_3),  font=font, fill=255)
 
 except:
-    print("Error")
-GPIO.cleanup()
+    print("The End)
+    GPIO.cleanup()
