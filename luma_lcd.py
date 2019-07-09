@@ -61,7 +61,7 @@ try:
             draw.text((x+20, top+10),    str(hostip), font=font, fill="blue")
 
             draw.text((x, top+25),'Temperature.', font=font, fill="red")
-            draw.text((x+74, top+25),str(temperature) + 'C', font=font, fill="blue")
+            draw.text((x+74, top+25),str(temperature) + '*C', font=font, fill="blue")
             draw.text((x, top+36),'Humidity....',  font=font, fill="red")
             draw.text((x+74, top+36),str(humidity) + '%',  font=font, fill="blue")
             draw.text((x, top+48),'Pressure....',  font=font, fill="red")
