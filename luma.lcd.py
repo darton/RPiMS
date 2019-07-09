@@ -17,6 +17,7 @@ import socket
 from PIL import Image
 from PIL import ImageDraw
 from PIL import ImageFont
+from PIL import ImageColor
 
 # Load default font.
 font = ImageFont.load_default()
