@@ -1,8 +1,6 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
 # -*- coding:utf-8 -*-
-
-#https://luma-lcd.readthedocs.io/en/latest/python-usage.html
 
 from luma.core.interface.serial import spi
 from luma.core.render import canvas
@@ -26,11 +24,13 @@ width = 128
 height = 128
 
 # First define some constants to allow easy resizing of shapes.
-padding = 3
+padding = 0
 top = padding
 bottom = height-padding
+
 # Move left to right keeping track of the current x position for drawing shapes.
-x = 3
+x = 10
+
 
 serial = spi(device=0, port=0, bus_speed_hz = 16000000, transfer_size = 4096, gpio_DC = 25, gpio_RST = 27)
 device = st7735(serial)
@@ -51,25 +51,30 @@ try:
             door_sensor_3 = redis_db.get('door_sensor_3')
 
 #*****draw on lcd********
-#*****draw rectangle*****
-            draw.rectangle([(0,127),(127,0)],fill = "white")
 
-            draw.text((x, top),       'IP:', font=font, fill="red")
-            draw.text((x+20, top),    str(hostip), font=font, fill="blue")
+            draw.line([(0,0),(127,0)], fill = "red",width = 6)
+            draw.line([(127,0),(127,127)], fill = "red",width = 3)
+            draw.line([(127,127),(0,127)], fill = "red",width = 3)
+            draw.line([(0,127),(0,0)], fill = "red",width = 5)
 
-            draw.text((x, top+20),    'Temperature.', font=font, fill="red")
-            draw.text((x+78, top+20), str(temperature) + ' *C', font=font, fill="blue")
-            draw.text((x, top+31),    'Humidity ...',  font=font, fill="red")
-            draw.text((x+78, top+31), str(humidity) + ' %',  font=font, fill="blue")
-            draw.text((x, top+41),    'Pressure ...',  font=font, fill="red")
-            draw.text((x+78, top+41), str(pressure) + ' hPa',  font=font, fill="blue")
+            draw.rectangle([(5,124),(124,6)],fill = "white")
 
-            draw.text((x, top+61),    'Door 1 .....',  font=font, fill="red")
-            draw.text((x+78, top+61), str(door_sensor_1),  font=font, fill="blue")
-            draw.text((x, top+71),    'Door 2 .....',  font=font, fill="red")
-            draw.text((x+78, top+71), str(door_sensor_2),  font=font, fill="blue")
-            draw.text((x, top+81),    'Door 3 .....',  font=font, fill="red")
-            draw.text((x+78, top+81), str(door_sensor_3),  font=font, fill="blue")
+            draw.text((x, top+10),       'IP:', font=font, fill="red")
+            draw.text((x+20, top+10),    str(hostip), font=font, fill="blue")
+
+            draw.text((x, top+25),'Temperature.', font=font, fill="red")
+            draw.text((x+74, top+25),str(temperature) + 'C', font=font, fill="blue")
+            draw.text((x, top+36),'Humidity....',  font=font, fill="red")
+            draw.text((x+74, top+36),str(humidity) + '%',  font=font, fill="blue")
+            draw.text((x, top+48),'Pressure....',  font=font, fill="red")
+            draw.text((x+74, top+48),str(pressure) + 'hPa',  font=font, fill="blue")
+
+            draw.text((x, top+62),'Door 1......',  font=font, fill="red")
+            draw.text((x+74, top+62),str(door_sensor_1),  font=font, fill="blue")
+            draw.text((x, top+73),'Door 2......',  font=font, fill="red")
+            draw.text((x+74, top+73), str(door_sensor_2),  font=font, fill="blue")
+            draw.text((x, top+84),'Door 3......',  font=font, fill="red")
+            draw.text((x+74, top+84),str(door_sensor_3),  font=font, fill="blue")
 
 except KeyboardInterrupt:
     print("Error")
