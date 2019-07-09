@@ -39,14 +39,14 @@ use_door_sensor = "yes"
 #use motion sensor: yes/no
 use_motion_sensor = "no"
 
-# Led Lamp on GPIO 18
-led = LED(18)
+# Led Lamp on GPIO 17
+led = LED(17)
 
 #Button type sensors inputs: Door/Window, Smoke Alarm, CO Alarm, CO2 Alarm, Heat Alarm, Water Alarm sensors inputs (store the ref of functions in variable)
 
-door_sensor_1 = Button(12, hold_time=3)
-door_sensor_2 = Button(22, hold_time=3)
-door_sensor_3 = Button(23, hold_time=3)
+door_sensor_1 = Button(22, hold_time=3)
+door_sensor_2 = Button(23, hold_time=3)
+door_sensor_3 = Button(4, hold_time=3)
 button1 = Button(21)
 button2 = Button(20)
 button3 = Button(16)
@@ -56,7 +56,7 @@ joystick_fire = Button(13, hold_time=5)
 joystick_down = Button(19)
 joystick_right = Button(26)
 
-#Motion Sensor inputs:
+#Motion Sensor inputs on GPIO 12:
 MotionSensor_1 = MotionSensor(12)
 
 button_sensor_list = {
