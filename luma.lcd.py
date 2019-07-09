@@ -22,11 +22,8 @@ from PIL import ImageColor
 # Load default font.
 font = ImageFont.load_default()
 
-# Create blank image for drawing.
-# Make sure to create image with mode '1' for 1-bit color.
 width = 128
 height = 128
-#image = Image.new('1', (width, height))
 
 # First define some constants to allow easy resizing of shapes.
 padding = 3
