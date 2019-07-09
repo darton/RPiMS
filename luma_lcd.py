@@ -75,5 +75,5 @@ try:
             draw.text((x+74, top+84),str(door_sensor_3),  font=font, fill="blue")
 
 except KeyboardInterrupt:
-    print("Error")
-GPIO.cleanup()
+    print("The End")
+    GPIO.cleanup()
