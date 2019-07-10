@@ -152,7 +152,8 @@ sudo zabbix_get -s 127.0.0.1 -k dht.pull[2]
  
  BCM17 -> DOUT DHT11/DHT22/AM2302
  
- 
+
+
  - Temperature, Humidity, Pressure Sensor BME280
  
  BCM2 [pin 3] - SDA
@@ -164,6 +165,7 @@ sudo zabbix_get -s 127.0.0.1 -k dht.pull[2]
  Ground [pin 9] - GND
  
 
+
  - Hardware Clock
  
  3v3 Power     [pin 1] -> +
@@ -173,6 +175,7 @@ BCM2 (SDA)    [pin33] -> D
 BCM3 (SCL)    [pin 5] -> C
 
 Ground -> GND [pin 9] -> GND
+
 
 
 - Input Sensors (door sensors)
@@ -188,6 +191,7 @@ BCM4 [pin 7] -> Input Sensor 3 (Door/window sensor)
 BCM12 [pin 32] -> Input Sensor 4 (Motion sensor)
 
 
+
 - WaveShare HAT buttons
 
 BCM21 [pin 40] -> Button 1
@@ -195,6 +199,7 @@ BCM21 [pin 40] -> Button 1
 BCM20 [pin 38] -> Button 2
 
 BCM16 [pin 36] -> Button 3
+
 
 
 - WaveShare HAT Joystick
