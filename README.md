@@ -152,6 +152,17 @@ sudo zabbix_get -s 127.0.0.1 -k dht.pull[2]
  
  BCM17 -> DOUT DHT11/DHT22/AM2302
  
+ 
+ - Temperature, Humidity, Pressure Sensor BME280
+ 
+ BCM2 [pin 3] - SDA
+ 
+ BCM3 [pin 5] - SDC
+ 
+ 3v3 Power [pin 1] - VCC
+ 
+ Ground [pin 9] - GND
+ 
 
  - Hardware Clock
  
@@ -160,8 +171,6 @@ sudo zabbix_get -s 127.0.0.1 -k dht.pull[2]
 BCM2 (SDA)    [pin33] -> D
 
 BCM3 (SCL)    [pin 5] -> C
-
-BCM4 (GPCLK0) [pin 7] -> NC
 
 Ground -> GND [pin 9] -> GND
 
@@ -174,17 +183,38 @@ BCM22 [pin 15] -> Input Sensor 1 (Door/window sensor)
 
 BCM23 [pin 16] -> Input Sensor 2 (Door/window sensor)
 
-BCM24 [pin 18] -> Input Sensor 3 (Door/window sensor)
+BCM4 [pin 7] -> Input Sensor 3 (Door/window sensor)
 
-BCM25 [pin 22] -> Input Sensor 4 (Door/window sensor)
+BCM12 [pin 32] -> Input Sensor 4 (Motion sensor)
 
-BCM25 [pin 27] -> Input Sensor 5 (PIR sensor)
+
+- WaveShare HAT buttons
+
+BCM21 [pin 40] -> Button 1
+
+BCM20 [pin 38] -> Button 2
+
+BCM16 [pin 36] -> Button 3
+
+
+- WaveShare HAT Joystick
+
+BCM5 [pin 29] -> Joytstick left
+
+BCM6 [pin 31] -> Joytstick up
+
+BCM13 [pin 33] -> Joytstick fire
+
+BCM19 [pin 35] -> Joytstick down
+
+BCM26 [pin 37] -> Joytstick right
+
 
 
 ## B.o.M - Bill of Materials
 
 * BME280 or DHT11/DHT22/AM2302 - 1 pcs
-* Door/window Sensor - 4 pcs
+* Door/window Sensor - 2 pcs
 * Motion Sensor - 1 pcs
 * PiCamera - 1 pcs
 * PiCamera Case - 1pcs
