@@ -17,9 +17,7 @@ sudo apt-get update
 
 sudo apt-get dist-upgrade
 
-sudo apt-get -y install git-core python3-gpiozero python-gpiozero python3-pip python-pip build-essential python3-dev python-dev python3-numpy python-numpy python3-picamera python-picamera redis-server php php-fpm php-redis zabbix-agent libfreetype6-dev libopenjp2-7 libtiff5 libjpeg-dev build-essential
-
-sudo apt install nginx
+sudo apt-get -y install git-core python3-gpiozero python-gpiozero python3-pip python-pip build-essential python3-dev python-dev python3-numpy python-numpy python3-picamera python-picamera redis-server zabbix-agent libfreetype6-dev libopenjp2-7 libtiff5 libjpeg-dev build-essential
 
 sudo python3 -m pip install --upgrade pip setuptools wheel
 
@@ -45,31 +43,33 @@ sudo systemctl enable redis-server.service
 
 sudo systemctl start redis-server.service
 
-echo "cgi.fix_pathinfo=0" |sudo tee -a /etc/php/7.0/fpm/php.ini
+sudo apt install nginx php php-fpm php-redis
+
+echo "cgi.fix_pathinfo=0" |sudo tee -a /etc/php/7.3/fpm/php.ini
 
 sudo rm /var/www/html/index.html
 
-sudo a2enmod proxy_fcgi setenvif
+#sudo a2enmod proxy_fcgi setenvif
 
-sudo a2enconf php7.0-fpm
+#sudo a2enconf php7.0-fpm
 
-sudo systemctl restart php7.0-fpm
+sudo systemctl restart php7.3-fpm
 
-sudo systemctl enable php7.0-fpm
+sudo systemctl enable php7.3-fpm
 
 sudo systemctl restart apache2
 
 sudo mv $installdir/index.php /var/www/html/
 
-#curl -sS https://raw.githubusercontent.com/darton/RPiMS/master/nginx/default > $installdir/nginx.default
+curl -sS https://raw.githubusercontent.com/darton/RPiMS/master/nginx/default > $installdir/nginx.default
 
-#sudo systemctl enable nginx
+sudo mv /etc/nginx/sites-available/default /etc/nginx/sites-available/default.org
 
-#sudo mv /etc/nginx/sites-available/default /etc/nginx/sites-available/default.org
+sudo mv $installdir/nginx.default /etc/nginx/sites-available/
 
-#sudo mv $installdir/nginx.default /etc/nginx/sites-available/
+sudo systemctl restart nginx
 
-#sudo systemctl restart nginx
+sudo systemctl enable nginx
 
 echo 'zabbix ALL=(ALL) NOPASSWD: /home/pi/scripts/RPiMS/redis-get.py' | sudo EDITOR='tee -a' visudo
 
