@@ -39,14 +39,24 @@ use_door_sensor = "yes"
 #use motion sensor: yes/no
 use_motion_sensor = "no"
 
-# Led Lamp on GPIO 17
+#use BME280 sensor: yes/no
+use_BME280_sensor = "yes"
+
+#use DHT22 sensor: yes/no
+use_DHT22_sensor = "no"
+
+# Led Lamp or Relay on GPIO 17
 led = LED(17)
 
 #Button type sensors inputs: Door/Window, Smoke Alarm, CO Alarm, CO2 Alarm, Heat Alarm, Water Alarm sensors inputs (store the ref of functions in variable)
 
 door_sensor_1 = Button(22, hold_time=3)
 door_sensor_2 = Button(23, hold_time=3)
-door_sensor_3 = Button(4, hold_time=3)
+
+#Motion Sensor inputs on GPIO 12:
+MotionSensor_1 = MotionSensor(12)
+
+#Waveshare LCD/OLED
 button1 = Button(21)
 button2 = Button(20)
 button3 = Button(16)
@@ -55,9 +65,6 @@ joystick_up = Button(6)
 joystick_fire = Button(13, hold_time=5)
 joystick_down = Button(19)
 joystick_right = Button(26)
-
-#Motion Sensor inputs on GPIO 12:
-MotionSensor_1 = MotionSensor(12)
 
 button_sensor_list = {
     "button_1"      : button1,
@@ -73,7 +80,6 @@ button_sensor_list = {
 door_sensor_list = {
     "door_sensor_1" : door_sensor_1,
     "door_sensor_2" : door_sensor_2,
-    "door_sensor_3" : door_sensor_3
 }
 
 motion_sensor_list = {
@@ -108,6 +114,22 @@ if use_motion_sensor is "yes" :
 else:
     redis_db.set("use_motion_sensor", '0')
 
+if use_BME280_sensor is "yes" :
+    redis_db.set("use_BME280_sensor", '1')
+    redis_db.set('Humidity', '50.0')
+    redis_db.set('Temperature', '20.0')
+    redis_db.set('Pressure', '1024.0')
+else:
+    redis_db.set("use_BME280_sensor", '0')
+
+if use_DHT22_sensor is "yes" :
+    redis_db.set("use_DHT22_sensor", '1')
+    redis_db.set('Humidity', '50.0')
+    redis_db.set('Temperature', '20.0')
+else:
+    redis_db.set("use_DHT22_sensor", '0')
+
+
 
 # --- Funcions ---
 
@@ -137,10 +159,10 @@ def door_action_closed(door_id):
 
 def door_action_opened(door_id):
     redis_db.set(str(door_id), 'open')
-    led.source = any_values(door_sensor_1.values, door_sensor_2.values, door_sensor_3.values)   
+    led.source = any_values(door_sensor_1.values, door_sensor_2.values, door_sensor_3.values)
     verbose = program_remote_control()
     if verbose is 'yes' :
-        print("The " + str(door_id) + " has been opened!") 
+        print("The " + str(door_id) + " has been opened!")
     if zabbix_sender is 'yes' :
         zabbix_sender_cmd ='/home/pi/scripts/RPiMS/zabbix_sender.sh info_when_door_has_been_opened' + " " + str(door_id)
         subprocess.call(zabbix_sender_cmd, shell=True)
@@ -157,7 +179,7 @@ def door_status_open(door_id):
     redis_db.set(str(door_id), 'open')
     verbose = program_remote_control()
     if verbose is 'yes' :
-        print("The " + str(door_id) + " is opened!")   
+        print("The " + str(door_id) + " is opened!")
     if zabbix_sender is 'yes' :
         zabbix_sender_cmd ='/home/pi/scripts/RPiMS/zabbix_sender.sh info_when_door_is_opened' + " " + str(door_id)
         subprocess.call(zabbix_sender_cmd, shell=True)
