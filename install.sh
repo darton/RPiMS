@@ -21,11 +21,7 @@ sudo apt-get -y install git-core python3-gpiozero python-gpiozero python3-pip py
 
 sudo python3 -m pip install --upgrade pip setuptools wheel
 
-sudo python -m pip install --upgrade pip setuptools wheel
-
 sudo pip3 install Adafruit_DHT redis
-
-sudo pip install Adafruit_DHT redis
 
 sudo -H pip3 install --upgrade luma.oled
 
