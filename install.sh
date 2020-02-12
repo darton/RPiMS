@@ -45,7 +45,7 @@ sudo systemctl start redis-server.service
 
 sudo apt install nginx php php-fpm php-redis
 
-echo "cgi.fix_pathinfo=0" |sudo tee -a /etc/php/7.3/fpm/php.ini
+echo "cgi.fix_pathinfo=0" |sudo tee -a /etc/php/7.0/fpm/php.ini
 
 sudo rm /var/www/html/index.html
 
@@ -53,11 +53,9 @@ sudo rm /var/www/html/index.html
 
 #sudo a2enconf php7.0-fpm
 
-sudo systemctl restart php7.3-fpm
+sudo systemctl restart php7.0-fpm
 
-sudo systemctl enable php7.3-fpm
-
-sudo systemctl restart apache2
+sudo systemctl enable php7.0-fpm
 
 sudo mv $installdir/index.php /var/www/html/
 
@@ -85,5 +83,7 @@ cat $installdir/rc.local |sudo tee /etc/rc.local
 
 echo "# Add the ADHT.py as cron jobs
 
-#* * * * * pi $installdir/ADHT.py  > /dev/null 2>&1
+#* * * * * pi $installdir/ADHT.py > /dev/null 2>&1
+#* * * * * pi $installdir/BME280.py > /dev/null 2>&1
+#* * * * * pi $installdir/DS18B20.py > /dev/null 2>&1
 " |sudo tee /etc/cron.d/rpims
