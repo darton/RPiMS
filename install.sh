@@ -39,6 +39,8 @@ sudo pip3 install RPi.bme280
 
 sudo pip install RPi.bme280
 
+sudo apt-get install python3-w1thermsensor
+
 sudo systemctl enable redis-server.service
 
 sudo systemctl start redis-server.service
