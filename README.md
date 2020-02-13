@@ -224,7 +224,7 @@ BCM26 [pin 37] -> Joytstick right
 
 ## B.o.M - Bill of Materials
 
-* BME280 or DHT11/DHT22/AM2302 - 1 pcs
+* BME280 or DHT11/DHT22/AM2302 or DS18B20 - 1 pcs
 * Door/window Sensor - 2 pcs
 * Motion Sensor - 1 pcs
 * PiCamera - 1 pcs
@@ -235,7 +235,7 @@ BCM26 [pin 37] -> Joytstick right
 * Waveshare OLED 1,3'' 128x64px SPI/I2C or Waveshare TFT 1,44'' 128x128px SPI - 1 pcs 
 * ITALTRONIC 25.0410000.RP3 
 * Male Headers 1x40 raster 2,54mm angle - 2 pcs
-* RTC - 1 pcs
+* RTC DS3231 I2C - 1 pcs
 
 
 ## Usefull links
