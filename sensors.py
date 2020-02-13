@@ -46,8 +46,11 @@ use_BME280_sensor = "yes"
 #use DHT22 sensor: yes/no
 use_DHT22_sensor = "no"
 
-# Led Lamp or Relay on GPIO 17
-led = LED(17)
+#use DS18B20 sensor: yes/no
+use_DS18B20_sensor = "no"
+
+# Led Lamp or Relay
+led = LED(18)
 
 #Button type sensors inputs: Door/Window, Smoke Alarm, CO Alarm, CO2 Alarm, Heat Alarm, Water Alarm sensors inputs (store the ref of functions in variable)
 
@@ -130,7 +133,11 @@ if use_DHT22_sensor is "yes" :
 else:
     redis_db.set("use_DHT22_sensor", '0')
 
-
+if use_DS18B20_sensor is "yes" :
+    redis_db.set("use_DS18B20_sensor", '1')
+    redis_db.set('Temperature', '20.0')
+else:
+    redis_db.set("use_DS18B20_sensor", '0')
 
 # --- Funcions ---
 
