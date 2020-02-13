@@ -244,6 +244,8 @@ BCM26 [pin 37] -> Joytstick right
 
 * [BME280 Tutorial](https://pypi.org/project/RPi.bme280/)
 
+* [DS18B20 Tutorial](https://pypi.org/project/w1thermsensor https://github.com/timofurrer/w1thermsensor)
+
 * [Luma Core](https://pypi.org/project/luma.core/)
 
 * [TME Italtronic Case](https://www.tme.eu/pl/en/details/it-25.0410000.rp3/enclosure-for-embedded-systems/italtronic/25-0410000-rp3/)
