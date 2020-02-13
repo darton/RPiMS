@@ -10,5 +10,5 @@ humidity = redis_db.get('Humidity')
 pressure = redis_db.get('Pressure')
 
 f = open("/var/tmp/sensor.log", "a")
-f.write( str(datetime.datetime.now()) + ' Temp={0:0.1f}*C  Humidity={1:0.1f}% Pressure={2:0.1f}hPa'  .format(float(temperature), float(humidity), float(pressure) )  + '\n' )
+f.write( str(datetime.datetime.now()) + ' Temp={0:0.1f}*C Humidity={1:0.1f}% Pressure={2:0.1f}hPa' .format(float(temperature), float(humidity), float(pressure) )  + '\n' )
 f.close()
