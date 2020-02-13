@@ -255,7 +255,7 @@ BCM26 [pin 37] -> Joytstick right
 * [Luma Core](https://pypi.org/project/luma.core/)
 
 * [TME Italtronic Case](https://www.tme.eu/pl/en/details/it-25.0410000.rp3/enclosure-for-embedded-systems/italtronic/25-0410000-rp3/)
-
+* [TME Italtronic Case](https://www.tme.eu/pl/en/details/it-25.0610000.rp3/enclosure-for-embedded-systems/italtronic/25-0610000-rp3/)
 * [Zabbix](https://zabbix.org/wiki/Main_Page)
 
 * [WaveShare 1.3inch OLED HAT](https://www.waveshare.com/product/mini-pc/raspberry-pi/displays/1.3inch-oled-hat.htm)
