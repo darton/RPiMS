@@ -5,7 +5,7 @@ installdir=/home/pi/scripts/RPiMS
 [[ -d $installdir ]] || mkdir -p $installdir
 [[ -d /home/pi/Videos ]] || mkdir -p /home/pi/Videos
 
-for file in ADHT.py BME280.py CPUtemp.py sensors.py redis-get.py redis-get-logdata.py stream.sh videorecorder.sh zabbix_sender.sh zabbix-rpims.conf README.md index.php nginx-default motd rc.local luma_oled.py luma_lcd.py cputemp.py; do
+for file in ADHT.py BME280.py CPUtemp.py DS18B20.py sensors.py redis-get.py redis-get-logdata.py stream.sh videorecorder.sh zabbix_sender.sh zabbix-rpims.conf README.md index.php nginx-default motd rc.local luma_oled.py luma_lcd.py; do
 
    curl -sS https://raw.githubusercontent.com/darton/RPiMS/master/$file > $installdir/$file
 
@@ -27,13 +27,7 @@ sudo -H pip3 install --upgrade luma.oled
 
 sudo -H pip3 install --upgrade luma.lcd
 
-sudo -H pip install --upgrade luma.oled
-
-sudo -H pip install --upgrade luma.lcd
-
 sudo pip3 install RPi.bme280
-
-sudo pip install RPi.bme280
 
 sudo apt-get install python3-w1thermsensor
 
@@ -57,11 +51,11 @@ sudo systemctl enable php7.0-fpm
 
 sudo mv $installdir/index.php /var/www/html/
 
-curl -sS https://raw.githubusercontent.com/darton/RPiMS/master/nginx/default > $installdir/nginx.default
+curl -sS https://raw.githubusercontent.com/darton/RPiMS/master/nginx.default > $installdir/nginx.default
 
 sudo mv /etc/nginx/sites-available/default /etc/nginx/sites-available/default.org
 
-sudo mv $installdir/nginx.default /etc/nginx/sites-available/
+sudo mv $installdir/nginx.default /etc/nginx/sites-available/default
 
 sudo systemctl restart nginx
 
@@ -84,4 +78,5 @@ echo "# Add the ADHT.py as cron jobs
 #* * * * * pi $installdir/ADHT.py > /dev/null 2>&1
 #* * * * * pi $installdir/BME280.py > /dev/null 2>&1
 #* * * * * pi $installdir/DS18B20.py > /dev/null 2>&1
+#* * * * * pi $installdir/CPUtemp.py > /dev/null 2>&1
 " |sudo tee /etc/cron.d/rpims
