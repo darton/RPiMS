@@ -17,7 +17,6 @@ def sensor_lock(lock_status):
 
 
 def wrtite_sensor_data_to_db():
-
     calibration_params = bme280.load_calibration_params(bus, address)
     data = bme280.sample(bus, address, calibration_params)
 
