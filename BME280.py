@@ -1,5 +1,7 @@
 #!/usr/bin/python3
 
+# -*- coding:utf-8 -*-
+
 import smbus2
 import bme280
 import redis
