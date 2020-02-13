@@ -61,7 +61,7 @@ try:
             pressure = round(float(redis_db.get('Pressure')),1)
             door_sensor_1 = redis_db.get('door_sensor_1')
             door_sensor_2 = redis_db.get('door_sensor_2')
-            door_sensor_3 = redis_db.get('door_sensor_3')
+            cputemp = redis_db.set('CPUtemperature', cpu.temperature)
             #draw on oled
             draw.text((x, top),       'IP:' + str(hostip), font=font, fill=255)
             draw.text((x, top+9),     'Temperature..' + str(temperature) + '*C', font=font, fill=255)
@@ -69,7 +69,7 @@ try:
             draw.text((x, top+27),    'Pressure.....' + str(pressure) + 'hPa',  font=font, fill=255)
             draw.text((x, top+36),    'Door 1.......' + str(door_sensor_1),  font=font, fill=255)
             draw.text((x, top+45),    'Door 2.......' + str(door_sensor_2),  font=font, fill=255)
-            draw.text((x, top+54),    'Door 3.......' + str(door_sensor_3),  font=font, fill=255)
+            draw.text((x, top+54),    'CpuTemp......' + str(cputemp) + '*C', font=font, fill=255)
 
 except:
     print("The End)
