@@ -1,5 +1,7 @@
 #!/usr/bin/python3
 
+# -*- coding:utf-8 -*-
+
 import redis
 from gpiozero import CPUTemperature
 
