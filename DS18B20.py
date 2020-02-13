@@ -15,7 +15,7 @@ def sensor_lock(lock_status):
 def wrtite_sensor_data_to_db():
     sensor = w1thermsensor.W1ThermSensor()
     ds18b20 = sensor.get_temperature()
-    redis_db.set('DS18B20_sensor_in_use', '0')
+    redis_db.set('Temperature', ds18b20)
     print('DS18B20 Temperature: {0:0.2f}C'.format(ds18b20))
 
 
