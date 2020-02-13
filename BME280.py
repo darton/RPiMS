@@ -19,9 +19,7 @@ if sensor_status is None:
     redis_db.set('BME280_sensor_in_use', '0')
     sensor_status=redis_db.get('BME280_sensor_in_use')
 
-
 if str(sensor_status) is '0' :
-
     redis_db.set('BME280_sensor_in_use', '1')
 
     calibration_params = bme280.load_calibration_params(bus, address)
