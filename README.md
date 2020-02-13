@@ -163,7 +163,15 @@ sudo zabbix_get -s 127.0.0.1 -k dht.pull[2]
  3v3 Power [pin 1] - VCC
  
  Ground [pin 9] - GND
- 
+
+
+- DS18B20 Temperature sensor
+
+BCM4 [pin 7] -> D
+
+3v3 Power [pin 1] - VCC
+
+Ground [pin 9] - GND
 
 
  - Hardware Clock
@@ -185,8 +193,6 @@ Ground - > GND
 BCM22 [pin 15] -> Input Sensor 1 (Door/window sensor)
 
 BCM23 [pin 16] -> Input Sensor 2 (Door/window sensor)
-
-BCM4 [pin 7] -> Input Sensor 3 (Door/window sensor)
 
 BCM12 [pin 32] -> Input Sensor 4 (Motion sensor)
 
