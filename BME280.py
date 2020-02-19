@@ -27,7 +27,8 @@ def wrtite_sensor_data_to_db():
     print('Humidity: {0:0.0f} %'.format(data.humidity))
     print('Temperature: {0:0.1f} C'.format(data.temperature))
     print('Pressure: {0:0.0f} hPa'.format(data.pressure))
-
+    sleep(1)
+    
 
 redis_db = redis.StrictRedis(host="localhost", port=6379, db=0, charset="utf-8", decode_responses=True)
 sensor_status=redis_db.get('BME280_sensor_in_use')
