@@ -29,13 +29,10 @@ sudo systemctl enable redis-server.service
 sudo systemctl start redis-server.service
 
 sudo apt -y install nginx php php-fpm php-redis
-echo "cgi.fix_pathinfo=0" |sudo tee -a /etc/php/7.0/fpm/php.ini
-sudo rm /var/www/html/index.html
-#sudo a2enmod proxy_fcgi setenvif
-#sudo a2enconf php7.0-fpm
 sudo systemctl restart php7.3-fpm
 sudo systemctl enable php7.3-fpm
 sudo mv $installdir/index.php /var/www/html/
+sudo rm /var/www/html/index.html
 sudo mv /etc/nginx/sites-available/default /etc/nginx/sites-available/default.org
 curl -sS https://raw.githubusercontent.com/darton/RPiMS/master/nginx.default > /etc/nginx/sites-available/default
 sudo systemctl restart nginx
