@@ -5,9 +5,8 @@ installdir=/home/pi/scripts/RPiMS
 [[ -d $installdir ]] || mkdir -p $installdir
 [[ -d /home/pi/Videos ]] || mkdir -p /home/pi/Videos
 
-for file in ADHT.py BME280.py CPUtemp.py DS18B20.py sensors.py redis-get.py redis-get-ds18b20.py redis-get-logdata.py stream.sh videorecorder.sh zabbix_sender.sh zabbix-rpims.conf README.md index.php nginx-default motd rc.local luma_oled.py luma_lcd.py; do
+for file in $(curl -sS https://raw.githubusercontent.com/darton/RPiMS/master/files.txt); do
    curl -sS https://raw.githubusercontent.com/darton/RPiMS/master/$file > $installdir/$file
-   sleep 1
 done
 
 chmod u+x $installdir/*.py $installdir/*.sh
