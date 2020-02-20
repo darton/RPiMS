@@ -120,22 +120,16 @@ else:
 
 if use_BME280_sensor is "yes" :
     redis_db.set("use_BME280_sensor", '1')
-    redis_db.set('Humidity', '50.0')
-    redis_db.set('Temperature', '20.0')
-    redis_db.set('Pressure', '1013.0')
 else:
     redis_db.set("use_BME280_sensor", '0')
 
 if use_DHT22_sensor is "yes" :
     redis_db.set("use_DHT22_sensor", '1')
-    redis_db.set('Humidity', '50.0')
-    redis_db.set('Temperature', '20.0')
 else:
     redis_db.set("use_DHT22_sensor", '0')
 
 if use_DS18B20_sensor is "yes" :
     redis_db.set("use_DS18B20_sensor", '1')
-    redis_db.set('Temperature', '20.0')
 else:
     redis_db.set("use_DS18B20_sensor", '0')
 
