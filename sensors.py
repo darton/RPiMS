@@ -50,7 +50,7 @@ use_DHT22_sensor = "no"
 use_DS18B20_sensor = "no"
 
 # Led Lamp or Relay
-led = LED(17)
+led = LED(18)
 
 #Button type sensors inputs: Door/Window, Smoke Alarm, CO Alarm, CO2 Alarm, Heat Alarm, Water Alarm sensors inputs (store the ref of functions in variable)
 
