@@ -50,7 +50,7 @@ use_DHT22_sensor = "no"
 use_DS18B20_sensor = "no"
 
 # Led Lamp or Relay
-led = LED(18)
+led = LED(17)
 
 #Button type sensors inputs: Door/Window, Smoke Alarm, CO Alarm, CO2 Alarm, Heat Alarm, Water Alarm sensors inputs (store the ref of functions in variable)
 
@@ -120,16 +120,22 @@ else:
 
 if use_BME280_sensor is "yes" :
     redis_db.set("use_BME280_sensor", '1')
+    redis_db.set('Humidity', '50.0')
+    redis_db.set('Temperature', '20.0')
+    redis_db.set('Pressure', '1013.0')
 else:
     redis_db.set("use_BME280_sensor", '0')
 
 if use_DHT22_sensor is "yes" :
     redis_db.set("use_DHT22_sensor", '1')
+    redis_db.set('Humidity', '50.0')
+    redis_db.set('Temperature', '20.0')
 else:
     redis_db.set("use_DHT22_sensor", '0')
 
 if use_DS18B20_sensor is "yes" :
     redis_db.set("use_DS18B20_sensor", '1')
+    redis_db.set('Temperature', '20.0')
 else:
     redis_db.set("use_DS18B20_sensor", '0')
 
@@ -145,6 +151,7 @@ def program_remote_control():
 
 def door_action_closed(door_id):
     redis_db.set(str(door_id), 'close')
+    led.source = any_values(door_sensor_1,door_sensor_2)
     verbose =  program_remote_control()
     if verbose is 'yes' :
         print("The " + str(door_id) + " has been closed!")
@@ -161,7 +168,7 @@ def door_action_closed(door_id):
 
 def door_action_opened(door_id):
     redis_db.set(str(door_id), 'open')
-    led.source = any_values(door_sensor_1.values, door_sensor_2.values, door_sensor_3.values)
+    led.source = any_values(door_sensor_1,door_sensor_2)
     verbose = program_remote_control()
     if verbose is 'yes' :
         print("The " + str(door_id) + " has been opened!")
@@ -179,6 +186,7 @@ def door_action_opened(door_id):
 
 def door_status_open(door_id):
     redis_db.set(str(door_id), 'open')
+    led.source = any_values(door_sensor_1,door_sensor_2)
     verbose = program_remote_control()
     if verbose is 'yes' :
         print("The " + str(door_id) + " is opened!")
@@ -190,7 +198,7 @@ def door_status_open(door_id):
 
 def door_status_close(door_id):
     redis_db.set(str(door_id), 'close')
-    led.source = any_values(door_sensor_1.values, door_sensor_2.values, door_sensor_3.values)
+    led.source = any_values(door_sensor_1,door_sensor_2)
     verbose = program_remote_control()
     if verbose is 'yes' :
         print("The " + str(door_id) + " is closed!")
