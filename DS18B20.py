@@ -13,7 +13,7 @@ def write_sensors_data_to_db():
     sensorslist = W1ThermSensor.get_available_sensors([W1ThermSensor.THERM_SENSOR_DS18B20])
     for sensor in sensorslist:
         print("Sensor %s temperature %.2f"%(sensor.id,sensor.get_temperature()),"\xb0C")
-        redis_db.set('DS18B20_' + sensor.id, sensor.get_temperature())
+        redis_db.set('DS18B20-' + sensor.id, sensor.get_temperature())
     sensor_lock(0)
 
 
