@@ -40,6 +40,12 @@ Server=127.0.0.1, zabbix.example.com
 ServerActive=zabbix.example.com
 ```
 
+Restart Zabbix service
+
+```
+sudo systemctl restart zabbix-agent.service
+```
+
 ## Install if you have PiCamera
 
 ```
