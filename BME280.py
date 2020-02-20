@@ -24,9 +24,9 @@ def wrtite_sensor_data_to_db():
     redis_db.set('Temperature', data.temperature)
     redis_db.set('Pressure', data.pressure)
 
-    print('Humidity: {0:0.0f} %'.format(data.humidity))
-    print('Temperature: {0:0.1f} C'.format(data.temperature))
-    print('Pressure: {0:0.0f} hPa'.format(data.pressure))
+    print('Humidity: {0:0.0f}%'.format(data.humidity))
+    print('Temperature: {0:0.1f}\xb0C'.format(data.temperature))
+    print('Pressure: {0:0.0f}hPa'.format(data.pressure))
     sleep(1)
     
 
