@@ -17,12 +17,8 @@ def write_sensors_data_to_db():
     sensor_lock(0)
 
 redis_db = redis.StrictRedis(host="localhost", port=6379, db=0, charset="utf-8", decode_responses=True)
-
 sensor_status=redis_db.get('DS18B20_sensor_in_use')
-
 if str(sensor_status) is '0' or sensor_status is None:
     write_sensors_data_to_db()
-
 else:
     print('The sensor is in use, please try again later')
-
