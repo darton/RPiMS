@@ -29,7 +29,7 @@ sudo curl -sS https://raw.githubusercontent.com/darton/RPiMS/master/install.sh |
 Prepare zabbix agent
 
 ```
-sudo nano /etc/zabbix/zabbix_agentd.conf/zabbix-rpims.conf 
+sudo nano /etc/zabbix/zabbix_agentd.conf.d/zabbix-rpims.conf 
 ```
 
 Modify Server and ServerActive:
