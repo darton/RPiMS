@@ -15,6 +15,7 @@ def wrtite_sensor_data_to_db():
     print('CPU temperature: {0:0.0f}\xb0C'.format(data.temperature))
     sensor_lock(0)
 
+
 redis_db = redis.StrictRedis(host="localhost", port=6379, db=0, charset="utf-8", decode_responses=True)
 sensor_status=redis_db.get('CPUtemperature_sensor_in_use')
 if str(sensor_status) is '0' or sensor_status is None:
