@@ -15,8 +15,8 @@ bus = smbus2.SMBus(port)
 def sensor_lock(lock_status):
     redis_db.set('BME280_sensor_in_use', str(lock_status))
 
-
 def wrtite_sensor_data_to_db():
+    sensor_lock(1)
     calibration_params = bme280.load_calibration_params(bus, address)
     data = bme280.sample(bus, address, calibration_params)
 
@@ -27,20 +27,15 @@ def wrtite_sensor_data_to_db():
     print('Humidity: {0:0.0f}%'.format(data.humidity))
     print('Temperature: {0:0.1f}\xb0C'.format(data.temperature))
     print('Pressure: {0:0.0f}hPa'.format(data.pressure))
+
     sleep(1)
-    
+    sensor_lock(0)
+
 
 redis_db = redis.StrictRedis(host="localhost", port=6379, db=0, charset="utf-8", decode_responses=True)
 sensor_status=redis_db.get('BME280_sensor_in_use')
-
-if  sensor_status is None:
-    sensor_lock(1)
-    wrtite_sensor_data_to_db()
-    sensor_lock(0)
-
-elif str(sensor_status) is '0' :
-     sensor_lock(1)
+if str(sensor_status) is '0' or sensor_status is None:
      wrtite_sensor_data_to_db()
-     sensor_lock(0)
 else:
     print('The sensor is in use, please try again later')
+
