@@ -33,7 +33,7 @@ sudo systemctl enable php7.3-fpm
 sudo mv $installdir/index.php /var/www/html/
 sudo rm /var/www/html/*.html
 sudo mv /etc/nginx/sites-available/default /etc/nginx/sites-available/default.org
-curl -sS https://raw.githubusercontent.com/darton/RPiMS/master/nginx.default > /etc/nginx/sites-available/default
+sudo curl -sS https://raw.githubusercontent.com/darton/RPiMS/master/nginx.default > /etc/nginx/sites-available/default
 sudo systemctl restart nginx
 sudo systemctl enable nginx
 
