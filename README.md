@@ -146,9 +146,9 @@ raspistill -o test.jpg
 
 sudo apt-get  install zabbix-proxy-sqlite3
 
-sudo zabbix_get -s 127.0.0.1 -k dht.pull[4]
+sudo zabbix_get -s 127.0.0.1 -k rpims.pull[4]
 
-sudo zabbix_get -s 127.0.0.1 -k dht.pull[2]
+sudo zabbix_get -s 127.0.0.1 -k rpims.pull[2]
 ```
 
 ## Hardware setup - Raspberry Pi
