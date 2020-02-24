@@ -2,10 +2,10 @@
 
 export TERM=xterm-256color
 arr=($(/home/pi/scripts/RPiMS/redis-get.py))
-SENSOR_TEMP=$(echo ${arr[0]}|sed s/Temp=//)
+SENSOR_TEMP=$(echo ${arr[0]}|sed s/Temperature=//)
 SENSOR_HUM=$(echo ${arr[1]}|sed s/Humidity=//)
 SENSOR_PRESSURE=$(echo ${arr[2]}|sed s/Pressure=//)
-CPU_TEMP=$(vcgencmd measure_temp|awk -F\= '{print $2}')
+CPU_TEMP=$(vcgencmd measure_temp|awk -F[=\'] '{print $2"°C"}')
 
 echo "$(tput setaf 2)
    .~~.   .~~.
