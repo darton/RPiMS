@@ -36,11 +36,11 @@ if (!empty($CPUtemperature)) {
 }
 
 if (!empty($temperature)) {
-    print "<p style='color:red;'>Air Temperature : " . number_format($temperature,1) ." °C</p>";
+    print "<p style='color:green;'>Air Temperature : " . number_format($temperature,1) ." °C</p>";
 }
 
 if (!empty($humidity)) {
-    print "<p style='color:blue;'>Air Humidity : " . number_format($humidity,1) ." %</p>";
+    print "<p style='color:green;'>Air Humidity : " . number_format($humidity,1) ." %</p>";
 }
 if (!empty($pressure)) {
     print "<p style='color:green;'>Air Pressure : " . number_format($pressure,1) ." hPa</p><br>";
