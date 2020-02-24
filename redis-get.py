@@ -11,4 +11,4 @@ humidity = redis_db.get('Humidity')
 pressure = redis_db.get('Pressure')
 
 #print(temperature,humidity,pressure)
-print('{0:0.2f};{1:0.2f};{2:0.2f}'.format(float(temperature),float(humidity),float(pressure)))
+print('{0:0.2f};{1:0.2f};{2:0.2f};'.format(float(temperature),float(humidity),float(pressure)))
