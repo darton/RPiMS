@@ -32,7 +32,7 @@ if (!empty($location)) {
 }
 
 if (!empty($CPUtemperature)) {
-    print "<p style='color:red;'>CPUtemperature : " . number_format($CPUtemperature,1) ." °C</p>";
+    print "<p style='color:magenta;'>CPUtemperature : " . number_format($CPUtemperature,1) ." °C</p><br>";
 }
 
 if (!empty($temperature)) {
