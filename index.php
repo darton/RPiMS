@@ -24,15 +24,15 @@ if (empty($sensorslist)) {
 }
 
 if (!empty($hostname)) {
-    print "<p style='color:magenta;'>Hostname : " . $hostname ."</p>";
+    print "<p style='color:blue;'>Hostname : " . $hostname ."</p>";
 }
 
 if (!empty($location)) {
-    print "<p style='color:magenta;'>Location : " . $location ."</p>";
+    print "<p style='color:blue;'>Location : " . $location ."</p>";
 }
 
 if (!empty($CPUtemperature)) {
-    print "<p style='color:magenta;'>CPUtemperature : " . number_format($CPUtemperature,1) ." °C</p><br>";
+    print "<p style='color:blue;'>CPUtemperature : " . number_format($CPUtemperature,1) ." °C</p><br>";
 }
 
 if (!empty($temperature)) {
