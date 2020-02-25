@@ -11,11 +11,14 @@
     $redis = new Redis();
     $redis->connect('127.0.0.1', 6379);
     $location = $redis->get('Location');
-    $CPUtemperature = $redis->get('CPUtemperature');
+    $CPUtemperature = $redis->get('CPU_Temperature');
 
-    $temperature = $redis->get('Temperature');
-    $humidity = $redis->get('Humidity');
-    $pressure = $redis->get('Pressure');
+    $BME280_Temperature = $redis->get('BME280_Temperature');
+    $BME280_Humidity = $redis->get('BME280_Humidity');
+    $BME280_Pressure = $redis->get('BME280_Pressure');
+
+    $DHT22_Temperature = $redis->get('DHT22_Temperature');
+    $DHT22_Humidity = $redis->get('DHT22_Humidity');
 
     $sensorslist = $redis->keys('*');
 
@@ -32,19 +35,27 @@ if (!empty($location)) {
 }
 
 if (!empty($CPUtemperature)) {
-    print "<p style='color:blue;'>CPUtemperature : " . number_format($CPUtemperature,1) ." °C</p><br>";
+    print "<p style='color:blue;'>CPUtemperature : " . number_format($CPUtemperature,1) ." °C</p>";
+}
+print "<br>";
+
+
+if (!empty($BME280_Temperature) && !empty($BME280_Humidity) && !empty($BME280_Pressure)) {
+    print "<p style='color:green;'><b>BME280</b></p>";
+    print "<p style='color:green;'>Temperature : " . number_format($BME280_Temperature,1) ." °C</p>";
+    print "<p style='color:green;'>Humidity : " . number_format($BME280_Humidity,1) ." %</p>";
+    print "<p style='color:green;'>Pressure : " . number_format($BME280_Pressure,1) ." hPa</p><br>";
 }
 
-if (!empty($temperature)) {
-    print "<p style='color:green;'>Air Temperature : " . number_format($temperature,1) ." °C</p>";
+
+if (!empty($DHT22_Temperature) && !empty($DHT22_Humidity)) {
+    print "<p style='color:green;'><b>DHT22</b></p>";
+    print "<p style='color:green;'>Temperature : " . number_format($DHT22_Temperature,1) ." °C</p>";
+    print "<p style='color:green;'>Humidity : " . number_format($DHT22_Humidity,1) ." %</p><br>";
 }
 
-if (!empty($humidity)) {
-    print "<p style='color:green;'>Air Humidity : " . number_format($humidity,1) ." %</p>";
-}
-if (!empty($pressure)) {
-    print "<p style='color:green;'>Air Pressure : " . number_format($pressure,1) ." hPa</p><br>";
-}
+
+print "<p style='color:red;'><b>DS18B20</b></p>";
     foreach ($sensorslist as $key)
     {
     $value = $redis->get($key);
@@ -53,9 +64,10 @@ if (!empty($pressure)) {
         print "<p style='color:red;'>" . $key . " Temperature: " . $value . " °C</p>";
     }
     }
-
 print "<br>";
 
+
+print "<p style='color:brown;'><b>Door/Widnow Sensors</b></p>";
     foreach ($sensorslist as $key)
     {
     $value = $redis->get($key);
@@ -64,6 +76,7 @@ print "<br>";
         print "<p style='color:brown;'>" . $key . " : " . $value . "</p>";
     }
     }
+print "<br>";
 
 ?>
 </body>
