@@ -79,8 +79,8 @@ def Main():
             # here you can do whatever you want with the variables: print them, file them out, anything
             temperature = filtered_temperature.pop()
             humidity = filtered_humidity.pop()
-            redis_db.set('Humidity', humidity)
-            redis_db.set('Temperature', temperature)
+            redis_db.set('DHT22_Humidity', humidity)
+            redis_db.set('DHT22_Temperature', temperature)
             lock.release()
             sleep(1)
             event.set()
