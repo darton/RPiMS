@@ -20,9 +20,9 @@ def wrtite_sensor_data_to_db():
     calibration_params = bme280.load_calibration_params(bus, address)
     data = bme280.sample(bus, address, calibration_params)
 
-    redis_db.set('Humidity', data.humidity)
-    redis_db.set('Temperature', data.temperature)
-    redis_db.set('Pressure', data.pressure)
+    redis_db.set('BME280_Humidity', data.humidity)
+    redis_db.set('BME280_Temperature', data.temperature)
+    redis_db.set('BME280_Pressure', data.pressure)
 
     print('Humidity: {0:0.0f}%'.format(data.humidity))
     print('Temperature: {0:0.1f}\xb0C'.format(data.temperature))
