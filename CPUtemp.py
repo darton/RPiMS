@@ -11,7 +11,7 @@ def sensor_lock(lock_status):
 def wrtite_sensor_data_to_db():
     sensor_lock(1)
     data = CPUTemperature()
-    redis_db.set('CPUtemperature', data.temperature)   
+    redis_db.set('CPU_Temperature', data.temperature)   
     #print('CPU temperature: {0:0.0f}\xb0C'.format(data.temperature))
     print('CPU temperature: {0:0.1f}'.format(data.temperature),chr(176)+'C',sep='')
     sensor_lock(0)
