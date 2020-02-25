@@ -48,7 +48,7 @@ sudo chmod ugo+x  /etc/update-motd.d/20-rpims
 
 cat $installdir/rc.local |sudo tee /etc/rc.local
 
-echo "# Add the ADHT.py as cron jobs
+echo "#Uncomment sensor you want
 #* * * * * pi $installdir/ADHT.py > /dev/null 2>&1
 #* * * * * pi $installdir/BME280.py > /dev/null 2>&1
 #* * * * * pi $installdir/DS18B20.py > /dev/null 2>&1
