@@ -7,7 +7,7 @@ sensors.py
 luma_oled.py
 luma_lcd.py
 redis-get.py
-redis-get-ds18b20.py 
+redis-get-data.py 
 redis-get-logdata.py
 index.php
 stream.sh
