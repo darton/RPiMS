@@ -12,7 +12,6 @@ if sys.argv[1] == 'BME280':
     humidity = redis_db.get('BME280_Humidity')
     pressure = redis_db.get('BME280_Pressure')
     print('Temperature={0:0.2f};Humidity={1:0.2f};Pressure={2:0.2f};'.format(float(temperature),float(humidity),float(pressure)))
-
 elif sys.argv[1] == 'DS18B20':
     for sensor in redis_db.keys(pattern='DS18B20-*'):
         print(sensor + '={0:0.2f}'.format(float(redis_db.get(sensor))), end=';')
