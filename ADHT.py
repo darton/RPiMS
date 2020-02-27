@@ -2,13 +2,14 @@
 
 # based on Robert Lucian source code: https://forum.dexterindustries.com/t/solved-dht-sensor-occasionally-returning-spurious-values/2939/4
 # https://forum.dexterindustries.com/t/noise-removal-algorithm-for-grove-dht-pro-sensor/2989?source_topic_id=3662
-    
+
 import redis
 import Adafruit_DHT
 import math
 import numpy
 import threading
 from time import sleep
+from datetime import datetime
 
 sensor = Adafruit_DHT.AM2302
 gpiopin = 17
@@ -25,7 +26,7 @@ event = threading.Event() # we are using an event so we can close the thread as 
 # we determine the standard normal deviation and we exclude anything that goes beyond a threshold
 # think of a probability distribution plot - we remove the extremes
 # the greater the std_factor, the more "forgiving" is the algorithm with the extreme values
-def eliminateNoise(values, std_factor = 2):
+def eliminateNoise(values, std_factor = 1):
     mean = numpy.mean(values)
     standard_deviation = numpy.std(values)
 
@@ -58,7 +59,7 @@ def readingValues():
                 values.append({"temp" : temp, "hum" : humidity})
                 counter += 1
 
-            sleep(3) # pause between measurements
+            sleep(2) # pause between measurements
 
         lock.acquire()
         filtered_temperature.append(numpy.mean(eliminateNoise([x["temp"] for x in values])))
@@ -79,12 +80,14 @@ def Main():
             # here you can do whatever you want with the variables: print them, file them out, anything
             temperature = filtered_temperature.pop()
             humidity = filtered_humidity.pop()
-            redis_db.set('DHT22_Humidity', humidity)
-            redis_db.set('DHT22_Temperature', temperature)
-            lock.release()
-            sleep(1)
-            event.set()
+            redis_db.set('Humidity', humidity)
+            redis_db.set('Temperature', temperature)
+            print('{},{:.01f},{:.01f}' .format(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), temperature, humidity))
 
+            lock.release()
+
+        sleep(2)
+    data_collector.join()
 
 if __name__ == "__main__":
     try:
