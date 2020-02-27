@@ -80,13 +80,15 @@ def Main():
             # here you can do whatever you want with the variables: print them, file them out, anything
             temperature = filtered_temperature.pop()
             humidity = filtered_humidity.pop()
-            redis_db.set('Humidity', humidity)
-            redis_db.set('Temperature', temperature)
-            print('{},{:.01f},{:.01f}' .format(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), temperature, humidity))
+            if math.isnan(temperature) == False and math.isnan(humidity) == False:
+                print('{},{:.01f},{:.01f}' .format(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), temperature, humidity))
+                redis_db.set('Humidity', humidity)
+                redis_db.set('Temperature', temperature)
 
             lock.release()
 
         sleep(2)
+
     data_collector.join()
 
 if __name__ == "__main__":
