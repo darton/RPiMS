@@ -157,8 +157,9 @@ sudo zabbix_get -s 127.0.0.1 -k rpims.pull[2]
  - Temperature and Humidity Sensor DHT11/DHT22
  
  BCM17 -> DOUT DHT11/DHT22/AM2302
- 
+ ```
 
+```
  - Temperature, Humidity, Pressure Sensor BME280
  
  BCM2 [pin 3] - SDA
@@ -170,6 +171,7 @@ sudo zabbix_get -s 127.0.0.1 -k rpims.pull[2]
  Ground [pin 9] - GND
 ```
 
+```
 - DS18B20 Temperature sensor
 
 BCM4 [pin 7] -> D
@@ -177,8 +179,9 @@ BCM4 [pin 7] -> D
 3v3 Power [pin 1] - VCC
 
 Ground [pin 9] - GND
+```
 
-
+```
  - Hardware Clock
  
  3v3 Power     [pin 1] -> +
@@ -188,9 +191,9 @@ BCM2 (SDA)    [pin33] -> D
 BCM3 (SCL)    [pin 5] -> C
 
 Ground -> GND [pin 9] -> GND
+```
 
-
-
+```
 - Input Sensors (door sensors)
 
 Ground - > GND
@@ -200,9 +203,9 @@ BCM22 [pin 15] -> Input Sensor 1 (Door/window sensor)
 BCM23 [pin 16] -> Input Sensor 2 (Door/window sensor)
 
 BCM12 [pin 32] -> Input Sensor 4 (Motion sensor)
+```
 
-
-
+```
 - WaveShare HAT buttons
 
 BCM21 [pin 40] -> Button 1
@@ -224,11 +227,11 @@ BCM13 [pin 33] -> Joytstick fire
 BCM19 [pin 35] -> Joytstick down
 
 BCM26 [pin 37] -> Joytstick right
-
+```
 
 
 ## B.o.M - Bill of Materials
-
+```
 * BME280 or DHT11/DHT22/AM2302 or DS18B20 - 1 pcs
 * Door/window Sensor - 2 pcs
 * Motion Sensor - 1 pcs
@@ -241,10 +244,10 @@ BCM26 [pin 37] -> Joytstick right
 * ITALTRONIC 25.0410000.RP3 
 * Male Headers 1x40 raster 2,54mm angle - 2 pcs
 * RTC DS3231 I2C - 1 pcs
-
+```
 
 ## Usefull links
-
+```
 * [Raspberry Pi Documentaion](https://www.raspberrypi.org/documentation/hardware/raspberrypi/README.md)
 
 * [Pinout](https://pinout.xyz/pinout/pin5_gpio3#)
@@ -276,3 +279,4 @@ BCM26 [pin 37] -> Joytstick right
 * [RPi GPIO](https://elinux.org/RPi_BCM2835_GPIOs)
 
 * [raspivid](https://www.raspberrypi.org/documentation/usage/camera/raspicam/raspivid.md)
+```
