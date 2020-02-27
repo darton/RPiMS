@@ -1,23 +1,24 @@
 # RPiMS
-
+```
 RPiMS is Raspberry Pi based Monitoring System (door/window sensors, motion sensors, temperature, humidity, preassure sensors, video streamer/recorder from picamera)
-
+```
 ## Description
-
+```
 The Zabbix Agent preriodicaly pull temperature and humidity data to Zabbix Server. 
 When the door will opened or closed, a trap message is sent to the Zabbix server. 
 Then a 5-second video sequence is recorded, and then stream rtsp will run. 
+```
 
 ## Installing
 
 ### Installing operating system images 
-
+```
 Download the image [Raspbian Lite](https://downloads.raspberrypi.org/raspbian_lite_latest)
 
 To writing an image to the SD card, use [Etcher](https://etcher.io/) an image writing tool.
 
 If you're not using Etcher, you'll need to unzip .zip downloads to get the image file (.img) to write to your SD card.
-
+```
 ### Run installation script
 ```
 sudo curl -sS https://raw.githubusercontent.com/darton/RPiMS/master/install.sh |bash
