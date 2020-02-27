@@ -3,6 +3,7 @@
 # -*- coding:utf-8 -*-
 
 from w1thermsensor import W1ThermSensor
+from time import sleep
 import redis
 
 def sensor_lock(lock_status):
@@ -12,6 +13,7 @@ def write_sensors_data_to_db():
     sensor_lock(1)
     sensorslist = W1ThermSensor.get_available_sensors([W1ThermSensor.THERM_SENSOR_DS18B20])
     for sensor in sensorslist:
+        sleep(0.5)
         print("Sensor %s temperature %.2f"%(sensor.id,sensor.get_temperature()),"\xb0C")
         redis_db.set('DS18B20-' + sensor.id, sensor.get_temperature())
     sensor_lock(0)
