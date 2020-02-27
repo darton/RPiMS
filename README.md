@@ -153,12 +153,11 @@ sudo zabbix_get -s 127.0.0.1 -k rpims.pull[2]
 
 ## Hardware setup - Raspberry Pi
 
- 
+ ```
  - Temperature and Humidity Sensor DHT11/DHT22
  
  BCM17 -> DOUT DHT11/DHT22/AM2302
  
-
 
  - Temperature, Humidity, Pressure Sensor BME280
  
@@ -169,7 +168,7 @@ sudo zabbix_get -s 127.0.0.1 -k rpims.pull[2]
  3v3 Power [pin 1] - VCC
  
  Ground [pin 9] - GND
-
+```
 
 - DS18B20 Temperature sensor
 
@@ -259,6 +258,8 @@ BCM26 [pin 37] -> Joytstick right
 * [DS18B20 Tutorial](https://github.com/timofurrer/w1thermsensor)
 
 * [Luma Core](https://pypi.org/project/luma.core/)
+
+* [Frame buffer](https://wavesharejfs.blogspot.com/2018/03/raspberry-pi-driv-144inch-lcd-hat-with.html)
 
 * [TME Italtronic Case](https://www.tme.eu/pl/en/details/it-25.0410000.rp3/enclosure-for-embedded-systems/italtronic/25-0410000-rp3/)
 * [TME Italtronic Case](https://www.tme.eu/pl/en/details/it-25.0610000.rp3/enclosure-for-embedded-systems/italtronic/25-0610000-rp3/)
