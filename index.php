@@ -67,7 +67,7 @@ print "<p style='color:red;'><b>DS18B20</b></p>";
 print "<br>";
 
 
-print "<p style='color:brown;'><b>Door/Widnow Sensors</b></p>";
+print "<p style='color:brown;'><b>Door/Window Sensors</b></p>";
     foreach ($sensorslist as $key)
     {
     $value = $redis->get($key);
