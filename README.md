@@ -150,6 +150,9 @@ sudo apt-get  install zabbix-proxy-sqlite3
 sudo zabbix_get -s 127.0.0.1 -k rpims.pull[4]
 
 sudo zabbix_get -s 127.0.0.1 -k rpims.pull[2]
+
+
+zabbix_get -s 127.0.0.1 -k "system.cpu.load[all,avg1]" --tls-connect=psk --tls-psk-identity="password" --tls-psk-file=/etc/zabbix/zabbix_agentd.conf.d/zabbix_agentd.psk
 ```
 
 ## Hardware setup - Raspberry Pi
