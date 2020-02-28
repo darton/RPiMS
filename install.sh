@@ -11,10 +11,7 @@ done
 
 chmod u+x $installdir/*.py $installdir/*.sh
 
-sudo apt-get update
-sudo apt-get dist-upgrade
-
-sudo apt-get -y install git-core python3-gpiozero python3-pip build-essential python3-dev python3-numpy python3-picamera
+sudo apt-get -y install git python3-gpiozero python3-pip build-essential python3-dev python3-numpy python3-picamera
 sudo apt-get -y install libfreetype6-dev libopenjp2-7 libtiff5 libjpeg-dev
 sudo apt-get -y install python3-w1thermsensor
 
