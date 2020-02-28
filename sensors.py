@@ -41,7 +41,7 @@ use_door_sensor = "yes"
 use_motion_sensor = "no"
 
 #use BME280 sensor: yes/no
-use_BME280_sensor = "yes"
+use_BME280_sensor = "no"
 
 #use DHT22 sensor: yes/no
 use_DHT22_sensor = "no"
