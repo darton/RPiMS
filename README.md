@@ -152,6 +152,19 @@ sudo zabbix_get -s 127.0.0.1 -k rpims.ds18b20[4]
 sudo zabbix_get -s 127.0.0.1 -k rpims.ds18b20[2]
 
 
+sudo zabbix_get -s 127.0.0.1 -k rpims.bm280[2]
+
+sudo zabbix_get -s 127.0.0.1 -k rpims.bme280[4]
+
+sudo zabbix_get -s 127.0.0.1 -k rpims.bm280[6]
+
+
+sudo zabbix_get -s 127.0.0.1 -k rpims.dht22[2]
+
+sudo zabbix_get -s 127.0.0.1 -k rpims.dht22[4]
+
+
+
 zabbix_get -s 127.0.0.1 -k "system.cpu.load[all,avg1]" --tls-connect=psk --tls-psk-identity="$(awk -F\= '/TLSPSKIdentity/ {print $2}' /etc/zabbix/zabbix_agentd.conf.d/zabbix-rpims.conf)" --tls-psk-file=/etc/zabbix/zabbix_agentd.conf.d/zabbix_agentd.psk
 
 ```
