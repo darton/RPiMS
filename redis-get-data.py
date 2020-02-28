@@ -24,5 +24,8 @@ if len(sys.argv) > 1:
             temperature = redis_db.get('DHT22_Temperature')
             humidity = redis_db.get('DHT22_Humidity')
             print('Temperature={0:0.2f};Humidity={1:0.2f};'.format(float(temperature),float(humidity)))
+    elif sys.argv[1] == 'CPUTEMP':
+        temperature = redis_db.get('CPU_Temperature')
+        print('CPUTemperature' + '={0:0.2f};'.format(float(temperature)))
 else:
-    print('You must use one parameter from list BME280, DS18B20, DHT22')
+    print('You must use one parameter from list BME280, DS18B20, DHT22, CPUTEMP')
