@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <zabbix_export>
     <version>4.0</version>
-    <date>2020-02-28T13:18:25Z</date>
+    <date>2020-02-28T13:29:43Z</date>
     <groups>
         <group>
             <name>Templates</name>
@@ -521,6 +521,22 @@
             <tags/>
         </trigger>
         <trigger>
+            <expression>{RPiMS template:trap.str(The door 2 has been opened,#1)}=1</expression>
+            <recovery_mode>0</recovery_mode>
+            <recovery_expression/>
+            <name>Alarm - The door 2 has been opened !</name>
+            <correlation_mode>0</correlation_mode>
+            <correlation_tag/>
+            <url/>
+            <status>0</status>
+            <priority>4</priority>
+            <description/>
+            <type>0</type>
+            <manual_close>0</manual_close>
+            <dependencies/>
+            <tags/>
+        </trigger>
+        <trigger>
             <expression>{RPiMS template:rpims.cputemp[2].last()}&gt;80</expression>
             <recovery_mode>0</recovery_mode>
             <recovery_expression/>
@@ -617,10 +633,58 @@
             <tags/>
         </trigger>
         <trigger>
+            <expression>{RPiMS template:trap.str(The door 2 is closed,#1)}=1</expression>
+            <recovery_mode>0</recovery_mode>
+            <recovery_expression/>
+            <name>Info after restart - The door 2 is closed.</name>
+            <correlation_mode>0</correlation_mode>
+            <correlation_tag/>
+            <url/>
+            <status>0</status>
+            <priority>1</priority>
+            <description/>
+            <type>0</type>
+            <manual_close>0</manual_close>
+            <dependencies/>
+            <tags/>
+        </trigger>
+        <trigger>
+            <expression>{RPiMS template:trap.str(The door 2 is opened,#1)}=1</expression>
+            <recovery_mode>0</recovery_mode>
+            <recovery_expression/>
+            <name>Info after restart - The door 2 is opened!</name>
+            <correlation_mode>0</correlation_mode>
+            <correlation_tag/>
+            <url/>
+            <status>0</status>
+            <priority>4</priority>
+            <description/>
+            <type>0</type>
+            <manual_close>0</manual_close>
+            <dependencies/>
+            <tags/>
+        </trigger>
+        <trigger>
             <expression>{RPiMS template:trap.str(The door 1 has ben closed,#1)}=1</expression>
             <recovery_mode>0</recovery_mode>
             <recovery_expression/>
             <name>The door 1 has ben closed.</name>
+            <correlation_mode>0</correlation_mode>
+            <correlation_tag/>
+            <url/>
+            <status>0</status>
+            <priority>1</priority>
+            <description/>
+            <type>0</type>
+            <manual_close>0</manual_close>
+            <dependencies/>
+            <tags/>
+        </trigger>
+        <trigger>
+            <expression>{RPiMS template:trap.str(The door 2 has ben closed,#1)}=1</expression>
+            <recovery_mode>0</recovery_mode>
+            <recovery_expression/>
+            <name>The door 2 has ben closed.</name>
             <correlation_mode>0</correlation_mode>
             <correlation_tag/>
             <url/>
