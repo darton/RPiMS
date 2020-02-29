@@ -133,7 +133,7 @@ sudo sync
 sudo reboot
 ```
 
-## Test only
+## Configuration Testing
 
 ```
 sudo apt-get install i2c-tools
