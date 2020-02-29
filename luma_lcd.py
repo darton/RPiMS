@@ -54,7 +54,7 @@ try:
             pressure = round(float(redis_db.get('Pressure')))
             door_sensor_1 = redis_db.get('door_sensor_1')
             door_sensor_2 = redis_db.get('door_sensor_2')
-            CPUtemperature = round(float(redis_db.get('CPUtemperature')),1)
+            CPUtemperature = round(float(redis_db.get('CPU_Temperature')),1)
 
 #*****draw on lcd********
 #            draw.line([(0,0),(127,0)], fill = "blue",width = 6)
