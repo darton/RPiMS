@@ -268,7 +268,7 @@ BCM26 [pin 37] -> Joytstick right
 ```
 
 ## Usefull links
-```
+
 * [Raspberry Pi Documentaion](https://www.raspberrypi.org/documentation/hardware/raspberrypi/README.md)
 
 * [Pinout](https://pinout.xyz/pinout/pin5_gpio3#)
@@ -300,4 +300,4 @@ BCM26 [pin 37] -> Joytstick right
 * [RPi GPIO](https://elinux.org/RPi_BCM2835_GPIOs)
 
 * [raspivid](https://www.raspberrypi.org/documentation/usage/camera/raspicam/raspivid.md)
-```
+
