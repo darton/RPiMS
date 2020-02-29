@@ -21,7 +21,7 @@ If you're not using Etcher, you'll need to unzip .zip downloads to get the image
 ```
 ### Run installation script
 ```
-sudo curl -sS https://raw.githubusercontent.com/darton/RPiMS/master/install.sh |bash
+curl -sS https://raw.githubusercontent.com/darton/RPiMS/master/install.sh |sudo bash -
 
 ```
 
