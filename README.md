@@ -273,6 +273,8 @@ BCM26 [pin 37] -> Joytstick right
 
 * [Pinout](https://pinout.xyz/pinout/pin5_gpio3#)
 
+* [Pinout](https://www.raspberrypi.org/documentation/usage/gpio/)
+
 * [GPIOZERO Docs](https://gpiozero.readthedocs.io/en/stable/)
 
 * [HWclock tutorial](https://thepihut.com/blogs/raspberry-pi-tutorials/17209332-adding-a-real-time-clock-to-your-raspberry-pi)
