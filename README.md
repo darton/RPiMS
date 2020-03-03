@@ -287,12 +287,13 @@ BCM26 [pin 37] -> Joytstick right
 
 * [Frame buffer](https://wavesharejfs.blogspot.com/2018/03/raspberry-pi-driv-144inch-lcd-hat-with.html)
 
-* [Italtronic RPi Case](https://www.tme.eu/pl/en/details/it-25.0410000.rp3/enclosure-for-embedded-systems/italtronic/25-0410000-rp3/)
+* [RPi Case](https://www.tme.eu/pl/en/details/it-25.0410000.rp3/enclosure-for-embedded-systems/italtronic/25-0410000-rp3/)
 
-* [Italtronic RPi Case](https://www.tme.eu/pl/en/details/it-25.0610000.rp3/enclosure-for-embedded-systems/italtronic/25-0610000-rp3/)
+* [RPi Case](https://www.tme.eu/pl/en/details/it-25.0610000.rp3/enclosure-for-embedded-systems/italtronic/25-0610000-rp3/)
 
-* [Italtronic Sensor Case](https://www.tme.eu/pl/details/it-61.6020000/obudowy-urzadzen-alarmowych-i-czujnikow/italtronic/61-6020000/)
+* [Sensor Case](https://www.tme.eu/pl/details/it-61.6020000/obudowy-urzadzen-alarmowych-i-czujnikow/italtronic/61-6020000/)
 
+* [Sensor Case](https://pl.farnell.com/camdenboss/cbrs01vwh/enclosure-room-sensor-vented-white/dp/2472317?gclid=EAIaIQobChMIvvLvy47-5wIVQswYCh19AA4JEAQYAiABEgKsW_D_BwE&gross_price=true&mckv=Y1xp9UYm_dc|pcrid|155087520124|&CMP=KNC-GPL-GEN-SHOPPING-ALL_PRODUCTS)
 * [Zabbix](https://zabbix.org/wiki/Main_Page)
 
 * [WaveShare 1.3inch OLED HAT](https://www.waveshare.com/product/mini-pc/raspberry-pi/displays/1.3inch-oled-hat.htm)
