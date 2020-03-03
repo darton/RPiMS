@@ -35,23 +35,23 @@ if (!empty($location)) {
 }
 
 if (!empty($CPUtemperature)) {
-    print "<p style='color:blue;'>CPUtemperature : " . number_format($CPUtemperature,1) ." °C</p>";
+    print "<p style='color:blue;'>CPUtemperature : " . round($CPUtemperature,1) ." °C</p>";
 }
 print "<br>";
 
 
 if (!empty($BME280_Temperature) && !empty($BME280_Humidity) && !empty($BME280_Pressure)) {
     print "<p style='color:green;'><b>BME280</b></p>";
-    print "<p style='color:green;'>Temperature : " . number_format($BME280_Temperature,1) ." °C</p>";
-    print "<p style='color:green;'>Humidity : " . number_format($BME280_Humidity,1) ." %</p>";
-    print "<p style='color:green;'>Pressure : " . number_format($BME280_Pressure,1) ." hPa</p><br>";
+    print "<p style='color:green;'>Temperature : " . round($BME280_Temperature,1) ." °C</p>";
+    print "<p style='color:green;'>Humidity : " . round($BME280_Humidity,1) ." %</p>";
+    print "<p style='color:green;'>Pressure : " . round($BME280_Pressure,1) ." hPa</p><br>";
 }
 
 
 if (!empty($DHT22_Temperature) && !empty($DHT22_Humidity)) {
     print "<p style='color:green;'><b>DHT22</b></p>";
-    print "<p style='color:green;'>Temperature : " . number_format($DHT22_Temperature,1) ." °C</p>";
-    print "<p style='color:green;'>Humidity : " . number_format($DHT22_Humidity,1) ." %</p><br>";
+    print "<p style='color:green;'>Temperature : " . round($DHT22_Temperature,1) ." °C</p>";
+    print "<p style='color:green;'>Humidity : " . round($DHT22_Humidity,1) ." %</p><br>";
 }
 
 
@@ -61,7 +61,7 @@ print "<p style='color:red;'><b>DS18B20</b></p>";
     $value = $redis->get($key);
     $sensor_type = 'DS18B20-';
     if (strpos($key, $sensor_type)  !== false) {
-        print "<p style='color:red;'>" . $key . " Temperature: " . $value . " °C</p>";
+        print "<p style='color:red;'>" . $key . " Temperature: " . round($value,1) . " °C</p>";
     }
     }
 print "<br>";
