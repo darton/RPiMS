@@ -95,5 +95,5 @@ if __name__ == "__main__":
     try:
         Main()
 
-    except KeyboardInterrupt:
+    except (KeyboardInterrupt, SystemExit):
         event.set()
