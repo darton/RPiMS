@@ -82,7 +82,7 @@ sudo reboot
 
 3. Read the Hardware Clock. 
 ```
-sudo hwclock –r
+sudo hwclock -r
 ```
 Read the system time: 
 ```
