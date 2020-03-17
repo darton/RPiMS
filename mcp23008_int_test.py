@@ -77,7 +77,7 @@ def read_pins():
         mcp_gpio = bus.read_byte_data(MCP23008_DEFAULT_ADDRESS, MCP23008_REG_GPIO)
         #intcap = bus.read_byte_data(MCP23008_DEFAULT_ADDRESS, MCP23008_REG_INTCAP)
         print( str(mcp_gpio))
-        #print('Interrupts detected ' + str(intcap), str(intf))
+       
 
     except (KeyboardInterrupt, SystemExit):
         intcap = bus.read_byte_data(MCP23008_DEFAULT_ADDRESS, MCP23008_REG_INTCAP)
