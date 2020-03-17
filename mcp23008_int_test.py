@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import smbus
-from gpiozero import MotionSensor, Button
+#import RPi.GPIO as GPIO
+from gpiozero import Button
 from signal import pause
 from time import sleep
 
@@ -59,24 +60,25 @@ MCP23008_GPIO_PIN_0_HIGH                        = 0x01 # Logic-high on Pin-0
 MCP23008_GPIO_PIN_HIGH                          = 0xFF # Logic-high on All Pins
 MCP23008_GPIO_PIN_LOW                           = 0x00 # Logic-low on All Pins
 
-bus.write_byte_data(MCP23008_DEFAULT_ADDRESS, MCP23008_REG_IODIR, MCP23008_IODIR_PIN_INPUT)
-bus.write_byte_data(MCP23008_DEFAULT_ADDRESS, MCP23008_REG_GPPU, MCP23008_GPPU_PIN_EN)
-bus.write_byte_data(MCP23008_DEFAULT_ADDRESS, MCP23008_REG_GPINTEN, 0xFF)
-bus.write_byte_data(MCP23008_DEFAULT_ADDRESS, MCP23008_REG_INTCON, 0x00)
-bus.write_byte_data(MCP23008_DEFAULT_ADDRESS, MCP23008_REG_IOCON, 0x3A)
-bus.write_byte_data(MCP23008_DEFAULT_ADDRESS, MCP23008_REG_DEFVAL, 0x00)
 
-intf = bus.read_byte_data(MCP23008_DEFAULT_ADDRESS, MCP23008_REG_INTF)
-intcap = bus.read_byte_data(MCP23008_DEFAULT_ADDRESS, MCP23008_REG_INTCAP)
-#print(intf)
-#print(intcap)
+
+def init_mcp():
+    bus.write_byte_data(MCP23008_DEFAULT_ADDRESS, MCP23008_REG_IODIR, MCP23008_IODIR_PIN_INPUT)
+    bus.write_byte_data(MCP23008_DEFAULT_ADDRESS, MCP23008_REG_GPPU, MCP23008_GPPU_PIN_EN)
+    bus.write_byte_data(MCP23008_DEFAULT_ADDRESS, MCP23008_REG_GPINTEN, 0xFF)
+    bus.write_byte_data(MCP23008_DEFAULT_ADDRESS, MCP23008_REG_INTCON, 0x00)
+    bus.write_byte_data(MCP23008_DEFAULT_ADDRESS, MCP23008_REG_IOCON, 0x3A)
+    bus.write_byte_data(MCP23008_DEFAULT_ADDRESS, MCP23008_REG_DEFVAL, 0x00)
+    intf = bus.read_byte_data(MCP23008_DEFAULT_ADDRESS, MCP23008_REG_INTF)
+    intcap = bus.read_byte_data(MCP23008_DEFAULT_ADDRESS, MCP23008_REG_INTCAP)
+
 
 def read_pins():
     try:
         #intf = bus.read_byte_data(MCP23008_DEFAULT_ADDRESS, MCP23008_REG_INTF)
         mcp_gpio = bus.read_byte_data(MCP23008_DEFAULT_ADDRESS, MCP23008_REG_GPIO)
-        print( str(mcp_gpio))
         intcap = bus.read_byte_data(MCP23008_DEFAULT_ADDRESS, MCP23008_REG_INTCAP)
+        print( str(mcp_gpio))
         #print('Interrupts detected ' + str(intcap), str(intf))
 
     except (KeyboardInterrupt, SystemExit):
@@ -84,8 +86,9 @@ def read_pins():
         bus.write_byte_data(MCP23008_DEFAULT_ADDRESS, MCP23008_REG_GPINTEN, 0x00)
         bus.write_byte_data(MCP23008_DEFAULT_ADDRESS, MCP23008_REG_INTCON, 0xFF)
 
-interrupt = MotionSensor(27)
-interrupt.when_motion = read_pins
+init_mcp()
 
+interrupt = Button(27, pull_up=False)
+interrupt.when_pressed = read_pins
 
 pause()
