@@ -1,9 +1,7 @@
 #!/usr/bin/env python3
 import smbus
-#import RPi.GPIO as GPIO
 from gpiozero import Button
 from signal import pause
-from time import sleep
 
 # Get I2C bus
 bus = smbus.SMBus(1)
