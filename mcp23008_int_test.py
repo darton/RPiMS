@@ -75,7 +75,7 @@ def read_pins():
     try:
         #intf = bus.read_byte_data(MCP23008_DEFAULT_ADDRESS, MCP23008_REG_INTF)
         mcp_gpio = bus.read_byte_data(MCP23008_DEFAULT_ADDRESS, MCP23008_REG_GPIO)
-        intcap = bus.read_byte_data(MCP23008_DEFAULT_ADDRESS, MCP23008_REG_INTCAP)
+        #intcap = bus.read_byte_data(MCP23008_DEFAULT_ADDRESS, MCP23008_REG_INTCAP)
         print( str(mcp_gpio))
         #print('Interrupts detected ' + str(intcap), str(intf))
 
