@@ -85,7 +85,6 @@ init_mcp23008()
 clear_interrupt()
 
 int_flag=0
-int_end=0
 interrupt = Button(27, pull_up=False, hold_time=0.01)
 
 interrupt.when_pressed = interrupt_handling
