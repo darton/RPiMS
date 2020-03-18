@@ -75,22 +75,22 @@ def init_mcp23008():
 def interrupt_handling():
     global mcp23008_gpio
     global int_flag
-    mcp23008_gpio = bus.read_byte_data(MCP23008_DEFAULT_ADDRESS, MCP23008_REG_GPIO)
-    int_flag = 1
+    if (int_flag == 0):
+        int_flag = 1
+        mcp23008_gpio = bus.read_byte_data(MCP23008_DEFAULT_ADDRESS, MCP23008_REG_GPIO)
+        print(mcp23008_gpio)
+        int_flag = 0
 
 init_mcp23008()
 clear_interrupt()
 
 int_flag=0
-interrupt = Button(27, pull_up=False)
+int_end=0
+interrupt = Button(27, pull_up=False, hold_time=0.01)
 
 interrupt.when_pressed = interrupt_handling
+interrupt.when_held = clear_interrupt
 
 print("When button is pressed you'll see a message")
 
-while True:
-    if int_flag == 1 :
-        global init_flag
-        int_flag = 0
-        print(mcp23008_gpio)
 pause()
