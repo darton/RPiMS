@@ -59,10 +59,10 @@ MCP23008_GPIO_PIN_0_HIGH                        = 0x01 # Logic-high on Pin-0
 MCP23008_GPIO_PIN_HIGH                          = 0xFF # Logic-high on All Pins
 MCP23008_GPIO_PIN_LOW                           = 0x00 # Logic-low on All Pins
 
-def clear_int():
+def clear_interrupt():
     intcap = bus.read_byte_data(MCP23008_DEFAULT_ADDRESS, MCP23008_REG_INTCAP)
 
-def init_mcp():
+def init_mcp23008():
     bus.write_byte_data(MCP23008_DEFAULT_ADDRESS, MCP23008_REG_IODIR, MCP23008_IODIR_PIN_INPUT)
     bus.write_byte_data(MCP23008_DEFAULT_ADDRESS, MCP23008_REG_GPPU, MCP23008_GPPU_PIN_EN)
     bus.write_byte_data(MCP23008_DEFAULT_ADDRESS, MCP23008_REG_GPINTEN, 0xFF)
@@ -73,11 +73,13 @@ def init_mcp():
     #intcap = bus.read_byte_data(MCP23008_DEFAULT_ADDRESS, MCP23008_REG_INTCAP)
 
 def interrupt_handling():
+    global mcp23008_gpio
     global int_flag
+    mcp23008_gpio = bus.read_byte_data(MCP23008_DEFAULT_ADDRESS, MCP23008_REG_GPIO)
     int_flag = 1
 
-init_mcp()
-clear_int()
+init_mcp23008()
+clear_interrupt()
 
 int_flag=0
 interrupt = Button(27, pull_up=False)
@@ -88,9 +90,7 @@ print("When button is pressed you'll see a message")
 
 while True:
     if int_flag == 1 :
-        mcp_gpio = bus.read_byte_data(MCP23008_DEFAULT_ADDRESS, MCP23008_REG_GPIO)
         global init_flag
         int_flag = 0
-        print(mcp_gpio)
-
+        print(mcp23008_gpio)
 pause()
