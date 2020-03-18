@@ -2,6 +2,7 @@
 import smbus
 from gpiozero import Button
 from signal import pause
+from time import sleep
 
 # Get I2C bus
 bus = smbus.SMBus(1)
@@ -58,41 +59,38 @@ MCP23008_GPIO_PIN_0_HIGH                        = 0x01 # Logic-high on Pin-0
 MCP23008_GPIO_PIN_HIGH                          = 0xFF # Logic-high on All Pins
 MCP23008_GPIO_PIN_LOW                           = 0x00 # Logic-low on All Pins
 
-
+def clear_int():
+    intcap = bus.read_byte_data(MCP23008_DEFAULT_ADDRESS, MCP23008_REG_INTCAP)
 
 def init_mcp():
-    bus.write_byte_data(MCP23008_DEFAULT_ADDRESS, MCP23008_REG_IODIR, MCP23008_IODIR_PIN_INPUT) # ALL PINS AS AN INPUT
-    bus.write_byte_data(MCP23008_DEFAULT_ADDRESS, MCP23008_REG_GPPU, MCP23008_GPPU_PIN_EN) # ALL PINS WITH PULL-UP RESISTOR
-    bus.write_byte_data(MCP23008_DEFAULT_ADDRESS, MCP23008_REG_GPINTEN, 0xFF) # INTERRUPT-ON-CHANGE ON ALL PINS
+    bus.write_byte_data(MCP23008_DEFAULT_ADDRESS, MCP23008_REG_IODIR, MCP23008_IODIR_PIN_INPUT)
+    bus.write_byte_data(MCP23008_DEFAULT_ADDRESS, MCP23008_REG_GPPU, MCP23008_GPPU_PIN_EN)
+    bus.write_byte_data(MCP23008_DEFAULT_ADDRESS, MCP23008_REG_GPINTEN, 0xFF)
     bus.write_byte_data(MCP23008_DEFAULT_ADDRESS, MCP23008_REG_INTCON, 0x00)
     bus.write_byte_data(MCP23008_DEFAULT_ADDRESS, MCP23008_REG_IOCON, 0x3A)
     bus.write_byte_data(MCP23008_DEFAULT_ADDRESS, MCP23008_REG_DEFVAL, 0x00)
-    intf = bus.read_byte_data(MCP23008_DEFAULT_ADDRESS, MCP23008_REG_INTF)
-    intcap = bus.read_byte_data(MCP23008_DEFAULT_ADDRESS, MCP23008_REG_INTCAP)
+    #intf = bus.read_byte_data(MCP23008_DEFAULT_ADDRESS, MCP23008_REG_INTF)
+    #intcap = bus.read_byte_data(MCP23008_DEFAULT_ADDRESS, MCP23008_REG_INTCAP)
 
-def clear_int():
-    intcap = bus.read_byte_data(MCP23008_DEFAULT_ADDRESS, MCP23008_REG_INTCAP)
-    
-def read_pins():
-    try:
-        #intf = bus.read_byte_data(MCP23008_DEFAULT_ADDRESS, MCP23008_REG_INTF)
-        mcp_gpio = bus.read_byte_data(MCP23008_DEFAULT_ADDRESS, MCP23008_REG_GPIO)
-        print( str(mcp_gpio))
-        #intcap = bus.read_byte_data(MCP23008_DEFAULT_ADDRESS, MCP23008_REG_INTCAP)
-        #clear_int()
-        #print( str(intf))
-        
-        
-       
-
-    except (KeyboardInterrupt, SystemExit):
-        intcap = bus.read_byte_data(MCP23008_DEFAULT_ADDRESS, MCP23008_REG_INTCAP)
-        bus.write_byte_data(MCP23008_DEFAULT_ADDRESS, MCP23008_REG_GPINTEN, 0x00)
-        bus.write_byte_data(MCP23008_DEFAULT_ADDRESS, MCP23008_REG_INTCON, 0xFF)
+def interrupt_handling():
+    global int_flag
+    int_flag = 1
 
 init_mcp()
+clear_int()
 
+int_flag=0
 interrupt = Button(27, pull_up=False)
-interrupt.when_pressed = read_pins
+
+interrupt.when_pressed = interrupt_handling
+
+print("When button is pressed you'll see a message")
+
+while True:
+    if int_flag == 1 :
+        mcp_gpio = bus.read_byte_data(MCP23008_DEFAULT_ADDRESS, MCP23008_REG_GPIO)
+        global init_flag
+        int_flag = 0
+        print(mcp_gpio)
 
 pause()
