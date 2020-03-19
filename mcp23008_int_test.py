@@ -60,8 +60,6 @@ MCP23008_GPIO_PIN_0_HIGH                        = 0x01 # Logic-high on Pin-0
 MCP23008_GPIO_PIN_HIGH                          = 0xFF # Logic-high on All Pins
 MCP23008_GPIO_PIN_LOW                           = 0x00 # Logic-low on All Pins
 
-def clear_interrupt():
-    intcap = bus.read_byte_data(MCP23008_DEFAULT_ADDRESS, MCP23008_REG_INTCAP)
 
 def init_mcp23008():
     bus.write_byte_data(MCP23008_DEFAULT_ADDRESS, MCP23008_REG_IODIR, MCP23008_IODIR_PIN_INPUT)
@@ -72,7 +70,7 @@ def init_mcp23008():
     bus.write_byte_data(MCP23008_DEFAULT_ADDRESS, MCP23008_REG_DEFVAL, 0x00)
     #intf = bus.read_byte_data(MCP23008_DEFAULT_ADDRESS, MCP23008_REG_INTF)
     #intcap = bus.read_byte_data(MCP23008_DEFAULT_ADDRESS, MCP23008_REG_INTCAP)
-
+  
 def clear_interrupt():
     intcap = bus.read_byte_data(MCP23008_DEFAULT_ADDRESS, MCP23008_REG_INTCAP)
 
