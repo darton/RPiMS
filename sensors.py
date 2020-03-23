@@ -15,7 +15,7 @@
 
 #from picamera import PiCamera
 from gpiozero import LED, Button, MotionSensor
-#from gpiozero.tools import any_values, all_values
+from gpiozero.tools import any_values
 from subprocess import check_call
 from signal import pause
 from time import sleep
