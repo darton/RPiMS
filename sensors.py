@@ -130,7 +130,6 @@ def program_remote_control():
 
 def door_action_closed(door_id):
     redis_db.set(str(door_id), 'close')
-    led.source = all_values(door_sensor_1,door_sensor_2)
     verbose =  program_remote_control()
     if verbose is 'yes' :
         print("The " + str(door_id) + " has been closed!")
@@ -147,7 +146,6 @@ def door_action_closed(door_id):
 
 def door_action_opened(door_id):
     redis_db.set(str(door_id), 'open')
-    led.source = any_values(door_sensor_1,door_sensor_2)
     verbose = program_remote_control()
     if verbose is 'yes' :
         print("The " + str(door_id) + " has been opened!")
@@ -165,7 +163,6 @@ def door_action_opened(door_id):
 
 def door_status_open(door_id):
     redis_db.set(str(door_id), 'open')
-    led.source = any_values(door_sensor_1,door_sensor_2)
     verbose = program_remote_control()
     if verbose is 'yes' :
         print("The " + str(door_id) + " is opened!")
@@ -177,7 +174,6 @@ def door_status_open(door_id):
 
 def door_status_close(door_id):
     redis_db.set(str(door_id), 'close')
-    led.source = all_values(door_sensor_1,door_sensor_2)
     verbose = program_remote_control()
     if verbose is 'yes' :
         print("The " + str(door_id) + " is closed!")
