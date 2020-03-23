@@ -14,8 +14,8 @@
 #  GNU General Public License for more details.
 
 #from picamera import PiCamera
-from gpiozero import LED, Button, MotionSensor
-from gpiozero.tools import any_values, all_values
+from gpiozero import Button, MotionSensor
+#from gpiozero.tools import any_values, all_values
 from subprocess import check_call
 from signal import pause
 from time import sleep
@@ -50,7 +50,7 @@ use_DHT22_sensor = "no"
 use_DS18B20_sensor = "no"
 
 # Led Lamp or Relay
-led = LED(18)
+#led = LED(18)
 
 #Waveshare LCD/OLED buttons and joystick
 button_sensor_list = {
