@@ -52,42 +52,27 @@ use_DS18B20_sensor = "no"
 # Led Lamp or Relay
 led = LED(18)
 
-#Button type sensors inputs: Door/Window, Smoke Alarm, CO Alarm, CO2 Alarm, Heat Alarm, Water Alarm sensors inputs (store the ref of functions in variable)
-
-door_sensor_1 = Button(22, hold_time=3)
-door_sensor_2 = Button(23, hold_time=3)
-
-#Motion Sensor inputs on GPIO 12:
-MotionSensor_1 = MotionSensor(12)
-
-#Waveshare LCD/OLED
-button1 = Button(21)
-button2 = Button(20)
-button3 = Button(16)
-joystick_left = Button(5)
-joystick_up = Button(6)
-joystick_fire = Button(13, hold_time=5)
-joystick_down = Button(19)
-joystick_right = Button(26)
-
+#Waveshare LCD/OLED buttons and joystick
 button_sensor_list = {
-    "button_1"      : button1,
-    "button_2"      : button2,
-    "button_3"      : button3,
-    "joystick_left" : joystick_left,
-    "joystick_up"   : joystick_up,
-    "joystick_fire" : joystick_fire,
-    "joystick_down" : joystick_down,
-    "joystick_right": joystick_right
+    "button_1"      : Button(21),
+    "button_2"      : Button(20),
+    "button_3"      : Button(16),
+    "joystick_left" : Button(5),
+    "joystick_up"   : Button(6),
+    "joystick_fire" : Button(13, hold_time=5),
+    "joystick_down" : Button(19),
+    "joystick_right": Button(26)
 }
 
+#Button type sensors inputs: Door/Window, Smoke Alarm, CO Alarm, CO2 Alarm, Heat Alarm, Water Alarm sensors inputs
 door_sensor_list = {
-    "door_sensor_1" : door_sensor_1,
-    "door_sensor_2" : door_sensor_2,
+    "door_sensor_1" : Button(22, hold_time=3),
+    "door_sensor_2" : Button(23, hold_time=3),
 }
 
+#Motion Sensor inputs
 motion_sensor_list = {
-    "MotionSensor_1": MotionSensor_1,
+    "MotionSensor_1": MotionSensor(12),
 }
 
 redis_db = redis.StrictRedis(host="localhost", port=6379, db=0, charset="utf-8", decode_responses=True)
