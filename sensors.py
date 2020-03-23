@@ -50,7 +50,7 @@ use_DHT22_sensor = "no"
 use_DS18B20_sensor = "no"
 
 # Led Lamp or Relay
-#led = LED(18)
+led = LED(18)
 
 #Waveshare LCD/OLED buttons and joystick
 button_sensor_list = {
