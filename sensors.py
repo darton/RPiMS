@@ -14,7 +14,7 @@
 #  GNU General Public License for more details.
 
 #from picamera import PiCamera
-from gpiozero import Button, MotionSensor
+from gpiozero import LED, Button, MotionSensor
 #from gpiozero.tools import any_values, all_values
 from subprocess import check_call
 from signal import pause
@@ -226,5 +226,7 @@ if use_motion_sensor is 'yes' :
             motion_sensor_list[s].when_no_motion = lambda s=s : motion_sensor_when_no_motion(s)
 
 joystick_fire.when_held = shutdown
+
+led.source = all_values(door_sensor_list["door_sensor_1"],door_sensor_list["door_sensor_2"])
 
 pause()
