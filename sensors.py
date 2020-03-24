@@ -57,7 +57,7 @@ led_list = {
 }
 
 #Waveshare LCD/OLED buttons and joystick
-button_sensor_list = {
+hat_button_list = {
     "button_1"      : Button(21),
     "button_2"      : Button(20),
     "button_3"      : Button(16),
