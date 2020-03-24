@@ -226,7 +226,6 @@ if use_motion_sensor is 'yes' :
             motion_sensor_list[s].when_motion = lambda s=s : motion_sensor_when_motion(s)
             motion_sensor_list[s].when_no_motion = lambda s=s : motion_sensor_when_no_motion(s)
     
-    
 joystick_fire.when_held = shutdown
 
 pause()
