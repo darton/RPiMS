@@ -70,8 +70,8 @@ hat_button_list = {
 
 #Button type sensors inputs: Door/Window, Smoke Alarm, CO Alarm, CO2 Alarm, Heat Alarm, Water Alarm sensors inputs
 door_sensor_list = {
-    "door_sensor_1" : Button(22, hold_time=3),
-    "door_sensor_2" : Button(23, hold_time=3),
+    "door_sensor_1" : Button(22, hold_time=0.3),
+    "door_sensor_2" : Button(23, hold_time=0.3),
 }
 
 #Motion Sensor inputs
