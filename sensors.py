@@ -15,7 +15,7 @@
 
 #from picamera import PiCamera
 from gpiozero import LED, Button, MotionSensor
-from gpiozero.tools import all_values
+from gpiozero.tools import all_values, any_values
 from subprocess import check_call
 from signal import pause
 from time import sleep
@@ -49,8 +49,12 @@ use_DHT22_sensor = "no"
 #use DS18B20 sensor: yes/no
 use_DS18B20_sensor = "no"
 
-# Led Lamp or Relay
-led = LED(18)
+# Led Lamps or Relays
+#Motion Sensor inputs
+led_list = {
+    "door_led" : LED(12),
+    "motion_led" : LED(15),
+}
 
 #Waveshare LCD/OLED buttons and joystick
 button_sensor_list = {
@@ -72,7 +76,7 @@ door_sensor_list = {
 
 #Motion Sensor inputs
 motion_sensor_list = {
-    "MotionSensor_1": MotionSensor(12),
+    "MotionSensor_1": MotionSensor(14),
 }
 
 redis_db = redis.StrictRedis(host="localhost", port=6379, db=0, charset="utf-8", decode_responses=True)
@@ -219,12 +223,13 @@ if use_door_sensor is 'yes' :
     for s in door_sensor_list:
             door_sensor_list[s].when_held = lambda s=s : door_action_closed(s)
             door_sensor_list[s].when_released = lambda s=s : door_action_opened(s)
-    led.source = all_values(*door_sensor_list.values())
+    led_list['door_led'].source = all_values(*door_sensor_list.values())
 
 if use_motion_sensor is 'yes' :
     for s in motion_sensor_list:
             motion_sensor_list[s].when_motion = lambda s=s : motion_sensor_when_motion(s)
             motion_sensor_list[s].when_no_motion = lambda s=s : motion_sensor_when_no_motion(s)
+    led_list['motion_led'].source = any_values(*motion_sensor_list.values())
 
 joystick_fire.when_held = shutdown
 
