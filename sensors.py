@@ -53,7 +53,7 @@ use_DS18B20_sensor = "no"
 #Motion Sensor inputs
 led_list = {
     "door_led" : LED(12),
-    "motion_led" : LED(15),
+    "motion_led" : LED(18),
 }
 
 #Waveshare LCD/OLED buttons and joystick
@@ -77,6 +77,7 @@ door_sensor_list = {
 #Motion Sensor inputs
 motion_sensor_list = {
     "MotionSensor_1": MotionSensor(14),
+    "MotionSensor_2": MotionSensor(15),
 }
 
 redis_db = redis.StrictRedis(host="localhost", port=6379, db=0, charset="utf-8", decode_responses=True)
