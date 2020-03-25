@@ -56,7 +56,7 @@ led_list = {
     "motion_led" : LED(18),
 }
 
-#Waveshare LCD/OLED buttons and joystick
+#Waveshare LCD/OLED Hat buttons and joystick
 hat_button_list = {
     "button_1"      : Button(21),
     "button_2"      : Button(20),
