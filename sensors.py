@@ -142,12 +142,7 @@ def door_action_closed(door_id):
         zabbix_sender_cmd ='/home/pi/scripts/RPiMS/zabbix_sender.sh info_when_door_has_been_closed' + " " + str(door_id)
         subprocess.call(zabbix_sender_cmd, shell=True)
     if use_picamera is 'yes':
-        sleep(0.2)
         av_stream('stop')
-        sleep(0.2)
-        subprocess.call("/home/pi/scripts/RPiMS/videorecorder.sh", shell=True)
-        sleep(0.2)
-        av_stream('start')
 
 def door_action_opened(door_id):
     redis_db.set(str(door_id), 'open')
@@ -158,7 +153,6 @@ def door_action_opened(door_id):
         zabbix_sender_cmd ='/home/pi/scripts/RPiMS/zabbix_sender.sh info_when_door_has_been_opened' + " " + str(door_id)
         subprocess.call(zabbix_sender_cmd, shell=True)
     if use_picamera is 'yes':
-        sleep(0.2)
         av_stream('stop')
         sleep(0.2)
         subprocess.call("/home/pi/scripts/RPiMS/videorecorder.sh", shell=True)
@@ -186,7 +180,7 @@ def door_status_close(door_id):
         zabbix_sender_cmd ='/home/pi/scripts/RPiMS/zabbix_sender.sh info_when_door_is_closed' + " " + str(door_id)
         subprocess.call(zabbix_sender_cmd, shell=True)
     if use_picamera is 'yes':
-        av_stream('start')
+        av_stream('stop')
 
 def motion_sensor_when_motion(ms_id):
     redis_db.set(str(ms_id), 'motion')
