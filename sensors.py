@@ -56,18 +56,6 @@ led_list = {
     "motion_led" : LED(15),
 }
 
-#Waveshare LCD/OLED Hat buttons and joystick
-hat_button_list = {
-    "button_1"      : Button(21),
-    "button_2"      : Button(20),
-    "button_3"      : Button(16),
-    "joystick_left" : Button(5),
-    "joystick_up"   : Button(6),
-    "joystick_fire" : Button(13, hold_time=5),
-    "joystick_down" : Button(19),
-    "joystick_right": Button(26)
-}
-
 #Button type sensors inputs like: Door/Window, Smoke Alarm, CO Alarm, CO2 Alarm, Heat Alarm, Water Alarm
 door_sensor_list = {
     "door_sensor_1" : Button(22, hold_time=0.3),
@@ -78,6 +66,18 @@ door_sensor_list = {
 motion_sensor_list = {
     "MotionSensor_1": MotionSensor(12),
     "MotionSensor_2": MotionSensor(18),
+}
+
+#Waveshare LCD/OLED Hat buttons and joystick
+hat_button_list = {
+    "button_1"      : Button(21),
+    "button_2"      : Button(20),
+    "button_3"      : Button(16),
+    "joystick_left" : Button(5),
+    "joystick_up"   : Button(6),
+    "joystick_fire" : Button(13, hold_time=5),
+    "joystick_down" : Button(19),
+    "joystick_right": Button(26)
 }
 
 redis_db = redis.StrictRedis(host="localhost", port=6379, db=0, charset="utf-8", decode_responses=True)
