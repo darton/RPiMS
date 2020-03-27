@@ -61,8 +61,8 @@ led_list = {
 
 #Button type sensors inputs like: Door/Window, Smoke Alarm, CO Alarm, CO2 Alarm, Heat Alarm, Water Alarm
 door_sensor_list = {
-    "door_sensor_1" : Button(22, hold_time=0.3),
-    "door_sensor_2" : Button(23, hold_time=0.3),
+    "door_sensor_1" : Button(22, hold_time=2),
+    "door_sensor_2" : Button(23, hold_time=2),
 }
 
 #Motion Sensor inputs
