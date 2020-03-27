@@ -23,7 +23,7 @@
     $sensorslist = $redis->keys('*');
 
 if (empty($sensorslist)) {
- print "<p style='color:red;'>You not initialise any sensors or not run sensors.sh script. <br> Connect sensor and uncomment  proper script in /etc/cron.d/rpims file. <br> </p>";
+ print "<p style='color:red;'>You not initialise any sensors or not run sensors.py script. <br> Connect sensor and uncomment  proper script in /etc/cron.d/rpims file. <br> </p>";
 }
 
 if (!empty($hostname)) {
