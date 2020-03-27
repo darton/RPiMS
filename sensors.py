@@ -34,6 +34,9 @@ zabbix_sender = "no"
 #use picamera: yes/no
 use_picamera = "no"
 
+#recording 5s video on local drive: yes/no
+local_video_recording = "no"
+
 #use door sensor: yes/no
 use_door_sensor = "yes"
 
@@ -153,12 +156,10 @@ def door_action_opened(door_id):
         zabbix_sender_cmd ='/home/pi/scripts/RPiMS/zabbix_sender.sh info_when_door_has_been_opened' + " " + str(door_id)
         subprocess.call(zabbix_sender_cmd, shell=True)
     if use_picamera is 'yes':
-        av_stream('stop')
-        sleep(0.2)
-        subprocess.call("/home/pi/scripts/RPiMS/videorecorder.sh", shell=True)
-        sleep(0.2)
+        if local_video_recording is 'yes':
+            av_stream('stop')
+            subprocess.call("/home/pi/scripts/RPiMS/videorecorder.sh", shell=True)
         av_stream('start')
-        sleep(1)
 
 def door_status_open(door_id):
     redis_db.set(str(door_id), 'open')
