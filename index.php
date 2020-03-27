@@ -54,13 +54,12 @@ if (!empty($DHT22_Temperature) && !empty($DHT22_Humidity)) {
     print "<p style='color:green;'>Humidity : " . round($DHT22_Humidity,1) ." %</p><br>";
 }
 
-
-print "<p style='color:red;'><b>DS18B20</b></p>";
     foreach ($sensorslist as $key)
     {
     $value = $redis->get($key);
     $sensor_type = 'DS18B20-';
     if (strpos($key, $sensor_type)  !== false) {
+        print "<p style='color:red;'><b>DS18B20</b></p>";
         print "<p style='color:red;'>" . $key . " Temperature: " . round($value,1) . " °C</p>";
     }
     }
