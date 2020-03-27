@@ -5,8 +5,10 @@ RPiMS is Raspberry Pi based Monitoring System (door/window sensors, motion senso
 ## Description
 ```
 The Zabbix Agent preriodicaly pull temperature and humidity data to Zabbix Server. 
-When the door will opened or closed, a trap message is sent to the Zabbix server. 
-Then a 5-second video sequence is recorded, and then stream rtsp will run. 
+When any of the doors opens or closed then a trap message will be sent to the Zabbix server. 
+Then a 5-second video sequence will be recorded, and then rtsp stream will be turned on. 
+When all of the doors are closed for more than 3 seconds then rtsp stream will be turned off. 
+When the motion sensor detects motion then a trap message will be sent to Zabbix server.
 ```
 
 ## Installing
