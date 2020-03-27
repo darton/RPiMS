@@ -52,7 +52,7 @@ sudo systemctl restart zabbix-agent.service
 ## Install if you have PiCamera
 
 ```
-sudo apt-get install -y vlc libav-tools omxplayer gpac fbi
+sudo apt-get install -y vlc ffmpegayer gpac fbi
 
 ```
 
@@ -145,6 +145,8 @@ i2cdetect -y 1
 raspivid -o test.h264
 
 raspistill -o test.jpg
+
+rtsp://raspberrypi:8554/
 
 
 sudo apt-get  install zabbix-proxy-sqlite3
