@@ -61,14 +61,14 @@ led_list = {
 
 #Button type sensors inputs like: Door/Window, Smoke Alarm, CO Alarm, CO2 Alarm, Heat Alarm, Water Alarm
 door_sensor_list = {
-    "door_sensor_1" : Button(22, hold_time=2),
-    "door_sensor_2" : Button(23, hold_time=2),
+    "door_sensor_1" : Button(22, hold_time=3),
+    "door_sensor_2" : Button(23, hold_time=3),
 }
 
 #Motion Sensor inputs
 motion_sensor_list = {
-    "MotionSensor_1": MotionSensor(12),
-    "MotionSensor_2": MotionSensor(18),
+    "MotionSensor_1": MotionSensor(18),
+    "MotionSensor_2": MotionSensor(12),
 }
 
 #Waveshare LCD/OLED Hat buttons and joystick
