@@ -18,7 +18,7 @@ from gpiozero import LED, Button, MotionSensor
 from gpiozero.tools import all_values, any_values
 from subprocess import check_call
 from signal import pause
-from time import sleep
+#from time import sleep
 import subprocess
 import redis
 
