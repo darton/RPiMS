@@ -145,14 +145,8 @@ def door_action_closed(door_id):
         zabbix_sender_cmd ='/home/pi/scripts/RPiMS/zabbix_sender.sh info_when_door_has_been_closed' + " " + str(door_id)
         subprocess.call(zabbix_sender_cmd, shell=True)
     if use_picamera is 'yes':
-        door_sensor_values = []
-        motion_sensor_values = []
-        for s in door_sensor_list:
-            door_sensor_values.append(door_sensor_list[s].value)
-        for s in motion_sensor_list:
-            motion_sensor_values.append(int(not motion_sensor_list[s].value))
-        if all(door_sensor_values) and all(motion_sensor_values):
-            av_stream('stop')
+         if detect_no_alarms():
+             av_stream('stop')
 
 def door_action_opened(door_id):
     redis_db.set(str(door_id), 'open')
@@ -188,14 +182,8 @@ def door_status_close(door_id):
         zabbix_sender_cmd ='/home/pi/scripts/RPiMS/zabbix_sender.sh info_when_door_is_closed' + " " + str(door_id)
         subprocess.call(zabbix_sender_cmd, shell=True)
     if use_picamera is 'yes':
-        door_sensor_values = []
-        motion_sensor_values = []
-        for s in door_sensor_list:
-            door_sensor_values.append(door_sensor_list[s].value)
-        for s in motion_sensor_list:
-            motion_sensor_values.append(int(not motion_sensor_list[s].value))
-        if all(door_sensor_values) and all(motion_sensor_values):
-            av_stream('stop')
+         if detect_no_alarms():
+             av_stream('stop')
 
 def motion_sensor_when_motion(ms_id):
     redis_db.set(str(ms_id), 'motion')
@@ -214,14 +202,8 @@ def motion_sensor_when_no_motion(ms_id):
     if verbose is 'yes' :
         print("The " + str(ms_id) + ": no motion")
     if use_picamera is 'yes':
-        door_sensor_values = []
-        motion_sensor_values = []
-        for s in door_sensor_list:
-            door_sensor_values.append(door_sensor_list[s].value)
-        for s in motion_sensor_list:
-            motion_sensor_values.append(int(not motion_sensor_list[s].value))
-        if all(door_sensor_values) and all(motion_sensor_values):
-            av_stream('stop')
+         if detect_no_alarms():
+             av_stream('stop')
 
 def detect_no_alarms():
     if use_door_sensor is 'yes' and use_motion_sensor is 'yes':
