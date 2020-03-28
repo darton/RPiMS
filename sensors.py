@@ -215,6 +215,19 @@ def detect_no_alarms():
             motion_sensor_values.append(int(not motion_sensor_list[s].value))
         if all(door_sensor_values) and all(motion_sensor_values):
             return True
+    if use_door_sensor is 'yes' and use_motion_sensor is 'no':
+        door_sensor_values = []
+        for s in door_sensor_list:
+            door_sensor_values.append(door_sensor_list[s].value)
+        if all(door_sensor_values):
+            return True
+    if use_door_sensor is 'no' and use_motion_sensor is 'yes':
+        motion_sensor_values = []
+        for s in motion_sensor_list:
+            motion_sensor_values.append(int(not motion_sensor_list[s].value))
+        if all(motion_sensor_values):
+            return True
+
         
 def av_stream(state):
     subprocess.call("/home/pi/scripts/RPiMS/stream.sh" + " " +  state, shell=True)
