@@ -140,8 +140,8 @@ def program_remote_control():
     return verbose
 
 def door_action_closed(door_id):
+    redis_db.set(str(door_id), 'close')
     if real_time_control is 'yes':
-        redis_db.set(str(door_id), 'close')
         verbose =  program_remote_control()
     if verbose is 'yes' :
         print("The " + str(door_id) + " has been closed!")
@@ -153,8 +153,8 @@ def door_action_closed(door_id):
              av_stream('stop')
 
 def door_action_opened(door_id):
+    redis_db.set(str(door_id), 'open')
     if real_time_control is 'yes':
-        redis_db.set(str(door_id), 'open')
         verbose = program_remote_control()
     if verbose is 'yes' :
         print("The " + str(door_id) + " has been opened!")
@@ -168,8 +168,8 @@ def door_action_opened(door_id):
         av_stream('start')
 
 def door_status_open(door_id):
+    redis_db.set(str(door_id), 'open')
     if real_time_control is 'yes':
-        redis_db.set(str(door_id), 'open')
         verbose = program_remote_control()
     if verbose is 'yes' :
         print("The " + str(door_id) + " is opened!")
@@ -180,8 +180,8 @@ def door_status_open(door_id):
         av_stream('start')
 
 def door_status_close(door_id):
+    redis_db.set(str(door_id), 'close')
     if real_time_control is 'yes':
-        redis_db.set(str(door_id), 'close')
         verbose = program_remote_control()
     if verbose is 'yes' :
         print("The " + str(door_id) + " is closed!")
@@ -193,8 +193,8 @@ def door_status_close(door_id):
              av_stream('stop')
 
 def motion_sensor_when_motion(ms_id):
+    redis_db.set(str(ms_id), 'motion')
     if real_time_control is 'yes':
-        redis_db.set(str(ms_id), 'motion')
         verbose = program_remote_control()
     if verbose is 'yes' :
         print("The " + str(ms_id) + ": motion was detected")
@@ -205,8 +205,8 @@ def motion_sensor_when_motion(ms_id):
         av_stream('start')
 
 def motion_sensor_when_no_motion(ms_id):
+    redis_db.set(str(ms_id), 'nomotion')
     if real_time_control is 'yes':
-        redis_db.set(str(ms_id), 'nomotion')
         verbose = program_remote_control()
     if verbose is 'yes' :
         print("The " + str(ms_id) + ": no motion")
