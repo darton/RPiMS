@@ -146,9 +146,12 @@ def door_action_closed(door_id):
         subprocess.call(zabbix_sender_cmd, shell=True)
     if use_picamera is 'yes':
         door_sensor_values = []
+        motion_sensor_values = []
         for s in door_sensor_list:
             door_sensor_values.append(door_sensor_list[s].value)
-        if all(door_sensor_values):
+        for s in motion_sensor_list:
+            motion_sensor_values.append(int(not motion_sensor_list[s].value))
+        if all(door_sensor_values) and all(motion_sensor_values):
             av_stream('stop')
 
 def door_action_opened(door_id):
@@ -186,9 +189,12 @@ def door_status_close(door_id):
         subprocess.call(zabbix_sender_cmd, shell=True)
     if use_picamera is 'yes':
         door_sensor_values = []
+        motion_sensor_values = []
         for s in door_sensor_list:
             door_sensor_values.append(door_sensor_list[s].value)
-        if all(door_sensor_values):
+        for s in motion_sensor_list:
+            motion_sensor_values.append(int(not motion_sensor_list[s].value))
+        if all(door_sensor_values) and all(motion_sensor_values):
             av_stream('stop')
 
 def motion_sensor_when_motion(ms_id):
