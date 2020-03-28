@@ -236,7 +236,7 @@ def detect_no_alarms():
             motion_sensor_values.append(int(not motion_sensor_list[s].value))
         if all(motion_sensor_values):
             return True
-        
+
 def av_stream(state):
     subprocess.call("/home/pi/scripts/RPiMS/stream.sh" + " " +  state, shell=True)
 
