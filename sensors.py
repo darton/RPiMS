@@ -31,14 +31,14 @@ real_time_control = "yes"
 #verbose mode: yes/no
 verbose = "yes"
 
-#use zabbix_sender: yes/no
-zabbix_sender = "no"
+#use_zabbix_sender: yes/no
+use_zabbix_sender = "no"
 
-#use picamera: yes/no
+#use_picamera: yes/no
 use_picamera = "no"
 
 #recording 5s video on local drive: yes/no
-local_video_recording = "no"
+use_picamera_recording = "no"
 
 #use door sensor: yes/no
 use_door_sensor = "yes"
@@ -94,10 +94,10 @@ if verbose is "yes" :
 else:
     redis_db.set("verbose", '0')
 
-if zabbix_sender is "yes" :
-    redis_db.set("zabbix_sender", '1')
+if use_zabbix_sender is "yes" :
+    redis_db.set("use_zabbix_sender", '1')
 else:
-    redis_db.set("zabbix_sender", '0')
+    redis_db.set("use_zabbix_sender", '0')
 
 if use_picamera is "yes" :
     redis_db.set("use_picamera", '1')
@@ -145,7 +145,7 @@ def door_action_closed(door_id):
         verbose =  program_remote_control()
     if verbose is 'yes' :
         print("The " + str(door_id) + " has been closed!")
-    if zabbix_sender is 'yes' :
+    if use_zabbix_sender is 'yes' :
         zabbix_sender_cmd ='/home/pi/scripts/RPiMS/zabbix_sender.sh info_when_door_has_been_closed' + " " + str(door_id)
         subprocess.call(zabbix_sender_cmd, shell=True)
     if use_picamera is 'yes':
@@ -158,11 +158,11 @@ def door_action_opened(door_id):
         verbose = program_remote_control()
     if verbose is 'yes' :
         print("The " + str(door_id) + " has been opened!")
-    if zabbix_sender is 'yes' :
+    if use_zabbix_sender is 'yes' :
         zabbix_sender_cmd ='/home/pi/scripts/RPiMS/zabbix_sender.sh info_when_door_has_been_opened' + " " + str(door_id)
         subprocess.call(zabbix_sender_cmd, shell=True)
     if use_picamera is 'yes':
-        if local_video_recording is 'yes':
+        if use_picamera_recording is 'yes':
             av_stream('stop')
             subprocess.call("/home/pi/scripts/RPiMS/videorecorder.sh", shell=True)
         av_stream('start')
@@ -173,7 +173,7 @@ def door_status_open(door_id):
         verbose = program_remote_control()
     if verbose is 'yes' :
         print("The " + str(door_id) + " is opened!")
-    if zabbix_sender is 'yes' :
+    if use_zabbix_sender is 'yes' :
         zabbix_sender_cmd ='/home/pi/scripts/RPiMS/zabbix_sender.sh info_when_door_is_opened' + " " + str(door_id)
         subprocess.call(zabbix_sender_cmd, shell=True)
     if use_picamera is 'yes':
@@ -185,7 +185,7 @@ def door_status_close(door_id):
         verbose = program_remote_control()
     if verbose is 'yes' :
         print("The " + str(door_id) + " is closed!")
-    if zabbix_sender is 'yes' :
+    if use_zabbix_sender is 'yes' :
         zabbix_sender_cmd ='/home/pi/scripts/RPiMS/zabbix_sender.sh info_when_door_is_closed' + " " + str(door_id)
         subprocess.call(zabbix_sender_cmd, shell=True)
     if use_picamera is 'yes':
@@ -198,7 +198,7 @@ def motion_sensor_when_motion(ms_id):
         verbose = program_remote_control()
     if verbose is 'yes' :
         print("The " + str(ms_id) + ": motion was detected")
-    if zabbix_sender is 'yes' :
+    if use_zabbix_sender is 'yes' :
         zabbix_sender_cmd ='/home/pi/scripts/RPiMS/zabbix_sender.sh info_when_motion' + " " + str(ms_id)
         subprocess.call(zabbix_sender_cmd, shell=True)
     if use_picamera is 'yes':
