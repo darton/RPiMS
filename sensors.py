@@ -268,6 +268,7 @@ def shutdown():
 
 
 # --- Main program ---
+print('# RPiMS is running #')
 
 if use_door_sensor is 'yes' :
     for s in door_sensor_list:
