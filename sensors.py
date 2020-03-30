@@ -268,7 +268,7 @@ if use_motion_sensor is 'yes' :
             motion_sensor_list[s].when_no_motion = lambda s=s : motion_sensor_when_no_motion(s)
     led_list['motion_led'].source = any_values(*motion_sensor_list.values())
 
-if use_hat_battons is "yes" :
+if use_hat_buttons is "yes" :
     hat_button_list['joystick_fire'].when_held = shutdown
 
 pause()
