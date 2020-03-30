@@ -46,6 +46,12 @@ use_door_sensor = "yes"
 #use motion sensor: yes/no
 use_motion_sensor = "no"
 
+#use LED indicator: yes/no
+use_led_indicator = "yes"
+
+#use Waveshare display LCD/OLED HAT buttons and joystick
+use_hat_buttons = "no"
+
 #use BME280 sensor: yes/no
 use_BME280_sensor = "no"
 
@@ -54,9 +60,6 @@ use_DHT22_sensor = "no"
 
 #use DS18B20 sensor: yes/no
 use_DS18B20_sensor = "no"
-
-#use Waveshare display LCD/OLED HAT buttons and joystick
-use_hat_buttons = "no"
 
 
 ## GPIO outputs
@@ -260,13 +263,15 @@ if use_door_sensor is 'yes' :
     for s in door_sensor_list:
             door_sensor_list[s].when_held = lambda s=s : door_action_closed(s)
             door_sensor_list[s].when_released = lambda s=s : door_action_opened(s)
-    led_list['door_led'].source = all_values(*door_sensor_list.values())
+    if use_led_indicator is 'yes' :
+        led_list['door_led'].source = all_values(*door_sensor_list.values())
 
 if use_motion_sensor is 'yes' :
     for s in motion_sensor_list:
             motion_sensor_list[s].when_motion = lambda s=s : motion_sensor_when_motion(s)
             motion_sensor_list[s].when_no_motion = lambda s=s : motion_sensor_when_no_motion(s)
-    led_list['motion_led'].source = any_values(*motion_sensor_list.values())
+    if use_led_indicator is 'yes' :
+        led_list['motion_led'].source = any_values(*motion_sensor_list.values())
 
 if use_hat_buttons is "yes" :
     hat_button_list['joystick_fire'].when_held = shutdown
