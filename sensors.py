@@ -55,13 +55,18 @@ use_DHT22_sensor = "no"
 #use DS18B20 sensor: yes/no
 use_DS18B20_sensor = "no"
 
-# Led Lamps or Relays
-#Motion Sensor inputs
+#use Waveshare display LCD/OLED HAT buttons and joystick
+use_hat_buttons = "no"
+
+
+## GPIO outputs
+# Led indicators or Relays
 led_list = {
     "door_led" : LED(14),
     "motion_led" : LED(15),
 }
 
+## GPIO inputs
 #Button type sensors inputs like: Door/Window, Smoke Alarm, CO Alarm, CO2 Alarm, Heat Alarm, Water Alarm
 door_sensor_list = {
     "door_sensor_1" : Button(22, hold_time=3),
@@ -74,7 +79,7 @@ motion_sensor_list = {
     "MotionSensor_2": MotionSensor(12),
 }
 
-#Waveshare LCD/OLED Hat buttons and joystick
+#Waveshare display Hat (LCD/OLED) with buttons and joystick
 hat_button_list = {
     "button_1"      : Button(21),
     "button_2"      : Button(20),
@@ -263,6 +268,7 @@ if use_motion_sensor is 'yes' :
             motion_sensor_list[s].when_no_motion = lambda s=s : motion_sensor_when_no_motion(s)
     led_list['motion_led'].source = any_values(*motion_sensor_list.values())
 
-hat_button_list['joystick_fire'].when_held = shutdown
+if use_hat_battons is "yes" :
+    hat_button_list['joystick_fire'].when_held = shutdown
 
 pause()
