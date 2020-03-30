@@ -31,10 +31,10 @@ real_time_control = "yes"
 #verbose mode: yes/no
 verbose = "yes"
 
-#use_zabbix_sender: yes/no
+#use zabbix sender: yes/no
 use_zabbix_sender = "no"
 
-#use_picamera: yes/no
+#use picamera: yes/no
 use_picamera = "no"
 
 #recording 5s video on local drive: yes/no
