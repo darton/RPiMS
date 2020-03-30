@@ -78,8 +78,8 @@ door_sensor_list = {
 
 #Motion Sensor inputs
 motion_sensor_list = {
-    "MotionSensor_1": MotionSensor(18),
-    "MotionSensor_2": MotionSensor(12),
+    "motion_sensor_1": MotionSensor(18),
+    "motion_sensor_2": MotionSensor(12),
 }
 
 #Waveshare display Hat (LCD/OLED) with buttons and joystick
