@@ -112,6 +112,11 @@ if use_picamera is "yes" :
 else:
     redis_db.set("use_picamera", '0')
 
+if use_picamera_recording is "yes" :
+    redis_db.set("use_picamera_recording", '1')
+else:
+    redis_db.set("use_picamera_recording", '0')
+    
 if use_door_sensor is "yes" :
     redis_db.set("use_door_sensor", '1')
 else:
@@ -121,6 +126,16 @@ if use_motion_sensor is "yes" :
     redis_db.set("use_motion_sensor", '1')
 else:
     redis_db.set("use_motion_sensor", '0')
+
+if use_led_indicator is "yes" :
+    redis_db.set("use_led_indicator", '1')
+else:
+    redis_db.set("use_led_indicator", '0')
+
+if use_hat_buttons is "yes" :
+    redis_db.set("use_hat_buttons", '1')
+else:
+    redis_db.set("use_hat_buttons", '0')
 
 if use_BME280_sensor is "yes" :
     redis_db.set("use_BME280_sensor", '1')
