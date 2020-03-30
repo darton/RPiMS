@@ -116,7 +116,7 @@ if use_picamera_recording is "yes" :
     redis_db.set("use_picamera_recording", '1')
 else:
     redis_db.set("use_picamera_recording", '0')
-    
+
 if use_door_sensor is "yes" :
     redis_db.set("use_door_sensor", '1')
 else:
