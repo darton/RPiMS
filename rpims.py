@@ -99,11 +99,11 @@ if config['use_hat_buttons'] is "yes" :
         "button_1"      : Button(config['button_1_pin']),
         "button_2"      : Button(config['button_2_pin']),
         "button_3"      : Button(config['button_3_pin']),
-        "joystick_left" : Button(config['joystick_left']),
-        "joystick_up"   : Button(config['joystick_up']),
-        "joystick_fire" : Button(config['joystick_fire'], hold_time=config['joystick_fire_thold_time']),
-        "joystick_down" : Button(config['joystick_down']),
-        "joystick_right": Button(config['joystick_right'])
+        "joystick_left" : Button(config['joystick_left_pin']),
+        "joystick_up"   : Button(config['joystick_up_pin']),
+        "joystick_fire" : Button(config['joystick_fire_pin'], hold_time=config['joystick_fire_thold_time']),
+        "joystick_down" : Button(config['joystick_down_pin']),
+        "joystick_right": Button(config['joystick_right_pin'])
     }
 
 if config['use_led_indicator'] is yes :
