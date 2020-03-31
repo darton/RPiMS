@@ -66,7 +66,7 @@ config = {
     # Motion Sensor inputs
     "motion_sensor_1_pin"    : 18,
     "motion_sensor_2_pin"    : 12,
-    # Waveshare display hat with buttons
+    # Display hat with buttons
     "button_1_pin"           : 21,
     "button_2_pin"           : 20,
     "button_3_pin"           : 16,
