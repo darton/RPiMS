@@ -169,8 +169,7 @@ def door_action_closed(door_id):
     if verbose is 'yes' :
         print("The " + str(door_id) + " has been closed!")
     if use_zabbix_sender is 'yes' :
-        zabbix_sender_cmd ='/home/pi/scripts/RPiMS/zabbix_sender.sh info_when_door_has_been_closed' + " " + str(door_id)
-        subprocess.call(zabbix_sender_cmd, shell=True)
+        zabbix_sender_call('info_when_door_has_been_closed',door_id)
     if use_picamera is 'yes':
          if detect_no_alarms():
              av_stream('stop')
@@ -182,8 +181,7 @@ def door_action_opened(door_id):
     if verbose is 'yes' :
         print("The " + str(door_id) + " has been opened!")
     if use_zabbix_sender is 'yes' :
-        zabbix_sender_cmd ='/home/pi/scripts/RPiMS/zabbix_sender.sh info_when_door_has_been_opened' + " " + str(door_id)
-        subprocess.call(zabbix_sender_cmd, shell=True)
+        zabbix_sender_call('info_when_door_has_been_opened',door_id)
     if use_picamera is 'yes':
         if use_picamera_recording is 'yes':
             av_stream('stop')
@@ -197,8 +195,7 @@ def door_status_open(door_id):
     if verbose is 'yes' :
         print("The " + str(door_id) + " is opened!")
     if use_zabbix_sender is 'yes' :
-        zabbix_sender_cmd ='/home/pi/scripts/RPiMS/zabbix_sender.sh info_when_door_is_opened' + " " + str(door_id)
-        subprocess.call(zabbix_sender_cmd, shell=True)
+        zabbix_sender_call('info_when_door_is_opened',door_id)
     if use_picamera is 'yes':
         av_stream('start')
 
@@ -209,8 +206,7 @@ def door_status_close(door_id):
     if verbose is 'yes' :
         print("The " + str(door_id) + " is closed!")
     if use_zabbix_sender is 'yes' :
-        zabbix_sender_cmd ='/home/pi/scripts/RPiMS/zabbix_sender.sh info_when_door_is_closed' + " " + str(door_id)
-        subprocess.call(zabbix_sender_cmd, shell=True)
+        zabbix_sender_call('info_when_door_is_closed',door_id)
     if use_picamera is 'yes':
          if detect_no_alarms():
              av_stream('stop')
@@ -222,8 +218,7 @@ def motion_sensor_when_motion(ms_id):
     if verbose is 'yes' :
         print("The " + str(ms_id) + ": motion was detected")
     if use_zabbix_sender is 'yes' :
-        zabbix_sender_cmd ='/home/pi/scripts/RPiMS/zabbix_sender.sh info_when_motion' + " " + str(ms_id)
-        subprocess.call(zabbix_sender_cmd, shell=True)
+        zabbix_sender_call('info_when_motion',ms_id)
     if use_picamera is 'yes':
         av_stream('start')
 
@@ -236,7 +231,7 @@ def motion_sensor_when_no_motion(ms_id):
     if use_picamera is 'yes':
          if detect_no_alarms():
              av_stream('stop')
-
+            
 def detect_no_alarms():
     if use_door_sensor is 'yes' and use_motion_sensor is 'yes':
         door_sensor_values = []
@@ -262,7 +257,11 @@ def detect_no_alarms():
 
 def av_stream(state):
     subprocess.call("/home/pi/scripts/RPiMS/stream.sh" + " " +  state, shell=True)
-
+    
+def zabbix_sender_call(message,sensor_id):
+    zabbix_sender_cmd ='/home/pi/scripts/RPiMS/zabbix_sender.sh ' + message + " " + str(sensor_id)
+    subprocess.call(zabbix_sender_cmd, shell=True)
+    
 def shutdown():
     check_call(['sudo', 'poweroff'])
 
