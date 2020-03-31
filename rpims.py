@@ -56,8 +56,8 @@ config = {
     #use DS18B20 sensor: yes/no
     "use_DS18B20_sensor"     : no,
     #Led indicators or relays
-    "door_led"               : 17,
-    "motion_led"             : 4,
+    "door_led_pin"           : 17,
+    "motion_led_pin"         : 4,
     # Button type sensors inputs
     "door_sensor_1_pin"      : 22,
     "door_sensor_1_hold_time": 1,
@@ -67,14 +67,14 @@ config = {
     "motion_sensor_1_pin"    : 18,
     "motion_sensor_2_pin"    : 12,
     # Waveshare display hat with buttons
-    "button_1"               : 21,
-    "button_2"               : 20,
-    "button_3"               : 16,
-    "joystick_left"          : 5,
-    "joystick_up"            : 6,
-    "joystick_down"          : 19,
-    "joystick_right"         : 26,
-    "joystick_fire"          : 13,
+    "button_1_pin"           : 21,
+    "button_2_pin"           : 20,
+    "button_3_pin"           : 16,
+    "joystick_left_pin"      : 5,
+    "joystick_up_pin"        : 6,
+    "joystick_down_pin"      : 19,
+    "joystick_right_pin"     : 26,
+    "joystick_fire_pin"      : 13,
     "joystick_fire_hold_time": 5
 }
 
@@ -108,8 +108,8 @@ if config['use_hat_buttons'] is "yes" :
 
 if config['use_led_indicator'] is yes :
     led_list = {
-        "door_led" : LED(config['door_led']),
-        "motion_led" : LED(config['motion_led']),
+        "door_led" : LED(config['door_led_pin']),
+        "motion_led" : LED(config['motion_led_pin']),
     }
 
 
