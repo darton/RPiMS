@@ -24,7 +24,6 @@ import redis
 
 redis_db = redis.StrictRedis(host="localhost", port=6379, db=0, charset="utf-8", decode_responses=True)
 
-
 yes = 1
 no = 0
 
@@ -48,34 +47,34 @@ config = {
     #use LED indicator: yes/no
     "use_led_indicator"      : yes,
     #use Waveshare display LCD/OLED HAT buttons and joystick
-    "use_hat_buttons"        : no,
+    "use_system_buttons"   : no,
     #use BME280 sensor: yes/no
     "use_BME280_sensor"      : no,
     #use DHT22 sensor: yes/no
     "use_DHT22_sensor"       : no,
-    #use DS18B20 sensor: yes/no
+    #use DS18B20 sensors: yes/no
     "use_DS18B20_sensor"     : no,
-    #Led indicators or relays
+    #Led indicators or relays type outputs
     "door_led_pin"           : 17,
     "motion_led_pin"         : 4,
-    # Button type sensors inputs
-    "door_sensor_1_pin"      : 22,
-    "door_sensor_1_hold_time": 1,
-    "door_sensor_2_pin"      : 27,
-    "door_sensor_2_hold_time": 1,
-    # Motion Sensor inputs
-    "motion_sensor_1_pin"    : 18,
-    "motion_sensor_2_pin"    : 12,
-    # Display hat with buttons
-    "button_1_pin"           : 21,
-    "button_2_pin"           : 20,
-    "button_3_pin"           : 16,
-    "joystick_left_pin"      : 5,
-    "joystick_up_pin"        : 6,
-    "joystick_down_pin"      : 19,
-    "joystick_right_pin"     : 26,
-    "joystick_fire_pin"      : 13,
-    "joystick_fire_hold_time": 5
+    # Button type inputs
+    "button_1_pin"        : 22,
+    "button_1_hold_time"  : 1,
+    "button_2_pin"        : 27,
+    "button_2_hold_time"  : 1,
+    "button_3_pin"        : 23,
+    "button_3_hold_time"  : 5,
+    # Motion Sensor type inputs
+    "motion_sensor_1_pin" : 18,
+    "motion_sensor_2_pin" : 12,
+    "motion_sensor_3_pin" : 21,
+    "motion_sensor_4_pin" : 20,
+    "motion_sensor_5_pin" : 16,
+    "motion_sensor_6_pin" : 5,
+    "motion_sensor_7_pin" : 6,
+    "motion_sensor_8_pin" : 19,
+    "motion_sensor_9_pin" : 26,
+    "motion_sensor_10_pin": 13,
 }
 
 for s in config :
@@ -84,26 +83,25 @@ for s in config :
 
 if config['use_door_sensor'] is yes :
     door_sensor_list = {
-        "door_sensor_1" : Button(config['door_sensor_1_pin'], hold_time=config['door_sensor_1_hold_time']),
-        "door_sensor_2" : Button(config['door_sensor_2_pin'], hold_time=config['door_sensor_2_hold_time'])
+        "door_sensor_1" : Button(config['button_1_pin'], hold_time=config['button_1_hold_time']),
+        "door_sensor_2" : Button(config['button_2_pin'], hold_time=config['button_2_hold_time']),
     }
 
 if config['use_motion_sensor'] is yes :
     motion_sensor_list = {
         "motion_sensor_1": MotionSensor(config['motion_sensor_1_pin']),
-        "motion_sensor_2": MotionSensor(config['motion_sensor_2_pin'])
+        "motion_sensor_2": MotionSensor(config['motion_sensor_2_pin']),
+        "motion_sensor_3": MotionSensor(config['motion_sensor_3_pin']),
+        "motion_sensor_4": MotionSensor(config['motion_sensor_4_pin']),
+        "motion_sensor_5": MotionSensor(config['motion_sensor_5_pin']),
+        "motion_sensor_6": MotionSensor(config['motion_sensor_6_pin']),
+        "motion_sensor_7": MotionSensor(config['motion_sensor_7_pin']),
+        "motion_sensor_8": MotionSensor(config['motion_sensor_8_pin']),
     }
 
-if config['use_hat_buttons'] is "yes" :
-    hat_buttons_list = {
-        "button_1"      : Button(config['button_1_pin']),
-        "button_2"      : Button(config['button_2_pin']),
-        "button_3"      : Button(config['button_3_pin']),
-        "joystick_left" : Button(config['joystick_left_pin']),
-        "joystick_up"   : Button(config['joystick_up_pin']),
-        "joystick_fire" : Button(config['joystick_fire_pin'], hold_time=config['joystick_fire_thold_time']),
-        "joystick_down" : Button(config['joystick_down_pin']),
-        "joystick_right": Button(config['joystick_right_pin'])
+if config['use_system_buttons'] is "yes" :
+    system_buttons = {
+        "shutdown_button" : Button(config['button_3_pin'], hold_time=config['button_3_thold_time']),
     }
 
 if config['use_led_indicator'] is yes :
@@ -123,6 +121,7 @@ def program_remote_control():
         verbose = "no"
     return verbose
 
+
 def door_action_closed(door_id):
     redis_db.set(str(door_id), 'close')
     if config['real_time_control'] is yes:
@@ -134,6 +133,7 @@ def door_action_closed(door_id):
     if config['use_picamera'] is yes:
          if detect_no_alarms():
              av_stream('stop')
+
 
 def door_action_opened(door_id):
     redis_db.set(str(door_id), 'open')
@@ -149,6 +149,7 @@ def door_action_opened(door_id):
             subprocess.call("/home/pi/scripts/RPiMS/videorecorder.sh", shell=True)
         av_stream('start')
 
+
 def door_status_open(door_id):
     redis_db.set(str(door_id), 'open')
     if config['real_time_control'] is yes:
@@ -159,6 +160,7 @@ def door_status_open(door_id):
         zabbix_sender_call('info_when_door_is_opened',door_id)
     if config['use_picamera'] is yes:
         av_stream('start')
+
 
 def door_status_close(door_id):
     redis_db.set(str(door_id), 'close')
@@ -172,6 +174,7 @@ def door_status_close(door_id):
          if detect_no_alarms():
              av_stream('stop')
 
+
 def motion_sensor_when_motion(ms_id):
     redis_db.set(str(ms_id), 'motion')
     if config['real_time_control'] is yes:
@@ -183,6 +186,7 @@ def motion_sensor_when_motion(ms_id):
     if config['use_picamera'] is yes:
         av_stream('start')
 
+
 def motion_sensor_when_no_motion(ms_id):
     redis_db.set(str(ms_id), 'nomotion')
     if config['real_time_control'] is yes:
@@ -192,6 +196,7 @@ def motion_sensor_when_no_motion(ms_id):
     if config['use_picamera'] is yes:
          if detect_no_alarms():
              av_stream('stop')
+
 
 def detect_no_alarms():
     if config['use_door_sensor'] is yes and config['use_motion_sensor'] is yes:
@@ -216,12 +221,15 @@ def detect_no_alarms():
         if all(motion_sensor_values):
             return True
 
+
 def av_stream(state):
     subprocess.call("/home/pi/scripts/RPiMS/stream.sh" + " " +  state, shell=True)
+
 
 def zabbix_sender_call(message,sensor_id):
     zabbix_sender_cmd ='/home/pi/scripts/RPiMS/zabbix_sender.sh ' + message + " " + str(sensor_id)
     subprocess.call(zabbix_sender_cmd, shell=True)
+
 
 def shutdown():
     check_call(['sudo', 'poweroff'])
@@ -250,7 +258,7 @@ if config['use_motion_sensor'] is yes :
     if config['use_led_indicator'] is yes :
         led_list['motion_led'].source = any_values(*motion_sensor_list.values())
 
-if config['use_hat_buttons'] is yes :
-    hat_buttons_list['joystick_fire'].when_held = shutdown
+if config['use_system_buttons'] is yes :
+    system_buttons['shutdown_button'].when_held = shutdown
 
 pause()
