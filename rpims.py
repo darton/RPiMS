@@ -60,9 +60,9 @@ config = {
     "motion_led_pin"         : 16,
     # Button type inputs
     "button_1_pin"        : 22,
-    "button_1_hold_time"  : 1,
+    "button_1_hold_time"  : 3,
     "button_2_pin"        : 23,
-    "button_2_hold_time"  : 1,
+    "button_2_hold_time"  : 3,
     "button_3_pin"        : 13,
     "button_3_hold_time"  : 5,
     # Motion Sensor type inputs
