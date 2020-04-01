@@ -24,6 +24,7 @@ import redis
 
 redis_db = redis.StrictRedis(host="localhost", port=6379, db=0, charset="utf-8", decode_responses=True)
 
+
 yes = 1
 no = 0
 
@@ -55,27 +56,25 @@ config = {
     #use DS18B20 sensors: yes/no
     "use_DS18B20_sensor"     : no,
     #Led indicators or relays type outputs
-    "door_led_pin"           : 17,
-    "motion_led_pin"         : 4,
+    "door_led_pin"           : 12,
+    "motion_led_pin"         : 16,
     # Button type inputs
     "button_1_pin"        : 22,
     "button_1_hold_time"  : 1,
-    "button_2_pin"        : 27,
+    "button_2_pin"        : 23,
     "button_2_hold_time"  : 1,
-    "button_3_pin"        : 23,
+    "button_3_pin"        : 13,
     "button_3_hold_time"  : 5,
     # Motion Sensor type inputs
     "motion_sensor_1_pin" : 18,
-    "motion_sensor_2_pin" : 12,
+    "motion_sensor_2_pin" : 20,
     "motion_sensor_3_pin" : 21,
-    "motion_sensor_4_pin" : 20,
-    "motion_sensor_5_pin" : 16,
+    "motion_sensor_4_pin" : 26,
+    "motion_sensor_5_pin" : 19,
     "motion_sensor_6_pin" : 5,
     "motion_sensor_7_pin" : 6,
-    "motion_sensor_8_pin" : 19,
-    "motion_sensor_9_pin" : 26,
-    "motion_sensor_10_pin": 13,
 }
+
 
 for s in config :
     print(s + ' = ' + str(config[s]))
@@ -96,7 +95,6 @@ if config['use_motion_sensor'] is yes :
         "motion_sensor_5": MotionSensor(config['motion_sensor_5_pin']),
         "motion_sensor_6": MotionSensor(config['motion_sensor_6_pin']),
         "motion_sensor_7": MotionSensor(config['motion_sensor_7_pin']),
-        "motion_sensor_8": MotionSensor(config['motion_sensor_8_pin']),
     }
 
 if config['use_system_buttons'] is "yes" :
