@@ -215,10 +215,10 @@ RPi     [GND - Pin 9] ----------------------------- [GND]    DS18B20
 
  - Hardware Clock
 ```
-RPi  [VCC 3V3 pin 1] ----------------------------- [VCC]  RTC
-RPi   [GPIO.2 pin 3] ----------------------------- [SDA]  RTC
-RPi   [GPIO.3 pin 5] ----------------------------- [SDC]  RTC
-RPi    [GND - pin 9] ----------------------------- [GND]  RTC
+RPi  [VCC 3V3 pin 1] ----------------------------- [VCC]  RTC DS3231
+RPi   [GPIO.2 pin 3] ----------------------------- [SDA]  RTC DS3231
+RPi   [GPIO.3 pin 5] ----------------------------- [SDC]  RTC DS3231
+RPi    [GND - pin 9] ----------------------------- [GND]  RTC DS3231
 ```
 
 - Input Sensors (door sensors)
