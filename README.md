@@ -251,10 +251,12 @@ RPi [GPIO.13 - pin 33] ------> Joytstick press
 * Rapsberry Pi - 1 pcs
 * Raspberri Pi Case - 1 pcs
 * RTC DS3231 I2C - 1 pcs
-* Optional
-  Waveshare OLED 1,3'' 128x64px SPI/I2C or Waveshare TFT 1,44'' 128x128px SPI - 1 pcs 
-  ITALTRONIC 25.0410000.RP3 - 1 pcs
-  Male Headers 1x40 raster 2,54mm angle - 2 pcs
+
+Optional
+
+* Waveshare OLED 1,3'' 128x64px SPI/I2C or Waveshare TFT 1,44'' 128x128px SPI - 1 pcs 
+* ITALTRONIC 25.0410000.RP3 - 1 pcs
+* Male Headers 1x40 raster 2,54mm angle - 2 pcs
 
 
 
