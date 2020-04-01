@@ -137,20 +137,43 @@ sudo sync
 sudo reboot
 ```
 
-## Configuration Testing
+## Configuration Testing I2C devices
 
 ```
 sudo apt-get install i2c-tools
 
-i2cdetect -y 1
+```
 
+Optionally, to improve permformance, increase the I2C baudrate from the default of 100KHz to 400KHz by altering /boot/config.txt to include:
+```
+dtparam=i2c_arm=on,i2c_baudrate=400000
+```
+Next check that the device is communicating properly.
+
+```
+$ i2cdetect -y 1
+       0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f
+  00:          -- -- -- -- -- -- -- -- -- -- -- -- --
+  10: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+  20: 20 -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+  30: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+  40: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+  50: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+  60: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+  70: -- -- -- -- -- -- 76 --
+  ```
+
+## Configuration Testing picamera
+```
 raspivid -o test.h264
 
 raspistill -o test.jpg
 
 rtsp://raspberrypi:8554/
+```
 
-
+## Configuration Testing zabbix-agent
+```
 sudo apt-get  install zabbix-proxy-sqlite3
 
 sudo zabbix_get -s 127.0.0.1 -k rpims.cputemp[2] --tls-connect=psk --tls-psk-identity="$(awk -F\= '/TLSPSKIdentity/ {print $2}' /etc/zabbix/zabbix_agentd.conf.d/zabbix-rpims.conf)" --tls-psk-file=/etc/zabbix/zabbix_agentd.conf.d/zabbix_agentd.psk
