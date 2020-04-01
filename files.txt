@@ -3,7 +3,7 @@ ADHT.py
 BME280.py
 CPUtemp.py
 DS18B20.py
-sensors.py
+rpims.py
 luma_oled.py
 luma_lcd.py
 redis-get-data.py 
