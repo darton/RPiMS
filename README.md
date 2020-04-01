@@ -174,13 +174,13 @@ zabbix_get -s 127.0.0.1 -k "system.cpu.load[all,avg1]" --tls-connect=psk --tls-p
 
 ## Hardware setup - Raspberry Pi
 
- ```
+
  - Temperature and Humidity Sensor DHT11/DHT22
  
  BCM17 -> DOUT DHT11/DHT22/AM2302
- ```
 
-```
+
+
  - Temperature, Humidity, Pressure Sensor BME280
  
  BCM2 [pin 3] - SDA
@@ -190,9 +190,9 @@ zabbix_get -s 127.0.0.1 -k "system.cpu.load[all,avg1]" --tls-connect=psk --tls-p
  3v3 Power [pin 1] - VCC
  
  Ground [pin 9] - GND
-```
 
-```
+
+
 - DS18B20 Temperature sensor
 
 BCM4 [pin 7] -> D
@@ -200,9 +200,9 @@ BCM4 [pin 7] -> D
 3v3 Power [pin 1] - VCC
 
 Ground [pin 9] - GND
-```
 
-```
+
+
  - Hardware Clock
  
  3v3 Power     [pin 1] -> +
@@ -212,9 +212,9 @@ BCM2 (SDA)    [pin33] -> D
 BCM3 (SCL)    [pin 5] -> C
 
 Ground -> GND [pin 9] -> GND
-```
 
-```
+
+
 - Input Sensors (door sensors)
 
 Ground - > GND
@@ -224,15 +224,15 @@ BCM22 [pin 15] -> Input Sensor 1 (Door/window sensor)
 BCM23 [pin 16] -> Input Sensor 2 (Door/window sensor)
 
 BCM18 [pin 12] -> Input Sensor 3 (Motion sensor)
-```
 
-```
+
+
 - WaveShare HAT - only joystick press is currently used 
 - WaveShare HAT Joystick
 
 BCM13 [pin 33] -> Joytstick press
 
-```
+
 
 
 ## B.o.M - Bill of Materials
