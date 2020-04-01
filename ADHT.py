@@ -81,7 +81,7 @@ def Main():
             temperature = filtered_temperature.pop()
             humidity = filtered_humidity.pop()
             if math.isnan(temperature) == False and math.isnan(humidity) == False:
-                print('{},{:.01f},{:.01f}' .format(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), temperature, humidity))
+                print('{}, Temperature: {:.01f}°C, Humidity: {:.01f}%' .format(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), temperature, humidity))
                 redis_db.set('Humidity', humidity)
                 redis_db.set('Temperature', temperature)
 
@@ -95,5 +95,5 @@ if __name__ == "__main__":
     try:
         Main()
 
-    except (KeyboardInterrupt, SystemExit):
+    except KeyboardInterrupt:
         event.set()
