@@ -50,13 +50,6 @@ Restart Zabbix service
 sudo systemctl restart zabbix-agent.service
 ```
 
-## Install if you have PiCamera
-
-```
-sudo apt-get install -y vlc ffmpegayer gpac fbi
-
-```
-
 ## Configure if you have RTC (DS3231 I2C)
 
 1. I2C interface should be enabled. 
@@ -228,7 +221,7 @@ BCM22 [pin 15] -> Input Sensor 1 (Door/window sensor)
 
 BCM23 [pin 16] -> Input Sensor 2 (Door/window sensor)
 
-BCM12 [pin 32] -> Input Sensor 4 (Motion sensor)
+BCM12 [pin 32] -> Input Sensor 3 (Motion sensor)
 ```
 
 ```
