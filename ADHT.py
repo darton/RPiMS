@@ -14,6 +14,9 @@ from datetime import datetime
 sensor = Adafruit_DHT.AM2302
 gpiopin = 17
 
+#verbose yes/no - if yes, print Temperature and Humidity
+verbose = "yes"
+
 redis_db = redis.StrictRedis(host="localhost", port=6379, db=0, charset="utf-8", decode_responses=True)
 
 filtered_temperature = [] # here we keep the temperature values after removing outliers
@@ -81,9 +84,10 @@ def Main():
             temperature = filtered_temperature.pop()
             humidity = filtered_humidity.pop()
             if math.isnan(temperature) == False and math.isnan(humidity) == False:
-                print('{}, Temperature: {:.01f}°C, Humidity: {:.01f}%' .format(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), temperature, humidity))
                 redis_db.set('Humidity', humidity)
                 redis_db.set('Temperature', temperature)
+                if verbose is 'yes' :
+                    print('{}, Temperature: {:.01f}°C, Humidity: {:.01f}%' .format(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), temperature, humidity))
 
             lock.release()
 
