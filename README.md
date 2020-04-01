@@ -223,7 +223,7 @@ RPi    [GND - pin 9] ----------------------------- [GND]  RTC
 
 - Input Sensors (door sensors)
 ```
-RPi [GND - pin 9] ---- > GND to all Input Sensors
+RPi [GND - pin 9] -------- > GND to all Input Sensors
 RPi [GPIO.22 - pin 15] ----> Input Sensor 1 (Door/window sensor)
 RPi [GPIO.23 - pin 16] ----> Input Sensor 2 (Door/window sensor)
 RPi [GPIO.18 - pin 12] ----> Input Sensor 3 (Motion sensor)
