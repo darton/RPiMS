@@ -37,7 +37,7 @@ config = {
     #use zabbix sender: yes/no
     "use_zabbix_sender"      : no,
     #use picamera: yes/no
-    "use_picamera"          : yes,
+    "use_picamera"           : yes,
     #recording 5s video on local drive: yes/no
     "use_picamera_recording" : no,
     #use door sensor: yes/no
@@ -47,7 +47,7 @@ config = {
     #use LED indicator: yes/no
     "use_led_indicator"      : yes,
     #use Waveshare display LCD/OLED HAT buttons and joystick
-    "use_system_buttons"   : no,
+    "use_system_buttons"     : no,
     #use BME280 sensor: yes/no
     "use_BME280_sensor"      : no,
     #use DHT22 sensor: yes/no
