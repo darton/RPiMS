@@ -23,6 +23,8 @@ To writing an image to the SD card, use [Etcher](https://etcher.io/) an image wr
 If you're not using Etcher, you'll need to unzip .zip downloads to get the image file (.img) to write to your SD card.
 ```
 ### Run installation script
+
+Running the following command will download and run the script.
 ```
 sudo curl -sS https://raw.githubusercontent.com/darton/RPiMS/master/install.sh | bash
 
