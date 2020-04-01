@@ -51,8 +51,12 @@ sudo systemctl enable zabbix-agent.service
 cat $installdir/motd |sudo tee /etc/update-motd.d/20-rpims
 sudo chmod ugo+x  /etc/update-motd.d/20-rpims
 
-cat $installdir/rc.local |sudo tee /etc/rc.local
-rm $installdir/rc.local
+sudo mv $installdir/rpims.service /lib/systemd/system/rpims.service
+sudo systemctl enable rpims.service
+sudo systemctl start rpims.service
+
+#cat $installdir/rc.local |sudo tee /etc/rc.local
+#rm $installdir/rc.local
 
 echo "#Uncomment sensor you want
 #* * * * * pi $installdir/BME280.py > /dev/null 2>&1
