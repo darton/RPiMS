@@ -221,7 +221,7 @@ BCM22 [pin 15] -> Input Sensor 1 (Door/window sensor)
 
 BCM23 [pin 16] -> Input Sensor 2 (Door/window sensor)
 
-BCM12 [pin 32] -> Input Sensor 3 (Motion sensor)
+BCM18 [pin 12] -> Input Sensor 3 (Motion sensor)
 ```
 
 ```
@@ -241,7 +241,7 @@ BCM5 [pin 29] -> Joytstick left
 
 BCM6 [pin 31] -> Joytstick up
 
-BCM13 [pin 33] -> Joytstick fire
+BCM13 [pin 33] -> Joytstick press
 
 BCM19 [pin 35] -> Joytstick down
 
