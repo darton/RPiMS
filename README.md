@@ -236,7 +236,7 @@ BCM13 [pin 33] -> Joytstick press
 
 
 ## B.o.M - Bill of Materials
-```
+
 * BME280 or DHT11/DHT22/AM2302 - 1 pcs
 * DS18B20 - 1 pcs or more
 * Resistor 4k7 for DS18B20 sensor
@@ -253,7 +253,7 @@ BCM13 [pin 33] -> Joytstick press
   ITALTRONIC 25.0410000.RP3 - 1 pcs
   Male Headers 1x40 raster 2,54mm angle - 2 pcs
 
-```
+
 
 ## Usefull links
 
