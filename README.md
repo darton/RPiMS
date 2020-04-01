@@ -225,44 +225,32 @@ BCM18 [pin 12] -> Input Sensor 3 (Motion sensor)
 ```
 
 ```
-- WaveShare HAT buttons
-
-BCM21 [pin 40] -> Button 1
-
-BCM20 [pin 38] -> Button 2
-
-BCM16 [pin 36] -> Button 3
-
-
-
+- WaveShare HAT - only joystick press is currently used 
 - WaveShare HAT Joystick
-
-BCM5 [pin 29] -> Joytstick left
-
-BCM6 [pin 31] -> Joytstick up
 
 BCM13 [pin 33] -> Joytstick press
 
-BCM19 [pin 35] -> Joytstick down
-
-BCM26 [pin 37] -> Joytstick right
 ```
 
 
 ## B.o.M - Bill of Materials
 ```
-* BME280 or DHT11/DHT22/AM2302 or DS18B20 - 1 pcs
-* Door/window Sensor - 2 pcs
-* Motion Sensor - 1 pcs
+* BME280 or DHT11/DHT22/AM2302 - 1 pcs
+* DS18B20 - 1 pcs or more
+* Resistor 4k7 for DS18B20 sensor
+* Door/window sensor - 1-2 pcs
+* Motion Sensor - 1-7 pcs
 * PiCamera - 1 pcs
 * PiCamera Case - 1pcs
-* Power Adapter (5V/2.5A) - 1 pcs
+* Power Adapter (5V/2.5A or 5V1/3A for RPi4) - 1 pcs
 * Rapsberry Pi - 1 pcs
 * Raspberri Pi Case - 1 pcs
-* Waveshare OLED 1,3'' 128x64px SPI/I2C or Waveshare TFT 1,44'' 128x128px SPI - 1 pcs 
-* ITALTRONIC 25.0410000.RP3 
-* Male Headers 1x40 raster 2,54mm angle - 2 pcs
 * RTC DS3231 I2C - 1 pcs
+* Optional
+  Waveshare OLED 1,3'' 128x64px SPI/I2C or Waveshare TFT 1,44'' 128x128px SPI - 1 pcs 
+  ITALTRONIC 25.0410000.RP3 - 1 pcs
+  Male Headers 1x40 raster 2,54mm angle - 2 pcs
+
 ```
 
 ## Usefull links
