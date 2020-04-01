@@ -18,7 +18,7 @@ if [ "$_IP" ]; then
   printf "My IP address is %s\n" "$_IP"
 fi
 
-su - pi -c '/home/pi/scripts/RPiMS/sensors.py &'
+su - pi -c '/home/pi/scripts/RPiMS/rpims.py &'
 sleep 5
 #remove the comment from the correct line  
 #su - pi -c '/home/pi/scripts/RPiMS/ADHT.py &'
