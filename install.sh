@@ -52,6 +52,7 @@ cat $installdir/motd |sudo tee /etc/update-motd.d/20-rpims
 sudo chmod ugo+x  /etc/update-motd.d/20-rpims
 
 sudo mv $installdir/rpims.service /lib/systemd/system/rpims.service
+sudo systemctl daemon-reload
 sudo systemctl enable rpims.service
 sudo systemctl start rpims.service
 
