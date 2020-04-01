@@ -1,27 +1,27 @@
 # RPiMS
-```
+
 RPiMS is Raspberry Pi based Monitoring System (door/window sensors, motion sensors, temperature, humidity, preassure sensors, video streamer/recorder from picamera)
-```
+
 ## Description
-```
+
 The Zabbix Agent periodicaly pull temperature,humidity and pressure sensor data and send to Zabbix Server. 
 When any of the doors opens or closed then a message will be sent to the Zabbix server. 
 When the motion sensor detects motion a message will be sent to Zabbix server.
 When any of the doors is opened or any of the motion sensors detect movement, a 5 second video sequence will be recorded and the rtsp stream will be turned on.
 When all of the doors are closed for more than 3 seconds and the motion sensors do not detect movement, rtsp stream will be turned off. 
 
-```
+
 
 ## Installing
 
 ### Installing operating system images 
-```
+
 Download the image [Raspbian Lite](https://downloads.raspberrypi.org/raspbian_lite_latest)
 
 To writing an image to the SD card, use [Etcher](https://etcher.io/) an image writing tool.
 
 If you're not using Etcher, you'll need to unzip .zip downloads to get the image file (.img) to write to your SD card.
-```
+
 ### Run installation script
 
 Running the following command will download and run the script.
