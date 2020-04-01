@@ -175,60 +175,59 @@ zabbix_get -s 127.0.0.1 -k "system.cpu.load[all,avg1]" --tls-connect=psk --tls-p
 ## Hardware setup - Raspberry Pi
 
 
- - Temperature and Humidity Sensor DHT11/DHT22
- 
- BCM17 -> DOUT DHT11/DHT22/AM2302
+ - Temperature and Humidity Sensor DHT11/DHT22/AM2302
+```
+RPi  [VCC 3V3 - Pin 1] -----------------------------  [VCC]    DHT22
+                                               |
+                                               \
+                                               /   R1 = 4k7
+                                               \
+                                               |
+RPi  [GPIO.17 - Pin 11] ----------------------------- [DATA]   DHT22
 
+
+RPi      [GND - Pin 9] ----------------------------- [GND]    DHT22
+```
 
 
  - Temperature, Humidity, Pressure Sensor BME280
- 
- BCM2 [pin 3] - SDA
- 
- BCM3 [pin 5] - SDC
- 
- 3v3 Power [pin 1] - VCC
- 
- Ground [pin 9] - GND
-
+```
+RPi  [VCC 3V3 Pin 1] ----------------------------- [VCC]  BME280
+RPi   [GPIO.2 Pin 3] ----------------------------- [SDA]  BME280
+RPi   [GPIO.3 Pin 5] ----------------------------- [SDC]  BME280
+RPi    [GND - Pin 9] ----------------------------- [GND]  BME280
+```
 
 
 - DS18B20 Temperature sensor
 ```
-RPi [VCC-3V3 Pin 1] -----------------------------  [VCC]    DS18B20
+RPi   [VCC 3V3 Pin 1] -----------------------------  [VCC]    DS18B20
                                                |
+                                               \
+                                               /   R1 = 4k7
+                                               \
                                                |
-                                               R1 = 4k7
-                                               |
-                                               |
-RPi [GPIO 4 - Pin 7] ----------------------------- [DATA]   DS18B20
+RPi  [GPIO.4 - Pin 7] ----------------------------- [DATA]   DS18B20
 
 
-RPi [GND      Pin 9] ----------------------------- [GND]    DS18B20
+RPi     [GND - Pin 9] ----------------------------- [GND]    DS18B20
 ```
 
  - Hardware Clock
- 
- 3v3 Power     [pin 1] -> +
-
-BCM2 (SDA)    [pin33] -> D
-
-BCM3 (SCL)    [pin 5] -> C
-
-Ground -> GND [pin 9] -> GND
-
-
+```
+RPi  [VCC 3V3 pin 1] ----------------------------- [VCC]  RTC
+RPi   [GPIO.2 pin 3] ----------------------------- [SDA]  RTC
+RPi   [GPIO.3 pin 5] ----------------------------- [SDC]  RTC
+RPi    [GND - pin 9] ----------------------------- [GND]  RTC
+```
 
 - Input Sensors (door sensors)
-
-Ground - > GND
-
-BCM22 [pin 15] -> Input Sensor 1 (Door/window sensor)
-
-BCM23 [pin 16] -> Input Sensor 2 (Door/window sensor)
-
-BCM18 [pin 12] -> Input Sensor 3 (Motion sensor)
-
+```
+RPi [GND - pin 9] ---- > GND to all Input Sensors
+RPi [GPIO.22 - pin 15] ----> Input Sensor 1 (Door/window sensor)
+RPi [GPIO.23 - pin 16] ----> Input Sensor 2 (Door/window sensor)
+RPi [GPIO.18 - pin 12] ----> Input Sensor 3 (Motion sensor)
+```
 
 
 - WaveShare HAT - only joystick press is currently used 
