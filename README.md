@@ -137,11 +137,10 @@ sudo sync
 sudo reboot
 ```
 
-## Configuration Testing I2C devices
+## Configuration testing I2C devices
 
 ```
 sudo apt-get install i2c-tools
-
 ```
 
 Optionally, to improve permformance, increase the I2C baudrate from the default of 100KHz to 400KHz by altering /boot/config.txt to include:
@@ -163,7 +162,7 @@ $ i2cdetect -y 1
   70: -- -- -- -- -- -- 76 --
   ```
 
-## Configuration Testing picamera
+## Configuration testing picamera
 ```
 raspivid -o test.h264
 
@@ -172,7 +171,7 @@ raspistill -o test.jpg
 rtsp://raspberrypi:8554/
 ```
 
-## Configuration Testing zabbix-agent
+## Configuration testing zabbix-agent
 ```
 sudo apt-get  install zabbix-proxy-sqlite3
 
