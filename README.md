@@ -194,14 +194,18 @@ zabbix_get -s 127.0.0.1 -k "system.cpu.load[all,avg1]" --tls-connect=psk --tls-p
 
 
 - DS18B20 Temperature sensor
+```
+RPi VCC (3V3) Pin 1 -----------------------------   VCC    DS18B20
+                                               |
+                                               |
+                                               R1 = 4k7
+                                               |
+                                               |
+RPi GPIO 4    Pin 7 -----------------------------   DATA   DS18B20
 
-BCM4 [pin 7] -> D
 
-3v3 Power [pin 1] - VCC
-
-Ground [pin 9] - GND
-
-
+RPi GND       Pin 9 -----------------------------   GND    DS18B20
+```
 
  - Hardware Clock
  
