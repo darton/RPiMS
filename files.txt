@@ -13,5 +13,5 @@ videorecorder.sh
 zabbix_sender.sh
 zabbix-rpims.conf
 nginx-default
-rc.local
+rpims.service
 motd
