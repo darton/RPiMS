@@ -239,7 +239,7 @@ BCM13 [pin 33] -> Joytstick press
 
 * BME280 or DHT11/DHT22/AM2302 - 1 pcs
 * DS18B20 - 1 pcs or more
-* Resistor 4k7 for DS18B20 sensor
+* Resistor 4k7 (for DS18B20 sensor) - 1 psc
 * Door/window sensor - 1-2 pcs
 * Motion Sensor - 1-7 pcs
 * PiCamera - 1 pcs
