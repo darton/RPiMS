@@ -230,12 +230,12 @@ RPi [GPIO.18 - pin 12] ----> Input Sensor 3 (Motion sensor)
 ```
 
 
-- WaveShare HAT - only joystick press is currently used 
-- WaveShare HAT Joystick
+- WaveShare HAT 
 
-BCM13 [pin 33] -> Joytstick press
-
-
+WaveShare HAT Joystick - only joystick press is currently used 
+```
+RPi [GPIO.13 - pin 33] ------> Joytstick press
+```
 
 
 ## B.o.M - Bill of Materials
