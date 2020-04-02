@@ -273,13 +273,14 @@ def oled_device():
     from luma.oled.device import sh1106
     import RPi.GPIO as GPIO
     import time
-    #import redis
     import socket
     from PIL import Image
     from PIL import ImageDraw
     from PIL import ImageFont
+
     # Load default font.
     font = ImageFont.load_default()
+    #Disable warning
     GPIO.setwarnings(False)
     # Create blank image for drawing.
     # Make sure to create image with mode '1' for 1-bit color.
@@ -300,7 +301,6 @@ def oled_device():
         GPIO.setmode(GPIO.BCM)
         GPIO.setup(RST,GPIO.OUT)
         GPIO.output(RST,GPIO.HIGH)
-
         serial = i2c(port=1, address=0x3c)
     else:
         serial = spi(device=0, port=0, bus_speed_hz = 8000000, transfer_size = 4096, gpio_DC = 24, gpio_RST = 25)
@@ -308,7 +308,6 @@ def oled_device():
     device = sh1106(serial, rotate=2) #sh1106
 
     try:
-        redis_db = redis.StrictRedis(host="localhost", port=6379, db=0, charset="utf-8", decode_responses=True)
         while True:
             with canvas(device) as draw:
                 hostname = socket.gethostname()
@@ -319,7 +318,7 @@ def oled_device():
                 pressure = round(float(redis_db.get('BME280_Pressure')),1)
                 door_sensor_1 = redis_db.get('door_sensor_1')
                 door_sensor_2 = redis_db.get('door_sensor_2')
-                cputemp = redis_db.get('CPU_Temperature')
+                cputemp = round(float(redis_db.get('CPU_Temperature')),1)
                 #draw on oled
                 draw.text((x, top),       'IP:' + str(hostip), font=font, fill=255)
                 draw.text((x, top+9),     'Temperature..' + str(temperature) + '*C', font=font, fill=255)
@@ -328,6 +327,7 @@ def oled_device():
                 draw.text((x, top+36),    'Door 1.......' + str(door_sensor_1),  font=font, fill=255)
                 draw.text((x, top+45),    'Door 2.......' + str(door_sensor_2),  font=font, fill=255)
                 draw.text((x, top+54),    'CpuTemp......' + str(cputemp) + '*C', font=font, fill=255)
+            sleep(0.5)
     except:
         print("The End")
 
