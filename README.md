@@ -287,7 +287,7 @@ RPi [GND - pin 9] ----------- [Button]
 ## B.o.M - Bill of Materials
 
 * BME280 - 1 pcs
-* DHT11/DHT22/AM2302 - 1 pcs
+* DHT11/DHT22/AM2302 - 1 pcs (NOT RECOMMENDED, POOR QUALITY, UNSTABLE MEASUREMENTS)
 * DS18B20 - 1 pcs or more (or DS18S20) 
 * Resistor 4k7 (for DS18B20 sensor) - 1 psc
 * Door/window sensor - 1-2 pcs
