@@ -247,13 +247,19 @@ RPi  [GPIO.4 - Pin 7] ----------------------------- [DATA]   DS18B20
 RPi     [GND - Pin 9] ----------------------------- [GND]    DS18B20
 ```
 
+ - OLED Display
+```
+RPi  [VCC 3V3 pin 1] ----------------------------- [VCC]  OLED
+RPi   [GPIO.2 pin 3] ----------------------------- [SDA]  OLED
+RPi   [GPIO.3 pin 5] ----------------------------- [SDC]  OLED
+RPi    [GND - pin 9] ----------------------------- [GND]  OLED
+```
+
  - Hardware Clock
 ```
-RPi  [VCC 3V3 pin 1] ----------------------------- [VCC]  RTC DS3231
-RPi   [GPIO.2 pin 3] ----------------------------- [SDA]  RTC DS3231
-RPi   [GPIO.3 pin 5] ----------------------------- [SDC]  RTC DS3231
-RPi    [GND - pin 9] ----------------------------- [GND]  RTC DS3231
-```
+RPi  [VCC 3V3 pin 1] ----------------------------- [VCC]  DS3231
+RPi   [GPIO.2 pin 3] ----------------------------- [SDA]  DS3231
+RPi   [GPIO.3 pin 5] ----------------------------- [SDC]  DS3231
 
 - Input Sensors (door sensors)
 ```
@@ -263,19 +269,18 @@ RPi [GPIO.23 - pin 16] ----> Input Sensor 2 (Door/window sensor)
 RPi [GPIO.18 - pin 12] ----> Input Sensor 3 (Motion sensor)
 ```
 
-
-- WaveShare HAT 
-
-WaveShare HAT Joystick - only joystick press is currently used 
+- Shudown button
 ```
-RPi [GPIO.13 - pin 33] ------> Joytstick press
+RPi [GPIO.13 - pin 33] ------ [Button]
+RPi [GND - pin 9] ----------- [Button]
 ```
 
 
 ## B.o.M - Bill of Materials
 
-* BME280 or DHT11/DHT22/AM2302 - 1 pcs
-* DS18B20 - 1 pcs or more
+* BME280 - 1 pcs
+* DHT11/DHT22/AM2302 - 1 pcs
+* DS18B20 - 1 pcs or more (or DS18S20) 
 * Resistor 4k7 (for DS18B20 sensor) - 1 psc
 * Door/window sensor - 1-2 pcs
 * Motion Sensor - 1-7 pcs
