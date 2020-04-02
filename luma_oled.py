@@ -1,19 +1,8 @@
-#!/usr/bin/env python3
+#!/usr/bin/python3
 
 # -*- coding:utf-8 -*-
-#
-#  Author : Dariusz Kowalczyk
-#
-#  This program is free software; you can redistribute it and/or modify
-#  it under the terms of the GNU General Public License Version 2 as
-#  published by the Free Software Foundation.
-#
-#  This program is distributed in the hope that it will be useful,
-#  but WITHOUT ANY WARRANTY; without even the implied warranty of
-#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#  GNU General Public License for more details.
 
-from luma.core.interface.serial import i2c, spi
+from luma.core.interface.serial import i2c, spi, noop
 from luma.core.render import canvas
 from luma.core import lib
 from luma.oled.device import sh1106
@@ -29,7 +18,7 @@ from PIL import ImageFont
 
 # Load default font.
 font = ImageFont.load_default()
-
+GPIO.setwarnings(False)
 # Create blank image for drawing.
 # Make sure to create image with mode '1' for 1-bit color.
 width = 128
@@ -44,21 +33,21 @@ bottom = height-padding
 x = 0
 
 RST = 25
-CS = 8      
+CS = 8
 DC = 24
 
-USER_I2C = 0
+USER_I2C = 1
 
 if  USER_I2C == 1:
     GPIO.setmode(GPIO.BCM)
-    GPIO.setup(RST,GPIO.OUT)    
+    GPIO.setup(RST,GPIO.OUT)
     GPIO.output(RST,GPIO.HIGH)
-    
+
     serial = i2c(port=1, address=0x3c)
 else:
     serial = spi(device=0, port=0, bus_speed_hz = 8000000, transfer_size = 4096, gpio_DC = 24, gpio_RST = 25)
 
-device = sh1106(serial, rotate=2) #sh1106  
+device = sh1106(serial, rotate=2) #sh1106
 
 try:
     redis_db = redis.StrictRedis(host="localhost", port=6379, db=0, charset="utf-8", decode_responses=True)
@@ -66,13 +55,13 @@ try:
         with canvas(device) as draw:
             hostname = socket.gethostname()
             hostip = socket.gethostbyname(hostname)
-            #get data from redis db 
-            temperature = round(float(redis_db.get('Temperature')),1)
-            humidity = round(float(redis_db.get('Humidity')),1)
-            pressure = round(float(redis_db.get('Pressure')),1)
+            #get data from redis db
+            temperature = round(float(redis_db.get('BME280_Temperature')),1)
+            humidity = round(float(redis_db.get('BME280_Humidity')),1)
+            pressure = round(float(redis_db.get('BME280_Pressure')),1)
             door_sensor_1 = redis_db.get('door_sensor_1')
             door_sensor_2 = redis_db.get('door_sensor_2')
-            cputemp = round(float(redis_db.get('CPU_Temperature')),1)
+            cputemp = redis_db.get('CPU_Temperature')
             #draw on oled
             draw.text((x, top),       'IP:' + str(hostip), font=font, fill=255)
             draw.text((x, top+9),     'Temperature..' + str(temperature) + '*C', font=font, fill=255)
@@ -83,5 +72,6 @@ try:
             draw.text((x, top+54),    'CpuTemp......' + str(cputemp) + '*C', font=font, fill=255)
 
 except:
-    print("The End)
+    print("The End")
     GPIO.cleanup()
+
