@@ -58,11 +58,10 @@ Restart Zabbix service
 sudo systemctl restart zabbix-agent.service
 ```
 
-Enable rpims.service
-
+Start/Stop RPIMS
 ```
-sudo systemctl enable rpims.service
-sudo systemclt start rpims.service
+sudo systemctl start rpims.service
+sudo systemclt stop rpims.service
 ```
 
 ## Configure if you have RTC (DS3231 I2C)
