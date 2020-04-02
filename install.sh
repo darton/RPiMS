@@ -55,9 +55,3 @@ sudo mv $installdir/rpims.service /lib/systemd/system/rpims.service
 sudo systemctl daemon-reload
 sudo systemctl enable rpims.service
 sudo systemctl start rpims.service
-
-echo "#Uncomment sensor you want
-#* * * * * pi $installdir/BME280.py > /dev/null 2>&1
-#* * * * * pi $installdir/DS18B20.py > /dev/null 2>&1
-* * * * * pi $installdir/CPUtemp.py > /dev/null 2>&1
-" |sudo tee /etc/cron.d/rpims
