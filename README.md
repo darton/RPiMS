@@ -58,6 +58,13 @@ Restart Zabbix service
 sudo systemctl restart zabbix-agent.service
 ```
 
+Enable rpims.service
+
+```
+sudo systemctl enable rpims.service
+sudo systemclt start rpims.service
+```
+
 ## Configure if you have RTC (DS3231 I2C)
 
 1. I2C interface should be enabled. 
