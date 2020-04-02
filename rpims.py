@@ -126,9 +126,9 @@ def door_action_opened(door_id):
     if config['use_zabbix_sender'] is yes :
         zabbix_sender_call('info_when_door_has_been_opened',door_id)
     if config['use_picamera'] is yes :
-        if config['use_picamera_recording'] is 'yes':
+        if config['use_picamera_recording'] is yes:
             av_stream('stop')
-            subprocess.call("/home/pi/scripts/RPiMS/videorecorder.sh", shell=True)
+            av_recording()
         av_stream('start')
 
 
@@ -199,6 +199,8 @@ def detect_no_alarms():
 def av_stream(state):
     subprocess.call("/home/pi/scripts/RPiMS/stream.sh" + " " +  state, shell=True)
 
+def av_recording():
+    subprocess.call("/home/pi/scripts/RPiMS/videorecorder.sh", shell=True)
 
 def zabbix_sender_call(message,sensor_id):
     zabbix_sender_cmd ='/home/pi/scripts/RPiMS/zabbix_sender.sh ' + message + " " + str(sensor_id)
