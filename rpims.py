@@ -199,8 +199,10 @@ def detect_no_alarms():
 def av_stream(state):
     subprocess.call("/home/pi/scripts/RPiMS/stream.sh" + " " +  state, shell=True)
 
+
 def av_recording():
     subprocess.call("/home/pi/scripts/RPiMS/videorecorder.sh", shell=True)
+
 
 def zabbix_sender_call(message,sensor_id):
     zabbix_sender_cmd ='/home/pi/scripts/RPiMS/zabbix_sender.sh ' + message + " " + str(sensor_id)
