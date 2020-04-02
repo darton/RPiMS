@@ -14,13 +14,18 @@
 #  GNU General Public License for more details.
 
 #from picamera import PiCamera
-from gpiozero import LED, Button, MotionSensor
+from gpiozero import LED, Button, MotionSensor, CPUTemperature
 from gpiozero.tools import all_values, any_values
 from subprocess import check_call
 from signal import pause
-#from time import sleep
+from time import sleep
+from w1thermsensor import W1ThermSensor
+import threading
 import subprocess
 import redis
+import smbus2
+import bme280
+
 
 redis_db = redis.StrictRedis(host="localhost", port=6379, db=0, charset="utf-8", decode_responses=True)
 
@@ -46,12 +51,14 @@ config = {
     "use_led_indicator"      : yes,
     #use Waveshare display LCD/OLED HAT buttons and joystick
     "use_system_buttons"     : no,
+    #use CPU sensor: yes/no
+    "use_CPU_sensor"         : yes,
     #use BME280 sensor: yes/no
-    "use_BME280_sensor"      : no,
+    "use_BME280_sensor"      : yes,
     #use DHT22 sensor: yes/no
     "use_DHT22_sensor"       : no,
     #use DS18B20 sensors: yes/no
-    "use_DS18B20_sensor"     : no,
+    "use_DS18B20_sensor"     : yes,
     #Led indicators or relays type outputs
     "door_led_pin"           : 12,
     "motion_led_pin"         : 16,
@@ -71,11 +78,6 @@ config = {
     "motion_sensor_6_pin" : 5,
     "motion_sensor_7_pin" : 6,
 }
-
-
-for s in config :
-    print(s + ' = ' + str(config[s]))
-    redis_db.set(s, config[s])
 
 if config['use_door_sensor'] is yes :
     door_sensor_list = {
@@ -126,7 +128,7 @@ def door_action_opened(door_id):
     if config['use_zabbix_sender'] is yes :
         zabbix_sender_call('info_when_door_has_been_opened',door_id)
     if config['use_picamera'] is yes :
-        if config['use_picamera_recording'] is yes:
+        if config['use_picamera_recording'] is 'yes':
             av_stream('stop')
             av_recording()
         av_stream('start')
@@ -213,8 +215,79 @@ def shutdown():
     check_call(['sudo', 'poweroff'])
 
 
+def sensor_lock(sensor_type,lock_status):
+    config[sensor_type]
+    redis_db.set(sensor_type, str(lock_status))
+
+
+def get_sensor_data(sensor_type):
+    if config['use_BME280_sensor'] is yes and sensor_type is "BME280":
+        port = 1
+        address = 0x76
+        bus = smbus2.SMBus(port)
+        calibration_params = bme280.load_calibration_params(bus, address)
+        data = bme280.sample(bus, address, calibration_params)
+        return data
+    if config['use_DS18B20_sensor'] is yes and sensor_type is "DS18B20":
+        data = W1ThermSensor.get_available_sensors([W1ThermSensor.THERM_SENSOR_DS18S20,W1ThermSensor.THERM_SENSOR_DS18S20])
+        return data
+
+
+
+def write_sensor_data(sensor_type):
+    while True :
+        if config['use_BME280_sensor'] is yes and sensor_type is "BME280":
+            data = []
+            data = get_sensor_data(sensor_type)
+            redis_db.set('BME280_Humidity', data.humidity)
+            redis_db.set('BME280_Temperature', data.temperature)
+            redis_db.set('BME280_Pressure', data.pressure)
+            if config['verbose'] is yes :
+                print('')
+                print('Humidity: {0:0.0f}%'.format(data.humidity))
+                print('Temperature: {0:0.1f}\xb0C'.format(data.temperature))
+                print('Pressure: {0:0.0f}hPa'.format(data.pressure))
+            sleep(10)
+        if config['use_DS18B20_sensor'] is yes and sensor_type is "DS18B20":
+            data = []
+            data = get_sensor_data(sensor_type)
+            for sensor in data:
+                redis_db.set('DS18B20-' + sensor.id, sensor.get_temperature())
+                if config['verbose'] is yes :
+                    print("Sensor %s temperature %.2f"%(sensor.id,sensor.get_temperature()),"\xb0C")
+            sleep(60)
+        if config['use_CPU_sensor'] is yes and sensor_type is "CPUtemp":
+            data = CPUTemperature()
+            redis_db.set('CPU_Temperature', data.temperature)
+            if config['verbose'] is yes :
+                print('CPU temperature: {0:0.1f}'.format(data.temperature),chr(176)+'C',sep='')
+            sleep(1)
+
+
+def threading_function(device_type):
+    if device_type is 'BME280' :
+        t1 = threading.Thread(target=write_sensor_data, args=("BME280",))
+        t1.daemon = True
+        t1.start()
+    if device_type is 'DS18B20' :
+        t2 = threading.Thread(target=write_sensor_data, args=("DS18B20",))
+        t2.daemon = True
+        t2.start()
+    if device_type is 'CPUtemp' :
+        t3 = threading.Thread(target=write_sensor_data, args=("CPUtemp",))
+        t3.daemon = True
+        t3.start()
+
 # --- Main program ---
+
+
 print('# RPiMS is running #')
+print('')
+
+for s in config :
+    redis_db.set(s, str(config[s]))
+    if config['verbose'] :
+        print(s + ' = ' + str(config[s]))
 print('')
 
 if config['use_door_sensor'] is yes :
@@ -238,5 +311,9 @@ if config['use_motion_sensor'] is yes :
 
 if config['use_system_buttons'] is yes :
     system_buttons['shutdown_button'].when_held = shutdown
+
+threading_function("CPUtemp")
+threading_function("BME280")
+threading_function("DS18B20")
 
 pause()
