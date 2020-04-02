@@ -3,10 +3,10 @@ ADHT.py
 rpims.py
 rpims.service
 redis-get-data.py 
-index.php
 videostreamer.sh
 videorecorder.sh
 zabbix_sender.sh
 zabbix-rpims.conf
 nginx-default
+index.php
 motd
