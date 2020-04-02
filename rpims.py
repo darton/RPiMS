@@ -30,14 +30,12 @@ no = 0
 config = {
     #Localization
     "location"               : "My Home",
-    #real time control mode: yes/no
-    "real_time_control"      : yes,
     #verbose mode: yes/no
     "verbose"                : yes,
     #use zabbix sender: yes/no
     "use_zabbix_sender"      : no,
     #use picamera: yes/no
-    "use_picamera"           : yes,
+    "use_picamera"           : no,
     #recording 5s video on local drive: yes/no
     "use_picamera_recording" : no,
     #use door sensor: yes/no
@@ -110,20 +108,9 @@ if config['use_led_indicator'] is yes :
 
 # --- Funcions ---
 
-def program_remote_control():
-    aaa = redis_db.get('verbose')
-    if aaa is '1' :
-        verbose = "yes"
-    if aaa is '0' :
-        verbose = "no"
-    return verbose
-
-
 def door_action_closed(door_id):
     redis_db.set(str(door_id), 'close')
-    if config['real_time_control'] is yes:
-        verbose =  program_remote_control()
-    if verbose is 'yes' :
+    if config['verbose'] is yes :
         print("The " + str(door_id) + " has been closed!")
     if config['use_zabbix_sender'] is yes :
         zabbix_sender_call('info_when_door_has_been_closed',door_id)
@@ -134,9 +121,7 @@ def door_action_closed(door_id):
 
 def door_action_opened(door_id):
     redis_db.set(str(door_id), 'open')
-    if config['real_time_control'] is yes:
-        verbose = program_remote_control()
-    if verbose is 'yes' :
+    if config['verbose'] is yes :
         print("The " + str(door_id) + " has been opened!")
     if config['use_zabbix_sender'] is yes :
         zabbix_sender_call('info_when_door_has_been_opened',door_id)
@@ -149,9 +134,7 @@ def door_action_opened(door_id):
 
 def door_status_open(door_id):
     redis_db.set(str(door_id), 'open')
-    if config['real_time_control'] is yes:
-        verbose = program_remote_control()
-    if verbose is 'yes' :
+    if config['verbose'] is yes :
         print("The " + str(door_id) + " is opened!")
     if config['use_zabbix_sender'] is yes:
         zabbix_sender_call('info_when_door_is_opened',door_id)
@@ -161,9 +144,7 @@ def door_status_open(door_id):
 
 def door_status_close(door_id):
     redis_db.set(str(door_id), 'close')
-    if config['real_time_control'] is yes:
-        verbose = program_remote_control()
-    if verbose is 'yes' :
+    if config['verbose'] is yes :
         print("The " + str(door_id) + " is closed!")
     if config['use_zabbix_sender'] is yes :
         zabbix_sender_call('info_when_door_is_closed',door_id)
@@ -174,9 +155,7 @@ def door_status_close(door_id):
 
 def motion_sensor_when_motion(ms_id):
     redis_db.set(str(ms_id), 'motion')
-    if config['real_time_control'] is yes:
-        verbose = program_remote_control()
-    if verbose is 'yes' :
+    if config['verbose'] is yes :
         print("The " + str(ms_id) + ": motion was detected")
     if config['use_zabbix_sender'] is yes :
         zabbix_sender_call('info_when_motion',ms_id)
@@ -186,9 +165,7 @@ def motion_sensor_when_motion(ms_id):
 
 def motion_sensor_when_no_motion(ms_id):
     redis_db.set(str(ms_id), 'nomotion')
-    if config['real_time_control'] is yes:
-        verbose = program_remote_control()
-    if verbose is 'yes' :
+    if config['verbose'] is yes :
         print("The " + str(ms_id) + ": no motion")
     if config['use_picamera'] is yes:
          if detect_no_alarms():
