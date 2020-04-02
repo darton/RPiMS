@@ -4,7 +4,7 @@ rpims.py
 rpims.service
 redis-get-data.py 
 index.php
-videostream.sh
+videostreamer.sh
 videorecorder.sh
 zabbix_sender.sh
 zabbix-rpims.conf
