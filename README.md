@@ -285,6 +285,7 @@ RPi [GPIO.13 - pin 33] ------> Joytstick press
 * Rapsberry Pi - 1 pcs
 * Raspberri Pi Case - 1 pcs
 * RTC DS3231 I2C - 1 pcs
+* LCD OLED 1,3" I2C SH1106 - 1 pcs
 
 Optional
 
