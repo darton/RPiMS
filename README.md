@@ -260,6 +260,7 @@ RPi    [GND - pin 9] ----------------------------- [GND]  OLED
 RPi  [VCC 3V3 pin 1] ----------------------------- [VCC]  DS3231
 RPi   [GPIO.2 pin 3] ----------------------------- [SDA]  DS3231
 RPi   [GPIO.3 pin 5] ----------------------------- [SDC]  DS3231
+```
 
 - Input Sensors (door sensors)
 ```
