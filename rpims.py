@@ -201,7 +201,7 @@ def detect_no_alarms():
 
 
 def av_stream(state):
-    subprocess.call("/home/pi/scripts/RPiMS/videostream.sh" + " " +  state, shell=True)
+    subprocess.call("/home/pi/scripts/RPiMS/videostreamer.sh" + " " +  state, shell=True)
 
 
 def av_recording():
