@@ -306,12 +306,11 @@ def oled_device():
         serial = spi(device=0, port=0, bus_speed_hz = 8000000, transfer_size = 4096, gpio_DC = 24, gpio_RST = 25)
 
     device = sh1106(serial, rotate=2) #sh1106
-
+    hostname = socket.gethostname()
+    hostip = socket.gethostbyname(hostname)
     try:
         while True:
             with canvas(device) as draw:
-                hostname = socket.gethostname()
-                hostip = socket.gethostbyname(hostname)
                 #get data from redis db
                 temperature = round(float(redis_db.get('BME280_Temperature')),1)
                 humidity = round(float(redis_db.get('BME280_Humidity')),1)
