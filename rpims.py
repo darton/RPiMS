@@ -25,7 +25,7 @@ import subprocess
 import redis
 import smbus2
 import bme280
-
+import logging
 
 redis_db = redis.StrictRedis(host="localhost", port=6379, db=0, charset="utf-8", decode_responses=True)
 
@@ -49,18 +49,28 @@ config = {
     "use_motion_sensor"      : yes,
     #use LED indicator: yes/no
     "use_led_indicator"      : yes,
-    #use display HAT buttons and joystick
+    #use system buttons
     "use_system_buttons"     : no,
     #use i2c oled display
     "use_i2c_oled"           : yes,
+    #disaplay refresh rate : in Hz
+    "display_refresh_rate"   : 10,
     #use CPU sensor: yes/no
     "use_CPU_sensor"         : yes,
+    #CPUtemp read interval : in seconds:
+    "CPUtemp_read_interval"   : 1,
     #use BME280 sensor: yes/no
     "use_BME280_sensor"      : yes,
+    #BME280 read interval : in seconds:
+    "BME280_read_interval"   : 10,
     #use DHT22 sensor: yes/no
     "use_DHT22_sensor"       : no,
+    #DHT22 read interval : in seconds:
+    "DHT_read_interval"   : 60,
     #use DS18B20 sensors: yes/no
     "use_DS18B20_sensor"     : yes,
+    #DS18B20 read interval : in seconds:
+    "DS18B20_read_interval"   : 60,
     #Led indicators or relays type outputs
     "door_led_pin"           : 12,
     "motion_led_pin"         : 16,
@@ -249,7 +259,7 @@ def write_sensor_data(sensor_type):
                 print('Humidity: {0:0.0f}%'.format(data.humidity))
                 print('Temperature: {0:0.1f}\xb0C'.format(data.temperature))
                 print('Pressure: {0:0.0f}hPa'.format(data.pressure))
-            sleep(10)
+            sleep(config['BME280_read_interval'])
         if config['use_DS18B20_sensor'] is yes and sensor_type is "DS18B20":
             data = []
             data = get_sensor_data(sensor_type)
@@ -257,13 +267,13 @@ def write_sensor_data(sensor_type):
                 redis_db.set('DS18B20-' + sensor.id, sensor.get_temperature())
                 if config['verbose'] is yes :
                     print("Sensor %s temperature %.2f"%(sensor.id,sensor.get_temperature()),"\xb0C")
-            sleep(60)
+            sleep(config['DS18B20_read_interval'])
         if config['use_CPU_sensor'] is yes and sensor_type is "CPUtemp":
             data = CPUTemperature()
             redis_db.set('CPU_Temperature', data.temperature)
             if config['verbose'] is yes :
                 print('CPU temperature: {0:0.1f}'.format(data.temperature),chr(176)+'C',sep='')
-            sleep(1)
+            sleep(config['CPUtemp_read_interval'])
 
 
 def oled_device():
@@ -277,7 +287,6 @@ def oled_device():
     from PIL import Image
     from PIL import ImageDraw
     from PIL import ImageFont
-
     # Load default font.
     font = ImageFont.load_default()
     #Disable warning
@@ -305,9 +314,13 @@ def oled_device():
     else:
         serial = spi(device=0, port=0, bus_speed_hz = 8000000, transfer_size = 4096, gpio_DC = 24, gpio_RST = 25)
 
-    device = sh1106(serial, rotate=2) #sh1106
+    device = sh1106(serial, rotate=0) #sh1106
+
     hostname = socket.gethostname()
     hostip = socket.gethostbyname(hostname)
+    logging.basicConfig(filename='/tmp/rpims-oled.log', level=logging.DEBUG, format='%(asctime)s %(levelname)s %(name)s %(message)s')
+    logger=logging.getLogger(__name__)
+
     try:
         while True:
             with canvas(device) as draw:
@@ -326,9 +339,9 @@ def oled_device():
                 draw.text((x, top+36),    'Door 1.......' + str(door_sensor_1),  font=font, fill=255)
                 draw.text((x, top+45),    'Door 2.......' + str(door_sensor_2),  font=font, fill=255)
                 draw.text((x, top+54),    'CpuTemp......' + str(cputemp) + '*C', font=font, fill=255)
-            sleep(0.5)
-    except:
-        print("The End")
+            sleep(1/config['display_refresh_rate'])
+    except Exception as err :
+        logger.error(err)
 
 
 def threading_function(device_type):
