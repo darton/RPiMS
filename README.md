@@ -16,13 +16,15 @@ When any of the motion sensors detect movement, the rtsp stream will be turned o
 
 When all of the doors are closed for more than 3 seconds and the motion sensors do not detect movement, rtsp stream will be turned off. 
 
-Sensors are polled and measured values are saved to the database periodically. The default periods are: 
+Sensors are polled and measured values are saved to the database periodically. 
 
-for CPU temperature sensor every 1 second,
+The default intervals: 
 
-for BME280 sensor every 10 seconds,
+ * CPU temperature - 1 second
 
-for DS18B20 sensors every 60 seconds.
+ * BME280 - 10 seconds
+
+ * DS18B20 - 60 seconds
 
 
 ## Installing
