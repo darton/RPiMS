@@ -277,7 +277,7 @@ def write_sensor_data(sensor_type):
 
 
 def oled_device():
-    from luma.core.interface.serial import i2c, spi, noop
+    from luma.core.interface.serial import i2c, noop
     from luma.core.render import canvas
     from luma.core import lib
     from luma.oled.device import sh1106
@@ -302,18 +302,8 @@ def oled_device():
     bottom = height-padding
     # Move left to right keeping track of the current x position for drawing shapes.
     x = 0
-    RST = 25
-    CS = 8
-    DC = 24
-    USER_I2C = 1
-    if  USER_I2C == 1:
-        GPIO.setmode(GPIO.BCM)
-        GPIO.setup(RST,GPIO.OUT)
-        GPIO.output(RST,GPIO.HIGH)
-        serial = i2c(port=1, address=0x3c)
-    else:
-        serial = spi(device=0, port=0, bus_speed_hz = 8000000, transfer_size = 4096, gpio_DC = 24, gpio_RST = 25)
 
+    serial = i2c(port=1, address=0x3c)
     device = sh1106(serial, rotate=0) #sh1106
 
     hostname = socket.gethostname()
