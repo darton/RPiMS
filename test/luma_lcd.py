@@ -41,20 +41,21 @@ device = st7735(serial)
 
 device = st7735(serial, width=128, height=128, h_offset=1, v_offset=2, bgr=True, persist=False )
 
+hostname = socket.gethostname()
+hostip = socket.gethostbyname(hostname)
+
 try:
     redis_db = redis.StrictRedis(host="localhost", port=6379, db=0, charset="utf-8", decode_responses=True)
     while True:
         now = datetime.datetime.now()
         with canvas(device) as draw:
-            hostname = socket.gethostname()
-            hostip = socket.gethostbyname(hostname)
 #*****get data from redis db*****
-            temperature = round(float(redis_db.get('Temperature')),1)
-            humidity = round(float(redis_db.get('Humidity')),1)
-            pressure = round(float(redis_db.get('Pressure')))
+            temperature = round(float(redis_db.get('BME280_Temperature')),1)
+            humidity = round(float(redis_db.get('BME280_Humidity')),1)
+            pressure = round(float(redis_db.get('BME280_Pressure')))
             door_sensor_1 = redis_db.get('door_sensor_1')
             door_sensor_2 = redis_db.get('door_sensor_2')
-            CPUtemperature = round(float(redis_db.get('CPUtemperature')),1)
+            CPUtemperature = round(float(redis_db.get('CPU_Temperature')),1)
 
 #*****draw on lcd********
 #            draw.line([(0,0),(127,0)], fill = "blue",width = 6)
