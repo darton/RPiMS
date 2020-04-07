@@ -336,21 +336,21 @@ def oled_device():
 
 def threading_function(device_type):
     if device_type is 'BME280' :
-        t1 = threading.Thread(target=write_sensor_data, args=("BME280",))
-        t1.daemon = True
-        t1.start()
+        t = threading.Thread(target=write_sensor_data, args=("BME280",), name=device_type)
+        t.daemon = True
+        t.start()
     if device_type is 'DS18B20' :
-        t2 = threading.Thread(target=write_sensor_data, args=("DS18B20",))
-        t2.daemon = True
-        t2.start()
+        t = threading.Thread(target=write_sensor_data, args=("DS18B20",), name=device_type)
+        t.daemon = True
+        t.start()
     if device_type is 'CPUtemp' :
-        t3 = threading.Thread(target=write_sensor_data, args=("CPUtemp",))
-        t3.daemon = True
-        t3.start()
+        t = threading.Thread(target=write_sensor_data, args=("CPUtemp",), name=device_type)
+        t.daemon = True
+        t.start()
     if device_type is 'oled' and config['use_i2c_oled'] is yes :
-        t4 = threading.Thread(target=oled_device)
-        t4.daemon = True
-        t4.start()
+        t = threading.Thread(target=oled_device, name=device_type)
+        t.daemon = True
+        t.start()
 
 # --- Main program ---
 
