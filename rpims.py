@@ -347,7 +347,7 @@ def threading_function(device_type):
         t = threading.Thread(target=write_sensor_data, args=("CPUtemp",), name=device_type)
         t.daemon = True
         t.start()
-    if device_type is 'oled' and config['use_i2c_oled'] is yes :
+    if device_type is 'oled' :
         t = threading.Thread(target=oled_device, name=device_type)
         t.daemon = True
         t.start()
@@ -386,9 +386,16 @@ if config['use_motion_sensor'] is yes :
 if config['use_system_buttons'] is yes :
     system_buttons['shutdown_button'].when_held = shutdown
 
-threading_function("CPUtemp")
-threading_function("BME280")
-threading_function("DS18B20")
-threading_function("oled")
+if config['use_CPU_sensor'] is yes:
+    threading_function("CPUtemp")
+    
+if config['use_BME280_sensor'] is yes:
+    threading_function("BME280")
+    
+if config['use_DS18B20_sensor'] is yes:
+    threading_function("DS18B20")
+
+if config['use_i2c_oled'] is yes:
+    threading_function("oled")
 
 pause()
