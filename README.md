@@ -351,3 +351,5 @@ Optional
 
 * [raspivid](https://www.raspberrypi.org/documentation/usage/camera/raspicam/raspivid.md)
 
+* [](https://www.w3schools.com/colors/colors_names.asp)
+
