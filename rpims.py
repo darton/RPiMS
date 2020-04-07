@@ -52,7 +52,7 @@ config = {
     "use_system_buttons"     : yes,
     #use serial display
     "use_serial_display"     : yes,
-    #serial display type oled_sh1106/lcd_st7735
+    #serial display type oled_sh1106 or lcd_st7735
     "serial_display_type"    : "oled_sh1106",
     #disaplay refresh rate : in Hz
     "display_refresh_rate"   : 10,
