@@ -2,80 +2,86 @@
 <html>
 <head>
 <title>RPiMS</title>
-<meta http-equiv="refresh" content="30"/>
+<meta http-equiv="refresh" content="2"/>
 </head>
 <body>
 <?php
-    $hostname = gethostname();
 
-    $redis = new Redis();
-    $redis->connect('127.0.0.1', 6379);
-    $location = $redis->get('Location');
-    $CPUtemperature = $redis->get('CPU_Temperature');
+$redis = new Redis();
+$redis->connect('127.0.0.1', 6379);
 
-    $BME280_Temperature = $redis->get('BME280_Temperature');
-    $BME280_Humidity = $redis->get('BME280_Humidity');
-    $BME280_Pressure = $redis->get('BME280_Pressure');
+$rpimskeys = $redis->keys('*');
 
-    $DHT22_Temperature = $redis->get('DHT22_Temperature');
-    $DHT22_Humidity = $redis->get('DHT22_Humidity');
-
-    $sensorslist = $redis->keys('*');
-
-if (empty($sensorslist)) {
- print "<p style='color:red;'>You not initialise any sensors or not run sensors.py script. <br> Connect sensor and uncomment  proper script in /etc/cron.d/rpims file. <br> </p>";
-}
-
-if (!empty($hostname)) {
-    print "<p style='color:blue;'>Hostname : " . $hostname ."</p>";
-}
-
-if (!empty($location)) {
-    print "<p style='color:blue;'>Location : " . $location ."</p>";
-}
-
-if (!empty($CPUtemperature)) {
-    print "<p style='color:blue;'>CPUtemperature : " . round($CPUtemperature,1) ." °C</p>";
-}
-print "<br>";
-
-
-if (!empty($BME280_Temperature) && !empty($BME280_Humidity) && !empty($BME280_Pressure)) {
-    print "<p style='color:green;'><b>BME280</b></p>";
-    print "<p style='color:green;'>Temperature : " . round($BME280_Temperature,1) ." °C</p>";
-    print "<p style='color:green;'>Humidity : " . round($BME280_Humidity,1) ." %</p>";
-    print "<p style='color:green;'>Pressure : " . round($BME280_Pressure,1) ." hPa</p><br>";
-}
-
-
-if (!empty($DHT22_Temperature) && !empty($DHT22_Humidity)) {
-    print "<p style='color:green;'><b>DHT22</b></p>";
-    print "<p style='color:green;'>Temperature : " . round($DHT22_Temperature,1) ." °C</p>";
-    print "<p style='color:green;'>Humidity : " . round($DHT22_Humidity,1) ." %</p><br>";
-}
-
-    foreach ($sensorslist as $key)
-    {
+foreach ($rpimskeys as $key) {
     $value = $redis->get($key);
+    $rpims[$key] = $value;
+}
+
+print "<p style='color:blue;'>RPiMS location : " . $rpims["location"] . "</p>";
+
+if ($rpims["use_CPU_sensor"] == 1) {
+    print "<p style='color:blue;'>RPiMS CPU Temperature : " . round($rpims["CPU_Temperature"],2) . " °C</p><br>";
+}
+
+if ($rpims["use_BME280_sensor"] == 1) {
+    print "<p style='color:green;'><b>BME280</b></p>";
+    print "<p style='color:green;'>BME280 Temperature : " . round($rpims["BME280_Temperature"],2) . " °C</p>";
+    print "<p style='color:green;'>BME280 Humidity : " . round($rpims["BME280_Humidity"],2) . " %</p>";
+    print "<p style='color:green;'>BME280 Pressure : " . round($rpims["BME280_Pressure"],2) . " hPa</p><br>";
+}
+
+if ($rpims["use_DHT22_sensor"] == 1) {
+    print "<p style='color:green;'><b>DHT22</b></p>";
+    print "<p style='color:green;'>DHT22 Temperature : " . round($rpims["DHT22_Temperature"],2) . " °C</p>";
+    print "<p style='color:green;'>DHT22 Humidity : " . round($rpims["DHT22_Humidity"],2) . " %</p><br>";
+}
+
+if ($rpims["use_DS18B20_sensor"] == 1) {
+    print "<p style='color:green;'><b>DS18B20</b></p>";
+    foreach ($rpimskeys as $key)
+    {
     $sensor_type = 'DS18B20-';
     if (strpos($key, $sensor_type)  !== false) {
-        print "<p style='color:red;'><b>DS18B20</b></p>";
-        print "<p style='color:red;'>" . $key . " Temperature: " . round($value,1) . " °C</p>";
+        print "<p style='color:green;'>" . $key . " Temperature: " . round($rpims[$key],2) . " °C</p>";
     }
     }
-print "<br>";
+    print "<br>";
+}
 
+if ($rpims["use_door_sensor"] == 1) {
+    print "<p style='color:brown;'><b>Door sensors</b></p>";
+    print "<p style='color:brown;'>Door sensor 1 : " . $rpims["door_sensor_1"] . "</p>";
+    print "<p style='color:brown;'>Door sensor 2 : " . $rpims["door_sensor_2"] . "</p><br>";
+}
+#if ($rpims["use_door_sensor"] == 1) {
+#    print "<p style='color:red;'><b>Door sensors</b></p>";
+#    foreach ($rpimskeys as $key)
+#    {
+#       if (preg_match("/^door_sensor_+[1-9]{1}$/", $key)) {
+#           print "<p style='color:red;'>" . $key . " : " . $rpims[$key] . "</p>";
+#       }
+#    }
+#    print "<br>";
+#}
 
-print "<p style='color:brown;'><b>Door/Window Sensors</b></p>";
-    foreach ($sensorslist as $key)
-    {
-    $value = $redis->get($key);
-    $sensor_type = 'door_sensor_';
-    if (strpos($key, $sensor_type)  !== false) {
-        print "<p style='color:brown;'>" . $key . " : " . $value . "</p>";
-    }
-    }
-print "<br>";
+if ($rpims["use_motion_sensor"] == 1) {
+    print "<p style='color:red;'><b>Motion sensors</b></p>";
+    print "<p style='color:red;'>Motion_sensor_1 : " . $rpims["motion_sensor_1"] . "</p>";
+    print "<p style='color:red;'>Motion_sensor_2 : " . $rpims["motion_sensor_2"] . "</p>";
+    print "<p style='color:red;'>Motion_sensor_3 : " . $rpims["motion_sensor_3"] . "</p>";
+    print "<p style='color:red;'>Motion_sensor_4 : " . $rpims["motion_sensor_4"] . "</p>";
+    print "<p style='color:red;'>Motion_sensor_5 : " . $rpims["motion_sensor_5"] . "</p><br>";
+}
+#if ($rpims["use_motion_sensor"] == 1) {
+#    print "<p style='color:red;'><b>Motion sensors</b></p>";
+#    foreach ($rpimskeys as $key)
+#    {
+#       if (preg_match("/^motion_sensor_+[1-9]{1}$/", $key)) {
+#           print "<p style='color:red;'>" . $key . " : " . $rpims[$key] . "</p>";
+#       }
+#    }
+#    print "<br>";
+#}
 
 ?>
 </body>
