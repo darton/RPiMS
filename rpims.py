@@ -39,7 +39,7 @@ config = {
     #use zabbix sender: yes/no
     "use_zabbix_sender"      : no,
     #use picamera: yes/no
-    "use_picamera"           : yes,
+    "use_picamera"           : no,
     #recording 5s video on local drive: yes/no
     "use_picamera_recording" : no,
     #use door sensor: yes/no
@@ -53,7 +53,7 @@ config = {
     #use serial display
     "use_serial_display"     : yes,
     #serial display type oled_sh1106 or lcd_st7735
-    "serial_display_type"    : "oled_sh1106",
+    "serial_display_type"    : "lcd_st7735",
     #disaplay refresh rate : in Hz
     "display_refresh_rate"   : 10,
     #use CPU sensor: yes/no
@@ -430,15 +430,15 @@ def lcd_st7735():
 def threading_function(device_type):
     if device_type is 'BME280' :
         t = threading.Thread(target=write_sensor_data, args=("BME280",), name=device_type)
-        t.daemon = False
+        t.daemon = True
         t.start()
     if device_type is 'DS18B20' :
         t = threading.Thread(target=write_sensor_data, args=("DS18B20",), name=device_type)
-        t.daemon = False
+        t.daemon = True
         t.start()
     if device_type is 'CPUtemp' :
         t = threading.Thread(target=write_sensor_data, args=("CPUtemp",), name=device_type)
-        t.daemon = False
+        t.daemon = True
         t.start()
     if device_type is 'oled_sh1106' :
         t = threading.Thread(target=oled_sh1106, name=device_type)
@@ -476,6 +476,11 @@ if config['use_door_sensor'] is yes :
 
 if config['use_motion_sensor'] is yes :
     for s in motion_sensor_list:
+        if motion_sensor_list[s].value == 0:
+            motion_sensor_when_no_motion(s)
+        else:
+            motion_sensor_when_motion(s)
+    for s in motion_sensor_list:
             motion_sensor_list[s].when_motion = lambda s=s : motion_sensor_when_motion(s)
             motion_sensor_list[s].when_no_motion = lambda s=s : motion_sensor_when_no_motion(s)
     if config['use_led_indicator'] is yes :
@@ -483,7 +488,6 @@ if config['use_motion_sensor'] is yes :
 
 if config['use_system_buttons'] is yes :
     system_buttons['shutdown_button'].when_held = shutdown
-
 
 if config['use_CPU_sensor'] is yes:
     threading_function("CPUtemp")
