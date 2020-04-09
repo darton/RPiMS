@@ -34,6 +34,7 @@ sudo apt -y install nginx php php-fpm php-redis
 sudo systemctl restart php7.3-fpm
 sudo systemctl enable php7.3-fpm
 sudo mv $installdir/index.php /var/www/html/
+sudo mv $installdir/template.html /var/www/html/
 sudo rm /var/www/html/*.html
 sudo mv /etc/nginx/sites-available/default /etc/nginx/sites-available/default.org
 sudo mv $installdir/nginx-default /etc/nginx/sites-available/default
