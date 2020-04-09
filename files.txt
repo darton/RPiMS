@@ -8,4 +8,5 @@ zabbix_sender.sh
 zabbix-rpims.conf
 nginx-default
 index.php
+template.html
 motd
