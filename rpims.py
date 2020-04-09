@@ -14,7 +14,7 @@
 #  GNU General Public License for more details.
 
 #from picamera import PiCamera
-from gpiozero import LED, Button, MotionSensor, CPUTemperature
+from gpiozero import LED, Button, MotionSensor
 from gpiozero.tools import all_values, any_values
 from subprocess import check_call
 from signal import pause
@@ -234,58 +234,56 @@ def shutdown():
     check_call(['sudo', 'poweroff'])
 
 
-def get_sensor_data(sensor_type):
-    #print('Starting of thread :', threading.currentThread().name)
-    if config['use_BME280_sensor'] is yes and sensor_type is "BME280":
+def get_cputemp_data():
+    try:
+        from gpiozero import CPUTemperature
+        while True :
+            data = CPUTemperature()
+            redis_db.set('CPU_Temperature', data.temperature)
+            if config['verbose'] is yes :
+                print('CPU temperature: {0:0.1f}'.format(data.temperature),chr(176)+'C', sep='')
+            sleep(config['CPUtemp_read_interval'])
+    except Exception as err :
+        logger.error(err)
+        print('Problem wtih ' + str(err))
+
+
+def get_bme280_data():
+    try:
         import bme280
         port = 1
         address = 0x76
         bus = smbus2.SMBus(port)
-        calibration_params = bme280.load_calibration_params(bus, address)
-        data = bme280.sample(bus, address, calibration_params)
-        return data
-    if config['use_DS18B20_sensor'] is yes and sensor_type is "DS18B20":
-        from w1thermsensor import W1ThermSensor
-        data = W1ThermSensor.get_available_sensors([W1ThermSensor.THERM_SENSOR_DS18S20,W1ThermSensor.THERM_SENSOR_DS18S20])
-        return data
-    if config['use_CPU_sensor'] is yes and sensor_type is "CPUtemp":
-        data = CPUTemperature()
-        return data
-
-
-def write_sensor_data(sensor_type):
-    try:
         while True :
-            if config['use_BME280_sensor'] is yes and sensor_type is "BME280":
-                data = []
-                data = get_sensor_data(sensor_type)
-                redis_db.set('BME280_Humidity', data.humidity)
-                redis_db.set('BME280_Temperature', data.temperature)
-                redis_db.set('BME280_Pressure', data.pressure)
-                if config['verbose'] is yes :
-                    print('')
-                    print('Humidity: {0:0.0f}%'.format(data.humidity))
-                    print('Temperature: {0:0.1f}\xb0C'.format(data.temperature))
-                    print('Pressure: {0:0.0f}hPa'.format(data.pressure))
-                sleep(config['BME280_read_interval'])
-            if config['use_DS18B20_sensor'] is yes and sensor_type is "DS18B20":
-                data = []
-                data = get_sensor_data(sensor_type)
-                for sensor in data:
-                    redis_db.set('DS18B20-' + sensor.id, sensor.get_temperature())
-                    if config['verbose'] is yes :
-                        print("Sensor %s temperature %.2f"%(sensor.id,sensor.get_temperature()),"\xb0C")
-                sleep(config['DS18B20_read_interval'])
-            if config['use_CPU_sensor'] is yes and sensor_type is "CPUtemp":
-                data = []
-                data = get_sensor_data(sensor_type)
-                redis_db.set('CPU_Temperature', data.temperature)
-                if config['verbose'] is yes :
-                    print('CPU temperature: {0:0.1f}'.format(data.temperature),chr(176)+'C', sep='')
-                sleep(config['CPUtemp_read_interval'])
+            calibration_params = bme280.load_calibration_params(bus, address)
+            data = bme280.sample(bus, address, calibration_params)
+            redis_db.set('BME280_Humidity', data.humidity)
+            redis_db.set('BME280_Temperature', data.temperature)
+            redis_db.set('BME280_Pressure', data.pressure)
+            if config['verbose'] is yes :
+                print('')
+                print('Humidity: {0:0.0f}%'.format(data.humidity))
+                print('Temperature: {0:0.1f}\xb0C'.format(data.temperature))
+                print('Pressure: {0:0.0f}hPa'.format(data.pressure))
+            sleep(config['BME280_read_interval'])
     except Exception as err :
         logger.error(err)
-        print('Problem wtih ' + str(err))
+        print('Problem with ' + str(err))
+
+
+def get_ds18b20_data():
+    try:
+        from w1thermsensor import W1ThermSensor
+        while True :
+            data = W1ThermSensor.get_available_sensors([W1ThermSensor.THERM_SENSOR_DS18S20,W1ThermSensor.THERM_SENSOR_DS18S20])
+            for sensor in data:
+                redis_db.set('DS18B20-' + sensor.id, sensor.get_temperature())
+                if config['verbose'] is yes :
+                    print("Sensor %s temperature %.2f"%(sensor.id,sensor.get_temperature()),"\xb0C")
+            sleep(config['DS18B20_read_interval'])
+    except Exception as err :
+        logger.error(err)
+        print('Problem with ' + str(err))
 
 
 def oled_sh1106():
@@ -316,8 +314,8 @@ def oled_sh1106():
     serial = i2c(port=1, address=0x3c)
     device = sh1106(serial, rotate=2)
 
-    #logging.basicConfig(filename='/tmp/rpims_serial_display.log', level=logging.DEBUG, format='%(asctime)s %(levelname)s %(name)s %(message)s')
-    #logger=logging.getLogger(__name__)
+    logging.basicConfig(filename='/tmp/rpims_serial_display.log', level=logging.DEBUG, format='%(asctime)s %(levelname)s %(name)s %(message)s')
+    logger=logging.getLogger(__name__)
 
     try:
         hostname = socket.gethostname()
@@ -370,8 +368,8 @@ def lcd_st7735():
 # Move left to right keeping track of the current x position for drawing shapes.
     x = 0
 
-    #logging.basicConfig(filename='/tmp/rpims_serial_display.log', level=logging.DEBUG, format='%(asctime)s %(levelname)s %(name)s %(message)s')
-    #logger=logging.getLogger(__name__)
+    logging.basicConfig(filename='/tmp/rpims_serial_display.log', level=logging.DEBUG, format='%(asctime)s %(levelname)s %(name)s %(message)s')
+    logger=logging.getLogger(__name__)
 
     serial = spi(device=0, port=0, bus_speed_hz = 8000000, transfer_size = 4096, gpio_DC = 25, gpio_RST = 27)
 
@@ -429,15 +427,15 @@ def lcd_st7735():
 
 def threading_function(device_type):
     if device_type is 'BME280' :
-        t = threading.Thread(target=write_sensor_data, args=("BME280",), name=device_type)
+        t = threading.Thread(target=get_bme280_data, name=device_type)
         t.daemon = True
         t.start()
     if device_type is 'DS18B20' :
-        t = threading.Thread(target=write_sensor_data, args=("DS18B20",), name=device_type)
+        t = threading.Thread(target=get_ds18b20_data, name=device_type)
         t.daemon = True
         t.start()
     if device_type is 'CPUtemp' :
-        t = threading.Thread(target=write_sensor_data, args=("CPUtemp",), name=device_type)
+        t = threading.Thread(target=get_cputemp_data, name=device_type)
         t.daemon = True
         t.start()
     if device_type is 'oled_sh1106' :
@@ -452,7 +450,6 @@ def threading_function(device_type):
 
 # --- Main program ---
 
-
 print('# RPiMS is running #')
 print('')
 
@@ -461,6 +458,7 @@ for s in config :
     if config['verbose'] :
         print(s + ' = ' + str(config[s]))
 print('')
+
 
 if config['use_door_sensor'] is yes :
     for s in door_sensor_list:
