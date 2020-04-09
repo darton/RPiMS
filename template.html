@@ -3,48 +3,120 @@
 <head>
 <title>RPiMS</title>
 <meta http-equiv="refresh" content="2"/>
+<style>
+span.value {
+  font-size: 100%;
+  color: yellow;
+}
+.rpims {
+  background-color: #6159DB;
+  color: white;
+  padding: 10px;
+  margin: 10px;
+  font-size: 160%;
+}
+.bme280 {
+  background-color: gray;
+  color: white;
+  padding: 10px;
+  margin: 10px;
+  font-size: 160%;
+}
+.dht22 {
+  background-color: gray;
+  color: white;
+  padding: 10px;
+  margin: 10px;
+  font-size: 160%;
+}
+.ds18b20 {
+  background-color: gray;
+  color: white;
+  padding: 10px;
+  margin: 10px;
+  font-size: 160%;
+}
+.doors {
+  background-color: gray;
+  color: white;
+  padding: 10px;
+  margin: 10px;
+  font-size: 160%;
+}
+.motions {
+  background-color: gray;
+  color: white;
+  padding: 10px;
+  margin: 10px;
+  font-size: 160%;
+}
+
+</style>
 </head>
 <body>
 
-<p style='color:blue;'>RPiMS location: <?=$rpims["location"]?></p>
-
+<div class="rpims">
+<h3>RPiMS</h3>
+    <ul style="list-style-type:none;">
+    <li>Location: <?=$rpims["location"]?></li>
 <?php if ($rpims["use_CPU_sensor"] == 1) {?>
-    <p style='color:blue;'>RPiMS CPU Temperature: <?=round($rpims["CPU_Temperature"],2)?> &#8451</p>
+    <li>RPiMS CPU Temperature: <span class="value"><?=round($rpims["CPU_Temperature"],2)?> &#8451</span></li>
 <?php }?>
+    </ul>
+</div>
 
 <?php if ($rpims["use_BME280_sensor"] == 1) {?>
-    <p style='color:green;'><b>BME280</b></p>
-    <p style='color:green;'>BME280 Temperature: <?=round($rpims["BME280_Temperature"],2)?> &#8451</p>
-    <p style='color:green;'>BME280 Humidity: <?=round($rpims["BME280_Humidity"],2)?> %</p>
-    <p style='color:green;'>BME280 Pressure: <?=round($rpims["BME280_Pressure"],2)?> hPa</p>
+<div class="bme280">
+    <h3>BME280</h3>
+    <ul style="list-style-type:none;">
+        <li>Temperature: <span class="value"><?=round($rpims["BME280_Temperature"],2)?> &#8451</span></li>
+        <li>Humidity: <span class="value"><?=round($rpims["BME280_Humidity"],2)?> %</span></li>
+        <li>Pressure: <span class="value"><?=round($rpims["BME280_Pressure"],0)?> hPa</span></li>
+    </ul>
+</div>
 <?php }?>
 
 <?php if ($rpims["use_DHT22_sensor"] == 1) {?>
-    <p style='color:green;'><b>DHT22</b></p>
-    <p style='color:green;'>DHT22 Temperature: <?=round($rpims["DHT22_Temperature"],2)?> &#8451</p>
-    <p style='color:green;'>DHT22 Humidity: <?=round($rpims["DHT22_Humidity"],2)?> %</p>
+<div class="dht22">
+    <h3>DHT22</h3>
+    <ul style="list-style-type:none;">
+        <li>Temperature: <span class="value"><?=round($rpims["DHT22_Temperature"],2)?> &#8451</span></li>
+        <li>Humidity: <span class="value"><?=round($rpims["DHT22_Humidity"],2)?> %</span></li>
+    </ul>
+</div>
 <?php }?>
 
-<?php if ($rpims["use_DS18B20_sensor"] == 1) {?>
-    <p style='color:green;'><b>DS18B20</b></p>
+<?php if ($rpims["use_DS18B20_sensor"] == 0) {?>
+<div class="ds18b20">
+    <h3>DS18B20</h3>
+    <ul style="list-style-type:none;">
 <?php  foreach ($rpimskeys as $key) { $sensor_type = 'DS18B20-'; if (strpos($key, $sensor_type) !== false) {?>
-        <p style='color:green;'><?php $key?> Temperature: <?=round($rpims[$key],2)?> &#8451</p>
+        <li><?php $key?> Temperature: <span class="value"><?=round($rpims[$key],2)?> &#8451</span></li>
 <?php }}}?>
-
+    </ul>
+</div>
 
 <?php if ($rpims["use_door_sensor"] == 1) {?>
-    <p style='color:brown;'><b>Door sensors</b></p>
-    <p style='color:brown;'>Door sensor 1: <?=$rpims["door_sensor_1"]?></p>
-    <p style='color:brown;'>Door sensor 2: <?=$rpims["door_sensor_2"]?></p>
+<div class="doors">
+    <h3>Door sensors</h3>
+    <ul style="list-style-type:none;">
+    <li>Door sensor 1: <span class="value"><?=$rpims["door_sensor_1"]?></span></li>
+    <li>Door sensor 2: <span class="value"><?=$rpims["door_sensor_2"]?></span></li>
+    </ul>
+</div>
 <?php }?>
 
 <?php if ($rpims["use_motion_sensor"] == 1) {?>
-    <p style='color:red;'><b>Motion sensors</b></p>
-    <p style='color:red;'>Motion_sensor_1: <?=$rpims["motion_sensor_1"]?></p>
-    <p style='color:red;'>Motion_sensor_2: <?=$rpims["motion_sensor_2"]?></p>
-    <p style='color:red;'>Motion_sensor_3: <?=$rpims["motion_sensor_3"]?></p>
-    <p style='color:red;'>Motion_sensor_4: <?=$rpims["motion_sensor_4"]?></p>
-    <p style='color:red;'>Motion_sensor_5: <?=$rpims["motion_sensor_5"]?></p>
+<div class="motions">
+    <h3>Motion sensors</h3>
+    <ul style="list-style-type:none;">
+    <li>Motion_sensor_1: <span class="value"><?=$rpims["motion_sensor_1"]?></span></li>
+    <li>Motion_sensor_2: <span class="value"><?=$rpims["motion_sensor_2"]?></span></li>
+    <li>Motion_sensor_3: <span class="value"><?=$rpims["motion_sensor_3"]?></span></li>
+    <li>Motion_sensor_4: <span class="value"><?=$rpims["motion_sensor_4"]?></span></li>
+    <li>Motion_sensor_5: <span class="value"><?=$rpims["motion_sensor_5"]?></span></li>
+    </ul>
+</div>
 <?php }?>
 
 </body>
