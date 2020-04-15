@@ -293,14 +293,14 @@ RPi [GND - pin 9] ----------- [Button]
 * DS18B20 - 1 pcs or more (or DS18S20) 
 * Resistor 4k7 (for DS18B20 sensor) - 1 psc
 * Door/window sensor - 1-2 pcs
-* Motion Sensor - 1-7 pcs
+* Motion Sensor - 1-5 pcs
 * PiCamera - 1 pcs
 * PiCamera Case - 1pcs
 * Power Adapter (5V/2.5A or 5V1/3A for RPi4) - 1 pcs
 * Rapsberry Pi - 1 pcs
 * Raspberri Pi Case - 1 pcs
 * RTC DS3231 I2C - 1 pcs
-* LCD OLED 1,3" I2C SH1106 - 1 pcs
+* LCD OLED 1,3" I2C SH1106 or 1.44" lcd_st7735 - 1 pcs
 
 Optional
 
