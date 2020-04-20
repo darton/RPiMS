@@ -14,7 +14,7 @@ chmod u+x $installdir/*.py $installdir/*.sh
 sudo apt-get -y install git python3-gpiozero python3-pip build-essential python3-dev python3-numpy python3-picamera
 sudo apt-get -y install libfreetype6-dev libopenjp2-7 libtiff5 libjpeg-dev
 sudo apt-get -y install python3-w1thermsensor
-sudo apt-get -y install vlc ffmpegayer gpac fbi
+sudo apt-get -y install vlc ffmpeg gpac fbi
 
 sudo python3 -m pip install --upgrade pip setuptools wheel
 sudo pip3 install Adafruit_DHT RPi.bme280 redis pid
