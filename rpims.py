@@ -322,12 +322,13 @@ def oled_sh1106():
         while True:
             with canvas(device) as draw:
                 #get data from redis db
-                temperature = round(float(redis_db.get('BME280_Temperature')),1)
-                humidity = round(float(redis_db.get('BME280_Humidity')),1)
-                pressure = round(float(redis_db.get('BME280_Pressure')),1)
-                door_sensor_1 = redis_db.get('door_sensor_1')
-                door_sensor_2 = redis_db.get('door_sensor_2')
-                cputemp = round(float(redis_db.get('CPU_Temperature')),1)
+                values = redis_db.mget('BME280_Temperature', 'BME280_Humidity', 'BME280_Pressure', 'door_sensor_1', 'door_sensor_2', 'CPU_Temperature')
+                temperature = round(float(values[0]),1)
+                humidity = round(float(values[1]),1)
+                pressure = round(float(values[2]),1)
+                door_sensor_1 = values[3]
+                door_sensor_2 = values[4]
+                cputemp = round(float(values[5]),1)
                 #draw on oled
                 draw.text((x, top),       'RPiMS IP:' + str(hostip), font=font, fill=255)
                 draw.text((x, top+9),     'Temperature..' + str(temperature) + '*C', font=font, fill=255)
