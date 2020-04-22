@@ -379,15 +379,16 @@ def lcd_st7735():
         hostip = socket.gethostbyname(hostname)
 
         while True:
-#get data from redis db*****
-            temperature = round(float(redis_db.get('BME280_Temperature')),1)
-            humidity = round(float(redis_db.get('BME280_Humidity')),1)
-            pressure = round(float(redis_db.get('BME280_Pressure')))
-            door_sensor_1 = redis_db.get('door_sensor_1')
-            door_sensor_2 = redis_db.get('door_sensor_2')
-            CPUtemperature = round(float(redis_db.get('CPU_Temperature')),1)
+            #get data from redis db
+            values = redis_db.mget('BME280_Temperature', 'BME280_Humidity', 'BME280_Pressure', 'door_sensor_1', 'door_sensor_2', 'CPU_Temperature')
+            temperature = round(float(values[0]),1)
+            humidity = round(float(values[1]),1)
+            pressure = round(float(values[2]),1)
+            door_sensor_1 = values[3]
+            door_sensor_2 = values[4]
+            cputemp = round(float(values[5]),1)
             now = datetime.datetime.now()
-# Draw
+            # Draw
             with canvas(device) as draw:
                 draw.text((x+35, top),'R P i M S', font=font, fill="cyan")
                 draw.text((x, top+15),' Temperature', font=font, fill="lime")
@@ -411,7 +412,7 @@ def lcd_st7735():
                 draw.text((x+77, top+70),str(door_sensor_2),  font=font, fill="yellow")
 
                 draw.text((x, top+86),' CPUtemp',  font=font, fill="cyan")
-                draw.text((x+77, top+86),str(CPUtemperature)+ " *C",  font=font, fill="cyan")
+                draw.text((x+77, top+86),str(cputemp)+ " *C",  font=font, fill="cyan")
 
                 draw.text((x, top+99),' IP', font=font, fill="cyan")
                 draw.text((x+17, top+99),':', font=font, fill="cyan")
