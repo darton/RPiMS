@@ -123,7 +123,7 @@ try:
 
 except Exception as err :
     logger.error(err)
-    print('Problem wtih ' + str(err))
+    print('Problem with ' + str(err))
     sys.exit(1)
 
 
@@ -245,7 +245,7 @@ def get_cputemp_data():
             sleep(config['CPUtemp_read_interval'])
     except Exception as err :
         logger.error(err)
-        print('Problem wtih ' + str(err))
+        print('Problem with ' + str(err))
 
 
 def get_bme280_data():
