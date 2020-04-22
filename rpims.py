@@ -453,6 +453,9 @@ def threading_function(device_type):
 print('# RPiMS is running #')
 print('')
 
+if config['use_picamera'] is yes and config['use_picamera_recording'] is no and  config['use_door_sensor'] is no and config['use_motion_sensor'] is no :
+    av_stream('start')
+
 for s in config :
     redis_db.set(s, str(config[s]))
     if config['verbose'] :
