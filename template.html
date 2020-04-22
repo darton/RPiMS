@@ -82,9 +82,10 @@ span.value {
     <ul style="list-style-type:none;">
 <?php  foreach ($rpimskeys as $key) { $sensor_type = 'DS18B20-'; if (strpos($key, $sensor_type) !== false) {?>
         <li><?php $key?> Temperature: <span class="value"><?=round($rpims[$key],2)?> &#8451</span></li>
-<?php }}}?>
+<?php }}?>
     </ul>
 </div>
+<?php }?>
 
 <?php if ($rpims["use_door_sensor"] == 1) {?>
 <div class="sensors">
