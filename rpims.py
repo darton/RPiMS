@@ -257,9 +257,7 @@ def get_bme280_data():
         while True :
             calibration_params = bme280.load_calibration_params(bus, address)
             data = bme280.sample(bus, address, calibration_params)
-            redis_db.set('BME280_Humidity', data.humidity)
-            redis_db.set('BME280_Temperature', data.temperature)
-            redis_db.set('BME280_Pressure', data.pressure)
+            redis_db.mset({'BME280_Humidity' : data.humidity,'BME280_Temperature' : data.temperature, 'BME280_Pressure' : data.pressure})
             if config['verbose'] is yes :
                 print('')
                 print('Humidity: {0:0.0f}%'.format(data.humidity))
