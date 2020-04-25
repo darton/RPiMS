@@ -15,9 +15,10 @@ sudo apt-get -y install git python3-gpiozero python3-pip build-essential python3
 sudo apt-get -y install libfreetype6-dev libopenjp2-7 libtiff5 libjpeg-dev
 sudo apt-get -y install python3-w1thermsensor
 sudo apt-get -y install vlc ffmpeg gpac fbi
+sudo apt-get -y install libgpiod2
 
 sudo python3 -m pip install --upgrade pip setuptools wheel
-sudo pip3 install Adafruit_DHT RPi.bme280 redis pid
+sudo pip3 install Adafruit_DHT adafruit-circuitpython-dht RPi.bme280 redis pid
 sudo -H pip3 install --upgrade luma.oled
 sudo -H pip3 install --upgrade luma.lcd
 
