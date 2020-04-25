@@ -73,8 +73,8 @@ config = {
     #DS18B20 read interval : in seconds:
     "DS18B20_read_interval"  : 60,
     #Led indicators or relays type outputs
-    "door_led_pin"           : 22,
-    "motion_led_pin"         : 17,
+    "door_led_pin"           : 12,
+    "motion_led_pin"         : 18,
     # Button type inputs
     "button_1_pin"           : 21,
     "button_1_hold_time"     : 1,
@@ -83,11 +83,11 @@ config = {
     "button_3_pin"           : 16,
     "button_3_hold_time"     : 5,
     # Motion Sensor type inputs
-    "motion_sensor_1_pin"    : 6,
-    "motion_sensor_2_pin"    : 19,
-    "motion_sensor_3_pin"    : 5,
-    "motion_sensor_4_pin"    : 26,
-    "motion_sensor_5_pin"    : 13,
+    "motion_sensor_1_pin"    : 5,
+    "motion_sensor_2_pin"    : 6,
+    "motion_sensor_3_pin"    : 13,
+    "motion_sensor_4_pin"    : 19,
+    "motion_sensor_5_pin"    : 26,
 }
 
 
