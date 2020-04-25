@@ -232,6 +232,18 @@ RPi  [GPIO.17 - Pin 11] ----------------------------- [DATA]   DHT22
 RPi      [GND - Pin 9] ----------------------------- [GND]    DHT22
 ```
 
+I recommend using a level shifter and Vcc = 5V
+```
+RPi  [VCC 5V - Pin 2] --- [HV] - LEVEL SHIFTER --------------- [VCC]    DHT22
+                                                         |
+                                                          \
+                                                          /   R1 = 4k7
+                                                          \
+                                                          |
+RPi  [GPIO.17 - Pin 11] - [A1] - LEVEL SHIFTER - [B1]--------- [DATA]   DHT22
+RPi  [VCC 3V3 - Pin 1] -- [LV] - LEVEL SHIFTER
+RPi      [GND - Pin 9] ---[GND] - LEVEL SHIFTER -------------- [GND]    DHT22
+```
 
  - Temperature, Humidity, Pressure Sensor BME280
 ```
