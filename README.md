@@ -336,6 +336,8 @@ Optional
 
 * [BME280 Tutorial](https://pypi.org/project/RPi.bme280/)
 
+* [DHT22](https://pypi.org/project/adafruit-circuitpython-dht/)
+
 * [DS18B20 Tutorial](https://github.com/timofurrer/w1thermsensor)
 
 * [Luma Core](https://pypi.org/project/luma.core/)
