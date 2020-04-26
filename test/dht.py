@@ -91,10 +91,9 @@ def Main():
             temperature = filtered_temperature.pop()
             humidity = filtered_humidity.pop()
             if temperature < 100.0 and humidity < 100:
-                redis_db.set('DHT22_Humidity', humidity)
-                redis_db.set('DHT22_Temperature', temperature)
+                redis_db.mset({'DHT22_Humidity' : humidity,'DHT22_Temperature' : temperature})
                 if verbose is 'yes' :
-                    print('{}, Temperature: {:.01f}°C, Humidity: {:.01f}%' .format(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), temperature, humidity))
+                    print('{}, Temperature: {:.02f}°C, Humidity: {:.02f}%' .format(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), temperature, humidity))
             lock.release()
         sleep(1)
     data_collector.join()
