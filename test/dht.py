@@ -17,6 +17,8 @@ dhtDevice = adafruit_dht.DHT22(pin)
 #verbose yes/no - if yes, print Temperature and Humidity
 verbose = "yes"
 debug = "no"
+show_only_filtered_values = "no"
+
 redis_db = redis.StrictRedis(host="localhost", port=6379, db=0, charset="utf-8", decode_responses=True)
 
 filtered_temperature = [] # here we keep the temperature values after removing outliers
@@ -29,17 +31,21 @@ event = threading.Event() # we are using an event so we can close the thread as 
 # we determine the standard normal deviation and we exclude anything that goes beyond a threshold
 # think of a probability distribution plot - we remove the extremes
 # the greater the std_factor, the more "forgiving" is the algorithm with the extreme values
-def eliminateNoise(values, std_factor = 1):
-    mean = round(numpy.mean(values),3)
-    standard_deviation = round(numpy.std(values),3)
-    #print(standard_deviation)
-    #print(mean)
+def eliminateNoise(values, std_factor = 2):
+    mean = numpy.mean(values, dtype=numpy.float64)
+    standard_deviation = numpy.std(values)
+    if debug is 'yes' :
+        print("Standard deviation")
+        print(standard_deviation)
+        print("Mean")
+        print(mean)
     if standard_deviation == 0:
         return values
 
-    final_values = [element for element in values if element > mean - std_factor * standard_deviation]
+    final_values = [round(element,1) for element in values if element > mean - std_factor * standard_deviation]
     final_values = [element for element in final_values if element < mean + std_factor * standard_deviation]
-
+    if debug is 'yes' :
+        print(final_values)
     return final_values
 
 # function for processing the data
@@ -56,6 +62,8 @@ def readingValues():
             try:
                 temp = dhtDevice.temperature
                 humidity = dhtDevice.humidity
+                if verbose is 'yes' and show_only_filtered_values is 'no':
+                    print("Measurment:" + str(counter+1) + " temp:" + str(temp) + "°C hum:" + str(humidity) + "%")
             except RuntimeError as error:
                 if debug is 'yes':
                     print(error.args[0])
@@ -65,18 +73,24 @@ def readingValues():
                 counter += 1
             sleep(3) # pause between measurements
         lock.acquire()
-        #print(values)
-        temp_value = numpy.mean(eliminateNoise([x["temp"] for x in values]))
-        #print(temp_value)
-        #filtered_temperature.append(numpy.mean(eliminateNoise([x["temp"] for x in values])))
+        if debug is 'yes' :
+            print(values)
+        try:
+            temp_value = numpy.mean(eliminateNoise([x["temp"] for x in values]))
+            hum_value = numpy.mean(eliminateNoise([x["hum"] for x in values]))
+        except RuntimeError as error:
+            if debug is 'yes':
+                print(error.args[0])
+                pass
         filtered_temperature.append(temp_value)
-        hum_value = numpy.mean(eliminateNoise([x["hum"] for x in values]))
-        #print(hum_value)
-        #filtered_humidity.append(numpy.mean(eliminateNoise([x["hum"] for x in values])))
         filtered_humidity.append(hum_value)
-        #print(filtered_temperature)
-        #print("---")
-        #print(filtered_humidity)
+        if debug is 'yes':
+            print(temp_value)
+            print(hum_value)
+            print("filtered_temperature")
+            print(filtered_temperature)
+            print("filtered_humidity")
+            print(filtered_humidity)
         lock.release()
         values = []
 
@@ -90,7 +104,7 @@ def Main():
             lock.acquire()
             temperature = filtered_temperature.pop()
             humidity = filtered_humidity.pop()
-            if temperature < 100.0 and humidity < 100:
+            if math.isnan(temperature) == False and math.isnan(humidity) == False:
                 redis_db.mset({'DHT22_Humidity' : humidity,'DHT22_Temperature' : temperature})
                 if verbose is 'yes' :
                     print('{}, Temperature: {:.02f}°C, Humidity: {:.02f}%' .format(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), temperature, humidity))
