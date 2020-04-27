@@ -11,9 +11,10 @@
 #  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #  GNU General Public License for more details.
 
-zabbix_server=$(awk -F= '/^ServerActive=/{print $2}' /etc/zabbix/zabbix_agentd.conf.d/zabbix-rpims.conf)
 location=$(redis-cli get location)
-
+zabbix_server=$(awk -F= '/^ServerActive=/{print $2}' /etc/zabbix/zabbix_agentd.conf.d/zabbix-rpims.conf)
+#host_ip=$(ip -4 addr show eth0 | grep -oP '(?<=inet\s)\d+(\.\d+){3}')
+#host_ip=$(ip route get 1.1.1.1 | awk '{ print $7; exit }')
 
 case "$1" in
 
