@@ -189,6 +189,7 @@ def get_dht_data():
     import adafruit_dht
     pin = config['DHT_pin']
     debug = "yes"
+    delay = 0
 
     if config['DHT_type'] is "DHT22":
         dhtDevice = adafruit_dht.DHT22(pin)
@@ -204,12 +205,17 @@ def get_dht_data():
                 print(config['DHT_type'] + " Temperature: {:.1f} °C ".format(temperature))
                 print(config['DHT_type'] + " Humidity: {}% ".format(humidity))
                 print("")
+            delay -= 1
+            if delay < 0:
+                delay = 0
         except RuntimeError as error:
             if debug is 'yes':
                 print("DHT - " + str(error.args[0]))
             pass
+            delay += 1
         finally:
-            sleep(config['DHT_read_interval'])
+            print("DHT delay: " + str(delay))
+            sleep(config['DHT_read_interval']+delay)
 
 
 def oled_sh1106():
@@ -379,7 +385,7 @@ config = {
     #use zabbix sender: yes/no
     "use_zabbix_sender"      : no,
     #use picamera: yes/no
-    "use_picamera"           : no,
+    "use_picamera"           : yes,
     #recording 5s video on local drive: yes/no
     "use_picamera_recording" : no,
     #use door sensor: yes/no
@@ -407,7 +413,7 @@ config = {
     #use DHT sensor: yes/no
     "use_DHT_sensor"       : yes,
     #DHT read interval : in seconds:
-    "DHT_read_interval"      : 10,
+    "DHT_read_interval"      : 5,
     #DHT type DHT11/DHT22
     "DHT_type"               : "DHT22",
     #DHT DATA pin
