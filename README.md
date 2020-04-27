@@ -220,7 +220,7 @@ zabbix_get -s 127.0.0.1 -k "system.cpu.load[all,avg1]" --tls-connect=psk --tls-p
 ## Hardware setup - Raspberry Pi
 
 
- - Temperature and Humidity Sensor DHT11/DHT22/AM2302
+ - Temperature and Humidity Sensor DHT11/DHT22/AM2302 (NOT RECOMMENDED, POOR QUALITY, UNSTABLE MEASUREMENTS)
 ```
 RPi  [VCC 3V3 - Pin 1] -----------------------------  [VCC]    DHT22
                                                |
