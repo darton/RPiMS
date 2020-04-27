@@ -26,7 +26,7 @@ The default intervals:
 
  * DS18B20 - 60 seconds
  
- * DHT22 = 10 seconds
+ * DHT22 - 10 seconds
 
 
 ## Installing
