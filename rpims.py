@@ -187,10 +187,13 @@ def get_ds18b20_data():
 
 def get_dht_data():
     import adafruit_dht
-    pin = 17
+    pin = config['DHT_pin']
     debug = "yes"
 
-    dhtDevice = adafruit_dht.DHT22(pin)
+    if config['DHT_type'] is "DHT22":
+        dhtDevice = adafruit_dht.DHT22(pin)
+    if config['DHT_type'] is "DHT11":
+        dhtDevice = adafruit_dht.DHT11(pin)
 
     while True:
         try:
@@ -198,8 +201,8 @@ def get_dht_data():
             humidity = dhtDevice.humidity
             redis_db.mset({'DHT_Humidity' : humidity,'DHT_Temperature' : temperature,})
             if config['verbose'] is yes :
-                print("DHT Temperature: {:.1f} °C ".format(temperature))
-                print("DHT Humidity: {}% ".format(humidity))
+                print(config['DHT_type'] + " Temperature: {:.1f} °C ".format(temperature))
+                print(config['DHT_type'] + " Humidity: {}% ".format(humidity))
                 print("")
         except RuntimeError as error:
             if debug is 'yes':
@@ -376,7 +379,7 @@ config = {
     #use zabbix sender: yes/no
     "use_zabbix_sender"      : no,
     #use picamera: yes/no
-    "use_picamera"           : yes,
+    "use_picamera"           : no,
     #recording 5s video on local drive: yes/no
     "use_picamera_recording" : no,
     #use door sensor: yes/no
@@ -405,6 +408,10 @@ config = {
     "use_DHT_sensor"       : yes,
     #DHT read interval : in seconds:
     "DHT_read_interval"      : 10,
+    #DHT type DHT11/DHT22
+    "DHT_type"               : "DHT22",
+    #DHT DATA pin
+    "DHT_pin"                : 17,
     #use DS18B20 sensors: yes/no
     "use_DS18B20_sensor"     : yes,
     #DS18B20 read interval : in seconds:

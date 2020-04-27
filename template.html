@@ -68,7 +68,7 @@ span.value {
 
 <?php if ($rpims["use_DHT_sensor"] == 1) {?>
 <div class="sensors">
-    <h3>DHT</h3>
+    <h3><?=$rpims["DHT_type"]?></h3>
     <ul style="list-style-type:none;">
         <li>Temperature: <span class="value"><?=round($rpims["DHT_Temperature"],2)?> &#8451</span></li>
         <li>Humidity: <span class="value"><?=round($rpims["DHT_Humidity"],2)?> %</span></li>
