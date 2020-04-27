@@ -15,10 +15,9 @@ sudo apt-get -y install git python3-gpiozero python3-pip build-essential python3
 sudo apt-get -y install libfreetype6-dev libopenjp2-7 libtiff5 libjpeg-dev
 sudo apt-get -y install python3-w1thermsensor
 sudo apt-get -y install vlc ffmpeg gpac fbi
-sudo apt-get -y install libgpiod2
 
 sudo python3 -m pip install --upgrade pip setuptools wheel
-sudo pip3 install Adafruit_DHT adafruit-circuitpython-dht RPi.bme280 redis pid
+sudo pip3 install RPi.bme280 redis pid
 sudo -H pip3 install --upgrade luma.oled
 sudo -H pip3 install --upgrade luma.lcd
 
@@ -56,4 +55,17 @@ rm $installdir/motd
 sudo mv $installdir/rpims.service /lib/systemd/system/rpims.service
 sudo systemctl daemon-reload
 sudo systemctl enable rpims.service
-sudo systemctl start rpims.service
+
+#for DHT22 sensor
+sudo pip3 install Adafruit_DHT adafruit-circuitpython-dht
+sudo apt-get -y install libgpiod2 libgpiod-dev
+cd ~
+git clone https://github.com/michaellass/libgpiod_pulsein.git
+cd libgpiod_pulsein
+git checkout cpu-fix
+cd src
+make
+cd ~/.local/lib/python3.7/site-packages/adafruit_blinka/microcontroller/bcm283x/pulseio/
+cp libgpiod_pulsein libgpiod_pulsein.bak
+cp ~/libgpiod_pulsein/src/libgpiod_pulsein ./
+#
