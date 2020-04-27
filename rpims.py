@@ -350,31 +350,10 @@ def lcd_st7735():
         logger.error(err)
 
 
-def threading_function(device_type):
-    if device_type is 'BME280' :
-        t = threading.Thread(target=get_bme280_data, name=device_type)
-        t.daemon = True
-        t.start()
-    if device_type is 'DS18B20' :
-        t = threading.Thread(target=get_ds18b20_data, name=device_type)
-        t.daemon = True
-        t.start()
-    if device_type is 'DHT22' :
-        t = threading.Thread(target=get_dht22_data, name=device_type)
-        t.daemon = True
-        t.start()
-    if device_type is 'CPUtemp' :
-        t = threading.Thread(target=get_cputemp_data, name=device_type)
-        t.daemon = True
-        t.start()
-    if device_type is 'oled_sh1106' :
-        t = threading.Thread(target=oled_sh1106, name=device_type)
-        t.daemon = True
-        t.start()
-    if device_type is 'lcd_st7735' :
-        t = threading.Thread(target=lcd_st7735, name=device_type)
-        t.daemon = True
-        t.start()
+def threading_function(function_name):
+    t = threading.Thread(target=function_name, name=function_name)
+    t.daemon = True
+    t.start()
 
 
 # --- Main program ---
@@ -397,7 +376,7 @@ config = {
     #use zabbix sender: yes/no
     "use_zabbix_sender"      : no,
     #use picamera: yes/no
-    "use_picamera"           : no,
+    "use_picamera"           : yes,
     #recording 5s video on local drive: yes/no
     "use_picamera_recording" : no,
     #use door sensor: yes/no
@@ -411,7 +390,7 @@ config = {
     #use serial display
     "use_serial_display"     : yes,
     #serial display type oled_sh1106 or lcd_st7735
-    "serial_display_type"    : "oled_sh1106",
+    "serial_display_type"    : oled_sh1106,
     #disaplay refresh rate : in Hz
     "display_refresh_rate"   : 10,
     #use CPU sensor: yes/no
@@ -510,16 +489,16 @@ if config['use_system_buttons'] is yes :
     system_buttons['shutdown_button'].when_held = shutdown
 
 if config['use_CPU_sensor'] is yes:
-    threading_function("CPUtemp")
+    threading_function(get_cputemp_data)
 
 if config['use_BME280_sensor'] is yes:
-    threading_function("BME280")
+    threading_function(get_bme280_data)
 
 if config['use_DS18B20_sensor'] is yes:
-    threading_function("DS18B20")
+    threading_function(get_ds18b20_data)
 
 if config['use_DHT22_sensor'] is yes:
-    threading_function("DHT22")
+    threading_function(get_dht22_data)
 
 if config['use_serial_display'] is yes:
     threading_function(config['serial_display_type'])
