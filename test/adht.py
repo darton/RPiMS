@@ -3,7 +3,7 @@
 # based on Robert Lucian source code: https://forum.dexterindustries.com/t/solved-dht-sensor-occasionally-returning-spurious-values/2939/4
 # https://forum.dexterindustries.com/t/noise-removal-algorithm-for-grove-dht-pro-sensor/2989?source_topic_id=3662
 #
-#
+#apt install libgpiod-dev apt libgpiod2
 #cd ~
 #git clone https://github.com/michaellass/libgpiod_pulsein.git
 #cd libgpiod_pulsein
