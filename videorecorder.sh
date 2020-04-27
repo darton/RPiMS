@@ -12,6 +12,7 @@
 #  GNU General Public License for more details.
 
 now=$(date +%H%M%S_%m_%d_%Y)
+location=$(redis-cli get location)
 
 video_dir=/home/pi/Video
 video_file=pivideo_$now
@@ -25,12 +26,7 @@ then
     pkill raspivid
 fi 
 
-#raspivid -t 5000 -fps 25 -b 6000000  -a 8 -a "Serwerownia_1 %Y-%m-%d %X" -p 0,0,1920,1080 -o $video_dir/$video_file.h264
-#raspivid  --profile high --level 4.2 -t 5000 -fps 30 -b 10000000  -a 8 -a "Serwerownia_1 %Y-%m-%d %X" -n -o $video_dir/$video_file.h264
-#ffmpeg -fflags +genpts -i $video_file.h264 -c copy $video_file.mp4
-#ffmpeg  -i $video_file.h264 -c copy -vsync 0 -enc_time_base -1 $video_file.mp4
-
-raspivid -t 5000 -fps 30 -b 6000000  -a 8 -a "Serwerownia_1 %Y-%m-%d %X" -n -o $video_dir/$video_file.h264
+raspivid -t 5000 -fps 30 -b 6000000  -a 8 -a "$location %Y-%m-%d %X" -n -o $video_dir/$video_file.h264
 
 cd $video_dir
 
