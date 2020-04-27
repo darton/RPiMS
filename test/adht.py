@@ -2,6 +2,18 @@
 
 # based on Robert Lucian source code: https://forum.dexterindustries.com/t/solved-dht-sensor-occasionally-returning-spurious-values/2939/4
 # https://forum.dexterindustries.com/t/noise-removal-algorithm-for-grove-dht-pro-sensor/2989?source_topic_id=3662
+#
+#
+#cd ~
+#git clone https://github.com/michaellass/libgpiod_pulsein.git
+#cd libgpiod_pulsein
+#git checkout cpu-fix
+#cd src
+#make
+#cd ~/.local/lib/python3.7/site-packages/adafruit_blinka/microcontroller/bcm283x/pulseio/
+#cp libgpiod_pulsein libgpiod_pulsein.bak
+#cp ~/libgpiod_pulsein/src/libgpiod_pulsein ./
+#
 
 import math
 import numpy
