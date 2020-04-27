@@ -380,7 +380,6 @@ def threading_function(device_type):
 
 # --- Main program ---
 
-
 redis_db = redis.StrictRedis(host="localhost", port=6379, db=0, charset="utf-8", decode_responses=True)
 yes = 1
 no = 0
