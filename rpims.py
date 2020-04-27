@@ -16,11 +16,10 @@
 #from picamera import PiCamera
 from gpiozero import LED, Button, MotionSensor
 from gpiozero.tools import all_values, any_values
-from subprocess import check_call
+from subprocess import check_call, call
 from signal import pause
 from time import sleep
 import threading
-import subprocess
 import redis
 import smbus2
 import logging
@@ -117,16 +116,16 @@ def detect_no_alarms():
 
 
 def av_stream(state):
-    subprocess.call("/home/pi/scripts/RPiMS/videostreamer.sh" + " " +  state, shell=True)
+    call("/home/pi/scripts/RPiMS/videostreamer.sh" + " " +  state, shell=True)
 
 
 def av_recording():
-    subprocess.call("/home/pi/scripts/RPiMS/videorecorder.sh", shell=True)
+    call("/home/pi/scripts/RPiMS/videorecorder.sh", shell=True)
 
 
 def zabbix_sender_call(message,sensor_id):
     zabbix_sender_cmd ='/home/pi/scripts/RPiMS/zabbix_sender.sh ' + message + " " + str(sensor_id)
-    subprocess.call(zabbix_sender_cmd, shell=True)
+    call(zabbix_sender_cmd, shell=True)
 
 
 def shutdown():
