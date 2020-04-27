@@ -12,32 +12,34 @@
 #  GNU General Public License for more details.
 
 zabbix_server=$(awk -F= '/^ServerActive=/{print $2}' /etc/zabbix/zabbix_agentd.conf.d/zabbix-rpims.conf)
-host_ip=$(ip -4 addr show eth0 | grep -oP '(?<=inet\s)\d+(\.\d+){3}')
+#host_ip=$(ip -4 addr show eth0 | grep -oP '(?<=inet\s)\d+(\.\d+){3}')
+location=$(redis-cli get location)
+
 
 case "$1" in
 
     'info_when_door_is_opened')
-        zabbix_sender -z $zabbix_server -p 10051 -s "$host_ip" -k trap -o "The $2 is opened"
+        zabbix_sender -z $zabbix_server -p 10051 -s "$location" -k trap -o "The $2 is opened"
     ;;
 
     'info_when_door_is_closed')
-        zabbix_sender -z $zabbix_server -p 10051 -s "$host_ip" -k trap -o "The $2 is closed"
+        zabbix_sender -z $zabbix_server -p 10051 -s "$location" -k trap -o "The $2 is closed"
     ;;
 
     'info_when_door_has_been_opened')
-        zabbix_sender -z $zabbix_server -p 10051 -s "$host_ip" -k trap -o "The $2 has been opened"
+        zabbix_sender -z $zabbix_server -p 10051 -s "$location" -k trap -o "The $2 has been opened"
     ;;
 
     'info_when_door_has_been_closed')
-        zabbix_sender -z $zabbix_server -p 10051 -s "$host_ip" -k trap -o "The $2 has been closed"
+        zabbix_sender -z $zabbix_server -p 10051 -s "$location" -k trap -o "The $2 has been closed"
     ;;
 
     'info_when_motion')
-        zabbix_sender -z $zabbix_server -p 10051 -s "$host_ip" -k trap -o "The $2 motion was detected"
+        zabbix_sender -z $zabbix_server -p 10051 -s "$location" -k trap -o "The $2 motion was detected"
     ;;
 
     'info_when_no_motion')
-        zabbix_sender -z $zabbix_server -p 10051 -s "$host_ip" -k trap -o "The $2 no motion"
+        zabbix_sender -z $zabbix_server -p 10051 -s "$location" -k trap -o "The $2 no motion"
     ;;
 
            *)
