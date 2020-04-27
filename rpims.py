@@ -379,8 +379,14 @@ def threading_function(device_type):
 
 
 # --- Main program ---
+print('# RPiMS is running #')
+print('')
 
 redis_db = redis.StrictRedis(host="localhost", port=6379, db=0, charset="utf-8", decode_responses=True)
+
+logging.basicConfig(filename='/tmp/rpims.log', level=logging.DEBUG, format='%(asctime)s %(levelname)s %(name)s %(message)s')
+logger=logging.getLogger(__name__)
+
 yes = 1
 no = 0
 
@@ -443,17 +449,12 @@ config = {
     "motion_sensor_5_pin"    : 26,
 }
 
-
-logging.basicConfig(filename='/tmp/rpims.log', level=logging.DEBUG, format='%(asctime)s %(levelname)s %(name)s %(message)s')
-logger=logging.getLogger(__name__)
-
 try:
     if config['use_door_sensor'] is yes :
         door_sensor_list = {
             "door_sensor_1" : Button(config['button_1_pin'], hold_time=config['button_1_hold_time']),
             "door_sensor_2" : Button(config['button_2_pin'], hold_time=config['button_2_hold_time']),
         }
-
     if config['use_motion_sensor'] is yes :
         motion_sensor_list = {
             "motion_sensor_1": MotionSensor(config['motion_sensor_1_pin']),
@@ -462,36 +463,25 @@ try:
             "motion_sensor_4": MotionSensor(config['motion_sensor_4_pin']),
             "motion_sensor_5": MotionSensor(config['motion_sensor_5_pin']),
         }
-
     if config['use_system_buttons'] is yes :
         system_buttons = {
             "shutdown_button" : Button(config['button_3_pin'], hold_time=config['button_3_hold_time']),
         }
-
     if config['use_led_indicator'] is yes :
         led_list = {
             "door_led" : LED(config['door_led_pin']),
             "motion_led" : LED(config['motion_led_pin']),
         }
-
 except Exception as err :
     logger.error(err)
     print('Problem with ' + str(err))
     sys.exit(1)
-
-
-print('# RPiMS is running #')
-print('')
-
-if config['use_picamera'] is yes and config['use_picamera_recording'] is no and  config['use_door_sensor'] is no and config['use_motion_sensor'] is no :
-    av_stream('start')
 
 for s in config :
     redis_db.set(s, str(config[s]))
     if config['verbose'] :
         print(s + ' = ' + str(config[s]))
 print('')
-
 
 if config['use_door_sensor'] is yes :
     for s in door_sensor_list:
@@ -534,5 +524,8 @@ if config['use_DHT22_sensor'] is yes:
 
 if config['use_serial_display'] is yes:
     threading_function(config['serial_display_type'])
+
+if config['use_picamera'] is yes and config['use_picamera_recording'] is no and  config['use_door_sensor'] is no and config['use_motion_sensor'] is no :
+    av_stream('start')
 
 pause()
