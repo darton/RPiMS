@@ -27,108 +27,7 @@ import logging
 import sys
 
 
-redis_db = redis.StrictRedis(host="localhost", port=6379, db=0, charset="utf-8", decode_responses=True)
-yes = 1
-no = 0
-
-config = {
-    #Localization
-    "location"               : "My Home",
-    #verbose mode: yes/no
-    "verbose"                : yes,
-    #use zabbix sender: yes/no
-    "use_zabbix_sender"      : no,
-    #use picamera: yes/no
-    "use_picamera"           : no,
-    #recording 5s video on local drive: yes/no
-    "use_picamera_recording" : no,
-    #use door sensor: yes/no
-    "use_door_sensor"        : yes,
-    #use motion sensor: yes/no
-    "use_motion_sensor"      : yes,
-    #use LED indicator: yes/no
-    "use_led_indicator"      : yes,
-    #use system buttons
-    "use_system_buttons"     : yes,
-    #use serial display
-    "use_serial_display"     : yes,
-    #serial display type oled_sh1106 or lcd_st7735
-    "serial_display_type"    : "oled_sh1106",
-    #disaplay refresh rate : in Hz
-    "display_refresh_rate"   : 10,
-    #use CPU sensor: yes/no
-    "use_CPU_sensor"         : yes,
-    #CPUtemp read interval : in seconds:
-    "CPUtemp_read_interval"  : 1,
-    #use BME280 sensor: yes/no
-    "use_BME280_sensor"      : yes,
-    #BME280 read interval : in seconds:
-    "BME280_read_interval"   : 10,
-    #use DHT22 sensor: yes/no
-    "use_DHT22_sensor"       : yes,
-    #DHT22 read interval : in seconds:
-    "DHT_read_interval"      : 10,
-    #use DS18B20 sensors: yes/no
-    "use_DS18B20_sensor"     : yes,
-    #DS18B20 read interval : in seconds:
-    "DS18B20_read_interval"  : 60,
-    #Led indicators or relays type outputs
-    "door_led_pin"           : 12,
-    "motion_led_pin"         : 18,
-    # Button type inputs
-    "button_1_pin"           : 21,
-    "button_1_hold_time"     : 1,
-    "button_2_pin"           : 20,
-    "button_2_hold_time"     : 1,
-    "button_3_pin"           : 16,
-    "button_3_hold_time"     : 5,
-    # Motion Sensor type inputs
-    "motion_sensor_1_pin"    : 5,
-    "motion_sensor_2_pin"    : 6,
-    "motion_sensor_3_pin"    : 13,
-    "motion_sensor_4_pin"    : 19,
-    "motion_sensor_5_pin"    : 26,
-}
-
-
-logging.basicConfig(filename='/tmp/rpims.log', level=logging.DEBUG, format='%(asctime)s %(levelname)s %(name)s %(message)s')
-logger=logging.getLogger(__name__)
-
-try:
-    if config['use_door_sensor'] is yes :
-        door_sensor_list = {
-            "door_sensor_1" : Button(config['button_1_pin'], hold_time=config['button_1_hold_time']),
-            "door_sensor_2" : Button(config['button_2_pin'], hold_time=config['button_2_hold_time']),
-        }
-
-    if config['use_motion_sensor'] is yes :
-        motion_sensor_list = {
-            "motion_sensor_1": MotionSensor(config['motion_sensor_1_pin']),
-            "motion_sensor_2": MotionSensor(config['motion_sensor_2_pin']),
-            "motion_sensor_3": MotionSensor(config['motion_sensor_3_pin']),
-            "motion_sensor_4": MotionSensor(config['motion_sensor_4_pin']),
-            "motion_sensor_5": MotionSensor(config['motion_sensor_5_pin']),
-        }
-
-    if config['use_system_buttons'] is yes :
-        system_buttons = {
-            "shutdown_button" : Button(config['button_3_pin'], hold_time=config['button_3_hold_time']),
-        }
-
-    if config['use_led_indicator'] is yes :
-        led_list = {
-            "door_led" : LED(config['door_led_pin']),
-            "motion_led" : LED(config['motion_led_pin']),
-        }
-
-except Exception as err :
-    logger.error(err)
-    print('Problem with ' + str(err))
-    sys.exit(1)
-
-
 # --- Funcions ---
-
 def door_action_closed(door_id):
     redis_db.set(str(door_id), 'close')
     if config['verbose'] is yes :
@@ -480,6 +379,107 @@ def threading_function(device_type):
 
 
 # --- Main program ---
+
+
+redis_db = redis.StrictRedis(host="localhost", port=6379, db=0, charset="utf-8", decode_responses=True)
+yes = 1
+no = 0
+
+config = {
+    #Localization
+    "location"               : "My Home",
+    #verbose mode: yes/no
+    "verbose"                : yes,
+    #use zabbix sender: yes/no
+    "use_zabbix_sender"      : no,
+    #use picamera: yes/no
+    "use_picamera"           : no,
+    #recording 5s video on local drive: yes/no
+    "use_picamera_recording" : no,
+    #use door sensor: yes/no
+    "use_door_sensor"        : yes,
+    #use motion sensor: yes/no
+    "use_motion_sensor"      : yes,
+    #use LED indicator: yes/no
+    "use_led_indicator"      : yes,
+    #use system buttons
+    "use_system_buttons"     : yes,
+    #use serial display
+    "use_serial_display"     : yes,
+    #serial display type oled_sh1106 or lcd_st7735
+    "serial_display_type"    : "oled_sh1106",
+    #disaplay refresh rate : in Hz
+    "display_refresh_rate"   : 10,
+    #use CPU sensor: yes/no
+    "use_CPU_sensor"         : yes,
+    #CPUtemp read interval : in seconds:
+    "CPUtemp_read_interval"  : 1,
+    #use BME280 sensor: yes/no
+    "use_BME280_sensor"      : yes,
+    #BME280 read interval : in seconds:
+    "BME280_read_interval"   : 10,
+    #use DHT22 sensor: yes/no
+    "use_DHT22_sensor"       : yes,
+    #DHT22 read interval : in seconds:
+    "DHT_read_interval"      : 10,
+    #use DS18B20 sensors: yes/no
+    "use_DS18B20_sensor"     : yes,
+    #DS18B20 read interval : in seconds:
+    "DS18B20_read_interval"  : 60,
+    #Led indicators or relays type outputs
+    "door_led_pin"           : 12,
+    "motion_led_pin"         : 18,
+    # Button type inputs
+    "button_1_pin"           : 21,
+    "button_1_hold_time"     : 1,
+    "button_2_pin"           : 20,
+    "button_2_hold_time"     : 1,
+    "button_3_pin"           : 16,
+    "button_3_hold_time"     : 5,
+    # Motion Sensor type inputs
+    "motion_sensor_1_pin"    : 5,
+    "motion_sensor_2_pin"    : 6,
+    "motion_sensor_3_pin"    : 13,
+    "motion_sensor_4_pin"    : 19,
+    "motion_sensor_5_pin"    : 26,
+}
+
+
+logging.basicConfig(filename='/tmp/rpims.log', level=logging.DEBUG, format='%(asctime)s %(levelname)s %(name)s %(message)s')
+logger=logging.getLogger(__name__)
+
+try:
+    if config['use_door_sensor'] is yes :
+        door_sensor_list = {
+            "door_sensor_1" : Button(config['button_1_pin'], hold_time=config['button_1_hold_time']),
+            "door_sensor_2" : Button(config['button_2_pin'], hold_time=config['button_2_hold_time']),
+        }
+
+    if config['use_motion_sensor'] is yes :
+        motion_sensor_list = {
+            "motion_sensor_1": MotionSensor(config['motion_sensor_1_pin']),
+            "motion_sensor_2": MotionSensor(config['motion_sensor_2_pin']),
+            "motion_sensor_3": MotionSensor(config['motion_sensor_3_pin']),
+            "motion_sensor_4": MotionSensor(config['motion_sensor_4_pin']),
+            "motion_sensor_5": MotionSensor(config['motion_sensor_5_pin']),
+        }
+
+    if config['use_system_buttons'] is yes :
+        system_buttons = {
+            "shutdown_button" : Button(config['button_3_pin'], hold_time=config['button_3_hold_time']),
+        }
+
+    if config['use_led_indicator'] is yes :
+        led_list = {
+            "door_led" : LED(config['door_led_pin']),
+            "motion_led" : LED(config['motion_led_pin']),
+        }
+
+except Exception as err :
+    logger.error(err)
+    print('Problem with ' + str(err))
+    sys.exit(1)
+
 
 print('# RPiMS is running #')
 print('')
