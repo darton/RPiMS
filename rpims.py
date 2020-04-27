@@ -47,13 +47,13 @@ config = {
     #use motion sensor: yes/no
     "use_motion_sensor"      : yes,
     #use LED indicator: yes/no
-    "use_led_indicator"      : no,
+    "use_led_indicator"      : yes,
     #use system buttons
     "use_system_buttons"     : yes,
     #use serial display
     "use_serial_display"     : yes,
     #serial display type oled_sh1106 or lcd_st7735
-    "serial_display_type"    : "lcd_st7735",
+    "serial_display_type"    : "oled_sh1106",
     #disaplay refresh rate : in Hz
     "display_refresh_rate"   : 10,
     #use CPU sensor: yes/no
@@ -65,11 +65,11 @@ config = {
     #BME280 read interval : in seconds:
     "BME280_read_interval"   : 10,
     #use DHT22 sensor: yes/no
-    "use_DHT22_sensor"       : no,
+    "use_DHT22_sensor"       : yes,
     #DHT22 read interval : in seconds:
-    "DHT_read_interval"      : 60,
+    "DHT_read_interval"      : 10,
     #use DS18B20 sensors: yes/no
-    "use_DS18B20_sensor"     : no,
+    "use_DS18B20_sensor"     : yes,
     #DS18B20 read interval : in seconds:
     "DS18B20_read_interval"  : 60,
     #Led indicators or relays type outputs
@@ -242,6 +242,7 @@ def get_cputemp_data():
             redis_db.set('CPU_Temperature', data.temperature)
             if config['verbose'] is yes :
                 print('CPU temperature: {0:0.1f}'.format(data.temperature),chr(176)+'C', sep='')
+                print("")
             sleep(config['CPUtemp_read_interval'])
     except Exception as err :
         logger.error(err)
@@ -260,9 +261,10 @@ def get_bme280_data():
             redis_db.mset({'BME280_Humidity' : data.humidity,'BME280_Temperature' : data.temperature, 'BME280_Pressure' : data.pressure})
             if config['verbose'] is yes :
                 print('')
-                print('Humidity: {0:0.0f}%'.format(data.humidity))
-                print('Temperature: {0:0.1f}\xb0C'.format(data.temperature))
-                print('Pressure: {0:0.0f}hPa'.format(data.pressure))
+                print('BME280 Humidity: {0:0.0f}%'.format(data.humidity))
+                print('BME280 Temperature: {0:0.1f}\xb0C'.format(data.temperature))
+                print('BME280 Pressure: {0:0.0f}hPa'.format(data.pressure))
+                print("")
             sleep(config['BME280_read_interval'])
     except Exception as err :
         logger.error(err)
@@ -278,10 +280,35 @@ def get_ds18b20_data():
                 redis_db.set('DS18B20-' + sensor.id, sensor.get_temperature())
                 if config['verbose'] is yes :
                     print("Sensor %s temperature %.2f"%(sensor.id,sensor.get_temperature()),"\xb0C")
+                    print("")
             sleep(config['DS18B20_read_interval'])
     except Exception as err :
         logger.error(err)
         print('Problem with ' + str(err))
+
+
+def get_dht22_data():
+    import adafruit_dht
+    pin = 17
+    debug = "yes"
+
+    dhtDevice = adafruit_dht.DHT22(pin)
+
+    while True:
+        try:
+            temperature = dhtDevice.temperature
+            humidity = dhtDevice.humidity
+            redis_db.mset({'DHT22_Humidity' : humidity,'DHT22_Temperature' : temperature,})
+            if config['verbose'] is yes :
+                print("DHT22 Temperature: {:.1f} °C ".format(temperature))
+                print("DHT22 Humidity: {}% ".format(humidity))
+                print("")
+        except RuntimeError as error:
+            if debug is 'yes':
+                print("DHT22 - " + str(error.args[0]))
+            pass
+        finally:
+            sleep(config['DHT_read_interval'])
 
 
 def oled_sh1106():
@@ -310,7 +337,7 @@ def oled_sh1106():
     x = 0
 
     serial = i2c(port=1, address=0x3c)
-    device = sh1106(serial, rotate=2)
+    device = sh1106(serial, rotate=0)
 
     logging.basicConfig(filename='/tmp/rpims_serial_display.log', level=logging.DEBUG, format='%(asctime)s %(levelname)s %(name)s %(message)s')
     logger=logging.getLogger(__name__)
@@ -434,6 +461,10 @@ def threading_function(device_type):
         t = threading.Thread(target=get_ds18b20_data, name=device_type)
         t.daemon = True
         t.start()
+    if device_type is 'DHT22' :
+        t = threading.Thread(target=get_dht22_data, name=device_type)
+        t.daemon = True
+        t.start()
     if device_type is 'CPUtemp' :
         t = threading.Thread(target=get_cputemp_data, name=device_type)
         t.daemon = True
@@ -498,6 +529,9 @@ if config['use_BME280_sensor'] is yes:
 
 if config['use_DS18B20_sensor'] is yes:
     threading_function("DS18B20")
+
+if config['use_DHT22_sensor'] is yes:
+    threading_function("DHT22")
 
 if config['use_serial_display'] is yes:
     threading_function(config['serial_display_type'])
