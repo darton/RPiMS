@@ -185,7 +185,7 @@ def get_ds18b20_data():
         print('Problem with ' + str(err))
 
 
-def get_dht22_data():
+def get_dht_data():
     import adafruit_dht
     pin = 17
     debug = "yes"
@@ -196,14 +196,14 @@ def get_dht22_data():
         try:
             temperature = dhtDevice.temperature
             humidity = dhtDevice.humidity
-            redis_db.mset({'DHT22_Humidity' : humidity,'DHT22_Temperature' : temperature,})
+            redis_db.mset({'DHT_Humidity' : humidity,'DHT_Temperature' : temperature,})
             if config['verbose'] is yes :
-                print("DHT22 Temperature: {:.1f} °C ".format(temperature))
-                print("DHT22 Humidity: {}% ".format(humidity))
+                print("DHT Temperature: {:.1f} °C ".format(temperature))
+                print("DHT Humidity: {}% ".format(humidity))
                 print("")
         except RuntimeError as error:
             if debug is 'yes':
-                print("DHT22 - " + str(error.args[0]))
+                print("DHT - " + str(error.args[0]))
             pass
         finally:
             sleep(config['DHT_read_interval'])
@@ -401,9 +401,9 @@ config = {
     "use_BME280_sensor"      : yes,
     #BME280 read interval : in seconds:
     "BME280_read_interval"   : 10,
-    #use DHT22 sensor: yes/no
-    "use_DHT22_sensor"       : yes,
-    #DHT22 read interval : in seconds:
+    #use DHT sensor: yes/no
+    "use_DHT_sensor"       : yes,
+    #DHT read interval : in seconds:
     "DHT_read_interval"      : 10,
     #use DS18B20 sensors: yes/no
     "use_DS18B20_sensor"     : yes,
@@ -497,8 +497,8 @@ if config['use_BME280_sensor'] is yes:
 if config['use_DS18B20_sensor'] is yes:
     threading_function(get_ds18b20_data)
 
-if config['use_DHT22_sensor'] is yes:
-    threading_function(get_dht22_data)
+if config['use_DHT_sensor'] is yes:
+    threading_function(get_dht_data)
 
 if config['use_serial_display'] is yes:
     threading_function(config['serial_display_type'])
