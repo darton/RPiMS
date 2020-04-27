@@ -1,7 +1,7 @@
 README.md
 rpims.py
 rpims.service
-redis-get-data.py 
+redis-get-data.py
 videostreamer.sh
 videorecorder.sh
 zabbix_sender.sh
