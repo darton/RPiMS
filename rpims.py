@@ -510,7 +510,7 @@ if config['use_DHT_sensor'] is yes:
 if config['use_serial_display'] is yes:
     threading_function(config['serial_display_type'])
 
-if config['use_picamera'] is yes and config['use_picamera_recording'] is no and  config['use_door_sensor'] is no and config['use_motion_sensor'] is no :
+if config['use_picamera'] is yes and config['use_picamera_recording'] is no and config['use_door_sensor'] is no and config['use_motion_sensor'] is no :
     av_stream('start')
 
 pause()
