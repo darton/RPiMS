@@ -211,7 +211,6 @@ def get_dht_data():
         except RuntimeError as error:
             if debug is 'yes':
                 print("DHT - " + str(error.args[0]))
-            pass
             delay += 1
         finally:
             print("DHT delay: " + str(delay))
