@@ -262,7 +262,7 @@ def oled_sh1106():
                 draw.text((x, top+36),    'Door 1.......' + str(door_sensor_1),  font=font, fill=255)
                 draw.text((x, top+45),    'Door 2.......' + str(door_sensor_2),  font=font, fill=255)
                 draw.text((x, top+54),    'CpuTemp......' + str(cputemp) + '*C', font=font, fill=255)
-            sleep(1/config['display_refresh_rate'])
+            sleep(1/config['serial_display_refresh_rate'])
     except Exception as err :
         logger.error(err)
 
@@ -345,7 +345,7 @@ def lcd_st7735():
 
                 draw.text((x+5, top+115),now.strftime("%Y-%m-%d %H:%M:%S"),  font=font, fill="floralwhite")
 
-            sleep(1/config['display_refresh_rate'])
+            sleep(1/config['serial_display_refresh_rate'])
     except Exception as err :
         logger.error(err)
 
@@ -391,8 +391,8 @@ config = {
     "use_serial_display"     : yes,
     #serial display type oled_sh1106 or lcd_st7735
     "serial_display_type"    : oled_sh1106,
-    #disaplay refresh rate : in Hz
-    "display_refresh_rate"   : 10,
+    #serial display refresh rate : in Hz
+    "serial_display_refresh_rate"   : 10,
     #use CPU sensor: yes/no
     "use_CPU_sensor"         : yes,
     #CPUtemp read interval : in seconds:
