@@ -38,6 +38,6 @@ case "$1" in
     stream_off
     ;;
            *)
-    echo -e "\nUsage: stream.sh start|stop"  ;;
+    echo -e "\nUsage: videostreamer.sh start|stop"  ;;
 
 esac
