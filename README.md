@@ -219,6 +219,27 @@ zabbix_get -s 127.0.0.1 -k "system.cpu.load[all,avg1]" --tls-connect=psk --tls-p
 
 ## Hardware setup - Raspberry Pi
 
+ - Temperature, Humidity, Pressure Sensor BME280
+```
+RPi  [VCC 3V3 Pin 1] ----------------------------- [VCC]  BME280
+RPi   [GPIO.2 Pin 3] ----------------------------- [SDA]  BME280
+RPi   [GPIO.3 Pin 5] ----------------------------- [SDC]  BME280
+RPi    [GND - Pin 9] ----------------------------- [GND]  BME280
+```
+
+- DS18B20 Temperature sensor
+```
+RPi   [VCC 3V3 Pin 1] -----------------------------  [VCC]    DS18B20
+                                               |
+                                               \
+                                               /   R1 = 4k7
+                                               \
+                                               |
+RPi  [GPIO.4 - Pin 7] ----------------------------- [DATA]   DS18B20
+
+
+RPi     [GND - Pin 9] ----------------------------- [GND]    DS18B20
+```
 
  - Temperature and Humidity Sensor DHT11/DHT22/AM2302 (NOT RECOMMENDED, POOR QUALITY, UNSTABLE MEASUREMENTS)
 ```
@@ -245,29 +266,6 @@ RPi  [VCC 5V - Pin 2] --- [HV] - LEVEL SHIFTER --------------- [VCC]    DHT22
 RPi  [GPIO.17 - Pin 11] - [A1] - LEVEL SHIFTER - [B1]--------- [DATA]   DHT22
 RPi  [VCC 3V3 - Pin 1] -- [LV] - LEVEL SHIFTER
 RPi      [GND - Pin 9] ---[GND] - LEVEL SHIFTER -------------- [GND]    DHT22
-```
-
- - Temperature, Humidity, Pressure Sensor BME280
-```
-RPi  [VCC 3V3 Pin 1] ----------------------------- [VCC]  BME280
-RPi   [GPIO.2 Pin 3] ----------------------------- [SDA]  BME280
-RPi   [GPIO.3 Pin 5] ----------------------------- [SDC]  BME280
-RPi    [GND - Pin 9] ----------------------------- [GND]  BME280
-```
-
-
-- DS18B20 Temperature sensor
-```
-RPi   [VCC 3V3 Pin 1] -----------------------------  [VCC]    DS18B20
-                                               |
-                                               \
-                                               /   R1 = 4k7
-                                               \
-                                               |
-RPi  [GPIO.4 - Pin 7] ----------------------------- [DATA]   DS18B20
-
-
-RPi     [GND - Pin 9] ----------------------------- [GND]    DS18B20
 ```
 
  - OLED Display
