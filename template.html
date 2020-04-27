@@ -66,12 +66,12 @@ span.value {
 </div>
 <?php }?>
 
-<?php if ($rpims["use_DHT22_sensor"] == 1) {?>
+<?php if ($rpims["use_DHT_sensor"] == 1) {?>
 <div class="sensors">
-    <h3>DHT22</h3>
+    <h3>DHT</h3>
     <ul style="list-style-type:none;">
-        <li>Temperature: <span class="value"><?=round($rpims["DHT22_Temperature"],2)?> &#8451</span></li>
-        <li>Humidity: <span class="value"><?=round($rpims["DHT22_Humidity"],2)?> %</span></li>
+        <li>Temperature: <span class="value"><?=round($rpims["DHT_Temperature"],2)?> &#8451</span></li>
+        <li>Humidity: <span class="value"><?=round($rpims["DHT_Humidity"],2)?> %</span></li>
     </ul>
 </div>
 <?php }?>

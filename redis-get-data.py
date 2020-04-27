@@ -30,10 +30,10 @@ if len(sys.argv) > 1:
             for sensor in redis_db.keys(pattern='DS18B20-*'):
                 print(sensor + '={0:0.2f}'.format(float(redis_db.get(sensor))), end=';')
             print('')
-    elif sys.argv[1] == 'DHT22':
-        if redis_db.get('use_DHT22_sensor') == '1':
-            temperature = redis_db.get('DHT22_Temperature')
-            humidity = redis_db.get('DHT22_Humidity')
+    elif sys.argv[1] == 'DHT':
+        if redis_db.get('use_DHT_sensor') == '1':
+            temperature = redis_db.get('DHT_Temperature')
+            humidity = redis_db.get('DHT_Humidity')
             print('Temperature={0:0.2f};Humidity={1:0.2f};'.format(float(temperature),float(humidity)))
     elif sys.argv[1] == 'CPUTEMP':
         temperature = redis_db.get('CPU_Temperature')

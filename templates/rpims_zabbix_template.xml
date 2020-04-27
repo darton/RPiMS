@@ -260,11 +260,11 @@
                     <master_item/>
                 </item>
                 <item>
-                    <name>DHT22 Temperature</name>
+                    <name>DHT Temperature</name>
                     <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>rpims.dht22[2]</key>
+                    <key>rpims.dht[2]</key>
                     <delay>60s</delay>
                     <history>90d</history>
                     <trends>365d</trends>
@@ -319,11 +319,11 @@
                     <master_item/>
                 </item>
                 <item>
-                    <name>DHT22 Humidity</name>
+                    <name>DHT Humidity</name>
                     <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>rpims.dht22[4]</key>
+                    <key>rpims.dht[4]</key>
                     <delay>60s</delay>
                     <history>90d</history>
                     <trends>365d</trends>
@@ -569,7 +569,7 @@
             <tags/>
         </trigger>
         <trigger>
-            <expression>{RPiMS template:rpims.dht22[2].last()}&gt;28</expression>
+            <expression>{RPiMS template:rpims.dht[2].last()}&gt;28</expression>
             <recovery_mode>0</recovery_mode>
             <recovery_expression/>
             <name>Dangerously high temperature ! - {ITEM.LASTVALUE}</name>
@@ -713,7 +713,7 @@
             <tags/>
         </trigger>
         <trigger>
-            <expression>{RPiMS template:rpims.dht22[2].last()}&lt;15</expression>
+            <expression>{RPiMS template:rpims.dht[2].last()}&lt;15</expression>
             <recovery_mode>0</recovery_mode>
             <recovery_expression/>
             <name>The temperature is too low ! - {ITEM.LASTVALUE}</name>
@@ -761,7 +761,7 @@
             <tags/>
         </trigger>
         <trigger>
-            <expression>{RPiMS template:rpims.dht22[4].last()}&gt;70</expression>
+            <expression>{RPiMS template:rpims.dht[4].last()}&gt;70</expression>
             <recovery_mode>0</recovery_mode>
             <recovery_expression/>
             <name>Too high humidity ! - {ITEM.LASTVALUE}</name>
@@ -793,7 +793,7 @@
             <tags/>
         </trigger>
         <trigger>
-            <expression>{RPiMS template:rpims.dht22[2].last()}&gt;25</expression>
+            <expression>{RPiMS template:rpims.dht[2].last()}&gt;25</expression>
             <recovery_mode>0</recovery_mode>
             <recovery_expression/>
             <name>Too high temperature ! - {ITEM.LASTVALUE}</name>
@@ -841,7 +841,7 @@
             <tags/>
         </trigger>
         <trigger>
-            <expression>{RPiMS template:rpims.dht22[4].last()}&lt;30</expression>
+            <expression>{RPiMS template:rpims.dht[4].last()}&lt;30</expression>
             <recovery_mode>0</recovery_mode>
             <recovery_expression/>
             <name>Too low humidity ! - {ITEM.LASTVALUE}</name>
@@ -1031,7 +1031,7 @@
             </graph_items>
         </graph>
         <graph>
-            <name>DHT22 Humidity</name>
+            <name>DHT Humidity</name>
             <width>900</width>
             <height>200</height>
             <yaxismin>0.0000</yaxismin>
@@ -1057,13 +1057,13 @@
                     <type>0</type>
                     <item>
                         <host>RPiMS template</host>
-                        <key>rpims.dht22[4]</key>
+                        <key>rpims.dht[4]</key>
                     </item>
                 </graph_item>
             </graph_items>
         </graph>
         <graph>
-            <name>DHT22 Temperature</name>
+            <name>DHT Temperature</name>
             <width>900</width>
             <height>200</height>
             <yaxismin>0.0000</yaxismin>
@@ -1089,13 +1089,13 @@
                     <type>0</type>
                     <item>
                         <host>RPiMS template</host>
-                        <key>rpims.dht22[2]</key>
+                        <key>rpims.dht[2]</key>
                     </item>
                 </graph_item>
             </graph_items>
         </graph>
         <graph>
-            <name>DHT22 Temperature and Humidity</name>
+            <name>DHT Temperature and Humidity</name>
             <width>900</width>
             <height>200</height>
             <yaxismin>0.0000</yaxismin>
@@ -1121,7 +1121,7 @@
                     <type>0</type>
                     <item>
                         <host>RPiMS template</host>
-                        <key>rpims.dht22[4]</key>
+                        <key>rpims.dht[4]</key>
                     </item>
                 </graph_item>
                 <graph_item>
@@ -1133,7 +1133,7 @@
                     <type>0</type>
                     <item>
                         <host>RPiMS template</host>
-                        <key>rpims.dht22[2]</key>
+                        <key>rpims.dht[2]</key>
                     </item>
                 </graph_item>
             </graph_items>
