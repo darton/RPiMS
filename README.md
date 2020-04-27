@@ -25,6 +25,8 @@ The default intervals:
  * BME280 - 10 seconds
 
  * DS18B20 - 60 seconds
+ 
+ * DHT22 = 10 seconds
 
 
 ## Installing
