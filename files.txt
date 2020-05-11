@@ -9,4 +9,5 @@ zabbix-rpims.conf
 nginx-default
 index.php
 template.html
+rc.local
 motd
