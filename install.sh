@@ -23,8 +23,8 @@ sudo -H pip3 install --upgrade luma.lcd
 
 sudo apt-get -y install redis-server
 sudo systemctl enable redis-server.service
-sysctl -w vm.overcommit_memory=1
-sysctl -w net.core.somaxconn=512
+sudo sysctl -w vm.overcommit_memory=1
+sudo sysctl -w net.core.somaxconn=512
 echo 'vm.overcommit_memory=1' | sudo tee -a /etc/sysctl.conf
 echo 'net.core.somaxconn=512' | sudo tee -a /etc/sysctl.conf
 echo 'maxmemory 100mb' | sudo tee -a /etc/redis/redis.conf
