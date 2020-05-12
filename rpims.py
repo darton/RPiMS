@@ -222,8 +222,8 @@ def oled_sh1106():
     from luma.core.render import canvas
     from luma.core import lib
     from luma.oled.device import sh1106
-    from PIL import Image
-    from PIL import ImageDraw
+    #from PIL import Image
+    #from PIL import ImageDraw
     from PIL import ImageFont
     import time
     import socket
@@ -234,7 +234,7 @@ def oled_sh1106():
     # Make sure to create image with mode '1' for 1-bit color.
     width = 128
     height = 64
-    image = Image.new('1', (width, height))
+    #image = Image.new('1', (width, height))
     # First define some constants to allow easy resizing of shapes.
     padding = 0
     top = padding
