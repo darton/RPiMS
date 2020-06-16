@@ -34,6 +34,7 @@ The default intervals:
 ### Installing operating system images 
 
 Download the image [Raspbian Lite](https://downloads.raspberrypi.org/raspbian_lite_latest)
+or [Raspberry Pi OS Lite](https://downloads.raspberrypi.org/raspios_lite_armhf_latest)
 
 To writing an image to the SD card, use [Etcher](https://etcher.io/) an image writing tool.
 
