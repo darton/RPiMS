@@ -3,6 +3,7 @@ rpims.py
 rpims.yaml
 rpims.service
 redis-get-data.py
+hostnamectl.sh
 videostreamer.sh
 videorecorder.sh
 zabbix_sender.sh
