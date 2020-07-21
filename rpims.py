@@ -375,7 +375,7 @@ print('# RPiMS is running #')
 print('')
 
 try:
-    with open(r'/home/pi/rpims/rpims.yaml') as file:
+    with open(r'/home/pi/scripts/RPiMS/rpims.yaml') as file:
         config_yaml = yaml.full_load(file)
 
 except Exception as err :
@@ -416,10 +416,10 @@ logging.basicConfig(filename='/tmp/rpims.log', level=logging.DEBUG, format='%(as
 logger=logging.getLogger(__name__)
 
 
-for s in config :
-    redis_db.set(s, str(config[s]))
-    if config['verbose'] :
-        print(s + ' = ' + str(config[s]))
+for item in config :
+    redis_db.set(item, str(config[item]))
+    if config['verbose'] is True :
+        print(item + ' = ' + str(config[item]))
 print('')
 
 hostnamectl_sh()
