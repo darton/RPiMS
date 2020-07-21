@@ -129,6 +129,10 @@ def zabbix_sender_call(message,sensor_id):
     call(zabbix_sender_cmd, shell=True)
 
 
+def hostnamectl_sh():
+    call("sudo /home/pi/scripts/RPiMS/hostnamectl.sh", shell=True)
+
+
 def shutdown():
     check_call(['sudo', 'poweroff'])
 
@@ -214,7 +218,9 @@ def get_dht_data():
                 print("DHT - " + str(error.args[0]))
             delay += 1
         finally:
-            print("DHT delay: " + str(delay))
+            if debug is 'yes':
+                print("DHT delay: " + str(delay))
+            redis_db.set('DHT_delay', delay)
             sleep(config['DHT_read_interval']+delay)
 
 
@@ -223,11 +229,11 @@ def oled_sh1106():
     from luma.core.render import canvas
     from luma.core import lib
     from luma.oled.device import sh1106
-    from PIL import Image
-    from PIL import ImageDraw
+    #from PIL import Image
+    #from PIL import ImageDraw
     from PIL import ImageFont
     import time
-    import socket
+    #import socket
 
     # Load default font.
     font = ImageFont.load_default()
@@ -235,7 +241,7 @@ def oled_sh1106():
     # Make sure to create image with mode '1' for 1-bit color.
     width = 128
     height = 64
-    image = Image.new('1', (width, height))
+    #image = Image.new('1', (width, height))
     # First define some constants to allow easy resizing of shapes.
     padding = 0
     top = padding
@@ -254,15 +260,16 @@ def oled_sh1106():
         while True:
             with canvas(device) as draw:
                 #get data from redis db
-                values = redis_db.mget('BME280_Temperature', 'BME280_Humidity', 'BME280_Pressure', 'door_sensor_1', 'door_sensor_2', 'CPU_Temperature')
+                values = redis_db.mget('BME280_Temperature', 'BME280_Humidity', 'BME280_Pressure', 'door_sensor_1', 'door_sensor_2', 'CPU_Temperature', 'hostip')
                 temperature = round(float(values[0]),1)
                 humidity = int(round(float(values[1]),1))
                 pressure = int(round(float(values[2]),1))
                 door_sensor_1 = values[3]
                 door_sensor_2 = values[4]
                 cputemp = round(float(values[5]),1)
+                hostip = values[6]
                 #draw on oled
-                draw.text((x, top),       'R P i M S', font=font, fill=255)
+                draw.text((x, top),       'IP:' + str(hostip), font=font, fill=255)
                 draw.text((x, top+9),     'Temperature..' + str(temperature) + '*C', font=font, fill=255)
                 draw.text((x, top+18),    'Humidity.....' + str(humidity) + '%',  font=font, fill=255)
                 draw.text((x, top+27),    'Pressure.....' + str(pressure) + 'hPa',  font=font, fill=255)
@@ -286,7 +293,7 @@ def lcd_st7735():
     #import RPi.GPIO as GPIO
     import time
     import datetime
-    import socket
+    #import socket
 # Load default font.
     font = ImageFont.load_default()
 #Display width/height
@@ -310,13 +317,14 @@ def lcd_st7735():
 
         while True:
             #get data from redis db
-            values = redis_db.mget('BME280_Temperature', 'BME280_Humidity', 'BME280_Pressure', 'door_sensor_1', 'door_sensor_2', 'CPU_Temperature')
+            values = redis_db.mget('BME280_Temperature', 'BME280_Humidity', 'BME280_Pressure', 'door_sensor_1', 'door_sensor_2', 'CPU_Temperature', 'hostip')
             temperature = round(float(values[0]),1)
             humidity = int(round(float(values[1]),1))
             pressure = int(round(float(values[2]),1))
             door_sensor_1 = values[3]
             door_sensor_2 = values[4]
             cputemp = round(float(values[5]),1)
+            hostip = values[6]
             now = datetime.datetime.now()
             # Draw
             with canvas(device) as draw:
@@ -344,9 +352,9 @@ def lcd_st7735():
                 draw.text((x, top+86),' CPUtemp',  font=font, fill="cyan")
                 draw.text((x+77, top+86),str(cputemp)+ " *C",  font=font, fill="cyan")
 
-                #draw.text((x, top+99),' IP', font=font, fill="cyan")
-                #draw.text((x+17, top+99),':', font=font, fill="cyan")
-                #draw.text((x+36, top+99),str(hostip), font=font, fill="cyan")
+                draw.text((x, top+99),' IP', font=font, fill="cyan")
+                draw.text((x+17, top+99),':', font=font, fill="cyan")
+                draw.text((x+36, top+99),str(hostip), font=font, fill="cyan")
 
                 draw.text((x+5, top+115),now.strftime("%Y-%m-%d %H:%M:%S"),  font=font, fill="floralwhite")
 
@@ -413,6 +421,8 @@ for s in config :
     if config['verbose'] :
         print(s + ' = ' + str(config[s]))
 print('')
+
+hostnamectl_sh()
 
 if config['use_door_sensor'] is True :
     for s in door_sensors_list:
