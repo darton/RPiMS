@@ -27,7 +27,6 @@ import sys
 import yaml
 
 
-
 # --- Funcions ---
 def door_action_closed(door_id):
     redis_db.set(str(door_id), 'close')
