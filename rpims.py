@@ -24,28 +24,30 @@ import redis
 import smbus2
 import logging
 import sys
+import yaml
+
 
 
 # --- Funcions ---
 def door_action_closed(door_id):
     redis_db.set(str(door_id), 'close')
-    if config['verbose'] is yes :
+    if config['verbose'] is True :
         print("The " + str(door_id) + " has been closed!")
-    if config['use_zabbix_sender'] is yes :
+    if config['use_zabbix_sender'] is True :
         zabbix_sender_call('info_when_door_has_been_closed',door_id)
-    if config['use_picamera'] is yes:
+    if config['use_picamera'] is True:
          if detect_no_alarms():
              av_stream('stop')
 
 
 def door_action_opened(door_id):
     redis_db.set(str(door_id), 'open')
-    if config['verbose'] is yes :
+    if config['verbose'] is True :
         print("The " + str(door_id) + " has been opened!")
-    if config['use_zabbix_sender'] is yes :
+    if config['use_zabbix_sender'] is True :
         zabbix_sender_call('info_when_door_has_been_opened',door_id)
-    if config['use_picamera'] is yes :
-        if config['use_picamera_recording'] is 'yes':
+    if config['use_picamera'] is True :
+        if config['use_picamera_recording'] is True:
             av_stream('stop')
             av_recording()
         av_stream('start')
@@ -53,64 +55,64 @@ def door_action_opened(door_id):
 
 def door_status_open(door_id):
     redis_db.set(str(door_id), 'open')
-    if config['verbose'] is yes :
+    if config['verbose'] is True :
         print("The " + str(door_id) + " is opened!")
-    if config['use_zabbix_sender'] is yes:
+    if config['use_zabbix_sender'] is True:
         zabbix_sender_call('info_when_door_is_opened',door_id)
-    if config['use_picamera'] is yes:
+    if config['use_picamera'] is True:
         av_stream('start')
 
 
 def door_status_close(door_id):
     redis_db.set(str(door_id), 'close')
-    if config['verbose'] is yes :
+    if config['verbose'] is True :
         print("The " + str(door_id) + " is closed!")
-    if config['use_zabbix_sender'] is yes :
+    if config['use_zabbix_sender'] is True :
         zabbix_sender_call('info_when_door_is_closed',door_id)
-    if config['use_picamera'] is yes:
+    if config['use_picamera'] is True:
          if detect_no_alarms():
              av_stream('stop')
 
 
 def motion_sensor_when_motion(ms_id):
     redis_db.set(str(ms_id), 'motion')
-    if config['verbose'] is yes :
+    if config['verbose'] is True :
         print("The " + str(ms_id) + ": motion was detected")
-    if config['use_zabbix_sender'] is yes :
+    if config['use_zabbix_sender'] is True :
         zabbix_sender_call('info_when_motion',ms_id)
-    if config['use_picamera'] is yes:
+    if config['use_picamera'] is True:
         av_stream('start')
 
 
 def motion_sensor_when_no_motion(ms_id):
     redis_db.set(str(ms_id), 'nomotion')
-    if config['verbose'] is yes :
+    if config['verbose'] is True :
         print("The " + str(ms_id) + ": no motion")
-    if config['use_picamera'] is yes:
+    if config['use_picamera'] is True:
          if detect_no_alarms():
              av_stream('stop')
 
 
 def detect_no_alarms():
-    if config['use_door_sensor'] is yes and config['use_motion_sensor'] is yes:
+    if config['use_door_sensor'] is True and config['use_motion_sensor'] is True:
         door_sensor_values = []
         motion_sensor_values = []
-        for s in door_sensor_list:
-            door_sensor_values.append(door_sensor_list[s].value)
-        for s in motion_sensor_list:
-            motion_sensor_values.append(int(not motion_sensor_list[s].value))
+        for s in door_sensors_list:
+            door_sensor_values.append(door_sensors_list[s].value)
+        for s in motion_sensors_list:
+            motion_sensor_values.append(int(not motion_sensors_list[s].value))
         if all(door_sensor_values) and all(motion_sensor_values):
             return True
-    if config['use_door_sensor'] is yes and config['use_motion_sensor'] is no:
+    if config['use_door_sensor'] is True and config['use_motion_sensor'] is False:
         door_sensor_values = []
-        for s in door_sensor_list:
-            door_sensor_values.append(door_sensor_list[s].value)
+        for s in door_sensors_list:
+            door_sensor_values.append(door_sensors_list[s].value)
         if all(door_sensor_values):
             return True
-    if config['use_door_sensor'] is no and config['use_motion_sensor'] is yes:
+    if config['use_door_sensor'] is False and config['use_motion_sensor'] is True:
         motion_sensor_values = []
-        for s in motion_sensor_list:
-            motion_sensor_values.append(int(not motion_sensor_list[s].value))
+        for s in motion_sensors_list:
+            motion_sensor_values.append(int(not motion_sensors_list[s].value))
         if all(motion_sensor_values):
             return True
 
@@ -138,7 +140,7 @@ def get_cputemp_data():
         while True :
             data = CPUTemperature()
             redis_db.set('CPU_Temperature', data.temperature)
-            if config['verbose'] is yes :
+            if config['verbose'] is True :
                 print('CPU temperature: {0:0.1f}'.format(data.temperature),chr(176)+'C', sep='')
                 print("")
             sleep(config['CPUtemp_read_interval'])
@@ -157,7 +159,7 @@ def get_bme280_data():
             calibration_params = bme280.load_calibration_params(bus, address)
             data = bme280.sample(bus, address, calibration_params)
             redis_db.mset({'BME280_Humidity' : data.humidity,'BME280_Temperature' : data.temperature, 'BME280_Pressure' : data.pressure})
-            if config['verbose'] is yes :
+            if config['verbose'] is True :
                 print('')
                 print('BME280 Humidity: {0:0.0f}%'.format(data.humidity))
                 print('BME280 Temperature: {0:0.1f}\xb0C'.format(data.temperature))
@@ -176,7 +178,7 @@ def get_ds18b20_data():
             data = W1ThermSensor.get_available_sensors([W1ThermSensor.THERM_SENSOR_DS18S20,W1ThermSensor.THERM_SENSOR_DS18S20])
             for sensor in data:
                 redis_db.set('DS18B20-' + sensor.id, sensor.get_temperature())
-                if config['verbose'] is yes :
+                if config['verbose'] is True :
                     print("Sensor %s temperature %.2f"%(sensor.id,sensor.get_temperature()),"\xb0C")
                     print("")
             sleep(config['DS18B20_read_interval'])
@@ -201,7 +203,7 @@ def get_dht_data():
             temperature = dhtDevice.temperature
             humidity = dhtDevice.humidity
             redis_db.mset({'DHT_Humidity' : humidity,'DHT_Temperature' : temperature,})
-            if config['verbose'] is yes :
+            if config['verbose'] is True :
                 print(config['DHT_type'] + " Temperature: {:.1f} °C ".format(temperature))
                 print(config['DHT_type'] + " Humidity: {}% ".format(humidity))
                 print("")
@@ -222,8 +224,8 @@ def oled_sh1106():
     from luma.core.render import canvas
     from luma.core import lib
     from luma.oled.device import sh1106
-    #from PIL import Image
-    #from PIL import ImageDraw
+    from PIL import Image
+    from PIL import ImageDraw
     from PIL import ImageFont
     import time
     import socket
@@ -234,7 +236,7 @@ def oled_sh1106():
     # Make sure to create image with mode '1' for 1-bit color.
     width = 128
     height = 64
-    #image = Image.new('1', (width, height))
+    image = Image.new('1', (width, height))
     # First define some constants to allow easy resizing of shapes.
     padding = 0
     top = padding
@@ -242,15 +244,13 @@ def oled_sh1106():
     # Move left to right keeping track of the current x position for drawing shapes.
     x = 0
 
-    serial = i2c(port=1, address=0x3c)
-    device = sh1106(serial, rotate=0)
-
     logging.basicConfig(filename='/tmp/rpims_serial_display.log', level=logging.DEBUG, format='%(asctime)s %(levelname)s %(name)s %(message)s')
     logger=logging.getLogger(__name__)
 
+    serial = i2c(port=1, address=0x3c)
+
     try:
-        hostname = socket.gethostname()
-        hostip = socket.gethostbyname(hostname)
+        device = sh1106(serial, rotate=0)
 
         while True:
             with canvas(device) as draw:
@@ -263,7 +263,7 @@ def oled_sh1106():
                 door_sensor_2 = values[4]
                 cputemp = round(float(values[5]),1)
                 #draw on oled
-                draw.text((x, top),       'RPiMS IP:' + str(hostip), font=font, fill=255)
+                draw.text((x, top),       'R P i M S', font=font, fill=255)
                 draw.text((x, top+9),     'Temperature..' + str(temperature) + '*C', font=font, fill=255)
                 draw.text((x, top+18),    'Humidity.....' + str(humidity) + '%',  font=font, fill=255)
                 draw.text((x, top+27),    'Pressure.....' + str(pressure) + 'hPa',  font=font, fill=255)
@@ -308,8 +308,6 @@ def lcd_st7735():
     try:
         device = st7735(serial)
         device = st7735(serial, width=128, height=128, h_offset=1, v_offset=2, bgr=True, persist=False)
-        hostname = socket.gethostname()
-        hostip = socket.gethostbyname(hostname)
 
         while True:
             #get data from redis db
@@ -347,9 +345,9 @@ def lcd_st7735():
                 draw.text((x, top+86),' CPUtemp',  font=font, fill="cyan")
                 draw.text((x+77, top+86),str(cputemp)+ " *C",  font=font, fill="cyan")
 
-                draw.text((x, top+99),' IP', font=font, fill="cyan")
-                draw.text((x+17, top+99),':', font=font, fill="cyan")
-                draw.text((x+36, top+99),str(hostip), font=font, fill="cyan")
+                #draw.text((x, top+99),' IP', font=font, fill="cyan")
+                #draw.text((x+17, top+99),':', font=font, fill="cyan")
+                #draw.text((x+36, top+99),str(hostip), font=font, fill="cyan")
 
                 draw.text((x+5, top+115),now.strftime("%Y-%m-%d %H:%M:%S"),  font=font, fill="floralwhite")
 
@@ -365,107 +363,51 @@ def threading_function(function_name):
 
 
 # --- Main program ---
+
 print('# RPiMS is running #')
 print('')
+
+try:
+    with open(r'/home/pi/rpims/rpims.yaml') as file:
+        config_yaml = yaml.full_load(file)
+
+except Exception as err :
+    logger.error(err)
+    print('Problem with ' + str(err))
+    sys.exit(1)
+
+
+config = {}
+door_sensors_list = {}
+motion_sensors_list = {}
+system_buttons_list = {}
+led_indicators_list = {}
+
+for item in config_yaml.get("setup"):
+    config[item] = config_yaml['setup'][item]
+
+if config['use_door_sensor'] is True:
+    for item in config_yaml.get("door_sensors"):
+        door_sensors_list[item] = Button(config_yaml['door_sensors'][item]['gpio_pin'], hold_time=config_yaml['door_sensors'][item]['hold_time'])
+
+if config['use_motion_sensor'] is True:
+    for item in config_yaml.get("motion_sensors"):
+        motion_sensors_list[item] = MotionSensor(config_yaml['motion_sensors'][item]['gpio_pin'])
+
+if config['use_system_buttons'] is True:
+    for item in config_yaml.get("system_buttons"):
+        system_buttons_list[item] = Button(config_yaml['system_buttons'][item]['gpio_pin'], hold_time=config_yaml['system_buttons'][item]['hold_time'])
+
+if config['use_led_indicator'] is True:
+    for item in config_yaml.get("led_indicators"):
+        led_indicators_list[item] = LED(config_yaml['led_indicators'][item]['gpio_pin'])
+
 
 redis_db = redis.StrictRedis(host="localhost", port=6379, db=0, charset="utf-8", decode_responses=True)
 
 logging.basicConfig(filename='/tmp/rpims.log', level=logging.DEBUG, format='%(asctime)s %(levelname)s %(name)s %(message)s')
 logger=logging.getLogger(__name__)
 
-yes = 1
-no = 0
-
-config = {
-    #Localization
-    "location"               : "My Home",
-    #verbose mode: yes/no
-    "verbose"                : yes,
-    #use zabbix sender: yes/no
-    "use_zabbix_sender"      : no,
-    #use picamera: yes/no
-    "use_picamera"           : yes,
-    #recording 5s video on local drive: yes/no
-    "use_picamera_recording" : no,
-    #use door sensor: yes/no
-    "use_door_sensor"        : yes,
-    #use motion sensor: yes/no
-    "use_motion_sensor"      : yes,
-    #use LED indicator: yes/no
-    "use_led_indicator"      : yes,
-    #use system buttons
-    "use_system_buttons"     : yes,
-    #use serial display
-    "use_serial_display"     : yes,
-    #serial display type oled_sh1106 or lcd_st7735
-    "serial_display_type"    : oled_sh1106,
-    #serial display refresh rate : in Hz
-    "serial_display_refresh_rate"   : 10,
-    #use CPU sensor: yes/no
-    "use_CPU_sensor"         : yes,
-    #CPUtemp read interval : in seconds:
-    "CPUtemp_read_interval"  : 1,
-    #use BME280 sensor: yes/no
-    "use_BME280_sensor"      : yes,
-    #BME280 read interval : in seconds:
-    "BME280_read_interval"   : 10,
-    #use DHT sensor: yes/no
-    "use_DHT_sensor"       : yes,
-    #DHT read interval : in seconds:
-    "DHT_read_interval"      : 5,
-    #DHT type DHT11/DHT22
-    "DHT_type"               : "DHT22",
-    #DHT DATA pin
-    "DHT_pin"                : 17,
-    #use DS18B20 sensors: yes/no
-    "use_DS18B20_sensor"     : yes,
-    #DS18B20 read interval : in seconds:
-    "DS18B20_read_interval"  : 60,
-    #Led indicators or relays type outputs
-    "door_led_pin"           : 12,
-    "motion_led_pin"         : 18,
-    # Button type inputs
-    "button_1_pin"           : 21,
-    "button_1_hold_time"     : 1,
-    "button_2_pin"           : 20,
-    "button_2_hold_time"     : 1,
-    "button_3_pin"           : 16,
-    "button_3_hold_time"     : 5,
-    # Motion Sensor type inputs
-    "motion_sensor_1_pin"    : 5,
-    "motion_sensor_2_pin"    : 6,
-    "motion_sensor_3_pin"    : 13,
-    "motion_sensor_4_pin"    : 19,
-    "motion_sensor_5_pin"    : 26,
-}
-
-try:
-    if config['use_door_sensor'] is yes :
-        door_sensor_list = {
-            "door_sensor_1" : Button(config['button_1_pin'], hold_time=config['button_1_hold_time']),
-            "door_sensor_2" : Button(config['button_2_pin'], hold_time=config['button_2_hold_time']),
-        }
-    if config['use_motion_sensor'] is yes :
-        motion_sensor_list = {
-            "motion_sensor_1": MotionSensor(config['motion_sensor_1_pin']),
-            "motion_sensor_2": MotionSensor(config['motion_sensor_2_pin']),
-            "motion_sensor_3": MotionSensor(config['motion_sensor_3_pin']),
-            "motion_sensor_4": MotionSensor(config['motion_sensor_4_pin']),
-            "motion_sensor_5": MotionSensor(config['motion_sensor_5_pin']),
-        }
-    if config['use_system_buttons'] is yes :
-        system_buttons = {
-            "shutdown_button" : Button(config['button_3_pin'], hold_time=config['button_3_hold_time']),
-        }
-    if config['use_led_indicator'] is yes :
-        led_list = {
-            "door_led" : LED(config['door_led_pin']),
-            "motion_led" : LED(config['motion_led_pin']),
-        }
-except Exception as err :
-    logger.error(err)
-    print('Problem with ' + str(err))
-    sys.exit(1)
 
 for s in config :
     redis_db.set(s, str(config[s]))
@@ -473,49 +415,52 @@ for s in config :
         print(s + ' = ' + str(config[s]))
 print('')
 
-if config['use_door_sensor'] is yes :
-    for s in door_sensor_list:
-        if door_sensor_list[s].value == 0:
+if config['use_door_sensor'] is True :
+    for s in door_sensors_list:
+        if door_sensors_list[s].value == 0:
             door_status_open(s)
         else:
             door_status_close(s)
-    for s in door_sensor_list:
-            door_sensor_list[s].when_held = lambda s=s : door_action_closed(s)
-            door_sensor_list[s].when_released = lambda s=s : door_action_opened(s)
-    if config['use_led_indicator'] is yes :
-        led_list['door_led'].source = all_values(*door_sensor_list.values())
+    for s in door_sensors_list:
+            door_sensors_list[s].when_held = lambda s=s : door_action_closed(s)
+            door_sensors_list[s].when_released = lambda s=s : door_action_opened(s)
+    if config['use_led_indicator'] is True :
+        led_indicators_list['door_led'].source = all_values(*door_sensors_list.values())
 
-if config['use_motion_sensor'] is yes :
-    for s in motion_sensor_list:
-        if motion_sensor_list[s].value == 0:
+if config['use_motion_sensor'] is True :
+    for s in motion_sensors_list:
+        if motion_sensors_list[s].value == 0:
             motion_sensor_when_no_motion(s)
         else:
             motion_sensor_when_motion(s)
-    for s in motion_sensor_list:
-            motion_sensor_list[s].when_motion = lambda s=s : motion_sensor_when_motion(s)
-            motion_sensor_list[s].when_no_motion = lambda s=s : motion_sensor_when_no_motion(s)
-    if config['use_led_indicator'] is yes :
-        led_list['motion_led'].source = any_values(*motion_sensor_list.values())
+    for s in motion_sensors_list:
+            motion_sensors_list[s].when_motion = lambda s=s : motion_sensor_when_motion(s)
+            motion_sensors_list[s].when_no_motion = lambda s=s : motion_sensor_when_no_motion(s)
+    if config['use_led_indicator'] is True :
+        led_indicators_list['motion_led'].source = any_values(*motion_sensors_list.values())
 
-if config['use_system_buttons'] is yes :
-    system_buttons['shutdown_button'].when_held = shutdown
+if config['use_system_buttons'] is True :
+    system_buttons_list['shutdown_button'].when_held = shutdown
 
-if config['use_CPU_sensor'] is yes:
+if config['use_CPU_sensor'] is True:
     threading_function(get_cputemp_data)
 
-if config['use_BME280_sensor'] is yes:
+if config['use_BME280_sensor'] is True:
     threading_function(get_bme280_data)
 
-if config['use_DS18B20_sensor'] is yes:
+if config['use_DS18B20_sensor'] is True:
     threading_function(get_ds18b20_data)
 
-if config['use_DHT_sensor'] is yes:
+if config['use_DHT_sensor'] is True:
     threading_function(get_dht_data)
 
-if config['use_serial_display'] is yes:
-    threading_function(config['serial_display_type'])
+if config['use_serial_display'] is True:
+    if config['serial_display_type'] == 'oled_sh1106':
+        threading_function(oled_sh1106)
+    if config['serial_display_type'] == 'lcd_st7735':
+        threading_function(lcd_st7735)
 
-if config['use_picamera'] is yes and config['use_picamera_recording'] is no and config['use_door_sensor'] is no and config['use_motion_sensor'] is no :
+if config['use_picamera'] is True and config['use_picamera_recording'] is False and config['use_door_sensor'] is False and config['use_motion_sensor'] is False :
     av_stream('start')
 
 pause()
