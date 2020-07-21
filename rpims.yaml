@@ -1,6 +1,8 @@
 setup:
- #Localization
  location: My Home
+ hostname: RPiMS
+ chassis: embedded
+ deployment: monitoring
  #verbose mode: yes/no
  verbose: yes
  #use zabbix sender: yes/no
@@ -16,7 +18,7 @@ setup:
  #use LED indicator: yes/no
  use_led_indicator: yes
  #use system buttons
- use_system_buttons: yes
+ use_system_buttons: no
  #use serial display
  use_serial_display: yes
  #serial display type oled_sh1106 or lcd_st7735
@@ -88,4 +90,3 @@ motion_sensors:
   gpio_pin: 19
  motion_sensor_5:
   gpio_pin: 26
-
