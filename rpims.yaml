@@ -1,1 +1,91 @@
+setup:
+ #Localization
+ location: My Home
+ #verbose mode: yes/no
+ verbose: yes
+ #use zabbix sender: yes/no
+ use_zabbix_sender: no
+ #use picamera: yes/no
+ use_picamera: no
+ #recording 5s video on local drive: yes/no
+ use_picamera_recording : no
+ #use door sensor: yes/no
+ use_door_sensor: yes
+ #use motion sensor: yes/no
+ use_motion_sensor: yes
+ #use LED indicator: yes/no
+ use_led_indicator: yes
+ #use system buttons
+ use_system_buttons: yes
+ #use serial display
+ use_serial_display: yes
+ #serial display type oled_sh1106 or lcd_st7735
+ serial_display_type: oled_sh1106
+ #serial_display_types: ["oled_sh1106", "lcd_st7735"]
+ #serial display refresh rate : in Hz
+ serial_display_refresh_rate: 10
+
+
+#thp_sensors:
+ #use CPU sensor: yes/no
+ use_CPU_sensor: yes
+ #CPUtemp read interval : in seconds:
+ CPUtemp_read_interval: 1
+
+ #use BME280 sensor: yes/no
+ use_BME280_sensor: yes
+ #BME280 read interval : in seconds:
+ BME280_read_interval: 10
+
+ #use DHT sensor: yes/no
+ use_DHT_sensor: no
+ #DHT read interval : in seconds:
+ DHT_read_interval: 5
+ #DHT type DHT11/DHT22
+ DHT_type: DHT22
+ #DHT DATA pin
+ DHT_pin: 17
+
+ #use DS18B20 sensors: yes/no
+ use_DS18B20_sensor: yes
+ #DS18B20 read interval : in seconds:
+ DS18B20_read_interval: 60
+
+
+#Outputs
+#Led indicators or relays type outputs
+led_indicators:
+ door_led:
+  gpio_pin: 12
+ motion_led:
+  gpio_pin: 18
+
+
+#Inputs
+# Button sensor type inputs)
+door_sensors:
+ door_sensor_1:
+  gpio_pin: 21
+  hold_time: 1
+ door_sensor_2:
+  gpio_pin: 20
+  hold_time: 1
+
+system_buttons:
+ shutdown_button:
+  gpio_pin: 16
+  hold_time: 5
+
+# Motion Sensor type inputs
+motion_sensors:
+ motion_sensor_1:
+  gpio_pin: 5
+ motion_sensor_2:
+  gpio_pin: 6
+ motion_sensor_3:
+  gpio_pin: 13
+ motion_sensor_4:
+  gpio_pin: 19
+ motion_sensor_5:
+  gpio_pin: 26
 
