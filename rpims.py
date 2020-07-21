@@ -416,10 +416,10 @@ logging.basicConfig(filename='/tmp/rpims.log', level=logging.DEBUG, format='%(as
 logger=logging.getLogger(__name__)
 
 
-for item in config :
-    redis_db.set(item, str(config[item]))
+for s in config :
+    redis_db.set(s, str(config[s]))
     if config['verbose'] is True :
-        print(item + ' = ' + str(config[item]))
+        print(s + ' = ' + str(config[s]))
 print('')
 
 hostnamectl_sh()
