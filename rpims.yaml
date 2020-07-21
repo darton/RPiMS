@@ -27,7 +27,6 @@ setup:
  #serial display refresh rate : in Hz
  serial_display_refresh_rate: 10
 
-
 #thp_sensors:
  #use CPU sensor: yes/no
  use_CPU_sensor: yes
@@ -53,7 +52,6 @@ setup:
  #DS18B20 read interval : in seconds:
  DS18B20_read_interval: 60
 
-
 #Outputs
 #Led indicators or relays type outputs
 led_indicators:
@@ -61,7 +59,6 @@ led_indicators:
   gpio_pin: 12
  motion_led:
   gpio_pin: 18
-
 
 #Inputs
 # Button sensor type inputs)
