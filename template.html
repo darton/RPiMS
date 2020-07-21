@@ -109,6 +109,16 @@ span.value {
     </ul>
 </div>
 <?php }?>
+  
+<?php if ($rpims["use_picamera"] == "True") {?>
+<div class="sensors">
+    <h3>Video Stream Url</h3>
+    <ul style="list-style-type:none;">
+    <li>rtsp://<span><?=$rpims["hostip"]?>:8554/</span></li>
+    </ul>
+</div>
+<?php }?>
+
 <div class="footer"></div>
 </div>
 <div></div>
