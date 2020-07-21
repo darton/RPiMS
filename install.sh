@@ -17,7 +17,7 @@ sudo apt-get -y install python3-w1thermsensor
 sudo apt-get -y install vlc ffmpeg gpac fbi
 
 sudo python3 -m pip install --upgrade pip setuptools wheel
-sudo pip3 install RPi.bme280 redis pid
+sudo pip3 install RPi.bme280 redis pid PyYAML
 sudo -H pip3 install --upgrade luma.oled
 sudo -H pip3 install --upgrade luma.lcd
 
