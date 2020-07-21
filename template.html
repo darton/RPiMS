@@ -49,13 +49,13 @@ span.value {
     <h3>RPiMS</h3>
     <ul style="list-style-type:none;">
     <li>Location: <?=$rpims["location"]?></li>
-<?php if ($rpims["use_CPU_sensor"] == 1) {?>
+<?php if ($rpims["use_CPU_sensor"] == "True") {?>
     <li>RPiMS CPU Temperature: <span class="value"><?=round($rpims["CPU_Temperature"],2)?> &#8451</span></li>
 <?php }?>
     </ul>
 </div>
 
-<?php if ($rpims["use_BME280_sensor"] == 1) {?>
+<?php if ($rpims["use_BME280_sensor"] == "True") {?>
 <div class="sensors">
     <h3>BME280</h3>
     <ul style="list-style-type:none;">
@@ -66,7 +66,7 @@ span.value {
 </div>
 <?php }?>
 
-<?php if ($rpims["use_DHT_sensor"] == 1) {?>
+<?php if ($rpims["use_DHT_sensor"] == "True") {?>
 <div class="sensors">
     <h3><?=$rpims["DHT_type"]?></h3>
     <ul style="list-style-type:none;">
@@ -76,7 +76,7 @@ span.value {
 </div>
 <?php }?>
 
-<?php if ($rpims["use_DS18B20_sensor"] == 1) {?>
+<?php if ($rpims["use_DS18B20_sensor"] == "True") {?>
 <div class="sensors">
     <h3>DS18B20</h3>
     <ul style="list-style-type:none;">
@@ -87,7 +87,7 @@ span.value {
 </div>
 <?php }?>
 
-<?php if ($rpims["use_door_sensor"] == 1) {?>
+<?php if ($rpims["use_door_sensor"] == "True") {?>
 <div class="sensors">
     <h3>Door sensors</h3>
     <ul style="list-style-type:none;">
@@ -97,7 +97,7 @@ span.value {
 </div>
 <?php }?>
 
-<?php if ($rpims["use_motion_sensor"] == 1) {?>
+<?php if ($rpims["use_motion_sensor"] == "True") {?>
 <div class="sensors">
     <h3>Motion sensors</h3>
     <ul style="list-style-type:none;">
