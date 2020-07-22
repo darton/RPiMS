@@ -196,9 +196,9 @@ def get_dht_data():
     debug = "yes"
     delay = 0
 
-    if config['DHT_type'] is "DHT22":
+    if config['DHT_type'] == "DHT22":
         dhtDevice = adafruit_dht.DHT22(pin)
-    if config['DHT_type'] is "DHT11":
+    if config['DHT_type'] == "DHT11":
         dhtDevice = adafruit_dht.DHT11(pin)
 
     while True:
