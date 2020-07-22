@@ -53,7 +53,7 @@ sudo systemctl daemon-reload
 sudo systemctl enable rpims.service
 
 #for DHT22 sensor
-sudo pip3 install Adafruit_DHT adafruit-circuitpython-dht
+sudo -H pip3 install --upgrade Adafruit_DHT adafruit-circuitpython-dht
 sudo apt-get -y install libgpiod2 libgpiod-dev
 cd ~
 git clone https://github.com/michaellass/libgpiod_pulsein.git
