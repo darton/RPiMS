@@ -61,8 +61,8 @@ cd libgpiod_pulsein
 git checkout cpu-fix
 cd src
 make
-cd ~/.local/lib/python3.7/site-packages/adafruit_blinka/microcontroller/bcm283x/pulseio/
+#cd ~/.local/lib/python3.7/site-packages/adafruit_blinka/microcontroller/bcm283x/pulseio/
 cd /usr/local/lib/python3.7/dist-packages/adafruit_blinka/microcontroller/bcm283x/pulseio/
-cp libgpiod_pulsein libgpiod_pulsein.bak
-cp ~/libgpiod_pulsein/src/libgpiod_pulsein ./
+sudo cp libgpiod_pulsein libgpiod_pulsein.bak
+sudo cp ~/libgpiod_pulsein/src/libgpiod_pulsein ./
 #
