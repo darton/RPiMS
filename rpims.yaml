@@ -61,7 +61,7 @@ led_indicators:
   gpio_pin: 18
 
 #Inputs
-# Button sensor type inputs)
+# Button sensor type inputs
 door_sensors:
  door_sensor_1:
   gpio_pin: 21
