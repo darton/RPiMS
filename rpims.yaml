@@ -1,8 +1,8 @@
 setup:
  location: My Home
- hostname: RPiMS
+ hostname: rpims.example.com
  chassis: embedded
- deployment: monitoring
+ deployment: RPiMS
  #verbose mode: yes/no
  verbose: yes
  #use zabbix sender: yes/no
