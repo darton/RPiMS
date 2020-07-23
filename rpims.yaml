@@ -35,6 +35,8 @@ setup:
 
  #use BME280 sensor: yes/no
  use_BME280_sensor: yes
+ #BME280 i2c address
+ BME280_i2c_address: 0x77
  #BME280 read interval : in seconds:
  BME280_read_interval: 10
 
