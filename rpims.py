@@ -178,7 +178,7 @@ def get_ds18b20_data():
     try:
         from w1thermsensor import W1ThermSensor
         while True :
-            data = W1ThermSensor.get_available_sensors([W1ThermSensor.THERM_SENSOR_DS18S20,W1ThermSensor.THERM_SENSOR_DS18S20])
+            data = W1ThermSensor.get_available_sensors([W1ThermSensor.THERM_SENSOR_DS18B20,W1ThermSensor.THERM_SENSOR_DS18S20])
             for sensor in data:
                 redis_db.set('DS18B20-' + sensor.id, sensor.get_temperature())
                 if config['verbose'] is True :
