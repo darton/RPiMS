@@ -156,7 +156,7 @@ def get_bme280_data():
     try:
         import bme280
         port = 1
-        address = 0x76
+        address = config['BME280_i2c_address']
         bus = smbus2.SMBus(port)
         while True :
             calibration_params = bme280.load_calibration_params(bus, address)
