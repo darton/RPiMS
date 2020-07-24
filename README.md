@@ -36,7 +36,7 @@ The default intervals:
 Download the image [Raspbian Lite](https://downloads.raspberrypi.org/raspbian_lite_latest)
 or [Raspberry Pi OS Lite](https://downloads.raspberrypi.org/raspios_lite_armhf_latest)
 
-To writing an image to the SD card, use [Etcher](https://etcher.io/) an image writing tool.
+To writing an image to the SD card, use [Etcher](https://etcher.io/) an image writing tool or use[Imager](https://www.raspberrypi.org/downloads/)
 
 If you're not using Etcher, you'll need to unzip .zip downloads to get the image file (.img) to write to your SD card.
 
