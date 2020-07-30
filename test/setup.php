@@ -25,7 +25,7 @@
   <option selected value="oled_sh1106">oled_sh1106</option>
   <option value="lcd_st7735">lcd_st7735</option>
 </select>
-<label>Serial display refresh rate: <input name="serial_display_refresh_rate" type="number" min="1" max="50" value="1" size="2"></label><br />
+<label>Serial display refresh rate: <input name="serial_display_refresh_rate" type="number" min="1" max="50" value="10" size="2"></label><br />
 </fieldset>
 <br />
 
