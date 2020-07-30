@@ -9,7 +9,7 @@
 <body>
 <fieldset>
 <legend>System configuration</legend>
-<form action="form.php" method="post">
+<form action="/form.php" method="post">
 <label>Verbose:<input name="verbose" type="checkbox"></label><br />
 <label>Use zabbix sender:<input name="use_zabbix_sender" type="checkbox"></label><br />
 <label>Use picamera:<input name="use_picamera" type="checkbox"></label>
@@ -19,34 +19,31 @@
 <label>Use system buttons:<input name="use_system_buttons" type="checkbox"></label><br />
 <label>Use led indicator:<input name="use_led_indicator" type="checkbox"></label><br />
 <label>Use serial display:<input name="use_serial_display" type="checkbox"></label>
+</div>
 <label for="werial_display_type">Serial display type</label>
 <select id="serial_display_type">
   <option selected value="oled_sh1106">oled_sh1106</option>
   <option value="lcd_st7735">lcd_st7735</option>
 </select>
-<label for="serial_display_refresh_rate">Serial display refresh rate</label>
-<select id="serial_display_refresh_rate">
-  <option selected value="10">10</option>
-  <option value="15">15</option>
-  <option value="15">20</option>
-</select>
+<label>Serial display refresh rate: <input name="serial_display_refresh_rate" type="number" min="1" max="50" value="1" size="2"></label><br />
 </fieldset>
 <br />
 
 <fieldset>
 <legend>Sensor configuration</legend>
 <label>Use CPU sensor: <input name="use_cpu_sensor" type="checkbox" checked></label>
-<label>CPUtemp_read_interval: <input name="CPUtemp_read_interval" type="text" value="1"></label><br />
+<label>CPUtemp read interval: <input name="CPUtemp_read_interval" type="number" min="1" max="3600" value="1" size="4"></label><br />
 <label>Use BME280 sensor: <input name="use_BME280_sensor" type="checkbox"></label>
-<label>BME280_read_interval: <input name="BME280_read_interval" type="text" value="10"></label><br />
+<label>BME280 read interval: <input name="BME280_read_interval" type="number" min="1" max="3600" value="10" size="4"></label><br />
 <label>Use DS18B20 sensor: <input name="use_DS18B20_sensor" type="checkbox"></label>
-<label>DS18B20_read_interval: <input name="DS18B20_read_interval" type="text" value="60"></label><br />
+<label>DS18B20 read interval: <input name="DS18B20_read_interval" type="number" min="1" max="3600" value="60" size="4"></label><br />
 <label>Use DHT sensor: <input name="use_DHT_sensor" type="checkbox"></label>
-<label>DHT_read_interval: <input name="DHT_read_interval" type="text" value="5"></label>
-<label for="DHT_type">DHT type</label>
+<label>DHT read interval: <input name="DHT_read_interval" type="number" min="1" max="3600"  value="5" size="4"></label>
+<label for="DHT_type">DHT type:</label>
 <select id="DHT_type">
   <option value="DHT11">DHT11</option>
   <option selected value="DHT22">DHT22</option>
+  <option value="AM2302">AM2302</option>
 </select><br />
 </fieldset>
 <br />
@@ -129,7 +126,7 @@
 
 <fieldset>
 <legend>Zabbix Agent configuration</legend>
-<label>Zabbix server:<input name="zabbix_server" type="text"></label><br />
+<label>Zabbix server:<input name="zabbix_server" type="text" placeholder="zabbix.example.com"></label><br />
 <label>RPiMS location:<input name="rpims_location" type="text" value="My Home"></label><br />
 </fieldset>
 <br />
