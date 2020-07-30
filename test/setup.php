@@ -31,7 +31,7 @@
 
 <fieldset>
 <legend>Sensor configuration</legend>
-<label>Use CPU sensor: <input name="use_cpu_sensor" type="hidden" value="False"><input name="use_cpu_sensor" type="checkbox" value="True"></label>
+<label>Use CPU sensor: <input name="use_CPU_sensor" type="hidden" value="False"><input name="use_cpu_sensor" type="checkbox" value="True"></label>
 <label>CPUtemp read interval: <input name="CPUtemp_read_interval" type="number" min="1" max="3600" value="1" size="4"></label><br />
 <label>Use BME280 sensor: <input name="use_BME280_sensor" type="hidden" value="False"><input name="use_BME280_sensor" type="checkbox" value="True"></label>
 <label>BME280 read interval: <input name="BME280_read_interval" type="number" min="1" max="3600" value="10" size="4"></label><br />
@@ -102,13 +102,13 @@
 <legend>Output configuration</legend>
 <label for="GPIO_12">GPIO 12</label>
 <select id="GPIO_12" name="GPIO_12"  >
-  <option value="Motion_Indicator">Motion Indicator</option>
-  <option selected value="Door_Indicator">Door Indicator</option>
+  <option value="motion_led">Motion Indicator</option>
+  <option selected value="door_led">Door Indicator</option>
 </select><br />
 <label for="GPIO_18">GPIO 18</label>
 <select id="GPIO_18" name="GPIO_18" name>
-  <option selected value="Motion_Indicator">Motion Indicator</option>
-  <option value="Door_Indicator">Door Indicator</option>
+  <option selected value="motion_led">Motion Indicator</option>
+  <option value="door_led">Door Indicator</option>
 </select><br />
 </fieldset>
 <br />
@@ -116,7 +116,9 @@
 <fieldset>
 <legend>Zabbix Agent configuration</legend>
 <label>Zabbix server:<input name="zabbix_server" type="text" placeholder="zabbix.example.com" pattern="^([a-zA-Z0-9]([a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,6}$"></label><br />
-<label>RPiMS location:<input name="rpims_location" type="text" value="My Home"></label><br />
+<label>Zabbix server Active:<input name="zabbix_server_active" type="text" placeholder="zabbix.example.com" pattern="^([a-zA-Z0-9]([a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,6}$"></label><br />
+<label>RPiMS location:<input name="location" type="text" value="My Home"></label><br />
+<label>RPiMS hostname:<input name="hostname" type="text" value="rpims"></label><br />
 </fieldset>
 <br />
 <input type="submit" value="Save">
