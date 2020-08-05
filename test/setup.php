@@ -69,7 +69,7 @@ $DHT_pin = $data['setup']['DHT_pin'];
 
 <fieldset>
 <legend>Sensor configuration</legend>
-<label>Use CPU sensor: <input name="use_CPU_sensor" type="hidden" value="False"><input name="use_CPU_sensor" type="checkbox" <?php if ($use_serial_display == 'yes') echo 'checked="checked"'; ?> value="True"></label>
+<label>Use CPU sensor: <input name="use_CPU_sensor" type="hidden" value="False"><input name="use_CPU_sensor" type="checkbox" <?php if ($use_CPU_sensor == 'yes') echo 'checked="checked"'; ?> value="True"></label>
 <label>CPUtemp read interval: <input name="CPUtemp_read_interval" type="number" min="1" max="3600" value=<?=$CPUtemp_read_interval?> size="4"></label><br />
 
 <label>Use BME280 sensor: <input name="use_BME280_sensor" type="hidden" value="False"><input name="use_BME280_sensor" type="checkbox" <?php if ($use_BME280_sensor == 'yes') echo 'checked="checked"'; ?> value="True"></label>
