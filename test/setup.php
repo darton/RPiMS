@@ -7,10 +7,6 @@
 </head>
 
 <body>
-<fieldset>
-<legend>System configuration</legend>
-<form action="/form.php" method="post">
-
 <?php $data = yaml_parse_file ("/home/pi/scripts/RPiMS/rpims.yaml");
 $location = $data['setup']['location'];
 $hostname = $data['setup']['hostname'];
@@ -45,8 +41,9 @@ $DHT_pin = $data['setup']['DHT_pin'];
 
 ?>
 
-
-
+<fieldset>
+<legend>System configuration</legend>
+<form action="/form.php" method="post">
 <label>Verbose: <input name="verbose" type="hidden" value="False"><input name="verbose" type="checkbox" <?php if ($verbose == 'yes') echo 'checked="checked"'; ?> value="True"></label><br />
 <label>Use zabbix sender: <input name="use_zabbix_sender" type="hidden" value="False"><input name="use_zabbix_sender" type="checkbox" <?php if ($use_zabbix_sender == 'yes') echo 'checked="checked"'; ?> value="True"></label><br />
 <label>Use picamera: <input name="use_picamera" type="hidden" value="False"><input name="use_picamera" type="checkbox" <?php if ($use_picamera == 'yes') echo 'checked="checked"'; ?> value="True"></label>
@@ -102,69 +99,85 @@ $DHT_pin = $data['setup']['DHT_pin'];
 <fieldset>
 <legend>Input configuration</legend>
 <label for="GPIO_5">GPIO 5 input type:</label>
-<select id="GPIO_5" name="GPIO_5" style="width: 125px;">
-  <option value="Button">Door Sensor</option>
+<select id="GPIO_5" name="GPIO_5[type]" style="width: 125px;">
+  <option value="DoorSensor">Door Sensor</option>
   <option selected value="MotionSensor">Motion Sensor</option>
 </select>
-<label>Hold Time: <input name="GPIO_5_hold_time" type="number" min="1" max="10"  value="1" size="2"></label>
+<label>Hold Time: <input name="GPIO_19[hold_time]" type="number" min="1" max="10"  value="1" size="2"></label>
+<label><input name="GPIO_5[gpio_pin]" type="hidden" value="5"></label>
 <br />
+  
 <label for="GPIO_6">GPIO 6 input type:</label>
-<select id="GPIO_6" name="GPIO_6" style="width: 125px;">
-  <option value="Button">Door Sensor</option>
+<select id="GPIO_6" name="GPIO_6[type]" style="width: 125px;">
+  <option value="DoorSensor">Door Sensor</option>
   <option selected value="MotionSensor">Motion Sensor</option>
 </select>
-<label>Hold Time: <input name="GPI0_6_hold_time" type="number" min="1" max="10"  value="1" size="2"></label>
+<label>Hold Time: <input name="GPIO_6[hold_time]" type="number" min="1" max="10"  value="1" size="2"></label>
+<label><input name="GPIO_6[gpio_pin]" type="hidden" value="6"></label>
 <br />
+  
 <label for="GPIO_13">GPIO 13 input type:</label>
-<select id="GPIO_13" name="GPIO_13" style="width: 125px;">
-  <option value="Button">Door Sensor</option>
+<select id="GPIO_13" name="GPIO_13[type]" style="width: 125px;">
+  <option value="DoorSensor">Door Sensor</option>
   <option selected value="MotionSensor">Motion Sensor</option>
 </select>
-<label>Hold Time: <input name="GPIO_13_hold_time" type="number" min="1" max="10"  value="1" size="2"></label>
+<label>Hold Time: <input name="GPIO_13[hold_time]" type="number" min="1" max="10"  value="1" size="2"></label>
+<label><input name="GPIO_13[gpio_pin]" type="hidden" value="13"></label>
 <br />
+  
 <label for="GPIO_16">GPIO 16 input type:</label>
-<select id="GPIO_16" name="GPIO_16" style="width: 125px;">
-  <option value="Button">Door Sensor</option>
-  <option selected value="Button">Shutdown Button</option>
+<select id="GPIO_16" name="GPIO_16[type]" style="width: 125px;">
+  <option value="DoorSensor">Door Sensor</option>
+  <option selected value="ShutdownButton">Shutdown Button</option>
   <option value="MotionSensor">Motion Sensor</option>
 </select>
-<label>Hold Time: <input name="GPIO_16_hold_time" type="number" min="1" max="10"  value="5" size="2"></label>
+<label>Hold Time: <input name="GPIO_16[hold_time]" type="number" min="1" max="10"  value="5" size="2"></label>
+<label><input name="GPIO_16[gpio_pin]" type="hidden" value="16"></label>
+<br />
+  
+<label for="GPIO_17">GPIO 17 input type:</label>
+<select id="GPIO_17" name="GPIO_17[type]" style="width: 125px;">
+  <option value="DoorSensor">Door Sensor</option>
+  <option selected value="MotionSensor">Motion Sensor</option>
+</select>
+<label>Hold Time: <input name="GPIO_17[hold_time]" type="number" min="1" max="10"  value="1" size="2"></label>
+<label><input name="GPIO_17[gpio_pin]" type="hidden" value="17"></label>
+<br />
+  
+<label for="GPIO_19">GPIO 19 input type:</label>
+<select id="GPIO_19" name="GPIO_19[type]" style="width: 125px;">
+  <option value="DoorSensor">Door Sensor</option>
+  <option selected value="MotionSensor">Motion Sensor</option>
+</select>
+<label>Hold Time: <input name="GPIO_19[hold_time]" type="number" min="1" max="10"  value="1" size="2"></label>
+<label><input name="GPIO_19[gpio_pin]" type="hidden" value="19"></label>
 <br />
 
-<label for="GPIO_17">GPIO 17 input type:</label>
-<select id="GPIO_17" name="GPIO_17" style="width: 125px;">
-  <option value="Button">Door Sensor</option>
-  <option selected value="MotionSensor">Motion Sensor</option>
-</select>
-<label>Hold Time: <input name="GPIO_17_hold_time" type="number" min="1" max="10"  value="1" size="2"></label>
-<br />
-<label for="GPIO_19">GPIO 19 input type:</label>
-<select id="GPIO_19" name="GPIO_19" style="width: 125px;">
-  <option value="Button">Door Sensor</option>
-  <option selected value="MotionSensor">Motion Sensor</option>
-</select>
-<label>Hold Time: <input name="GPIO_19_hold_time" type="number" min="1" max="10"  value="1" size="2"></label>
-<br />
 <label for="GPIO_20">GPIO 20 input type:</label>
-<select id="GPIO_20" name="GPIO_20" style="width: 125px;">
-  <option selected value="Button">Door Sensor</option>
+<select id="GPIO_20" name="GPIO_20[type]" style="width: 125px;">
+  <option selected value="DoorSensor">Door Sensor</option>
   <option value="MotionSensor">Motion Sensor</option>
 </select>
-<label>Hold Time: <input name="GPIO_20_hold_time" type="number" min="1" max="10"  value="1" size="2"></label>
+<label>Hold Time: <input name="GPIO_20[hold_time]" type="number" min="1" max="10"  value="1" size="2"></label>
+<label><input name="GPIO_20[gpio_pin]" type="hidden" value="20"></label>
 <br />
+
 <label for="GPIO_21">GPIO 21 input type:</label>
-<select id="GPIO_21" name="GPIO_21" style="width: 125px;">
-  <option selected value="Button">Door Sensor</option>
+<select id="GPIO_21" name="GPIO_21[type]" style="width: 125px;">
+  <option selected value="DoorSensor">Door Sensor</option>
   <option value="MotionSensor">Motion Sensor</option>
 </select>
-<label>Hold Time: <input name="GPIO_21_hold_time" type="number" min="1" max="10"  value="1" size="2"></label>
+<label>Hold Time: <input name="GPIO_21[hold_time]" type="number" min="1" max="10"  value="1" size="2"></label>
+<label><input name="GPIO_21[gpio_pin]" type="hidden" value="21"></label>
 <br />
+
 <label for="GPIO_26">GPIO 26 input type:</label>
-<select id="GPIO_26" name="GPIO_26" style="width: 125px;">
-  <option value="Button">Door Sensor</option>
+<select id="GPIO_26" name="GPIO_26[type]" style="width: 125px;">
+  <option value="DoorSensor">Door Sensor</option>
   <option selected value="MotionSensor">Motion Sensor</option>
 </select>
-<label>Hold Time: <input name="GPIO_26_hold_time" type="number" min="1" max="10"  value="1" size="2"></label>
+<label>Hold Time: <input name="GPIO_26[hold_time]" type="number" min="1" max="10"  value="1" size="2"></label>
+<label><input name="GPIO_26[gpio_pin]" type="hidden" value="26"></label>
 <br />
 </fieldset>
 <br />
@@ -172,15 +185,19 @@ $DHT_pin = $data['setup']['DHT_pin'];
 <fieldset>
 <legend>Output configuration</legend>
 <label for="GPIO_12">GPIO 12:</label>
-<select id="GPIO_12" name="GPIO_12" style="width: 125px;">
+<select id="GPIO_12" name="GPIO_12[type]" style="width: 125px;">
   <option value="motion_led">Motion Indicator</option>
   <option selected value="door_led">Door Indicator</option>
-</select><br />
+</select>
+<label><input name="GPIO_12[gpio_pin]" type="hidden" value="12"></label>
+<br />
 <label for="GPIO_18">GPIO 18:</label>
-<select id="GPIO_18" name="GPIO_18" style="width: 125px;">
+<select id="GPIO_18" name="GPIO_18[type]" style="width: 125px;">
   <option selected value="motion_led">Motion Indicator</option>
   <option value="door_led">Door Indicator</option>
-</select><br />
+</select>
+<label><input name="GPIO_18[gpio_pin]" type="hidden" value="18"></label>
+<br />
 </fieldset>
 <br />
 
@@ -194,5 +211,6 @@ $DHT_pin = $data['setup']['DHT_pin'];
 <br />
 <input type="submit" value="Save">
 </form>
+<br />
 </body>
 </html>
