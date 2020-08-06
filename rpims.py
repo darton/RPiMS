@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 
 # -*- coding:utf-8 -*-
 #
@@ -387,6 +388,7 @@ except Exception as err :
 
 
 config = {}
+zabbix_agent = {}
 door_sensors_list = {}
 motion_sensors_list = {}
 system_buttons_list = {}
@@ -394,6 +396,9 @@ led_indicators_list = {}
 
 for item in config_yaml.get("setup"):
     config[item] = config_yaml['setup'][item]
+
+for item in config_yaml.get("zabbix_agent"):
+    zabbix_agent[item] = config_yaml['zabbix_agent'][item]
 
 if config['use_door_sensor'] is True:
     for item in config_yaml.get("door_sensors"):
@@ -417,13 +422,6 @@ redis_db = redis.StrictRedis(host="localhost", port=6379, db=0, charset="utf-8",
 logging.basicConfig(filename='/tmp/rpims.log', level=logging.DEBUG, format='%(asctime)s %(levelname)s %(name)s %(message)s')
 logger=logging.getLogger(__name__)
 
-
-for s in config :
-    redis_db.set(s, str(config[s]))
-    if config['verbose'] is True :
-        print(s + ' = ' + str(config[s]))
-print('')
-
 hostname = config_yaml['zabbix_agent']['hostname']
 location = config_yaml['zabbix_agent']['location']
 chassis = config_yaml['zabbix_agent']['chassis']
@@ -434,6 +432,19 @@ hostnamectl_sh('set-location', location)
 hostnamectl_sh('set-chassis', chassis)
 hostnamectl_sh('set-deployment', deployment)
 
+for s in config :
+    redis_db.set(s, str(config[s]))
+    if config['verbose'] is True :
+        print(s + ' = ' + str(config[s]))
+
+print('')
+
+for s in zabbix_agent :
+    redis_db.set(s, str(zabbix_agent[s]))
+    if config['verbose'] is True :
+        print(s + ' = ' + str(zabbix_agent[s]))
+
+print('')
 
 if config['use_door_sensor'] is True :
     for s in door_sensors_list:
