@@ -13,31 +13,31 @@ $hostname = $data['setup']['hostname'];
 $zabbix_server = $data['setup']['zabbix_server'];
 $zabbix_server_active = $data['setup']['zabbix_server_active'];
 
-$verbose = $data['setup']['verbose'];
-$use_zabbix_sender = $data['setup']['use_zabbix_sender'];
-$use_picamera = $data['setup']['use_picamera'];
-$use_picamera_recording = $data['setup']['use_picamera_recording'];
-$use_door_sensor = $data['setup']['use_door_sensor'];
-$use_motion_sensor = $data['setup']['use_motion_sensor'];
-$use_system_buttons = $data['setup']['use_system_buttons'];
-$use_led_indicator = $data['setup']['use_led_indicator'];
-$use_serial_display = $data['setup']['use_serial_display'];
-$serial_display_refresh_rate = $data['setup']['serial_display_refresh_rate'];
-$serial_display_type = $data['setup']['serial_display_type'];
-$use_CPU_sensor = $data['setup']['use_CPU_sensor'];
-$CPUtemp_read_interval = $data['setup']['CPUtemp_read_interval'];
+$verbose = filter_var($data['setup']['verbose'], FILTER_VALIDATE_BOOLEAN);
+$use_zabbix_sender = filter_var($data['setup']['use_zabbix_sender'], FILTER_VALIDATE_BOOLEAN);
+$use_picamera = filter_var($data['setup']['use_picamera'], FILTER_VALIDATE_BOOLEAN);
+$use_picamera_recording = filter_var($data['setup']['use_picamera_recording'], FILTER_VALIDATE_BOOLEAN);
+$use_door_sensor = filter_var($data['setup']['use_door_sensor'], FILTER_VALIDATE_BOOLEAN);
+$use_motion_sensor = filter_var($data['setup']['use_motion_sensor'], FILTER_VALIDATE_BOOLEAN);
+$use_system_buttons = filter_var($data['setup']['use_system_buttons'], FILTER_VALIDATE_BOOLEAN);
+$use_led_indicator = filter_var($data['setup']['use_led_indicator'], FILTER_VALIDATE_BOOLEAN);
+$use_serial_display = filter_var($data['setup']['use_serial_display'], FILTER_VALIDATE_BOOLEAN);
+$serial_display_refresh_rate = filter_var($data['setup']['serial_display_refresh_rate'], FILTER_VALIDATE_BOOLEAN);
+$serial_display_type = filter_var($data['setup']['serial_display_type'], FILTER_VALIDATE_BOOLEAN);
+$use_CPU_sensor = filter_var($data['setup']['use_CPU_sensor'], FILTER_VALIDATE_BOOLEAN);
+$CPUtemp_read_interval = filter_var($data['setup']['CPUtemp_read_interval'], FILTER_VALIDATE_BOOLEAN);
 
-$use_BME280_sensor = $data['setup']['use_BME280_sensor'];
-$BME280_i2c_address = $data['setup']['BME280_i2c_address'];
-$BME280_read_interval = $data['setup']['BME280_read_interval'];
+$use_BME280_sensor = filter_var($data['setup']['use_BME280_sensor'], FILTER_VALIDATE_BOOLEAN);
+$BME280_i2c_address = filter_var($data['setup']['BME280_i2c_address'], FILTER_VALIDATE_BOOLEAN);
+$BME280_read_interval = filter_var($data['setup']['BME280_read_interval'], FILTER_VALIDATE_BOOLEAN);
 
-$use_DS18B20_sensor = $data['setup']['use_DS18B20_sensor'];
-$DS18B20_read_interval = $data['setup']['DS18B20_read_interval'];
+$use_DS18B20_sensor = filter_var($data['setup']['use_DS18B20_sensor'], FILTER_VALIDATE_BOOLEAN);
+$DS18B20_read_interval = filter_var($data['setup']['DS18B20_read_interval'], FILTER_VALIDATE_BOOLEAN);
 
-$use_DHT_sensor = $data['setup']['use_DHT_sensor'];
-$DHT_read_interval = $data['setup']['DHT_read_interval'];
-$DHT_type = $data['setup']['DHT_type'];
-$DHT_pin = $data['setup']['DHT_pin'];
+$use_DHT_sensor = filter_var($data['setup']['use_DHT_sensor'], FILTER_VALIDATE_BOOLEAN);
+$DHT_read_interval = filter_var($data['setup']['DHT_read_interval'], FILTER_VALIDATE_BOOLEAN);
+$DHT_type = filter_var($data['setup']['DHT_type'], FILTER_VALIDATE_BOOLEAN);
+$DHT_pin = filter_var($data['setup']['DHT_pin'], FILTER_VALIDATE_BOOLEAN);
 
 ?>
 
@@ -100,13 +100,12 @@ $DHT_pin = $data['setup']['DHT_pin'];
 <legend>Input configuration</legend>
 <label for="GPIO_5">GPIO 5 input type:</label>
 <select id="GPIO_5" name="GPIO_5[type]" style="width: 125px;">
-  <option value="DoorSensor">Door Sensor</option>
-  <option selected value="MotionSensor">Motion Sensor</option>
+  <option <?php if ($GPIO_5[type] == 'DoorSensor') echo 'selected="selected"'; ?> value="DoorSensor">Door Sensor</option>
+  <option <?php if ($GPIO_5[type] == 'MotionSensor') echo 'selected="selected"'; ?> value="MotionSensor">Motion Sensor</option>
 </select>
 <label>Hold Time: <input name="GPIO_19[hold_time]" type="number" min="1" max="10"  value="1" size="2"></label>
 <label><input name="GPIO_5[gpio_pin]" type="hidden" value="5"></label>
 <br />
-  
 <label for="GPIO_6">GPIO 6 input type:</label>
 <select id="GPIO_6" name="GPIO_6[type]" style="width: 125px;">
   <option value="DoorSensor">Door Sensor</option>
@@ -115,7 +114,6 @@ $DHT_pin = $data['setup']['DHT_pin'];
 <label>Hold Time: <input name="GPIO_6[hold_time]" type="number" min="1" max="10"  value="1" size="2"></label>
 <label><input name="GPIO_6[gpio_pin]" type="hidden" value="6"></label>
 <br />
-  
 <label for="GPIO_13">GPIO 13 input type:</label>
 <select id="GPIO_13" name="GPIO_13[type]" style="width: 125px;">
   <option value="DoorSensor">Door Sensor</option>
@@ -124,7 +122,6 @@ $DHT_pin = $data['setup']['DHT_pin'];
 <label>Hold Time: <input name="GPIO_13[hold_time]" type="number" min="1" max="10"  value="1" size="2"></label>
 <label><input name="GPIO_13[gpio_pin]" type="hidden" value="13"></label>
 <br />
-  
 <label for="GPIO_16">GPIO 16 input type:</label>
 <select id="GPIO_16" name="GPIO_16[type]" style="width: 125px;">
   <option value="DoorSensor">Door Sensor</option>
@@ -134,7 +131,6 @@ $DHT_pin = $data['setup']['DHT_pin'];
 <label>Hold Time: <input name="GPIO_16[hold_time]" type="number" min="1" max="10"  value="5" size="2"></label>
 <label><input name="GPIO_16[gpio_pin]" type="hidden" value="16"></label>
 <br />
-  
 <label for="GPIO_17">GPIO 17 input type:</label>
 <select id="GPIO_17" name="GPIO_17[type]" style="width: 125px;">
   <option value="DoorSensor">Door Sensor</option>
@@ -143,7 +139,6 @@ $DHT_pin = $data['setup']['DHT_pin'];
 <label>Hold Time: <input name="GPIO_17[hold_time]" type="number" min="1" max="10"  value="1" size="2"></label>
 <label><input name="GPIO_17[gpio_pin]" type="hidden" value="17"></label>
 <br />
-  
 <label for="GPIO_19">GPIO 19 input type:</label>
 <select id="GPIO_19" name="GPIO_19[type]" style="width: 125px;">
   <option value="DoorSensor">Door Sensor</option>
@@ -211,6 +206,8 @@ $DHT_pin = $data['setup']['DHT_pin'];
 <br />
 <input type="submit" value="Save">
 </form>
+
 <br />
+
 </body>
 </html>
