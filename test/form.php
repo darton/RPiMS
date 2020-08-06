@@ -86,8 +86,6 @@ $yaml = array(
 );
 
 $yaml = yaml_emit($yaml);
-//var_dump($yaml);
-
 yaml_emit_file ("/var/www/html/rpims2.yaml", $yaml);
 
 ?>
