@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 
 # -*- coding:utf-8 -*-
 #
@@ -117,20 +116,23 @@ def detect_no_alarms():
 
 
 def av_stream(state):
-    call("/home/pi/scripts/RPiMS/videostreamer.sh" + " " +  state, shell=True)
+    _cmd = '/home/pi/scripts/RPiMS/videostreamer.sh' + " " +  state
+    call(_cmd, shell=True)
 
 
 def av_recording():
-    call("/home/pi/scripts/RPiMS/videorecorder.sh", shell=True)
+    _cmd = '/home/pi/scripts/RPiMS/videorecorder.sh'
+    call(_cmd, shell=True)
 
 
 def zabbix_sender_call(message,sensor_id):
-    zabbix_sender_cmd ='/home/pi/scripts/RPiMS/zabbix_sender.sh ' + message + " " + str(sensor_id)
-    call(zabbix_sender_cmd, shell=True)
+    _cmd ='/home/pi/scripts/RPiMS/zabbix_sender.sh ' + message + " " + str(sensor_id)
+    call(_cmd, shell=True)
 
 
-def hostnamectl_sh():
-    call("sudo /home/pi/scripts/RPiMS/hostnamectl.sh", shell=True)
+def hostnamectl_sh(arg1,arg2):
+    _cmd = 'sudo /usr/bin/hostnamectl ' + arg1 + " " + '"' + arg2 + '"'
+    call(_cmd, shell=True)
 
 
 def shutdown():
@@ -422,7 +424,16 @@ for s in config :
         print(s + ' = ' + str(config[s]))
 print('')
 
-hostnamectl_sh()
+hostname = config_yaml['zabbix_agent']['hostname']
+location = config_yaml['zabbix_agent']['location']
+chassis = config_yaml['zabbix_agent']['chassis']
+deployment = config_yaml['zabbix_agent']['deployment']
+
+hostnamectl_sh('set-hostname', hostname)
+hostnamectl_sh('set-location', location)
+hostnamectl_sh('set-chassis', chassis)
+hostnamectl_sh('set-deployment', deployment)
+
 
 if config['use_door_sensor'] is True :
     for s in door_sensors_list:
