@@ -1,57 +1,31 @@
 setup:
- location: My Home
- hostname: rpims.example.com
- chassis: embedded
- deployment: RPiMS
- #verbose mode: yes/no
- verbose: yes
- #use zabbix sender: yes/no
- use_zabbix_sender: no
- #use picamera: yes/no
- use_picamera: no
- #recording 5s video on local drive: yes/no
- use_picamera_recording : no
- #use door sensor: yes/no
- use_door_sensor: yes
- #use motion sensor: yes/no
- use_motion_sensor: yes
- #use LED indicator: yes/no
- use_led_indicator: yes
- #use system buttons
- use_system_buttons: no
- #use serial display
- use_serial_display: yes
- #serial display type oled_sh1106 or lcd_st7735
+ verbose: True
+ use_zabbix_sender: False
+ use_picamera: True
+ use_picamera_recording : True
+ use_door_sensor: True
+ use_motion_sensor: True
+ use_led_indicator: False
+ use_system_buttons: False
+
+ use_serial_display: False
+ #display type: lcd_st7735 or oled_sh1106
  serial_display_type: oled_sh1106
- #serial_display_types: ["oled_sh1106", "lcd_st7735"]
- #serial display refresh rate : in Hz
  serial_display_refresh_rate: 10
 
-#thp_sensors:
- #use CPU sensor: yes/no
- use_CPU_sensor: yes
- #CPUtemp read interval : in seconds:
+ use_CPU_sensor: True
  CPUtemp_read_interval: 1
 
- #use BME280 sensor: yes/no
- use_BME280_sensor: yes
- #BME280 i2c address
+ use_BME280_sensor: True
  BME280_i2c_address: 0x77
- #BME280 read interval : in seconds:
  BME280_read_interval: 10
 
- #use DHT sensor: yes/no
- use_DHT_sensor: no
- #DHT read interval : in seconds:
+ use_DHT_sensor: False
  DHT_read_interval: 5
- #DHT type DHT11/DHT22
  DHT_type: DHT22
- #DHT DATA pin
  DHT_pin: 17
 
- #use DS18B20 sensors: yes/no
- use_DS18B20_sensor: yes
- #DS18B20 read interval : in seconds:
+ use_DS18B20_sensor: True
  DS18B20_read_interval: 60
 
 #Outputs
@@ -89,3 +63,11 @@ motion_sensors:
   gpio_pin: 19
  motion_sensor_5:
   gpio_pin: 26
+
+zabbix_agent:
+    zabbix_server: zabbix.example.com
+    zabbix_server_active: zabbix.example.com
+    location: My Home
+    hostname: rpims1.example.com
+    chassis: embedded
+    deployment: RPiMS
