@@ -8,10 +8,10 @@
 
 <body>
 <?php $data = yaml_parse_file ("/home/pi/scripts/RPiMS/rpims.yaml");
-$location = $data['setup']['location'];
-$hostname = $data['setup']['hostname'];
-$zabbix_server = $data['setup']['zabbix_server'];
-$zabbix_server_active = $data['setup']['zabbix_server_active'];
+$location = $data['zabbix_agent']['location'];
+$hostname = $data['zabbix_agent']['hostname'];
+$zabbix_server = $data['zabbix_agent']['zabbix_server'];
+$zabbix_server_active = $data['zabbix_agent']['zabbix_server_active'];
 
 $verbose = filter_var($data['setup']['verbose'], FILTER_VALIDATE_BOOLEAN);
 $use_zabbix_sender = filter_var($data['setup']['use_zabbix_sender'], FILTER_VALIDATE_BOOLEAN);
@@ -22,22 +22,22 @@ $use_motion_sensor = filter_var($data['setup']['use_motion_sensor'], FILTER_VALI
 $use_system_buttons = filter_var($data['setup']['use_system_buttons'], FILTER_VALIDATE_BOOLEAN);
 $use_led_indicator = filter_var($data['setup']['use_led_indicator'], FILTER_VALIDATE_BOOLEAN);
 $use_serial_display = filter_var($data['setup']['use_serial_display'], FILTER_VALIDATE_BOOLEAN);
-$serial_display_refresh_rate = filter_var($data['setup']['serial_display_refresh_rate'], FILTER_VALIDATE_BOOLEAN);
-$serial_display_type = filter_var($data['setup']['serial_display_type'], FILTER_VALIDATE_BOOLEAN);
+$serial_display_refresh_rate = $data['setup']['serial_display_refresh_rate'];
+$serial_display_type = $data['setup']['serial_display_type'];
 $use_CPU_sensor = filter_var($data['setup']['use_CPU_sensor'], FILTER_VALIDATE_BOOLEAN);
-$CPUtemp_read_interval = filter_var($data['setup']['CPUtemp_read_interval'], FILTER_VALIDATE_BOOLEAN);
+$CPUtemp_read_interval = $data['setup']['CPUtemp_read_interval'];
 
 $use_BME280_sensor = filter_var($data['setup']['use_BME280_sensor'], FILTER_VALIDATE_BOOLEAN);
-$BME280_i2c_address = filter_var($data['setup']['BME280_i2c_address'], FILTER_VALIDATE_BOOLEAN);
-$BME280_read_interval = filter_var($data['setup']['BME280_read_interval'], FILTER_VALIDATE_BOOLEAN);
+$BME280_i2c_address = $data['setup']['BME280_i2c_address'];
+$BME280_read_interval = $data['setup']['BME280_read_interval'];
 
 $use_DS18B20_sensor = filter_var($data['setup']['use_DS18B20_sensor'], FILTER_VALIDATE_BOOLEAN);
-$DS18B20_read_interval = filter_var($data['setup']['DS18B20_read_interval'], FILTER_VALIDATE_BOOLEAN);
+$DS18B20_read_interval = $data['setup']['DS18B20_read_interval'];
 
 $use_DHT_sensor = filter_var($data['setup']['use_DHT_sensor'], FILTER_VALIDATE_BOOLEAN);
-$DHT_read_interval = filter_var($data['setup']['DHT_read_interval'], FILTER_VALIDATE_BOOLEAN);
-$DHT_type = filter_var($data['setup']['DHT_type'], FILTER_VALIDATE_BOOLEAN);
-$DHT_pin = filter_var($data['setup']['DHT_pin'], FILTER_VALIDATE_BOOLEAN);
+$DHT_read_interval = $data['setup']['DHT_read_interval'];
+$DHT_type = $data['setup']['DHT_type'];
+$DHT_pin = $data['setup']['DHT_pin'];
 
 ?>
 
