@@ -30,23 +30,23 @@ import yaml
 # --- Funcions ---
 def door_action_closed(door_id):
     redis_db.set(str(door_id), 'close')
-    if config['verbose'] is True :
+    if bool(config['verbose']) is True :
         print("The " + str(door_id) + " has been closed!")
-    if config['use_zabbix_sender'] is True :
+    if bool(config['use_zabbix_sender']) is True :
         zabbix_sender_call('info_when_door_has_been_closed',door_id)
-    if config['use_picamera'] is True:
+    if bool(config['use_picamera']) is True:
          if detect_no_alarms():
              av_stream('stop')
 
 
 def door_action_opened(door_id):
     redis_db.set(str(door_id), 'open')
-    if config['verbose'] is True :
+    if bool(config['verbose']) is True :
         print("The " + str(door_id) + " has been opened!")
-    if config['use_zabbix_sender'] is True :
+    if bool(config['use_zabbix_sender']) is True :
         zabbix_sender_call('info_when_door_has_been_opened',door_id)
-    if config['use_picamera'] is True :
-        if config['use_picamera_recording'] is True:
+    if bool(config['use_picamera']) is True :
+        if bool(config['use_picamera_recording']) is True:
             av_stream('stop')
             av_recording()
         av_stream('start')
@@ -54,46 +54,46 @@ def door_action_opened(door_id):
 
 def door_status_open(door_id):
     redis_db.set(str(door_id), 'open')
-    if config['verbose'] is True :
+    if bool(config['verbose']) is True :
         print("The " + str(door_id) + " is opened!")
-    if config['use_zabbix_sender'] is True:
+    if bool(config['use_zabbix_sender']) is True:
         zabbix_sender_call('info_when_door_is_opened',door_id)
-    if config['use_picamera'] is True:
+    if bool(config['use_picamera']) is True:
         av_stream('start')
 
 
 def door_status_close(door_id):
     redis_db.set(str(door_id), 'close')
-    if config['verbose'] is True :
+    if bool(config['verbose']) is True :
         print("The " + str(door_id) + " is closed!")
-    if config['use_zabbix_sender'] is True :
+    if bool(config['use_zabbix_sender']) is True :
         zabbix_sender_call('info_when_door_is_closed',door_id)
-    if config['use_picamera'] is True:
+    if bool(config['use_picamera']) is True:
          if detect_no_alarms():
              av_stream('stop')
 
 
 def motion_sensor_when_motion(ms_id):
     redis_db.set(str(ms_id), 'motion')
-    if config['verbose'] is True :
+    if bool(config['verbose']) is True :
         print("The " + str(ms_id) + ": motion was detected")
-    if config['use_zabbix_sender'] is True :
+    if bool(config['use_zabbix_sender']) is True :
         zabbix_sender_call('info_when_motion',ms_id)
-    if config['use_picamera'] is True:
+    if bool(config['use_picamera']) is True:
         av_stream('start')
 
 
 def motion_sensor_when_no_motion(ms_id):
     redis_db.set(str(ms_id), 'nomotion')
-    if config['verbose'] is True :
+    if bool(config['verbose']) is True :
         print("The " + str(ms_id) + ": no motion")
-    if config['use_picamera'] is True:
+    if bool(config['use_picamera']) is True:
          if detect_no_alarms():
              av_stream('stop')
 
 
 def detect_no_alarms():
-    if config['use_door_sensor'] is True and config['use_motion_sensor'] is True:
+    if bool(config['use_door_sensor']) is True and bool(config['use_motion_sensor']) is True:
         door_sensor_values = []
         motion_sensor_values = []
         for s in door_sensors_list:
@@ -102,13 +102,13 @@ def detect_no_alarms():
             motion_sensor_values.append(int(not motion_sensors_list[s].value))
         if all(door_sensor_values) and all(motion_sensor_values):
             return True
-    if config['use_door_sensor'] is True and config['use_motion_sensor'] is False:
+    if bool(config['use_door_sensor']) is True and bool(config['use_motion_sensor']) is False:
         door_sensor_values = []
         for s in door_sensors_list:
             door_sensor_values.append(door_sensors_list[s].value)
         if all(door_sensor_values):
             return True
-    if config['use_door_sensor'] is False and config['use_motion_sensor'] is True:
+    if bool(config['use_door_sensor']) is False and bool(config['use_motion_sensor']) is True:
         motion_sensor_values = []
         for s in motion_sensors_list:
             motion_sensor_values.append(int(not motion_sensors_list[s].value))
@@ -146,7 +146,7 @@ def get_cputemp_data():
         while True :
             data = CPUTemperature()
             redis_db.set('CPU_Temperature', data.temperature)
-            if config['verbose'] is True :
+            if bool(config['verbose']) is True :
                 print('CPU temperature: {0:0.1f}'.format(data.temperature),chr(176)+'C', sep='')
                 print("")
             sleep(config['CPUtemp_read_interval'])
@@ -165,7 +165,7 @@ def get_bme280_data():
             calibration_params = bme280.load_calibration_params(bus, address)
             data = bme280.sample(bus, address, calibration_params)
             redis_db.mset({'BME280_Humidity' : data.humidity,'BME280_Temperature' : data.temperature, 'BME280_Pressure' : data.pressure})
-            if config['verbose'] is True :
+            if bool(config['verbose']) is True :
                 print('')
                 print('BME280 Humidity: {0:0.0f}%'.format(data.humidity))
                 print('BME280 Temperature: {0:0.1f}\xb0C'.format(data.temperature))
@@ -184,7 +184,7 @@ def get_ds18b20_data():
             data = W1ThermSensor.get_available_sensors([W1ThermSensor.THERM_SENSOR_DS18B20,W1ThermSensor.THERM_SENSOR_DS18S20])
             for sensor in data:
                 redis_db.set('DS18B20-' + sensor.id, sensor.get_temperature())
-                if config['verbose'] is True :
+                if bool(config['verbose']) is True :
                     print("Sensor %s temperature %.2f"%(sensor.id,sensor.get_temperature()),"\xb0C")
                     print("")
             sleep(config['DS18B20_read_interval'])
@@ -209,7 +209,7 @@ def get_dht_data():
             temperature = dhtDevice.temperature
             humidity = dhtDevice.humidity
             redis_db.mset({'DHT_Humidity' : humidity,'DHT_Temperature' : temperature,})
-            if config['verbose'] is True :
+            if bool(config['verbose']) is True :
                 print(config['DHT_type'] + " Temperature: {:.1f} °C ".format(temperature))
                 print(config['DHT_type'] + " Humidity: {}% ".format(humidity))
                 print("")
@@ -400,19 +400,19 @@ for item in config_yaml.get("setup"):
 for item in config_yaml.get("zabbix_agent"):
     zabbix_agent[item] = config_yaml['zabbix_agent'][item]
 
-if config['use_door_sensor'] is True:
+if bool(config['use_door_sensor']) is True:
     for item in config_yaml.get("door_sensors"):
         door_sensors_list[item] = Button(config_yaml['door_sensors'][item]['gpio_pin'], hold_time=config_yaml['door_sensors'][item]['hold_time'])
 
-if config['use_motion_sensor'] is True:
+if bool(config['use_motion_sensor']) is True:
     for item in config_yaml.get("motion_sensors"):
         motion_sensors_list[item] = MotionSensor(config_yaml['motion_sensors'][item]['gpio_pin'])
 
-if config['use_system_buttons'] is True:
+if bool(config['use_system_buttons']) is True:
     for item in config_yaml.get("system_buttons"):
         system_buttons_list[item] = Button(config_yaml['system_buttons'][item]['gpio_pin'], hold_time=config_yaml['system_buttons'][item]['hold_time'])
 
-if config['use_led_indicator'] is True:
+if bool(config['use_led_indicator']) is True:
     for item in config_yaml.get("led_indicators"):
         led_indicators_list[item] = LED(config_yaml['led_indicators'][item]['gpio_pin'])
 
@@ -434,19 +434,19 @@ hostnamectl_sh('set-deployment', deployment)
 
 for s in config :
     redis_db.set(s, str(config[s]))
-    if config['verbose'] is True :
+    if bool(config['verbose']) is True :
         print(s + ' = ' + str(config[s]))
 
 print('')
 
 for s in zabbix_agent :
     redis_db.set(s, str(zabbix_agent[s]))
-    if config['verbose'] is True :
+    if bool(config['verbose']) is True :
         print(s + ' = ' + str(zabbix_agent[s]))
 
 print('')
 
-if config['use_door_sensor'] is True :
+if bool(config['use_door_sensor']) is True :
     for s in door_sensors_list:
         if door_sensors_list[s].value == 0:
             door_status_open(s)
@@ -455,10 +455,10 @@ if config['use_door_sensor'] is True :
     for s in door_sensors_list:
             door_sensors_list[s].when_held = lambda s=s : door_action_closed(s)
             door_sensors_list[s].when_released = lambda s=s : door_action_opened(s)
-    if config['use_led_indicator'] is True :
+    if bool(config['use_led_indicator']) is True :
         led_indicators_list['door_led'].source = all_values(*door_sensors_list.values())
 
-if config['use_motion_sensor'] is True :
+if bool(config['use_motion_sensor']) is True :
     for s in motion_sensors_list:
         if motion_sensors_list[s].value == 0:
             motion_sensor_when_no_motion(s)
@@ -467,31 +467,31 @@ if config['use_motion_sensor'] is True :
     for s in motion_sensors_list:
             motion_sensors_list[s].when_motion = lambda s=s : motion_sensor_when_motion(s)
             motion_sensors_list[s].when_no_motion = lambda s=s : motion_sensor_when_no_motion(s)
-    if config['use_led_indicator'] is True :
+    if bool(config['use_led_indicator']) is True :
         led_indicators_list['motion_led'].source = any_values(*motion_sensors_list.values())
 
-if config['use_system_buttons'] is True :
+if bool(config['use_system_buttons']) is True :
     system_buttons_list['shutdown_button'].when_held = shutdown
 
-if config['use_CPU_sensor'] is True:
+if bool(config['use_CPU_sensor']) is True:
     threading_function(get_cputemp_data)
 
-if config['use_BME280_sensor'] is True:
+if bool(config['use_BME280_sensor']) is True:
     threading_function(get_bme280_data)
 
-if config['use_DS18B20_sensor'] is True:
+if bool(config['use_DS18B20_sensor']) is True:
     threading_function(get_ds18b20_data)
 
-if config['use_DHT_sensor'] is True:
+if bool(config['use_DHT_sensor']) is True:
     threading_function(get_dht_data)
 
-if config['use_serial_display'] is True:
+if bool(config['use_serial_display']) is True:
     if config['serial_display_type'] == 'oled_sh1106':
         threading_function(oled_sh1106)
     if config['serial_display_type'] == 'lcd_st7735':
         threading_function(lcd_st7735)
 
-if config['use_picamera'] is True and config['use_picamera_recording'] is False and config['use_door_sensor'] is False and config['use_motion_sensor'] is False :
+if bool(config['use_picamera']) is True and bool(config['use_picamera_recording']) is False and bool(config['use_door_sensor']) is False and bool(config['use_motion_sensor']) is False :
     av_stream('start')
 
 pause()
