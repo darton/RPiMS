@@ -43,6 +43,14 @@ span.value {
 </style>
 </head>
 <body>
+
+<?php
+$rpims_yaml = yaml_parse_file ("/var/www/html/rpims.yaml");
+$motion_sensors = $rpims_yaml['motion_sensors'];
+$door_sensors = $rpims_yaml['door_sensors'];
+$system_buttons = $rpims_yaml['system_buttons'];
+?>
+
 <div class="rpimsbg">
 <div class="header"></div>
 <div class=rpims>
@@ -91,8 +99,10 @@ span.value {
 <div class="sensors">
     <h3>Door sensors</h3>
     <ul style="list-style-type:none;">
-    <li>Door sensor 1: <span class="value"><?=$rpims["door_sensor_1"]?></span></li>
-    <li>Door sensor 2: <span class="value"><?=$rpims["door_sensor_2"]?></span></li>
+    <?php foreach ($door_sensors as $key => $value) {
+    echo "<li>"; echo $key; echo "<span class='value'>: "; echo $rpims["$key"]; echo " </span></li>";
+}
+?>
     </ul>
 </div>
 <?php }?>
@@ -101,15 +111,14 @@ span.value {
 <div class="sensors">
     <h3>Motion sensors</h3>
     <ul style="list-style-type:none;">
-    <li>Motion sensor 1: <span class="value"><?=$rpims["motion_sensor_1"]?></span></li>
-    <li>Motion sensor 2: <span class="value"><?=$rpims["motion_sensor_2"]?></span></li>
-    <li>Motion sensor 3: <span class="value"><?=$rpims["motion_sensor_3"]?></span></li>
-    <li>Motion sensor 4: <span class="value"><?=$rpims["motion_sensor_4"]?></span></li>
-    <li>Motion sensor 5: <span class="value"><?=$rpims["motion_sensor_5"]?></span></li>
+<?php foreach ($motion_sensors as $key => $value) {
+    echo "<li>"; echo $key; echo "<span class='value'>: "; echo $rpims["$key"]; echo " </span></li>";
+}
+?>
     </ul>
 </div>
 <?php }?>
-  
+
 <?php if ($rpims["use_picamera"] == "True") {?>
 <div class="sensors">
     <h3>Video Stream Url</h3>
