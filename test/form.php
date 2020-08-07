@@ -22,7 +22,7 @@ $setup = array(
     "CPUtemp_read_interval" => (int)$_POST['CPUtemp_read_interval'],
 
     "BME280_read_interval" => (int)$_POST['BME280_read_interval'],
-    "BME280_i2c_address" => $_POST['BME280_i2c_address'],
+    "BME280_i2c_address" => (int)$_POST['BME280_i2c_address'],
 
     "DS18B20_read_interval" => (int)$_POST['DS18B20_read_interval'],
 
