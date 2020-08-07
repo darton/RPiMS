@@ -375,10 +375,9 @@ def threading_function(function_name):
 # --- Main program ---
 
 print('# RPiMS is running #')
-print('')
 
 try:
-    with open(r'/home/pi/scripts/RPiMS/rpims.yaml') as file:
+    with open(r'/var/www/html/rpims.yaml') as file:
         config_yaml = yaml.full_load(file)
 
 except Exception as err :
@@ -412,7 +411,7 @@ if bool(config['use_system_buttons']) is True:
     for item in config_yaml.get("system_buttons"):
         system_buttons_list[item] = Button(config_yaml['system_buttons'][item]['gpio_pin'], hold_time=config_yaml['system_buttons'][item]['hold_time'])
 
-if bool(config['use_led_indicator']) is True:
+if bool(config['use_led_indicators']) is True:
     for item in config_yaml.get("led_indicators"):
         led_indicators_list[item] = LED(config_yaml['led_indicators'][item]['gpio_pin'])
 
@@ -432,19 +431,25 @@ hostnamectl_sh('set-location', location)
 hostnamectl_sh('set-chassis', chassis)
 hostnamectl_sh('set-deployment', deployment)
 
+if bool(config['verbose']) is True :
+    print('')
+
+
 for s in config :
     redis_db.set(s, str(config[s]))
     if bool(config['verbose']) is True :
         print(s + ' = ' + str(config[s]))
 
-print('')
+if bool(config['verbose']) is True :
+    print('')
 
 for s in zabbix_agent :
     redis_db.set(s, str(zabbix_agent[s]))
     if bool(config['verbose']) is True :
         print(s + ' = ' + str(zabbix_agent[s]))
 
-print('')
+if bool(config['verbose']) is True :
+    print('')
 
 if bool(config['use_door_sensor']) is True :
     for s in door_sensors_list:
@@ -455,7 +460,7 @@ if bool(config['use_door_sensor']) is True :
     for s in door_sensors_list:
             door_sensors_list[s].when_held = lambda s=s : door_action_closed(s)
             door_sensors_list[s].when_released = lambda s=s : door_action_opened(s)
-    if bool(config['use_led_indicator']) is True :
+    if bool(config['use_led_indicators']) is True :
         led_indicators_list['door_led'].source = all_values(*door_sensors_list.values())
 
 if bool(config['use_motion_sensor']) is True :
@@ -467,7 +472,7 @@ if bool(config['use_motion_sensor']) is True :
     for s in motion_sensors_list:
             motion_sensors_list[s].when_motion = lambda s=s : motion_sensor_when_motion(s)
             motion_sensors_list[s].when_no_motion = lambda s=s : motion_sensor_when_no_motion(s)
-    if bool(config['use_led_indicator']) is True :
+    if bool(config['use_led_indicators']) is True :
         led_indicators_list['motion_led'].source = any_values(*motion_sensors_list.values())
 
 if bool(config['use_system_buttons']) is True :
