@@ -13,7 +13,9 @@
 </head>
 
 <body>
-<?php $rpims = yaml_parse_file ("/var/www/html/rpims.yaml");
+<?php 
+
+$rpims = yaml_parse_file ("/var/www/html/rpims.yaml");
 $location = $rpims['zabbix_agent']['location'];
 $hostname = $rpims['zabbix_agent']['hostname'];
 $zabbix_server = $rpims['zabbix_agent']['zabbix_server'];
