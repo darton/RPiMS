@@ -1,29 +1,34 @@
-
 <?php
 
 $setup = array(
-    "verbose" => $_POST['verbose'],
-    "use_zabbix_sender" => $_POST['use_zabbix_sender'],
-    "use_picamera" => $_POST['use_picamera'],
-    "use_door_sensor" => $_POST['use_door_sensor'],
-    "use_motion_sensor" => $_POST['use_motion_sensor'],
-    "use_system_buttons" => $_POST['use_system_buttons'],
-    "use_led_indicators" => $_POST['use_led_indicator'],
-    "use_serial_display" => $_POST['use_serial_display'],
-    "use_serial_display" => $_POST['use_serial_display'],
+    "verbose" => filter_var($_POST['verbose'], FILTER_VALIDATE_BOOLEAN),
+    "use_zabbix_sender" => filter_var($_POST['use_zabbix_sender'], FILTER_VALIDATE_BOOLEAN),
+    "use_picamera" => filter_var($_POST['use_picamera'], FILTER_VALIDATE_BOOLEAN),
+    "use_picamera_recording" => filter_var($_POST['use_picamera_recording'], FILTER_VALIDATE_BOOLEAN),
+    "use_door_sensor" => filter_var($_POST['use_door_sensor'], FILTER_VALIDATE_BOOLEAN),
+    "use_motion_sensor" => filter_var($_POST['use_motion_sensor'], FILTER_VALIDATE_BOOLEAN),
+    "use_system_buttons" => filter_var($_POST['use_system_buttons'], FILTER_VALIDATE_BOOLEAN),
+    "use_led_indicators" => filter_var($_POST['use_led_indicator'], FILTER_VALIDATE_BOOLEAN),
+    "use_serial_display" => filter_var($_POST['use_serial_display'], FILTER_VALIDATE_BOOLEAN),
+    "use_serial_display" => filter_var($_POST['use_serial_display'], FILTER_VALIDATE_BOOLEAN),
+    "use_CPU_sensor" => filter_var($_POST['use_CPU_sensor'], FILTER_VALIDATE_BOOLEAN),
+    "use_BME280_sensor" => filter_var($_POST['use_BME280_sensor'], FILTER_VALIDATE_BOOLEAN),
+    "use_DS18B20_sensor" => filter_var($_POST['use_DS18B20_sensor'], FILTER_VALIDATE_BOOLEAN),
+    "use_DHT_sensor" => filter_var($_POST['use_DHT_sensor'], FILTER_VALIDATE_BOOLEAN),
+
     "serial_display_type" => $_POST['serial_display_type'],
-    "serial_display_refresh_rate" => $_POST['serial_display_refresh_rate'],
-    "use_CPU_sensor" => $_POST['use_CPU_sensor'],
-    "CPUtemp_read_interval" => $_POST['CPUtemp_read_interval'],
-    "use_BME280_sensor" => $_POST['use_BME280_sensor'],
-    "BME280_read_interval" => $_POST['BME280_read_interval'],
+    "serial_display_refresh_rate" => (int)$_POST['serial_display_refresh_rate'],
+
+    "CPUtemp_read_interval" => (int)$_POST['CPUtemp_read_interval'],
+
+    "BME280_read_interval" => (int)$_POST['BME280_read_interval'],
     "BME280_i2c_address" => $_POST['BME280_i2c_address'],
-    "use_DS18B20_sensor" => $_POST['use_DS18B20_sensor'],
-    "DS18B20_read_interval" => $_POST['DS18B20_read_interval'],
-    "use_DHT_sensor" => $_POST['use_DHT_sensor'],
-    "DHT_read_interval" => $_POST['DHT_read_interval'],
+
+    "DS18B20_read_interval" => (int)$_POST['DS18B20_read_interval'],
+
+    "DHT_read_interval" => (int)$_POST['DHT_read_interval'],
     "DHT_type" => $_POST['DHT_type'],
-    "DHT_pin" => $_POST['DHT_pin'],
+    "DHT_pin" => (int)$_POST['DHT_pin'],
 );
 
 $door_sensors = array();
@@ -35,8 +40,8 @@ $count = 1;
 foreach ($_POST as $key => $value) {
     if ($value['type'] == 'DoorSensor'){
         $varname = 'door_sensor_'.$count;
-        $door_sensors[$varname]['gpio_pin'] = $value['gpio_pin'];
-        $door_sensors[$varname]['hold_time'] = $value['hold_time'];
+        $door_sensors[$varname]['gpio_pin'] = (int)$value['gpio_pin'];
+        $door_sensors[$varname]['hold_time'] = (int)$value['hold_time'];
     $count++;
 }
 }
@@ -45,25 +50,27 @@ $count = 1;
 foreach ($_POST as $key => $value) {
     if ($value['type'] == 'MotionSensor'){
         $varname = 'motion_sensor_'.$count;
-        $motion_sensors[$varname]['gpio_pin'] = $value['gpio_pin'];
+        $motion_sensors[$varname]['gpio_pin'] = (int)$value['gpio_pin'];
     $count++;
 }
 }
 
+$arrayName = 'shutdown_button';
 foreach ($_POST as $key => $value) {
     if ($value['type'] == 'ShutdownButton'){
-        $system_buttons['shutdown_button'] = [];
-        $system_buttons['shutdown_button']['gpio_pin'] = $value['gpio_pin'] ;
-        $system_buttons['shutdown_button']['hold_time'] = $value['hold_time'];
+        $system_buttons[$arrayName] = [];
+        $system_buttons[$arrayName]['gpio_pin'] = (int)$value['gpio_pin'] ;
+        $system_buttons[$arrayName]['hold_time'] = (int)$value['hold_time'];
     }
 }
 
+
 foreach ($_POST as $key => $value) {
     if ($value['type'] == 'door_led'){
-        $led_indicators['door_led']['gpio_pin'] = $value['gpio_pin'];
+        $led_indicators['door_led']['gpio_pin'] = (int)$value['gpio_pin'];
 }
     if ($value['type'] == 'motion_led'){
-        $led_indicators['motion_led']['gpio_pin'] = $value['gpio_pin'];
+        $led_indicators['motion_led']['gpio_pin'] = (int)$value['gpio_pin'];
 }
 }
 
@@ -76,7 +83,7 @@ $zabbix_agent = array(
     "deployment" => "RPiMS",
 );
 
-$yaml = array(
+$rpims = array(
     "setup" => $setup,
     "led_indicators" => $led_indicators,
     "door_sensors"   => $door_sensors,
@@ -85,8 +92,6 @@ $yaml = array(
     "zabbix_agent"   => $zabbix_agent,
 );
 
-$yaml = yaml_emit($yaml);
-yaml_emit_file ("/var/www/html/rpims2.yaml", $yaml);
+yaml_emit_file ("/var/www/html/rpims.yaml", $rpims, YAML_UTF8_ENCODING, YAML_ANY_BREAK);
 
 ?>
-
