@@ -81,7 +81,6 @@ foreach ($system_buttons_gpio as $key => $value) {
 <label>Use DS18B20 sensor: <input name="use_DS18B20_sensor" type="hidden" value="False"><input name="use_DS18B20_sensor" type="checkbox" <?php if ($use_DS18B20_sensor == 'yes') echo 'checked="checked"'; ?> value="True"></label><br />
 <label>Use DHT sensor: <input name="use_DHT_sensor" type="hidden" value="False"><input name="use_DHT_sensor" type="checkbox" <?php if ($use_DHT_sensor) echo 'checked="checked"'; ?> value="True"></label><br />
 <label>Use serial display: <input name="use_serial_display" type="hidden" value="False"><input name="use_serial_display" type="checkbox" <?php if ($use_serial_display == 'yes') echo 'checked="checked"'; ?> value="True"></label>
-</div>
 
 <label for="serial_display_type">Serial display type</label>
 <select id="serial_display_type" name="serial_display_type">
