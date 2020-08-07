@@ -1,3 +1,4 @@
+---
 setup:
  verbose: True
  use_zabbix_sender: False
@@ -71,3 +72,4 @@ zabbix_agent:
     hostname: rpims1.example.com
     chassis: embedded
     deployment: RPiMS
+...
