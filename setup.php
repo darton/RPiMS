@@ -28,7 +28,7 @@ $use_picamera_recording = filter_var($rpims['setup']['use_picamera_recording'], 
 $use_door_sensor = filter_var($rpims['setup']['use_door_sensor'], FILTER_VALIDATE_BOOLEAN);
 $use_motion_sensor = filter_var($rpims['setup']['use_motion_sensor'], FILTER_VALIDATE_BOOLEAN);
 $use_system_buttons = filter_var($rpims['setup']['use_system_buttons'], FILTER_VALIDATE_BOOLEAN);
-$use_led_indicator = filter_var($rpims['setup']['use_led_indicator'], FILTER_VALIDATE_BOOLEAN);
+$use_led_indicators = filter_var($rpims['setup']['use_led_indicators'], FILTER_VALIDATE_BOOLEAN);
 $use_serial_display = filter_var($rpims['setup']['use_serial_display'], FILTER_VALIDATE_BOOLEAN);
 $use_CPU_sensor = filter_var($rpims['setup']['use_CPU_sensor'], FILTER_VALIDATE_BOOLEAN);
 $use_BME280_sensor = filter_var($rpims['setup']['use_BME280_sensor'], FILTER_VALIDATE_BOOLEAN);
@@ -135,10 +135,10 @@ foreach ($system_buttons_gpio as $key => $value) {
 </tr>
 <tr>
 <td>
-<label>Use led indicator:
+<label>Use led indicators:
 </td>
 <td>
-<input name="use_led_indicator" type="hidden" value="False"><input name="use_led_indicator" type="checkbox" <?php if ($use_led_indicator == 'yes') echo 'checked="checked"'; ?> value="True"></label>
+<input name="use_led_indicators" type="hidden" value="False"><input name="use_led_indicators" type="checkbox" <?php if ($use_led_indicators == 'yes') echo 'checked="checked"'; ?> value="True"></label>
 </td>
 </tr>
 <tr>
