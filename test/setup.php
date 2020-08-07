@@ -7,7 +7,7 @@
 </head>
 
 <body>
-<?php $rpims = yaml_parse_file ("/var/www/html/rpims2.yaml");
+<?php $rpims = yaml_parse_file ("/var/www/html/rpims.yaml");
 $location = $rpims['zabbix_agent']['location'];
 $hostname = $rpims['zabbix_agent']['hostname'];
 $zabbix_server = $rpims['zabbix_agent']['zabbix_server'];
@@ -68,7 +68,7 @@ foreach ($system_buttons_gpio as $key => $value) {
 <fieldset>
 <legend>System configuration</legend>
 <form action="/form.php" method="post">
-<label>Verbose: <input name="verbose" type="hidden" value="False"><input name="verbose" type="checkbox" <?php if ($verbose == 'yes') echo 'checked="checked"'; ?> value="True"></label><br />
+<label>Verbose: <input name="verbose" type="hidden" value="no"><input name="verbose" type="checkbox" <?php if ($verbose) echo 'checked="checked"'; ?> value="True"></label><br />
 <label>Use zabbix sender: <input name="use_zabbix_sender" type="hidden" value="False"><input name="use_zabbix_sender" type="checkbox" <?php if ($use_zabbix_sender == 'yes') echo 'checked="checked"'; ?> value="True"></label><br />
 <label>Use picamera: <input name="use_picamera" type="hidden" value="False"><input name="use_picamera" type="checkbox" <?php if ($use_picamera == 'yes') echo 'checked="checked"'; ?> value="True"></label>
 <label>Use picamera recording: <input name="use_picamera_recording" type="hidden" value="False"><input name="use_picamera_recording" type="checkbox" <?php if ($use_picamera_recording == 'yes') echo 'checked="checked"'; ?> value="True"></label><br />
@@ -79,7 +79,7 @@ foreach ($system_buttons_gpio as $key => $value) {
 <label>Use CPU sensor: <input name="use_CPU_sensor" type="hidden" value="False"><input name="use_CPU_sensor" type="checkbox" <?php if ($use_CPU_sensor == 'yes') echo 'checked="checked"'; ?> value="True"></label><br />
 <label>Use BME280 sensor: <input name="use_BME280_sensor" type="hidden" value="False"><input name="use_BME280_sensor" type="checkbox" <?php if ($use_BME280_sensor == 'yes') echo 'checked="checked"'; ?> value="True"></label><br />
 <label>Use DS18B20 sensor: <input name="use_DS18B20_sensor" type="hidden" value="False"><input name="use_DS18B20_sensor" type="checkbox" <?php if ($use_DS18B20_sensor == 'yes') echo 'checked="checked"'; ?> value="True"></label><br />
-<label>Use DHT sensor: <input name="use_DHT_sensor" type="hidden" value="False"><input name="use_DHT_sensor" type="checkbox" <?php if ($use_DHT_sensor == 'yes') echo 'checked="checked"'; ?> value="True"></label><br />
+<label>Use DHT sensor: <input name="use_DHT_sensor" type="hidden" value="False"><input name="use_DHT_sensor" type="checkbox" <?php if ($use_DHT_sensor) echo 'checked="checked"'; ?> value="True"></label><br />
 <label>Use serial display: <input name="use_serial_display" type="hidden" value="False"><input name="use_serial_display" type="checkbox" <?php if ($use_serial_display == 'yes') echo 'checked="checked"'; ?> value="True"></label>
 </div>
 
@@ -198,7 +198,7 @@ foreach ($system_buttons_gpio as $key => $value) {
   <option <?php if ($GPIO['GPIO_26']['type'] == 'DoorSensor') echo 'selected="selected"'; ?> value="DoorSensor">Door Sensor</option>
   <option <?php if ($GPIO['GPIO_26']['type'] == 'MotionSensor') echo 'selected="selected"'; ?> value="MotionSensor">Motion Sensor</option>
 </select>
-<label>Hold Time: <input name="GPIO_26[hold_time]" type="number"  min="1" max="10"  value=<?=$GPIO['GPIO_26']['hold_time']?> size="2"></label>
+<label>Hold Time: <input name="GPIO_26[hold_time]"  type="number" min="1" max="10"  value=<?=$GPIO['GPIO_26']['hold_time']?> size="2"></label>
 <label><input name="GPIO_26[gpio_pin]" type="hidden" value="26"></label>
 <br />
 </fieldset>
