@@ -113,5 +113,6 @@ $rpims = array(
 );
 
 yaml_emit_file ("/var/www/html/rpims.yaml", $rpims, YAML_UTF8_ENCODING, YAML_ANY_BREAK);
+exec('sudo /bin/systemctl restart rpims.service');
 header("Location: setup.php");
 ?>
