@@ -8,7 +8,7 @@ $setup = array(
     "use_door_sensor" => filter_var($_POST['use_door_sensor'], FILTER_VALIDATE_BOOLEAN),
     "use_motion_sensor" => filter_var($_POST['use_motion_sensor'], FILTER_VALIDATE_BOOLEAN),
     "use_system_buttons" => filter_var($_POST['use_system_buttons'], FILTER_VALIDATE_BOOLEAN),
-    "use_led_indicators" => filter_var($_POST['use_led_indicator'], FILTER_VALIDATE_BOOLEAN),
+    "use_led_indicators" => filter_var($_POST['use_led_indicators'], FILTER_VALIDATE_BOOLEAN),
     "use_serial_display" => filter_var($_POST['use_serial_display'], FILTER_VALIDATE_BOOLEAN),
     "use_serial_display" => filter_var($_POST['use_serial_display'], FILTER_VALIDATE_BOOLEAN),
     "use_CPU_sensor" => filter_var($_POST['use_CPU_sensor'], FILTER_VALIDATE_BOOLEAN),
@@ -63,7 +63,6 @@ foreach ($_POST as $key => $value) {
         $system_buttons[$arrayName]['hold_time'] = (int)$value['hold_time'];
     }
 }
-
 
 foreach ($_POST as $key => $value) {
     if ($value['type'] == 'door_led'){
