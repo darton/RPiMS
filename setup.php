@@ -15,6 +15,19 @@
 <body>
 <?php
 
+$GPIO = array();
+$GPIO_5 = array();
+$GPIO_6 = array();
+$GPIO_12 = array();
+$GPIO_13 = array();
+$GPIO_16 = array();
+$GPIO_17 = array();
+$GPIO_18 = array();
+$GPIO_19 = array();
+$GPIO_20 = array();
+$GPIO_21 = array();
+$GPIO_26 = array();
+
 $rpims = yaml_parse_file ("/var/www/html/rpims.yaml");
 $location = $rpims['zabbix_agent']['location'];
 $hostname = $rpims['zabbix_agent']['hostname'];
@@ -27,7 +40,7 @@ $use_picamera = filter_var($rpims['setup']['use_picamera'], FILTER_VALIDATE_BOOL
 $use_picamera_recording = filter_var($rpims['setup']['use_picamera_recording'], FILTER_VALIDATE_BOOLEAN);
 $use_door_sensor = filter_var($rpims['setup']['use_door_sensor'], FILTER_VALIDATE_BOOLEAN);
 $use_motion_sensor = filter_var($rpims['setup']['use_motion_sensor'], FILTER_VALIDATE_BOOLEAN);
-$use_system_buttons = filter_var($rpims['setup']['use_system_buttons'], FILTER_VALIDATE_BOOLEAN);
+//$use_system_buttons = filter_var($rpims['setup']['use_system_buttons'], FILTER_VALIDATE_BOOLEAN);
 $use_led_indicators = filter_var($rpims['setup']['use_led_indicators'], FILTER_VALIDATE_BOOLEAN);
 $use_serial_display = filter_var($rpims['setup']['use_serial_display'], FILTER_VALIDATE_BOOLEAN);
 $use_CPU_sensor = filter_var($rpims['setup']['use_CPU_sensor'], FILTER_VALIDATE_BOOLEAN);
@@ -54,7 +67,6 @@ $door_sensors_gpio = $rpims['door_sensors'];
 $system_buttons_gpio = $rpims['system_buttons'];
 
 foreach ($door_sensors_gpio as $key => $value) {
-    //print_r('GPIO_'.$value['gpio_pin']);
     $gpioname = 'GPIO_'.$value['gpio_pin'] ;
     $GPIO[$gpioname]['type'] = 'DoorSensor';
     $GPIO[$gpioname]['hold_time'] = $value['hold_time'];
@@ -70,7 +82,7 @@ foreach ($system_buttons_gpio as $key => $value) {
 }
 
 //var_dump($GPIO['GPIO_16']['hold_time']);
-//var_dump($GPIO);
+
 ?>
 
 <form action="/form.php" method="post">
@@ -123,14 +135,6 @@ foreach ($system_buttons_gpio as $key => $value) {
 </td>
 <td>
 <input name="use_motion_sensor" type="hidden" value="False"><input name="use_motion_sensor" type="checkbox" <?php if ($use_motion_sensor == 'yes') echo 'checked="checked"'; ?> value="True"></label>
-</td>
-</tr>
-<tr>
-<td>
-<label>Use system buttons:
-</td>
-<td>
-<input name="use_system_buttons" type="hidden" value="False"><input name="use_system_buttons" type="checkbox" <?php if ($use_system_buttons == 'yes') echo 'checked="checked"'; ?> value="True"></label>
 </td>
 </tr>
 <tr>
@@ -439,10 +443,11 @@ if ($GPIO['GPIO_21']['type'] == 'DoorSensor'){
   <option <?php if ($GPIO['GPIO_26']['type'] == 'MotionSensor') echo 'selected="selected"'; ?> value="MotionSensor">Motion Sensor</option>
 </select>
 </td>
+
 <?php
 if ($GPIO['GPIO_26']['type'] == 'DoorSensor'){
     if ($GPIO['GPIO_26']['hold_time'] == 0 ){ $GPIO_26_hold_time = 1;}
-    else { $GPIO_26_hold_time = $GPIO['GPIO_26']['hold_time']; }
+    else { $GPIO_26_hold_time = $GPIO['GPIO_21']['hold_time']; }
 ?>
 <td>
 <label>Hold Time: <input name="GPIO_26[hold_time]"  type="number" min="1" max="10" value="<?=$GPIO_26_hold_time?>" size="2"></label>
