@@ -8,7 +8,8 @@ installdir=/home/pi/scripts/RPiMS
 for file in $(curl -sS https://raw.githubusercontent.com/darton/RPiMS/master/files.txt); do
    curl -sS https://raw.githubusercontent.com/darton/RPiMS/master/$file > $installdir/$file
 done
-
+curl -sS https://www.w3schools.com/w3css/4/w3.css > $installdir/w3.css
+ 
 chmod u+x $installdir/*.py $installdir/*.sh
 
 sudo apt-get -y install git python3-gpiozero python3-pip build-essential python3-dev python3-numpy python3-picamera python3-w1thermsensor
@@ -31,6 +32,9 @@ sudo systemctl restart php7.3-fpm
 sudo systemctl enable php7.3-fpm
 sudo mv $installdir/index.php /var/www/html/
 sudo mv $installdir/template.html /var/www/html/
+sudo mv $installdir/setup.php /var/www/html/
+sudo mv $installdir/form.php /var/www/html/
+sudo mv $installdir/w3.cs /var/www/html/
 sudo mv /etc/nginx/sites-available/default /etc/nginx/sites-available/default.org
 sudo mv $installdir/nginx-default /etc/nginx/sites-available/default
 sudo systemctl restart nginx
