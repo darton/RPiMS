@@ -2,8 +2,7 @@ README.md
 rpims.py
 rpims.yaml
 rpims.service
-redis-get-data.py
-hostnamectl.sh
+gethostip.sh
 videostreamer.sh
 videorecorder.sh
 zabbix_sender.sh
