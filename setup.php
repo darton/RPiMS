@@ -27,6 +27,7 @@ $GPIO_18 = array();
 $GPIO_19 = array();
 $GPIO_20 = array();
 $GPIO_21 = array();
+$GPIO_22 = array();
 $GPIO_26 = array();
 
 $rpims = yaml_parse_file ("/var/www/html/rpims.yaml");
@@ -226,9 +227,9 @@ foreach ($system_buttons_gpio as $key => $value) {
 <label for="BME280_i2c_address">BME280_i2c_address:</label>
 </td>
 <td>
-<select id="BME280_i2c_address" name="BME280_i2c_address" class="w3-select">
-<option value = 118 <?php if ($BME280_i2c_address == '118') echo 'selected="selected"'; ?> >0x76</option>
-<option value = 119 <?php if ($BME280_i2c_address == '119') echo 'selected="selected"'; ?> >0x77</option>
+<select id="BME280_i2c_address" name="BME280_i2c_address" class="w3-select" >
+<option <?php if ($BME280_i2c_address == '118') echo 'selected="selected"'; ?> value = "118" >0x76</option>
+<option <?php if ($BME280_i2c_address == '119') echo 'selected="selected"'; ?> value = "119" >0x77</option>
 </select>
 </td></tr>
 <tr><td>
@@ -258,7 +259,7 @@ foreach ($system_buttons_gpio as $key => $value) {
 <td>
 <select id="DHT_pin" name="DHT_pin" class="w3-select">
   <option value = 17 <?php if ($DHT_pin == '17') echo 'selected="selected"'; ?> >17</option>
-  <option value = 18 <?php if ($DHT_pin == '18') echo 'selected="selected"'; ?> >18</option>
+  <option value = 22 <?php if ($DHT_pin == '22') echo 'selected="selected"'; ?> >22</option>
 </select>
 </td></tr>
 </table>
@@ -451,7 +452,7 @@ if ($GPIO['GPIO_21']['type'] == 'DoorSensor'){
 <?php
 if ($GPIO['GPIO_26']['type'] == 'DoorSensor'){
     if ($GPIO['GPIO_26']['hold_time'] == 0 ){ $GPIO_26_hold_time = 1;}
-    else { $GPIO_26_hold_time = $GPIO['GPIO_21']['hold_time']; }
+    else { $GPIO_26_hold_time = $GPIO['GPIO_26']['hold_time']; }
 ?>
 <td>
 <label>Hold Time: <input name="GPIO_26[hold_time]"  type="number" min="1" max="10" value="<?=$GPIO_26_hold_time?>" size="2"></label>
