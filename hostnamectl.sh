@@ -1,12 +1,5 @@
 #!/bin/bash
 
-#_IP=$(hostname -I | awk '{print $1}') || true
-_IP=$(ip route get 1.1.1.1 | awk '{print $7}') || true
-
-if [ "$_IP" ]; then
-  /usr/bin/redis-cli set hostip $_IP
-fi
-
 _hostname=$(/usr/bin/redis-cli get hostname)
 hostnamectl set-hostname $_hostname
 
