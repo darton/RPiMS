@@ -34,7 +34,7 @@ sudo mv $installdir/index.php /var/www/html/
 sudo mv $installdir/template.html /var/www/html/
 sudo mv $installdir/setup.php /var/www/html/
 sudo mv $installdir/form.php /var/www/html/
-sudo mv $installdir/w3.cs /var/www/html/
+sudo mv $installdir/w3.css /var/www/html/
 sudo mv /etc/nginx/sites-available/default /etc/nginx/sites-available/default.org
 sudo mv $installdir/nginx-default /etc/nginx/sites-available/default
 sudo systemctl restart nginx
