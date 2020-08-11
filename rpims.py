@@ -376,6 +376,11 @@ def threading_function(function_name):
 
 print('# RPiMS is running #')
 
+redis_db = redis.StrictRedis(host="localhost", port=6379, db=0, charset="utf-8", decode_responses=True)
+
+logging.basicConfig(filename='/tmp/rpims.log', level=logging.DEBUG, format='%(asctime)s %(levelname)s %(name)s %(message)s')
+logger=logging.getLogger(__name__)
+
 try:
     with open(r'/var/www/html/rpims.yaml') as file:
         config_yaml = yaml.full_load(file)
@@ -384,7 +389,6 @@ except Exception as err :
     logger.error(err)
     print('Problem with ' + str(err))
     sys.exit(1)
-
 
 config = {}
 zabbix_agent = {}
@@ -415,17 +419,10 @@ if bool(config['use_led_indicators']) is True:
     for item in config_yaml.get("led_indicators"):
         led_indicators_list[item] = LED(config_yaml['led_indicators'][item]['gpio_pin'])
 
-
-redis_db = redis.StrictRedis(host="localhost", port=6379, db=0, charset="utf-8", decode_responses=True)
-
-logging.basicConfig(filename='/tmp/rpims.log', level=logging.DEBUG, format='%(asctime)s %(levelname)s %(name)s %(message)s')
-logger=logging.getLogger(__name__)
-
 hostname = config_yaml['zabbix_agent']['hostname']
 location = config_yaml['zabbix_agent']['location']
 chassis = config_yaml['zabbix_agent']['chassis']
 deployment = config_yaml['zabbix_agent']['deployment']
-
 hostnamectl_sh('set-hostname', hostname)
 hostnamectl_sh('set-location', location)
 hostnamectl_sh('set-chassis', chassis)
@@ -433,7 +430,6 @@ hostnamectl_sh('set-deployment', deployment)
 
 if bool(config['verbose']) is True :
     print('')
-
 
 for s in config :
     redis_db.set(s, str(config[s]))
