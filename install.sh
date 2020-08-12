@@ -28,12 +28,14 @@ echo 'maxmemory 100mb' | sudo tee -a /etc/redis/redis.conf
 sudo systemctl start redis-server.service
 
 sudo apt -y install nginx php php-fpm php-redis
-sudo sed -i 's/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/g' /etc/php/7.3/fpm/php.ini
+PHPFPMINI=$(sudo find /etc/ \(  -name "php.ini" \) |grep fpm)
+sudo sed -i 's/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/g' $PHPFPMINI
 WWWCONF=$(sudo find /etc/ \(  -name "www.conf" \))
 sudo sed -i 's/user = www-data/user = pi/g' $WWWCONF
 sudo sed -i 's/group = www-data/group = pi/g' $WWWCONF
-sudo systemctl restart php7.3-fpm
-sudo systemctl enable php7.3-fpm
+PHPFPMSERVICE=$(sudo systemctl -a |grep fpm.service|awk '{print $1}')
+sudo systemctl restart $PHPFPMSERVICE
+sudo systemctl enable $PHPFPMSERVICE
 sudo mv $installdir/index.php /var/www/html/
 sudo mv $installdir/template.html /var/www/html/
 sudo mv $installdir/setup.php /var/www/html/
