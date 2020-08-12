@@ -29,6 +29,9 @@ sudo systemctl start redis-server.service
 
 sudo apt -y install nginx php php-fpm php-redis
 sudo sed -i 's/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/g' /etc/php/7.3/fpm/php.ini
+WWWCONF=$(sudo find /etc/ \(  -name "www.conf" \))
+sudo sed -i 's/user = www-data/user = pi/g' $WWWCONF
+sudo sed -i 's/group = www-data/group = pi/g' $WWWCONF
 sudo systemctl restart php7.3-fpm
 sudo systemctl enable php7.3-fpm
 sudo mv $installdir/index.php /var/www/html/
@@ -38,8 +41,6 @@ sudo mv $installdir/form.php /var/www/html/
 sudo mv $installdir/w3.css /var/www/html/
 sudo mv /etc/nginx/sites-available/default /etc/nginx/sites-available/default.org
 sudo mv $installdir/nginx-default /etc/nginx/sites-available/default
-sudo sed -i 's/user = www-data/user = pi/g' /etc/php/7.3/fpm/pool.d/www.conf
-sudo sed -i 's/group = www-data/group = pi/g' /etc/php/7.3/fpm/pool.d/www.conf
 sudo chown -R pi.pi /var/www/html 
 sudo systemctl restart nginx
 sudo systemctl enable nginx
