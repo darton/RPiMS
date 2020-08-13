@@ -357,7 +357,7 @@ Optional
 * [Sensor Case](https://pl.farnell.com/camdenboss/cbrs01vwh/enclosure-room-sensor-vented-white/dp/2472317?gclid=EAIaIQobChMIvvLvy47-5wIVQswYCh19AA4JEAQYAiABEgKsW_D_BwE&gross_price=true&mckv=Y1xp9UYm_dc|pcrid|155087520124|&CMP=KNC-GPL-GEN-SHOPPING-ALL_PRODUCTS)
 * [Zabbix](https://zabbix.org/wiki/Main_Page)
 
-* [WaveShare 1.3inch OLED HAT](https://www.waveshare.com/product/mini-pc/raspberry-pi/displays/1.3inch-oled-hat.htm)
+* [WaveShare 1.3inch OLED HAT](https://www.waveshare.com/wiki/1.3inch_OLED_HAT)
 
 * [WaveShare 1.44inch TFT HAT](https://www.waveshare.com/wiki/1.44inch_LCD_HAT)
 
