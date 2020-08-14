@@ -249,6 +249,7 @@ def oled_sh1106():
     padding = 0
     top = padding
     bottom = height-padding
+    display_rotate = config['serial_display_rotate']
     # Move left to right keeping track of the current x position for drawing shapes.
     x = 0
 
@@ -261,7 +262,7 @@ def oled_sh1106():
         serial = spi(device=0, port=0, bus_speed_hz = 8000000, transfer_size = 4096, gpio_DC = 24, gpio_RST = 25)
 
     try:
-        device = sh1106(serial, rotate=0)
+        device = sh1106(serial, rotate=display_rotate)
 
         while True:
             with canvas(device) as draw:
