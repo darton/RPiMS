@@ -228,7 +228,7 @@ def get_dht_data():
 
 
 def oled_sh1106():
-    from luma.core.interface.serial import i2c, noop
+    from luma.core.interface.serial import i2c, spi, noop
     from luma.core.render import canvas
     from luma.core import lib
     from luma.oled.device import sh1106
@@ -255,7 +255,10 @@ def oled_sh1106():
     logging.basicConfig(filename='/tmp/rpims_serial_display.log', level=logging.DEBUG, format='%(asctime)s %(levelname)s %(name)s %(message)s')
     logger=logging.getLogger(__name__)
 
-    serial = i2c(port=1, address=0x3c)
+    if serial_type == 'i2c' :
+        serial = i2c(port=1, address=0x3c)
+    if serial_type == 'spi' :
+        serial = spi(device=0, port=0, bus_speed_hz = 8000000, transfer_size = 4096, gpio_DC = 24, gpio_RST = 25)
 
     try:
         device = sh1106(serial, rotate=0)
@@ -487,7 +490,11 @@ if bool(config['use_DHT_sensor']) is True:
     threading_function(get_dht_data)
 
 if bool(config['use_serial_display']) is True:
-    if config['serial_display_type'] == 'oled_sh1106':
+    if config['serial_display_type'] == 'oled_sh1106_i2c':
+        serial_type = 'i2c'
+        threading_function(oled_sh1106)
+    if config['serial_display_type'] == 'oled_sh1106_spi':
+        serial_type = 'spi'
         threading_function(oled_sh1106)
     if config['serial_display_type'] == 'lcd_st7735':
         threading_function(lcd_st7735)
