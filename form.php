@@ -15,13 +15,12 @@ $setup = array(
     "use_motion_sensor" => filter_var($_POST['use_motion_sensor'], FILTER_VALIDATE_BOOLEAN),
     "use_system_buttons" => filter_var($use_system_buttons, FILTER_VALIDATE_BOOLEAN),
     "use_led_indicators" => filter_var($_POST['use_led_indicators'], FILTER_VALIDATE_BOOLEAN),
-    "use_serial_display" => filter_var($_POST['use_serial_display'], FILTER_VALIDATE_BOOLEAN),
-    "use_serial_display" => filter_var($_POST['use_serial_display'], FILTER_VALIDATE_BOOLEAN),
     "use_CPU_sensor" => filter_var($_POST['use_CPU_sensor'], FILTER_VALIDATE_BOOLEAN),
     "use_BME280_sensor" => filter_var($_POST['use_BME280_sensor'], FILTER_VALIDATE_BOOLEAN),
     "use_DS18B20_sensor" => filter_var($_POST['use_DS18B20_sensor'], FILTER_VALIDATE_BOOLEAN),
     "use_DHT_sensor" => filter_var($_POST['use_DHT_sensor'], FILTER_VALIDATE_BOOLEAN),
-
+    "use_serial_display" => filter_var($_POST['use_serial_display'], FILTER_VALIDATE_BOOLEAN),
+    
     "serial_display_type" => $_POST['serial_display_type'],
     "serial_display_refresh_rate" => (int)$_POST['serial_display_refresh_rate'],
 
