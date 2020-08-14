@@ -13,3 +13,4 @@ setup.php
 form.php
 template.html
 motd
+cron
