@@ -53,6 +53,7 @@ $use_DHT_sensor = filter_var($rpims['setup']['use_DHT_sensor'], FILTER_VALIDATE_
 
 $serial_display_refresh_rate = $rpims['setup']['serial_display_refresh_rate'];
 $serial_display_type = $rpims['setup']['serial_display_type'];
+$serial_display_rotate = $rpims['setup']['serial_display_rotate'];
 
 $CPUtemp_read_interval = $rpims['setup']['CPUtemp_read_interval'];
 
@@ -199,6 +200,16 @@ foreach ($system_buttons_gpio as $key => $value) {
 <option value="lcd_st7735"<?php if ($serial_display_type == 'lcd_st7735') echo 'selected="selected"'; ?> >lcd_st7735</option>
 </select>
 </td>
+<td>
+<label for="serial_display_rotate">Serial display rotate</label>
+</td>
+<td>
+<select id="serial_display_rotate" name="serial_display_rotate" class="w3-select">
+<option value="0"<?php if ($serial_display_rotate == '0') echo 'selected="selected"'; ?> >0</option>
+<option value="2"<?php if ($serial_display_rotate == '2') echo 'selected="selected"'; ?> >180</option>
+</select>
+</td>
+
 <td>
 <label>Serial display refresh rate:</label>
 </td>
