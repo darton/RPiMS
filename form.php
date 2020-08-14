@@ -20,8 +20,9 @@ $setup = array(
     "use_DS18B20_sensor" => filter_var($_POST['use_DS18B20_sensor'], FILTER_VALIDATE_BOOLEAN),
     "use_DHT_sensor" => filter_var($_POST['use_DHT_sensor'], FILTER_VALIDATE_BOOLEAN),
     "use_serial_display" => filter_var($_POST['use_serial_display'], FILTER_VALIDATE_BOOLEAN),
-    
+
     "serial_display_type" => $_POST['serial_display_type'],
+    "serial_display_rotate" => (int)$_POST['serial_display_rotate'],
     "serial_display_refresh_rate" => (int)$_POST['serial_display_refresh_rate'],
 
     "CPUtemp_read_interval" => (int)$_POST['CPUtemp_read_interval'],
