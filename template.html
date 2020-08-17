@@ -82,7 +82,7 @@ span.value {
     <h3>DS18B20</h3>
     <ul style="list-style-type:none;">
 <?php  foreach ($rpimskeys as $key) { $sensor_type = 'DS18B20-'; if (strpos($key, $sensor_type) !== false) {?>
-        <li><?php $key?> Temperature: <span class="value"><?=round($rpims[$key],2)?> &#8451</span></li>
+        <li><?=$key?> Temperature: <span class="value"><?=round($rpims[$key],2)?> &#8451</span></li>
 <?php }}?>
     </ul>
 </div>
