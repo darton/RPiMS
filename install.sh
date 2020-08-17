@@ -33,7 +33,7 @@ sudo sed -i 's/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/g' $PHPFPMINI
 WWWCONF=$(sudo find /etc/ \(  -name "www.conf" \))
 sudo sed -i 's/user = www-data/user = pi/g' $WWWCONF
 sudo sed -i 's/group = www-data/group = pi/g' $WWWCONF
-PHPFPMSERVICE=$(sudo systemctl -a |grep fpm.service|awk '{print $1}')
+PHPFPMSERVICE=$(sudo systemctl -a |grep fpm.service|awk '{print $1}'|grep php)
 sudo systemctl restart $PHPFPMSERVICE
 sudo systemctl enable $PHPFPMSERVICE
 sudo mv $installdir/index.php /var/www/html/
