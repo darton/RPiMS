@@ -316,12 +316,12 @@ def lcd_st7735():
 
     logging.basicConfig(filename='/tmp/rpims_serial_display.log', level=logging.DEBUG, format='%(asctime)s %(levelname)s %(name)s %(message)s')
     logger=logging.getLogger(__name__)
-
+    display_rotate = config['serial_display_rotate']
     serial = spi(device=0, port=0, bus_speed_hz = 8000000, transfer_size = 4096, gpio_DC = 25, gpio_RST = 27)
 
     try:
         device = st7735(serial)
-        device = st7735(serial, width=128, height=128, h_offset=1, v_offset=2, bgr=True, persist=False)
+        device = st7735(serial, width=128, height=128, h_offset=1, v_offset=2, bgr=True, persist=False, rotate=display_rotate)
 
         while True:
             #get data from redis db
