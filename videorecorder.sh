@@ -14,7 +14,7 @@
 now=$(date +%H%M%S_%m_%d_%Y)
 location=$(redis-cli get location)
 
-video_dir=/home/pi/Video
+video_dir=/home/pi/Videos
 video_file=pivideo_$now
 
 [[ -d $video_dir ]] || mkdir $video_dir
