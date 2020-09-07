@@ -49,6 +49,9 @@ sudo curl -sS https://raw.githubusercontent.com/darton/RPiMS/master/install.sh |
 
 ### Setup
 
+http://ipaddress/setup.php
+
+
 Prepare zabbix agent
 
 ```
