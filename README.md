@@ -52,26 +52,6 @@ sudo curl -sS https://raw.githubusercontent.com/darton/RPiMS/master/install.sh |
 http://ipaddress/setup.php
 
 
-Prepare zabbix agent
-
-```
-sudo nano /etc/zabbix/zabbix_agentd.conf.d/zabbix-rpims.conf 
-```
-
-Modify Server and ServerActive:
-
-```
-Server=127.0.0.1, zabbix.example.com
-
-ServerActive=zabbix.example.com
-```
-
-Restart Zabbix service
-
-```
-sudo systemctl restart zabbix-agent.service
-```
-
 Start/Stop RPIMS
 ```
 sudo systemctl start rpims.service
