@@ -377,3 +377,5 @@ Optional
 * [Configuring wifi in Linux with wpa_supplicant](https://shapeshed.com/linux-wifi/)
 
 * [Raspberry Pi Zero OTG Mode](https://gist.github.com/gbaman/50b6cca61dd1c3f88f41)
+
+* [RPi - Setting up a wireless LAN via the command line](https://www.raspberrypi.org/documentation/configuration/wireless/wireless-cli.md)
