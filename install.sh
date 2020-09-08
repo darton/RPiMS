@@ -52,7 +52,7 @@ echo 'zabbix ALL=(ALL) NOPASSWD: /home/pi/scripts/RPiMS/redis-get-data.py' | sud
 #rm $installdir/zabbix-rpims.conf
 #openssl rand -hex 32 | sudo tee /etc/zabbix/zabbix_agentd.conf.d/zabbix_agentd.psk
 sudo cp $installdir/zabbix_rpims_userparameter.conf | /var/www/html/conf
-sudo cp $installdir/  | /zabbix_agentd.conf.d/
+sudo cp $installdir/zabbix_rpims.conf  | /etc/zabbix/zabbix_agentd.conf.d/
 sudo systemctl restart zabbix-agent.service
 sudo systemctl enable zabbix-agent.service
 
