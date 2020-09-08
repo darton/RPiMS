@@ -58,148 +58,6 @@ sudo systemctl start rpims.service
 sudo systemclt stop rpims.service
 ```
 
-## Configure if you have RTC (DS3231 I2C)
-
-1. I2C interface should be enabled. 
-
-```
-sudo raspi-config
-```
-Select Advaced Options -> I2C -> <Yes> 
-
-2. Edit the configuration file to add a new device. 
-
-```
-sudo vi /boot/config.txt
-```
-Add a new RTC device DS3231 to the device tree 
-
-```
-dtoverlay=i2c-rtc,ds3231
-```
-
-Reboot to take effect. About Device Tree, see: `cat /boot/overlay/README` 
-
-```
-sudo reboot
-```
-
-3. Read the Hardware Clock. 
-```
-sudo hwclock -r
-```
-Read the system time: 
-```
-date
-```
-4. Set the Hardware Clock to the time given by the `--date` option. 
-```
-sudo hwclock --set --date="Aug-22-2019 08:29:00"
-```
-5. Set the System Time from the Hardware Clock. 
-```
-sudo hwclock -s
-```
-6. Read the RTC and system times. 
-```
-sudo hwclock -r; date
-```
-Remove fake-hwclock
-
-```
-sudo apt-get -y remove fake-hwclock
-
-sudo update-rc.d -f fake-hwclock remove
-
-sudo systemctl disable fake-hwclock 
-
-sudo update-rc.d hwclock.sh enable
-
-sudo nano /etc/rc.local
-```
-
-Add the following lines to the file: `/etc/rc.local`
-
-```
-sudo nano /etc/rc.local 
-```
-Add this commnads
-```
-sudo hwclock -s
-
-date
-```
-Just before the `exit 0`
-
-Restart your Pi and check the I2C state again with `i2cdetect -y 1` to the RTC address is not UU anymore. 
-```
-sudo sync
-sudo reboot
-```
-
-## Configuration testing I2C devices
-
-```
-sudo apt-get install i2c-tools
-```
-
-Optionally, to improve permformance, increase the I2C baudrate from the default of 100KHz to 400KHz by altering /boot/config.txt to include:
-```
-dtparam=i2c_arm=on,i2c_baudrate=400000
-```
-Next check that the device is communicating properly.
-
-```
-$ i2cdetect -y 1
-       0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f
-  00:          -- -- -- -- -- -- -- -- -- -- -- -- --
-  10: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-  20: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-  30: -- -- -- -- -- -- -- -- -- -- -- -- 3c -- -- --
-  40: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-  50: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-  60: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-  70: -- -- -- -- -- -- 76 --
-  ```
-
-## Configuration testing picamera
-```
-raspivid -o test.h264
-
-raspistill -o test.jpg
-
-rtsp://raspberrypi:8554/
-```
-
-## Configuration testing zabbix-agent
-```
-sudo apt-get  install zabbix-proxy-sqlite3
-
-sudo zabbix_get -s 127.0.0.1 -k rpims.cputemp[2] --tls-connect=psk --tls-psk-identity="$(awk -F\= '/TLSPSKIdentity/ {print $2}' /var/www/html/zabbix_agentd.conf)" --tls-psk-file=/var/www/html/zabbix_agentd.psk
-
-
-sudo zabbix_get -s 127.0.0.1 -k rpims.ds18b20[2] --tls-connect=psk --tls-psk-identity="$(awk -F\= '/TLSPSKIdentity/ {print $2}' /var/www/html/zabbix_agentd.conf)" --tls-psk-file=/var/www/html/zabbix_agentd.psk
-
-sudo zabbix_get -s 127.0.0.1 -k rpims.ds18b20[4] --tls-connect=psk --tls-psk-identity="$(awk -F\= '/TLSPSKIdentity/ {print $2}' /var/www/html/zabbix_agentd.conf)" --tls-psk-file=/var/www/html/zabbix_agentd.psk
-
-
-sudo zabbix_get -s 127.0.0.1 -k rpims.bme280[2] --tls-connect=psk --tls-psk-identity="$(awk -F\= '/TLSPSKIdentity/ {print $2}' /var/www/html/zabbix_agentd.conf)" --tls-psk-file=/var/www/html/zabbix_agentd.psk
-
-sudo zabbix_get -s 127.0.0.1 -k rpims.bme280[4] --tls-connect=psk --tls-psk-identity="$(awk -F\= '/TLSPSKIdentity/ {print $2}' /var/www/html/zabbix_agentd.conf)" --tls-psk-file=/var/www/html/zabbix_agentd.psk
-
-sudo zabbix_get -s 127.0.0.1 -k rpims.bm280[6] --tls-connect=psk --tls-psk-identity="$(awk -F\= '/TLSPSKIdentity/ {print $2}' /var/www/html/zabbix_agentd.conf)" --tls-psk-file=/var/www/html/zabbix_agentd.psk
-
-
-sudo zabbix_get -s 127.0.0.1 -k rpims.dht22[2] --tls-connect=psk --tls-psk-identity="$(awk -F\= '/TLSPSKIdentity/ {print $2}' /var/www/html/zabbix_agentd.conf)" --tls-psk-file=/var/www/html/zabbix_agentd.psk
-
-sudo zabbix_get -s 127.0.0.1 -k rpims.dht22[4] --tls-connect=psk --tls-psk-identity="$(awk -F\= '/TLSPSKIdentity/ {print $2}' /var/www/html/zabbix_agentd.conf)" --tls-psk-file=/var/www/html/zabbix_agentd.psk
-
-
-
-zabbix_get -s 127.0.0.1 -k "system.cpu.load[all,avg1]" --tls-connect=psk --tls-psk-identity="$(awk -F\= '/TLSPSKIdentity/ {print $2}' /var/www/html/zabbix_agentd.conf)" --tls-psk-file=/var/www/html/zabbix_agentd.psk
-
-```
-
 ## Hardware setup - Raspberry Pi
 
  - Temperature, Humidity, Pressure Sensor BME280
@@ -359,3 +217,144 @@ Optional
 * [Raspberry Pi Zero OTG Mode](https://gist.github.com/gbaman/50b6cca61dd1c3f88f41)
 
 * [RPi - Setting up a wireless LAN via the command line](https://www.raspberrypi.org/documentation/configuration/wireless/wireless-cli.md)
+
+## Configure if you have RTC (DS3231 I2C)
+
+1. I2C interface should be enabled. 
+
+```
+sudo raspi-config
+```
+Select Advaced Options -> I2C -> <Yes> 
+
+2. Edit the configuration file to add a new device. 
+
+```
+sudo vi /boot/config.txt
+```
+Add a new RTC device DS3231 to the device tree 
+
+```
+dtoverlay=i2c-rtc,ds3231
+```
+
+Reboot to take effect. About Device Tree, see: `cat /boot/overlay/README` 
+
+```
+sudo reboot
+```
+
+3. Read the Hardware Clock. 
+```
+sudo hwclock -r
+```
+Read the system time: 
+```
+date
+```
+4. Set the Hardware Clock to the time given by the `--date` option. 
+```
+sudo hwclock --set --date="Aug-22-2019 08:29:00"
+```
+5. Set the System Time from the Hardware Clock. 
+```
+sudo hwclock -s
+```
+6. Read the RTC and system times. 
+```
+sudo hwclock -r; date
+```
+Remove fake-hwclock
+
+```
+sudo apt-get -y remove fake-hwclock
+
+sudo update-rc.d -f fake-hwclock remove
+
+sudo systemctl disable fake-hwclock 
+
+sudo update-rc.d hwclock.sh enable
+
+sudo nano /etc/rc.local
+```
+
+Add the following lines to the file: `/etc/rc.local`
+
+```
+sudo nano /etc/rc.local 
+```
+Add this commnads
+```
+sudo hwclock -s
+
+date
+```
+Just before the `exit 0`
+
+Restart your Pi and check the I2C state again with `i2cdetect -y 1` to the RTC address is not UU anymore. 
+```
+sudo sync
+sudo reboot
+```
+
+## Configuration testing I2C devices
+
+```
+sudo apt-get install i2c-tools
+```
+
+Optionally, to improve permformance, increase the I2C baudrate from the default of 100KHz to 400KHz by altering /boot/config.txt to include:
+```
+dtparam=i2c_arm=on,i2c_baudrate=400000
+```
+Next check that the device is communicating properly.
+
+```
+$ i2cdetect -y 1
+       0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f
+  00:          -- -- -- -- -- -- -- -- -- -- -- -- --
+  10: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+  20: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+  30: -- -- -- -- -- -- -- -- -- -- -- -- 3c -- -- --
+  40: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+  50: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+  60: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+  70: -- -- -- -- -- -- 76 --
+  ```
+
+## Configuration testing picamera
+```
+raspivid -o test.h264
+
+raspistill -o test.jpg
+
+rtsp://raspberrypi:8554/
+```
+
+## Configuration testing zabbix-agent
+```
+sudo apt-get  install zabbix-proxy-sqlite3
+
+sudo zabbix_get -s 127.0.0.1 -k rpims.cputemp[2] --tls-connect=psk --tls-psk-identity="$(awk -F\= '/TLSPSKIdentity/ {print $2}' /var/www/html/zabbix_agentd.conf)" --tls-psk-file=/var/www/html/zabbix_agentd.psk
+
+
+sudo zabbix_get -s 127.0.0.1 -k rpims.ds18b20[2] --tls-connect=psk --tls-psk-identity="$(awk -F\= '/TLSPSKIdentity/ {print $2}' /var/www/html/zabbix_agentd.conf)" --tls-psk-file=/var/www/html/zabbix_agentd.psk
+
+sudo zabbix_get -s 127.0.0.1 -k rpims.ds18b20[4] --tls-connect=psk --tls-psk-identity="$(awk -F\= '/TLSPSKIdentity/ {print $2}' /var/www/html/zabbix_agentd.conf)" --tls-psk-file=/var/www/html/zabbix_agentd.psk
+
+
+sudo zabbix_get -s 127.0.0.1 -k rpims.bme280[2] --tls-connect=psk --tls-psk-identity="$(awk -F\= '/TLSPSKIdentity/ {print $2}' /var/www/html/zabbix_agentd.conf)" --tls-psk-file=/var/www/html/zabbix_agentd.psk
+
+sudo zabbix_get -s 127.0.0.1 -k rpims.bme280[4] --tls-connect=psk --tls-psk-identity="$(awk -F\= '/TLSPSKIdentity/ {print $2}' /var/www/html/zabbix_agentd.conf)" --tls-psk-file=/var/www/html/zabbix_agentd.psk
+
+sudo zabbix_get -s 127.0.0.1 -k rpims.bm280[6] --tls-connect=psk --tls-psk-identity="$(awk -F\= '/TLSPSKIdentity/ {print $2}' /var/www/html/zabbix_agentd.conf)" --tls-psk-file=/var/www/html/zabbix_agentd.psk
+
+
+sudo zabbix_get -s 127.0.0.1 -k rpims.dht22[2] --tls-connect=psk --tls-psk-identity="$(awk -F\= '/TLSPSKIdentity/ {print $2}' /var/www/html/zabbix_agentd.conf)" --tls-psk-file=/var/www/html/zabbix_agentd.psk
+
+sudo zabbix_get -s 127.0.0.1 -k rpims.dht22[4] --tls-connect=psk --tls-psk-identity="$(awk -F\= '/TLSPSKIdentity/ {print $2}' /var/www/html/zabbix_agentd.conf)" --tls-psk-file=/var/www/html/zabbix_agentd.psk
+
+
+
+zabbix_get -s 127.0.0.1 -k "system.cpu.load[all,avg1]" --tls-connect=psk --tls-psk-identity="$(awk -F\= '/TLSPSKIdentity/ {print $2}' /var/www/html/zabbix_agentd.conf)" --tls-psk-file=/var/www/html/zabbix_agentd.psk
+```
