@@ -6,7 +6,7 @@ gethostip.sh
 videostreamer.sh
 videorecorder.sh
 zabbix_sender.sh
-zabbix-rpims.conf
+zabbix_rpims.conf
 nginx-default
 index.php
 index_html.php
