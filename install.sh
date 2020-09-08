@@ -52,9 +52,10 @@ sudo systemctl enable nginx
 
 sudo apt-get -y install zabbix-agent
 echo 'zabbix ALL=(ALL) NOPASSWD: /home/pi/scripts/RPiMS/redis-get-data.py' | sudo EDITOR='tee -a' visudo
-cat $installdir/zabbix-rpims.conf | sed s/TLSPSKIdentity=/TLSPSKIdentity=$(openssl rand -hex 8)/ |sudo tee /etc/zabbix/zabbix_agentd.conf.d/zabbix-rpims.conf
-rm $installdir/zabbix-rpims.conf
-openssl rand -hex 32 | sudo tee /etc/zabbix/zabbix_agentd.conf.d/zabbix_agentd.psk
+#cat $installdir/zabbix-rpims.conf | sed s/TLSPSKIdentity=/TLSPSKIdentity=$(openssl rand -hex 8)/ |sudo tee /etc/zabbix/zabbix_agentd.conf.d/zabbix-rpims.conf
+#rm $installdir/zabbix-rpims.conf
+#openssl rand -hex 32 | sudo tee /etc/zabbix/zabbix_agentd.conf.d/zabbix_agentd.psk
+cp $installdir/zabbix-rpims.conf | /var/www/html/conf
 sudo systemctl restart zabbix-agent.service
 sudo systemctl enable zabbix-agent.service
 
