@@ -36,11 +36,14 @@ sudo sed -i 's/group = www-data/group = pi/g' $WWWCONF
 PHPFPMSERVICE=$(sudo systemctl -a |grep fpm.service|awk '{print $1}'|grep php)
 sudo systemctl restart $PHPFPMSERVICE
 sudo systemctl enable $PHPFPMSERVICE
-sudo mv $installdir/index.php /var/www/html/
-sudo mv $installdir/template.html /var/www/html/
-sudo mv $installdir/setup.php /var/www/html/
-sudo mv $installdir/form.php /var/www/html/
-sudo mv $installdir/w3.css /var/www/html/
+for item in index.php etup.php form.php template.html w3.css
+   do sudo mv $installdir/$item /var/www/html/
+done
+#sudo mv $installdir/index.php /var/www/html/
+#sudo mv $installdir/template.html /var/www/html/
+#sudo mv $installdir/setup.php /var/www/html/
+#sudo mv $installdir/form.php /var/www/html/
+#sudo mv $installdir/w3.css /var/www/html/
 sudo mv /etc/nginx/sites-available/default /etc/nginx/sites-available/default.org
 sudo mv $installdir/nginx-default /etc/nginx/sites-available/default
 sudo chown -R pi.pi /var/www/html 
