@@ -48,9 +48,9 @@ sudo curl -sS https://raw.githubusercontent.com/darton/RPiMS/master/install.sh |
 ```
 
 ### Setup
-
+```
 http://rpiipaddress/setup.php
-
+```
 
 Start/Stop RPIMS
 ```
