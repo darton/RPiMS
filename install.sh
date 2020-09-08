@@ -36,14 +36,10 @@ sudo sed -i 's/group = www-data/group = pi/g' $WWWCONF
 PHPFPMSERVICE=$(sudo systemctl -a |grep fpm.service|awk '{print $1}'|grep php)
 sudo systemctl restart $PHPFPMSERVICE
 sudo systemctl enable $PHPFPMSERVICE
-for item in index.php etup.php form.php template.html w3.css
+for item in index.php setup.php setup_html.php setup_form.php index_html.php w3.css
    do sudo mv $installdir/$item /var/www/html/
 done
-#sudo mv $installdir/index.php /var/www/html/
-#sudo mv $installdir/template.html /var/www/html/
-#sudo mv $installdir/setup.php /var/www/html/
-#sudo mv $installdir/form.php /var/www/html/
-#sudo mv $installdir/w3.css /var/www/html/
+
 sudo mv /etc/nginx/sites-available/default /etc/nginx/sites-available/default.org
 sudo mv $installdir/nginx-default /etc/nginx/sites-available/default
 sudo chown -R pi.pi /var/www/html 
@@ -55,7 +51,8 @@ echo 'zabbix ALL=(ALL) NOPASSWD: /home/pi/scripts/RPiMS/redis-get-data.py' | sud
 #cat $installdir/zabbix-rpims.conf | sed s/TLSPSKIdentity=/TLSPSKIdentity=$(openssl rand -hex 8)/ |sudo tee /etc/zabbix/zabbix_agentd.conf.d/zabbix-rpims.conf
 #rm $installdir/zabbix-rpims.conf
 #openssl rand -hex 32 | sudo tee /etc/zabbix/zabbix_agentd.conf.d/zabbix_agentd.psk
-cp $installdir/zabbix-rpims.conf | /var/www/html/conf
+sudo cp $installdir/zabbix_rpims_userparameter.conf | /var/www/html/conf
+sudo cp $installdir/  | /zabbix_agentd.conf.d/
 sudo systemctl restart zabbix-agent.service
 sudo systemctl enable zabbix-agent.service
 
