@@ -36,7 +36,7 @@ sudo sed -i 's/group = www-data/group = pi/g' $WWWCONF
 PHPFPMSERVICE=$(sudo systemctl -a |grep fpm.service|awk '{print $1}'|grep php)
 sudo systemctl restart $PHPFPMSERVICE
 sudo systemctl enable $PHPFPMSERVICE
-for item in index.php setup.php setup_html.php setup_form.php index_html.php w3.css
+for item in index.php index_html.php setup.php setup_html.php setup_form.php w3.css
    do sudo mv $installdir/$item /var/www/html/
 done
 
