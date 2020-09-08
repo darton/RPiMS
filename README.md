@@ -375,3 +375,5 @@ Optional
 * [Color Names](https://www.w3schools.com/colors/colors_names.asp)
 
 * [Configuring wifi in Linux with wpa_supplicant](https://shapeshed.com/linux-wifi/)
+
+* [Raspberry Pi Zero OTG Mode](https://gist.github.com/gbaman/50b6cca61dd1c3f88f41)
