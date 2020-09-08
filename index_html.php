@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>RPiMS</title>
+<meta charset="utf-8"/>
+<meta http-equiv="refresh" content="2"/>
+<style>
+span.value {
+  font-size: 100%;
+  color: yellow;
+}
+.rpimsbg
+{
+  background-color: steelblue;
+  #background-color: slategray;
+}
+.header
+{
+  padding: 1px;
+  margin: 0px;
+}
+.footer
+{
+  padding: 1px;
+  margin: 0px;
+}
+
+.rpims {
+ #background-color: #6159DB;
+  background-color: darkslateblue;
+  color: white;
+  padding: 8px;
+  margin: 8px;
+  font-size: 160%;
+}
+.sensors {
+  background-color: darkslategray;
+  color: white;
+  padding: 8px;
+  margin: 8px;
+  font-size: 160%;
+}
+</style>
+</head>
+<body>
+
+<div class="rpimsbg">
+<div class="header"></div>
+<div class=rpims>
+    <h3><?=$rpims['hostname']?></h3>
+    <ul style="list-style-type:none;">
+    <li>Location: <?=$rpims["location"]?></li>
+<?php if ($rpims["use_CPU_sensor"] == "True") {?>
+    <li>RPiMS CPU Temperature: <span class="value"><?=round($rpims["CPU_Temperature"],2)?> &#8451</span></li>
+<?php }?>
+    </ul>
+</div>
+
+<?php if ($rpims["use_BME280_sensor"] == "True") {?>
+<div class="sensors">
+    <h3>BME280</h3>
+    <ul style="list-style-type:none;">
+        <li>Temperature: <span class="value"><?=round($rpims["BME280_Temperature"],2)?> &#8451</span></li>
+        <li>Humidity: <span class="value"><?=round($rpims["BME280_Humidity"],2)?> %</span></li>
+        <li>Pressure: <span class="value"><?=round($rpims["BME280_Pressure"],0)?> hPa</span></li>
+    </ul>
+</div>
+<?php }?>
+
+<?php if ($rpims["use_DHT_sensor"] == "True") {?>
+<div class="sensors">
+    <h3><?=$rpims["DHT_type"]?></h3>
+    <ul style="list-style-type:none;">
+        <li>Temperature: <span class="value"><?=round($rpims["DHT_Temperature"],2)?> &#8451</span></li>
+        <li>Humidity: <span class="value"><?=round($rpims["DHT_Humidity"],2)?> %</span></li>
+    </ul>
+</div>
+<?php }?>
+
+<?php if ($rpims["use_DS18B20_sensor"] == "True") {?>
+<div class="sensors">
+    <h3>DS18B20</h3>
+    <ul style="list-style-type:none;">
+<?php  foreach ($rpimskeys as $key) { $sensor_type = 'DS18B20-'; if (strpos($key, $sensor_type) !== false) {?>
+        <li><?php $key?> Temperature: <span class="value"><?=round($rpims[$key],2)?> &#8451</span></li>
+<?php }}?>
+    </ul>
+</div>
+<?php }?>
+
+<?php if ($rpims["use_door_sensor"] == "True") {?>
+<div class="sensors">
+    <h3>Door sensors</h3>
+    <ul style="list-style-type:none;">
+    <?php foreach ($door_sensors as $key => $value) {
+    echo "<li>"; echo $key; echo "<span class='value'>: "; echo $rpims["$key"]; echo " </span></li>";
+}
+?>
+    </ul>
+</div>
+<?php }?>
+
+<?php if ($rpims["use_motion_sensor"] == "True") {?>
+<div class="sensors">
+    <h3>Motion sensors</h3>
+    <ul style="list-style-type:none;">
+<?php foreach ($motion_sensors as $key => $value) {
+    echo "<li>"; echo $key; echo "<span class='value'>: "; echo $rpims["$key"]; echo " </span></li>";
+}
+?>
+    </ul>
+</div>
+<?php }?>
+
+<?php if ($rpims["use_picamera"] == "True") {?>
+<div class="sensors">
+    <h3>Video Stream Url</h3>
+    <ul style="list-style-type:none;">
+    <li>rtsp://<span><?=$rpims["hostip"]?>:8554/</span></li>
+    </ul>
+</div>
+<?php }?>
+
+<div class="footer"></div>
+</div>
+<div></div>
+
+</body>
+</html>

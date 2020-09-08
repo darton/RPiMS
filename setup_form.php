@@ -103,6 +103,12 @@ $zabbix_agent = array(
     "hostname" => $_POST['hostname'],
     "chassis"  => "embedded",
     "deployment" => "RPiMS",
+    "TLSPSKIdentity" => $_POST['TLSPSKIdentity'],
+    "TLSConnect" => "psk",
+    "TLSAccept" => "psk",
+    "TLSPSK" =>  $_POST['TLSPSK'],
+    "TLSPSKFile" => "/var/www/html/conf/zabbix_agentd.psk",
+    "Timeout" => (int)$_POST['Timeout'],
 );
 
 $rpims = array(
@@ -114,8 +120,37 @@ $rpims = array(
     "zabbix_agent"   => $zabbix_agent,
 );
 
-yaml_emit_file ("/var/www/html/rpims.yaml", $rpims, YAML_UTF8_ENCODING, YAML_ANY_BREAK);
+yaml_emit_file ("/var/www/html/conf/rpims.yaml", $rpims, YAML_UTF8_ENCODING, YAML_ANY_BREAK);
 exec('sudo /bin/systemctl restart rpims.service');
+exec('sudo /bin/systemctl restart zabbix-agent.service');
+
+$zabconfile = fopen("/var/www/html/conf/zabbix_agentd.conf", "w") or die("Unable to open file!");
+$zabpskfile = fopen("/var/www/html/conf/zabbix_agentd.psk", "w") or die("Unable to open file!");
+$Hostname="Hostname=".$zabbix_agent["hostname"]."\n";
+$Server="Server=127.0.0.1,".$zabbix_agent["zabbix_server"]."\n";
+$ServerActive="ServerActive=".$zabbix_agent["zabbix_server_active"]."\n";
+$TLSPSKIdentity="TLSPSKIdentity=".$zabbix_agent["TLSPSKIdentity"]."\n";
+$TLSConnect="TLSConnect=".$zabbix_agent["TLSConnect"]."\n";
+$TLSAccept="TLSAccept=".$zabbix_agent["TLSAccept"]."\n";
+$Timeout="Timeout=".$zabbix_agent["Timeout"]."\n";
+$TLSPSKFile="TLSPSKFile=".$zabbix_agent["TLSPSKFile"]."\n";
+
+$TLSPSK=$zabbix_agent["TLSPSK"];
+
+fwrite($zabconfile, $Server);
+fwrite($zabconfile, $ServerActive);
+fwrite($zabconfile, $Hostname);
+fwrite($zabconfile, $TLSPSKIdentity);
+fwrite($zabconfile, $TLSPSKFile);
+fwrite($zabconfile, $TLSConnect);
+fwrite($zabconfile, $TLSAccept);
+fwrite($zabconfile, $Timeout);
+
+fwrite($zabpskfile, $TLSPSK);
+
+fclose($zabconfile);
+fclose($zabpskfile);
+
 header("Location: /setup.php");
 
 ?>
