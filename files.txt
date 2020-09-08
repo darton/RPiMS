@@ -9,8 +9,9 @@ zabbix_sender.sh
 zabbix-rpims.conf
 nginx-default
 index.php
+index_html.php
 setup.php
-form.php
-template.html
+setup_html.php
+setup_form.php
 motd
 cron
