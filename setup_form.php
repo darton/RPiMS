@@ -48,7 +48,6 @@ $GPIO = array(
     "GPIO_12" => $_POST['GPIO_12'],
     "GPIO_13" => $_POST['GPIO_13'],
     "GPIO_16" => $_POST['GPIO_16'],
-    "GPIO_17" => $_POST['GPIO_17'],
     "GPIO_18" => $_POST['GPIO_18'],
     "GPIO_19" => $_POST['GPIO_19'],
     "GPIO_20" => $_POST['GPIO_20'],

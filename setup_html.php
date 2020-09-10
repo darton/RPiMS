@@ -207,6 +207,7 @@
 <fieldset>
 <legend>Input configuration</legend>
 <table id="t01" class="w3-table">
+
 <tr><td>
 <label for="GPIO_5">GPIO 5 input type:</label>
 </td>
@@ -291,27 +292,6 @@ if ($GPIO['GPIO_16']['type'] == 'DoorSensor' OR $GPIO['GPIO_16']['type'] == 'Shu
 </td>
 <?php } ?>
 <label><input name="GPIO_16[gpio_pin]" type="hidden" value="16"></label>
-</tr>
-
-<tr><td>
-<label for="GPIO_17">GPIO 17 input type:</label>
-</td>
-<td>
-<select id="GPIO_17" name="GPIO_17[type]" style="width: 160px;" class="w3-select">
-  <option <?php if ($GPIO['GPIO_17']['type'] == 'DoorSensor') echo 'selected="selected"'; ?> value="DoorSensor">Door Sensor</option>
-  <option <?php if ($GPIO['GPIO_17']['type'] == 'MotionSensor') echo 'selected="selected"'; ?> value="MotionSensor">Motion Sensor</option>
-</select>
-</td>
-<?php
-if ($GPIO['GPIO_17']['type'] == 'DoorSensor'){
-    if ($GPIO['GPIO_17']['hold_time'] == 0 ){ $GPIO_17_hold_time = 1;}
-    else { $GPIO_17_hold_time = $GPIO['GPIO_17']['hold_time']; }
-?>
-<td>
-<label>Hold Time: <input name="GPIO_17[hold_time]" type="number" min="1" max="10"  value="<?=$GPIO_17_hold_time?>" size="2"></label>
-<?php } ?>
-</td>
-<label><input name="GPIO_17[gpio_pin]" type="hidden" value="17"></label>
 </tr>
 
 <tr><td>

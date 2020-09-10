@@ -6,7 +6,6 @@ $GPIO_6 = array();
 $GPIO_12 = array();
 $GPIO_13 = array();
 $GPIO_16 = array();
-$GPIO_17 = array();
 $GPIO_18 = array();
 $GPIO_19 = array();
 $GPIO_20 = array();
