@@ -197,8 +197,7 @@
 </td>
 <td>
 <select id="DHT_pin" name="DHT_pin" class="w3-select">
-  <option value = 17 <?php if ($DHT_pin == '17') echo 'selected="selected"'; ?> >17</option>
-  <option value = 22 <?php if ($DHT_pin == '22') echo 'selected="selected"'; ?> >22</option>
+  <option value = 17>17</option>
 </select>
 </td></tr>
 </table>
