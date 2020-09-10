@@ -55,6 +55,7 @@ $DHT_pin = $rpims['setup']['DHT_pin'];
 $motion_sensors_gpio = $rpims['motion_sensors'];
 $door_sensors_gpio = $rpims['door_sensors'];
 $system_buttons_gpio = $rpims['system_buttons'];
+$reserved_gpio = $rpims['reserved_gpio'];
 
 foreach ($door_sensors_gpio as $key => $value) {
     $gpioname = 'GPIO_'.$value['gpio_pin'] ;
@@ -69,6 +70,10 @@ foreach ($system_buttons_gpio as $key => $value) {
     $gpioname = 'GPIO_'.$value['gpio_pin'];
     $GPIO[$gpioname]['type'] = 'ShutdownButton';
     $GPIO[$gpioname]['hold_time'] = $value['hold_time'];
+}
+foreach ($reserved_gpio as $key => $value) {
+    $gpioname = 'GPIO_'.$value['gpio_pin'];
+    $GPIO[$gpioname]['type'] = 'Reserved';
 }
 
 //var_dump($GPIO['GPIO_16']['hold_time']);

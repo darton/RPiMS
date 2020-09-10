@@ -12,7 +12,7 @@ setup:
   use_BME280_sensor: true
   use_DS18B20_sensor: false
   use_DHT_sensor: false
-  use_serial_display: true
+  use_serial_display: false
   serial_display_type: oled_sh1106_spi
   serial_display_rotate: 2
   serial_display_refresh_rate: 10
@@ -30,39 +30,42 @@ led_indicators:
     gpio_pin: 18
 door_sensors:
   door_sensor_1:
-    gpio_pin: 20
-    hold_time: 1
-  door_sensor_2:
     gpio_pin: 21
     hold_time: 1
-  door_sensor_3:
+  door_sensor_2:
     gpio_pin: 22
-    hold_time: 1
-  door_sensor_4:
-    gpio_pin: 23
     hold_time: 1
 motion_sensors:
   motion_sensor_1:
-    gpio_pin: 5
-  motion_sensor_2:
-    gpio_pin: 6
-  motion_sensor_3:
-    gpio_pin: 13
-  motion_sensor_4:
-    gpio_pin: 17
-  motion_sensor_5:
-    gpio_pin: 19
-  motion_sensor_6:
     gpio_pin: 26
 system_buttons:
   shutdown_button:
     gpio_pin: 16
     hold_time: 5
+reserved_gpio:
+  reserved_1:
+    gpio_pin: 5
+  reserved_2:
+    gpio_pin: 6
+  reserved_3:
+    gpio_pin: 13
+  reserved_4:
+    gpio_pin: 19
+  reserved_5:
+    gpio_pin: 20
+  reserved_6:
+    gpio_pin: 23
 zabbix_agent:
   zabbix_server: zabbix.example.com
   zabbix_server_active: zabbix.example.com
   location: Z1
-  hostname: rpims1.example.com
+  hostname: rpims1..example.com
   chassis: embedded
   deployment: RPiMS
+  TLSPSKIdentity: 596668c51fd9619
+  TLSConnect: psk
+  TLSAccept: psk
+  TLSPSK: da45f0faf5a803d625dee9027aeae56080554c496754d9471cdcaeab3b73d52d
+  TLSPSKFile: /var/www/html/conf/zabbix_agentd.psk
+  Timeout: 3
 ...

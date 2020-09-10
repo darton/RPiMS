@@ -41,6 +41,7 @@ $door_sensors = array();
 $system_buttons = array();
 $motion_sensors = array();
 $led_indicators = array();
+$reserved_gpio = array();
 
 $GPIO = array(
     "GPIO_5" => $_POST['GPIO_5'],
@@ -58,12 +59,20 @@ $GPIO = array(
 );
 
 $count = 1;
-
 foreach ($GPIO as $key => $value) {
     if ($value['type'] == 'DoorSensor'){
         $varname = 'door_sensor_'.$count;
         $door_sensors[$varname]['gpio_pin'] = (int)$value['gpio_pin'];
         $door_sensors[$varname]['hold_time'] = (int)$value['hold_time'];
+    $count++;
+}
+}
+
+$count = 1;
+foreach ($GPIO as $key => $value) {
+    if ($value['type'] == 'Reserved'){
+        $varname = 'reserved_'.$count;
+        $reserved_gpio[$varname]['gpio_pin'] = (int)$value['gpio_pin'];
     $count++;
 }
 }
@@ -116,6 +125,7 @@ $rpims = array(
     "door_sensors"   => $door_sensors,
     "motion_sensors" => $motion_sensors,
     "system_buttons" => $system_buttons,
+    "reserved_gpio"  => $reserved_gpio,
     "zabbix_agent"   => $zabbix_agent,
 );
 
