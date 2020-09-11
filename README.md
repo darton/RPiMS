@@ -73,7 +73,7 @@ RPi   [GPIO.3 Pin 5] ----------------------------- [SDC]  BME280
 RPi    [GND - Pin 9] ----------------------------- [GND]  BME280
 ```
 
-- DS18B20 Temperature sensor
+- ### DS18B20 Temperature sensor
 ```
 RPi   [VCC 3V3 Pin 1] -----------------------------  [VCC]    DS18B20
                                                |
@@ -87,7 +87,7 @@ RPi  [GPIO.4 - Pin 7] ----------------------------- [DATA]   DS18B20
 RPi     [GND - Pin 9] ----------------------------- [GND]    DS18B20
 ```
 
- - Temperature and Humidity Sensor DHT11/DHT22/AM2302 (NOT RECOMMENDED, POOR QUALITY, UNSTABLE MEASUREMENTS)
+ - ### Temperature and Humidity Sensor DHT11/DHT22/AM2302 (NOT RECOMMENDED, POOR QUALITY, UNSTABLE MEASUREMENTS)
 ```
 RPi  [VCC 3V3 - Pin 1] -----------------------------  [VCC]    DHT22
                                                |
@@ -114,7 +114,7 @@ RPi  [VCC 3V3 - Pin 1] -- [LV] - LEVEL SHIFTER
 RPi      [GND - Pin 9] ---[GND] - LEVEL SHIFTER -------------- [GND]    DHT22
 ```
 
- - OLED Display
+ - ### OLED Display
 ```
 RPi  [VCC 3V3 pin 1] ----------------------------- [VCC]  OLED
 RPi   [GPIO.2 pin 3] ----------------------------- [SDA]  OLED
@@ -122,14 +122,14 @@ RPi   [GPIO.3 pin 5] ----------------------------- [SDC]  OLED
 RPi    [GND - pin 9] ----------------------------- [GND]  OLED
 ```
 
- - Hardware Clock
+ - ### Hardware Clock
 ```
 RPi  [VCC 3V3 pin 1] ----------------------------- [VCC]  DS3231
 RPi   [GPIO.2 pin 3] ----------------------------- [SDA]  DS3231
 RPi   [GPIO.3 pin 5] ----------------------------- [SDC]  DS3231
 ```
 
-Input Sensors 
+- ### Input Sensors 
 
 - Potential-free sensors like button, door/window sensors
 ```
@@ -138,7 +138,7 @@ RPi [GPIO.21] ---- [Output] (Door/window sensor 1)
 RPi [GPIO.20] ---- [Output] (Door/window sensor 2)
 RPi [GPIO.16] -----[Shutdown Button]
 ```
-- Digital sensors with binary output signal
+- ### Digital sensors with binary output signal
 ```
 RPi [GPIO.18 - pin 5] ---- [Output] (Motion sensor 1)
 RPi [GPIO.18 - pin 6] ---- [Output] (Motion sensor 2)
