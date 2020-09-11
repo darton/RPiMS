@@ -224,7 +224,7 @@ if ($GPIO['GPIO_5']['type'] == 'DoorSensor'){
     if ($GPIO['GPIO_5']['hold_time'] == 0 ){ $GPIO_5_hold_time = 1;}
     else { $GPIO_5_hold_time = $GPIO['GPIO_5']['hold_time']; }
 ?>
-<td><label>Hold Time: <input name="GPIO_5[hold_time]" type="number" min="1" max="10" value="<?=$GPIO_5_hold_time?>" size="2"></label></td>
+<td><label>Hold time: <input name="GPIO_5[hold_time]" type="number" min="1" max="10" value="<?=$GPIO_5_hold_time?>" size="2"></label></td>
 <?php } ?>
 <label><input name="GPIO_5[gpio_pin]" type="hidden" value="5"></label>
 </tr>
@@ -245,7 +245,7 @@ if ($GPIO['GPIO_6']['type'] == 'DoorSensor'){
     if ($GPIO['GPIO_6']['hold_time'] == 0 ){ $GPIO_6_hold_time = 1;}
     else { $GPIO_6_hold_time = $GPIO['GPIO_6']['hold_time']; }
 ?>
-<td><label>Hold Time: <input name="GPIO_6[hold_time]" type="number" min="1" max="10" value="<?=$GPIO_6_hold_time?>" size="2"></label></td>
+<td><label>Hold time: <input name="GPIO_6[hold_time]" type="number" min="1" max="10" value="<?=$GPIO_6_hold_time?>" size="2"></label></td>
 <?php } ?>
 <label><input name="GPIO_6[gpio_pin]" type="hidden" value="6"></label>
 </tr>
@@ -266,7 +266,7 @@ if ($GPIO['GPIO_13']['type'] == 'DoorSensor'){
     if ($GPIO['GPIO_13']['hold_time'] == 0 ){ $GPIO_13_hold_time = 1;}
     else { $GPIO_13_hold_time = $GPIO['GPIO_13']['hold_time']; }
 ?>
-<td><label>Hold Time: <input name="GPIO_13[hold_time]" type="number" min="1" max="10" value="<?=$GPIO_13_hold_time?>" size="2"></label></td>
+<td><label>Hold time: <input name="GPIO_13[hold_time]" type="number" min="1" max="10" value="<?=$GPIO_13_hold_time?>" size="2"></label></td>
 <?php } ?>
 <label><input name="GPIO_13[gpio_pin]" type="hidden" value="13"></label>
 </tr>
@@ -291,7 +291,7 @@ if ($GPIO['GPIO_16']['type'] == 'DoorSensor' OR $GPIO['GPIO_16']['type'] == 'Shu
     else { $GPIO_16_hold_time = $GPIO['GPIO_16']['hold_time']; }
 ?>
 <td>
-<label>Hold Time: <input name="GPIO_16[hold_time]" type="number" min="1" max="10"  value="<?=$GPIO_16_hold_time?>" size="2"></label>
+<label>Hold time: <input name="GPIO_16[hold_time]" type="number" min="1" max="10"  value="<?=$GPIO_16_hold_time?>" size="2"></label>
 </td>
 <?php } ?>
 <label><input name="GPIO_16[gpio_pin]" type="hidden" value="16"></label>
@@ -312,7 +312,7 @@ if ($GPIO['GPIO_19']['type'] == 'DoorSensor'){
     if ($GPIO['GPIO_19']['hold_time'] == 0 ){ $GPIO_19_hold_time = 1;}
     else { $GPIO_19_hold_time = $GPIO['GPIO_19']['hold_time']; }
 ?>
-<td><label>Hold Time: <input name="GPIO_19[hold_time]" type="number" min="1" max="10" value="<?=$GPIO_19_hold_time?>" size="2"></label></td>
+<td><label>Hold time: <input name="GPIO_19[hold_time]" type="number" min="1" max="10" value="<?=$GPIO_19_hold_time?>" size="2"></label></td>
 <?php } ?>
 <label><input name="GPIO_19[gpio_pin]" type="hidden" value="19"></label>
 </tr>
@@ -333,7 +333,7 @@ if ($GPIO['GPIO_20']['type'] == 'DoorSensor'){
     if ($GPIO['GPIO_20']['hold_time'] == 0 ){ $GPIO_20_hold_time = 1;}
     else { $GPIO_20_hold_time = $GPIO['GPIO_20']['hold_time']; }
 ?>
-<td><label>Hold Time: <input name="GPIO_20[hold_time]" type="number" min="1" max="10" value="<?=$GPIO_20_hold_time?>" size="2"></label></td>
+<td><label>Hold time: <input name="GPIO_20[hold_time]" type="number" min="1" max="10" value="<?=$GPIO_20_hold_time?>" size="2"></label></td>
 <?php } ?>
 <label><input name="GPIO_20[gpio_pin]" type="hidden" value="20"></label>
 </tr>
@@ -354,7 +354,7 @@ if ($GPIO['GPIO_21']['type'] == 'DoorSensor'){
     if ($GPIO['GPIO_21']['hold_time'] == 0 ){ $GPIO_21_hold_time = 1;}
     else { $GPIO_21_hold_time = $GPIO['GPIO_21']['hold_time']; }
 ?>
-<td><label>Hold Time: <input name="GPIO_21[hold_time]" type="number" min="1" max="10" value="<?=$GPIO_21_hold_time?>" size="2"></label></td>
+<td><label>Hold time: <input name="GPIO_21[hold_time]" type="number" min="1" max="10" value="<?=$GPIO_21_hold_time?>" size="2"></label></td>
 <?php } ?>
 <label><input name="GPIO_21[gpio_pin]" type="hidden" value="21"></label>
 </tr>
@@ -375,7 +375,7 @@ if ($GPIO['GPIO_22']['type'] == 'DoorSensor'){
     if ($GPIO['GPIO_22']['hold_time'] == 0 ){ $GPIO_22_hold_time = 1;}
     else { $GPIO_22_hold_time = $GPIO['GPIO_22']['hold_time']; }
 ?>
-<td><label>Hold Time: <input name="GPIO_22[hold_time]" type="number" min="1" max="10" value="<?=$GPIO_22_hold_time?>" size="2"></label></td>
+<td><label>Hold time: <input name="GPIO_22[hold_time]" type="number" min="1" max="10" value="<?=$GPIO_22_hold_time?>" size="2"></label></td>
 <?php } ?>
 <label><input name="GPIO_22[gpio_pin]" type="hidden" value="22"></label>
 </tr>
@@ -396,7 +396,7 @@ if ($GPIO['GPIO_23']['type'] == 'DoorSensor'){
     if ($GPIO['GPIO_23']['hold_time'] == 0 ){ $GPIO_23_hold_time = 1;}
     else { $GPIO_23_hold_time = $GPIO['GPIO_23']['hold_time']; }
 ?>
-<td><label>Hold Time: <input name="GPIO_23[hold_time]" type="number" min="1" max="10" value="<?=$GPIO_23_hold_time?>" size="2"></label></td>
+<td><label>Hold time: <input name="GPIO_23[hold_time]" type="number" min="1" max="10" value="<?=$GPIO_23_hold_time?>" size="2"></label></td>
 <?php } ?>
 <label><input name="GPIO_23[gpio_pin]" type="hidden" value="23"></label>
 </tr>
@@ -417,7 +417,7 @@ if ($GPIO['GPIO_26']['type'] == 'DoorSensor'){
     if ($GPIO['GPIO_26']['hold_time'] == 0 ){ $GPIO_26_hold_time = 1;}
     else { $GPIO_26_hold_time = $GPIO['GPIO_26']['hold_time']; }
 ?>
-<td><label>Hold Time: <input name="GPIO_26[hold_time]"  type="number" min="1" max="10" value="<?=$GPIO_26_hold_time?>" size="2"></label></td>
+<td><label>Hold time: <input name="GPIO_26[hold_time]"  type="number" min="1" max="10" value="<?=$GPIO_26_hold_time?>" size="2"></label></td>
 <?php } ?>
 <label><input name="GPIO_26[gpio_pin]" type="hidden" value="26"></label>
 </tr>
