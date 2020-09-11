@@ -392,7 +392,7 @@ logging.basicConfig(filename='/tmp/rpims.log', level=logging.DEBUG, format='%(as
 logger=logging.getLogger(__name__)
 
 try:
-    with open(r'/var/www/html/rpims.yaml') as file:
+    with open(r'/var/www/html/conf/rpims.yaml') as file:
         config_yaml = yaml.full_load(file)
 
 except Exception as err :
