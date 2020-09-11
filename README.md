@@ -65,7 +65,7 @@ DHT22 sensor is not reliable. Required library libgpiod_pulsein may take 100% CP
 
 ## Hardware setup - Raspberry Pi
 
- - Temperature, Humidity, Pressure Sensor BME280
+ - ### Temperature, Humidity, Pressure Sensor BME280
 ```
 RPi  [VCC 3V3 Pin 1] ----------------------------- [VCC]  BME280
 RPi   [GPIO.2 Pin 3] ----------------------------- [SDA]  BME280
