@@ -129,23 +129,8 @@ RPi   [GPIO.2 pin 3] ----------------------------- [SDA]  DS3231
 RPi   [GPIO.3 pin 5] ----------------------------- [SDC]  DS3231
 ```
 
-- ### Input Sensors 
-
-- Potential-free sensors like button, door/window sensors
-```
-RPi [GND] -------- GND for all Sensors
-RPi [GPIO.21] ---- [Output] (Door/window sensor 1)
-RPi [GPIO.20] ---- [Output] (Door/window sensor 2)
-RPi [GPIO.16] -----[Shutdown Button]
-```
-- ### Digital sensors with binary output signal
-```
-RPi [GPIO.18 - pin 5] ---- [Output] (Motion sensor 1)
-RPi [GPIO.18 - pin 6] ---- [Output] (Motion sensor 2)
-RPi [GPIO.18 - pin 13] --- [Output] (Motion sensor 3)
-RPi [GPIO.18 - pin 19] --- [Output] (Motion sensor 4)
-RPi [GPIO.18 - pin 26] --- [Output] (Motion sensor 5)
-```
+- Door Sensors it is potential-free sensors like button, door/window sensors
+- Motion Sensors it is digital sensors with binary output signal (3.3V)
 
 
 ## B.o.M - Bill of Materials
