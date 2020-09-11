@@ -429,7 +429,7 @@ if ($GPIO['GPIO_26']['type'] == 'DoorSensor'){
 <legend>Output configuration</legend>
 <table id="t01" class="w3-table">
 <tr><td>
-<label for="GPIO_12">GPIO 12:</label>
+<label for="GPIO_12">GPIO 12</label>
 </td>
 <td>
 <select id="GPIO_12" name="GPIO_12[type]" class="w3-select" style="width: 160px;">
@@ -441,7 +441,7 @@ if ($GPIO['GPIO_26']['type'] == 'DoorSensor'){
 </tr>
 
 <tr><td>
-<label for="GPIO_18">GPIO 18:</label>
+<label for="GPIO_18">GPIO 18</label>
 </td>
 <td>
 <select id="GPIO_18" name="GPIO_18[type]" class="w3-select" style="width: 160px;">
