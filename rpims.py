@@ -197,7 +197,7 @@ def get_ds18b20_data():
 def get_dht_data():
     import adafruit_dht
     pin = config['DHT_pin']
-    debug = "yes"
+    debug = "no"
     delay = 0
 
     if config['DHT_type'] == "DHT22":
