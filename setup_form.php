@@ -64,6 +64,7 @@ foreach ($GPIO as $key => $value) {
         $varname = 'door_sensor_'.$count;
         $door_sensors[$varname]['gpio_pin'] = (int)$value['gpio_pin'];
         $door_sensors[$varname]['hold_time'] = (int)$value['hold_time'];
+        $door_sensors[$varname]['name'] = $value['name'];
     $count++;
 }
 }
@@ -73,6 +74,7 @@ foreach ($GPIO as $key => $value) {
     if ($value['type'] == 'Reserved'){
         $varname = 'reserved_'.$count;
         $reserved_gpio[$varname]['gpio_pin'] = (int)$value['gpio_pin'];
+        $reserved_gpio[$varname]['name'] = $value['name'];
     $count++;
 }
 }
@@ -82,6 +84,7 @@ foreach ($GPIO as $key => $value) {
     if ($value['type'] == 'MotionSensor'){
         $varname = 'motion_sensor_'.$count;
         $motion_sensors[$varname]['gpio_pin'] = (int)$value['gpio_pin'];
+        $motion_sensors[$varname]['name'] = $value['name'];
     $count++;
 }
 }

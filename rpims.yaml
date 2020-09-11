@@ -6,7 +6,7 @@ setup:
   use_picamera_recording: false
   use_door_sensor: false
   use_motion_sensor: false
-  use_system_buttons: true
+  use_system_buttons: false
   use_led_indicators: false
   use_CPU_sensor: true
   use_BME280_sensor: true
@@ -30,42 +30,51 @@ led_indicators:
     gpio_pin: 18
 door_sensors:
   door_sensor_1:
-    gpio_pin: 21
+    gpio_pin: 6
     hold_time: 1
+    name: door1 door sensor
   door_sensor_2:
-    gpio_pin: 22
+    gpio_pin: 16
     hold_time: 1
+    name: door2 motion sensor
 motion_sensors:
   motion_sensor_1:
-    gpio_pin: 26
-system_buttons:
-  shutdown_button:
-    gpio_pin: 16
-    hold_time: 5
-reserved_gpio:
-  reserved_1:
     gpio_pin: 5
-  reserved_2:
-    gpio_pin: 6
-  reserved_3:
+    name: door1 motion sensor
+  motion_sensor_2:
     gpio_pin: 13
-  reserved_4:
+    name: door1 vibration sensor
+  motion_sensor_3:
     gpio_pin: 19
-  reserved_5:
+    name: door2 door sensor
+  motion_sensor_4:
     gpio_pin: 20
-  reserved_6:
+    name: door2 vibration sensor
+  motion_sensor_5:
+    gpio_pin: 21
+    name: smoke sensor
+  motion_sensor_6:
+    gpio_pin: 22
+    name: water sensor
+  motion_sensor_7:
     gpio_pin: 23
+    name: gas sensor
+  motion_sensor_8:
+    gpio_pin: 26
+    name: light sensor
+system_buttons: []
+reserved_gpio: []
 zabbix_agent:
   zabbix_server: zabbix.example.com
   zabbix_server_active: zabbix.example.com
-  location: Z1
-  hostname: rpims1..example.com
+  location: Room 1
+  hostname: rpims1.example.com
   chassis: embedded
   deployment: RPiMS
-  TLSPSKIdentity: 596668c51fd9619
+  TLSPSKIdentity: G8nehEBuVZ9Dp1RZ
   TLSConnect: psk
   TLSAccept: psk
-  TLSPSK: da45f0faf5a803d625dee9027aeae56080554c496754d9471cdcaeab3b73d52d
+  TLSPSK: 3bTOe3H17pDc6EDmq3h6m3sZJuhnZ4V2Z8pNcoud4OOeKbYSaynK3orpdqDYM
   TLSPSKFile: /var/www/html/conf/zabbix_agentd.psk
   Timeout: 3
 ...

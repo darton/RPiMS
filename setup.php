@@ -61,10 +61,13 @@ foreach ($door_sensors_gpio as $key => $value) {
     $gpioname = 'GPIO_'.$value['gpio_pin'] ;
     $GPIO[$gpioname]['type'] = 'DoorSensor';
     $GPIO[$gpioname]['hold_time'] = $value['hold_time'];
+    $GPIO[$gpioname]['name'] = $value['name'];
+
 }
 foreach ($motion_sensors_gpio as $key => $value) {
     $gpioname = 'GPIO_'.$value['gpio_pin'];
     $GPIO[$gpioname]['type'] = 'MotionSensor';
+    $GPIO[$gpioname]['name'] = $value['name'];
 }
 foreach ($system_buttons_gpio as $key => $value) {
     $gpioname = 'GPIO_'.$value['gpio_pin'];
@@ -74,6 +77,7 @@ foreach ($system_buttons_gpio as $key => $value) {
 foreach ($reserved_gpio as $key => $value) {
     $gpioname = 'GPIO_'.$value['gpio_pin'];
     $GPIO[$gpioname]['type'] = 'Reserved';
+    $GPIO[$gpioname]['name'] = $value['name'];
 }
 
 //var_dump($GPIO['GPIO_16']['hold_time']);
