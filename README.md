@@ -54,13 +54,19 @@ login: admin
 password: admin
 
 ```
-http://rpiipaddress/setup.php
+http://rpiipaddress/setup
 ```
 
 Start/Stop RPIMS
 ```
 sudo systemctl start rpims.service
 sudo systemclt stop rpims.service
+```
+
+### Main page
+
+```
+http://rpiipaddress
 ```
 
 ## Known issues
