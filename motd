@@ -2,7 +2,8 @@
 
 export TERM=xterm-256color
 IFS=';'
-arr=($(/home/pi/scripts/RPiMS/redis-get-data.py BME280)) #Use BME280, DHT, DS18B20
+SENSOR_TYPE=BME280  #Use BME280, DHT, DS18B20
+arr=($(/home/pi/scripts/RPiMS/redis-get-data.py $SENSOR_TYPE)) 
 SENSOR_TEMP=$(echo ${arr[0]}|awk -F[=\;] '{print $2"°C"}')
 SENSOR_HUM=$(echo ${arr[1]}|awk -F[=\;] '{print $2"%"}')
 SENSOR_PRESSURE=$(echo ${arr[2]}|awk -F[=\;] '{print $2"hPa"}')
@@ -14,7 +15,7 @@ echo "$(tput setaf 2)
   '. \ ' ' / .'$(tput setaf 1)
    .~ .~~~..~.
   : .~.'~'.~. :$(tput sgr0)  Raspberry Pi Monitoring System$(tput setaf 1)
- ~ (   ) (   ) ~ $(tput sgr0)Room Pressure.....: $SENSOR_PRESSURE$(tput setaf 1)
+~ (   ) (   ) ~  $(tput sgr0)Room Pressure.....: $SENSOR_PRESSURE$(tput setaf 1)
 ( : '~'.~.'~' : )$(tput sgr0)Room Humidity.....: $SENSOR_HUM$(tput setaf 1)
  ~ .~ (   ) ~. ~ $(tput sgr0)Room Temperature..: $SENSOR_TEMP$(tput setaf 1)
   (  : '~' :  )  $(tput sgr0)CPU Temperature...: $CPU_TEMP$(tput setaf 1)
