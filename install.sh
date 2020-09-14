@@ -1,8 +1,10 @@
 #!/bin/bash
 
 installdir=/home/pi/scripts/RPiMS
+wwwdir=/var/www/html
 
 [[ -d $installdir ]] || mkdir -p $installdir
+[[ -d $wwwdir ]] || mkdir -p $wwwdir
 [[ -d /home/pi/Videos ]] || mkdir -p /home/pi/Videos
 
 for file in $(curl -sS https://raw.githubusercontent.com/darton/RPiMS/master/files.txt); do
@@ -36,13 +38,24 @@ sudo sed -i 's/group = www-data/group = pi/g' $WWWCONF
 PHPFPMSERVICE=$(sudo systemctl -a |grep fpm.service|awk '{print $1}'|grep php)
 sudo systemctl restart $PHPFPMSERVICE
 sudo systemctl enable $PHPFPMSERVICE
-for item in index.php index_html.php setup.php setup_html.php setup_form.php w3.css
-   do sudo mv $installdir/$item /var/www/html/
+
+for item in index.php index_html.php
+   do sudo mv $installdir/$item $wwwdir/
 done
+
+sudo mkdir $wwwdir/conf
+sudo mv $installdir/.htpasswd  $wwwdir/conf/
+
+sudo mkdir $wwwdir/setup
+for item in setup.php setup_html.php setup_form.php w3.css
+   do sudo mv $installdir/$item $wwwdir/setup
+done
+sudo ln -s $wwwdir/conf/setup.php index.php
+
 
 sudo mv /etc/nginx/sites-available/default /etc/nginx/sites-available/default.org
 sudo mv $installdir/nginx-default /etc/nginx/sites-available/default
-sudo chown -R pi.pi /var/www/html 
+sudo chown -R pi.pi $wwwdir
 sudo systemctl restart nginx
 sudo systemctl enable nginx
 
@@ -51,7 +64,7 @@ echo 'zabbix ALL=(ALL) NOPASSWD: /home/pi/scripts/RPiMS/redis-get-data.py' | sud
 #cat $installdir/zabbix-rpims.conf | sed s/TLSPSKIdentity=/TLSPSKIdentity=$(openssl rand -hex 8)/ |sudo tee /etc/zabbix/zabbix_agentd.conf.d/zabbix-rpims.conf
 #rm $installdir/zabbix-rpims.conf
 #openssl rand -hex 32 | sudo tee /etc/zabbix/zabbix_agentd.conf.d/zabbix_agentd.psk
-sudo cp $installdir/zabbix_rpims_userparameter.conf | /var/www/html/conf
+sudo cp $installdir/zabbix_rpims_userparameter.conf | $wwwdir/conf/
 sudo cp $installdir/zabbix_rpims.conf  | /etc/zabbix/zabbix_agentd.conf.d/
 sudo systemctl restart zabbix-agent.service
 sudo systemctl enable zabbix-agent.service
