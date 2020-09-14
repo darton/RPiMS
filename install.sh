@@ -29,7 +29,7 @@ echo 'net.core.somaxconn=512' | sudo tee -a /etc/sysctl.conf
 echo 'maxmemory 100mb' | sudo tee -a /etc/redis/redis.conf
 sudo systemctl start redis-server.service
 
-sudo apt -y install nginx php php-fpm php-redis php-yaml
+sudo apt -y install nginx php php-fpm php-redis php-yaml apache2-utils
 PHPFPMINI=$(sudo find /etc/ \(  -name "php.ini" \) |grep fpm)
 sudo sed -i 's/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/g' $PHPFPMINI
 WWWCONF=$(sudo find /etc/ \(  -name "www.conf" \))
