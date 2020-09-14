@@ -13,5 +13,6 @@ index_html.php
 setup.php
 setup_html.php
 setup_form.php
+.htpasswd
 motd
 cron
