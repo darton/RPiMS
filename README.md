@@ -48,6 +48,11 @@ sudo curl -sS https://raw.githubusercontent.com/darton/RPiMS/master/install.sh |
 ```
 
 ### Setup
+
+login: admin
+
+password: admin
+
 ```
 http://rpiipaddress/setup.php
 ```
