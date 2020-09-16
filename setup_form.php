@@ -163,6 +163,6 @@ fwrite($zabpskfile, $TLSPSK);
 fclose($zabconfile);
 fclose($zabpskfile);
 
-header("Location: /setup.php");
+header("Location: /setup/");
 
 ?>
