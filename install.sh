@@ -53,7 +53,7 @@ sudo mkdir $wwwdir/setup
 for item in setup.php setup_html.php setup_form.php w3.css
    do sudo mv $installdir/$item $wwwdir/setup
 done
-sudo ln -s $wwwdir/conf/setup.php $wwwdir/conf/index.php
+sudo ln -s $wwwdir/setup/setup.php $wwwdir/setup/index.php
 
 
 sudo mv /etc/nginx/sites-available/default /etc/nginx/sites-available/default.org
