@@ -4,6 +4,8 @@ installdir=/home/pi/scripts/RPiMS
 wwwdir=/var/www/html
 
 [[ -d $wwwdir ]] || sudo mkdir -p $wwwdir
+[[ -d $wwwdir/conf ]] || sudo mkdir -p $wwwdir/conf
+[[ -d $wwwdir/setup ]] || sudo mkdir -p $wwwdir/setup
 [[ -d $installdir ]] || mkdir -p $installdir
 [[ -d /home/pi/Videos ]] || mkdir -p /home/pi/Videos
 
@@ -46,15 +48,14 @@ for item in index.php index_html.php
    do sudo mv $installdir/$item $wwwdir/
 done
 
-sudo mkdir $wwwdir/conf
-sudo mv $installdir/.htpasswd  $wwwdir/conf/
+for item in .htpasswd rpims.yaml zabbix_rpims_userparameter.conf
+   do sudo mv $installdir/$item $wwwdir/conf/
+done
 
-sudo mkdir $wwwdir/setup
 for item in setup.php setup_html.php setup_form.php w3.css
    do sudo mv $installdir/$item $wwwdir/setup
 done
 sudo ln -s $wwwdir/setup/setup.php $wwwdir/setup/index.php
-
 
 sudo mv /etc/nginx/sites-available/default /etc/nginx/sites-available/default.org
 sudo mv $installdir/nginx-default /etc/nginx/sites-available/default
