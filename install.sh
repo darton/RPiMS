@@ -3,6 +3,7 @@
 installdir=/home/pi/scripts/RPiMS
 wwwdir=/var/www/html
 
+[[ -d $wwwdir ]] || sudo mkdir -p $wwwdir
 [[ -d $installdir ]] || mkdir -p $installdir
 [[ -d /home/pi/Videos ]] || mkdir -p /home/pi/Videos
 
