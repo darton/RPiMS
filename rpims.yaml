@@ -1,7 +1,7 @@
 ---
 setup:
   verbose: true
-  use_zabbix_sender: true
+  use_zabbix_sender: false
   use_picamera: false
   use_picamera_recording: false
   use_door_sensor: false
@@ -9,7 +9,7 @@ setup:
   use_system_buttons: false
   use_led_indicators: false
   use_CPU_sensor: true
-  use_BME280_sensor: true
+  use_BME280_sensor: false
   use_DS18B20_sensor: false
   use_DHT_sensor: false
   use_serial_display: false
