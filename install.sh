@@ -4,7 +4,6 @@ installdir=/home/pi/scripts/RPiMS
 wwwdir=/var/www/html
 
 [[ -d $installdir ]] || mkdir -p $installdir
-[[ -d $wwwdir ]] || mkdir -p $wwwdir
 [[ -d /home/pi/Videos ]] || mkdir -p /home/pi/Videos
 
 for file in $(curl -sS https://raw.githubusercontent.com/darton/RPiMS/master/files.txt); do
