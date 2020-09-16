@@ -15,7 +15,7 @@
 
 <body>
 <div class="w3-responsive">
-<form action="/setup_form.php" method="post" class="w3-container">
+<form action="setup_form.php" method="post" class="w3-container">
 <fieldset>
 <legend>System configuration</legend>
 <table id="t01" class="w3-table">
