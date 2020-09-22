@@ -1,17 +1,27 @@
 #!/usr/bin/env python3
 
-import time
 import automationhat
+from time import sleep, time
+
+sleep(0.1)
+start = time()
 
 direction_mapr = {
 "N": 5127,
-"NE": 6437,
-"E": 17692,
+"NNE": 5041,
+"NE": 6421,
+"ENE": 6240,
+"E": 17786,
+"ESE": 9267,
 "SE": 11701,
-"S": 8263,
+"SSE": 7067,
+"S": 8274,
+"SSW": 5411,
 "SW": 5589,
 "W": 4820,
-"NW": 4949
+"WNW": 4776,
+"NW" :4944,
+"NNW": 4866
 }
 
 
@@ -21,13 +31,12 @@ R1 = 4690
 R2 = 0
 
 while True:
-
     Uwy = automationhat.analog.one.read()
     Uwe = automationhat.analog.two.read()
-    R2 = int (Uwe/(Uwe - Uwy) * R1)
-    #print(R2,Uwe,Uwy)
+    if Uwe != Uwy:
+        R2 = int (Uwe/(Uwe - Uwy) * R1)
+        print(R2,Uwe,Uwy)
     for item in direction_mapr:
-        if (R2 <= direction_mapr.get(item) * 1.02) and (R2 >= direction_mapr.get(item) * 0.98):
+        if (R2 <= direction_mapr.get(item) * 1.009) and (R2 >= direction_mapr.get(item) * 0.991):
             print(item)
-
-    time.sleep(0.5)
+    sleep(0.25)
