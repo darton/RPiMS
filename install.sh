@@ -9,6 +9,8 @@ else
     exit
 fi
 
+sudo apt-get update && sudo apt-get upgrade -y
+
 installdir=/home/pi/scripts/RPiMS
 wwwdir=/var/www/html
 
@@ -24,9 +26,6 @@ done
 curl -sS https://www.w3schools.com/w3css/4/w3.css > $installdir/w3.css
 
 chmod u+x $installdir/*.py $installdir/*.sh
-
-sudo apt -y update
-sudo apt -y upgrade
 
 sudo apt-get -y install git python3-gpiozero python3-pip build-essential python3-dev python3-numpy python3-picamera python3-w1thermsensor
 sudo apt-get -y install libfreetype6-dev libopenjp2-7 libtiff5 libjpeg-dev vlc ffmpeg gpac fbi
