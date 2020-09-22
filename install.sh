@@ -1,5 +1,14 @@
 #!/bin/bash
 
+echo "Do you want to install the RPiMS software?"
+read -r -p "$1 [y/N] " response < /dev/tty
+if [[ $response =~ ^(yes|y|Y)$ ]]; then
+    echo "Greats ! The installation has started."
+else
+    echo "OK. Exiting"
+    exit
+fi
+
 installdir=/home/pi/scripts/RPiMS
 wwwdir=/var/www/html
 
