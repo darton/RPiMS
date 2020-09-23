@@ -6,7 +6,7 @@ from time import sleep, time
 
 interval = 5
 pulse = 0
-wind_speed_sensor = Button(21,bounce_time=0.05)
+wind_speed_sensor = Button(21)
 
 def pulse_counter():
     global pulse
