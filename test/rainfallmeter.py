@@ -26,7 +26,7 @@ def calculate_rainfall():
 
 
 redis_db = redis.StrictRedis(host="localhost", port=6379, db=0, charset="utf-8", decode_responses=True)
-rain_sensor = Button(20, hold_time=0.1)
+rain_sensor = Button(21, hold_time=0.1)
 rain_sensor.when_pressed = bucket_tipped
 
 while True:
@@ -37,9 +37,7 @@ while True:
         rainfall = calculate_rainfall()
         if len(rainfalls) == (3600*24/rainfall_acquisition_time + 1):
             rainfalls.clear()
-        print (len(rainfalls))
         rainfalls.append(rainfall)
-        print(rainfalls)
     daily_rainfall = round(math.fsum(rainfalls),1)
-    print("Daily rainfall: " + str(daily_rainfall) + " mm")
-    redis_db.set('daily_rainfall', daily_rainfall)
+    print("Rainfall: " + str(rainfall) + " mm ", "Daily rainfall: " + str(daily_rainfall) + " mm")
+    redis_db.mset({'daily_rainfall': daily_rainfall,'rainfall': rainfall})
