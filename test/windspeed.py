@@ -7,8 +7,6 @@ from signal import pause
 from time import sleep, time
 
 redis_db = redis.StrictRedis(host="localhost", port=6379, db=0, charset="utf-8", decode_responses=True)
-#redis_db.flushdb()
-
 
 wind_speed_acquisition_time = 6
 wind_speed_sensor_pulse = 0
@@ -30,15 +28,6 @@ def calculate_speed(wind_speed_acquisition_time):
 
 wind_speed_sensor = Button(21)
 wind_speed_sensor.when_pressed = pulse_counter
-
-#while True:
-#    rotations = pulse/2
-#    #print(str(rotations) + " per " + str(wind_speed_acquisition_time) + " sec")
-#    wind_speed = round(rotations * 2.4/wind_speed_acquisition_time,1)
-#    print(str(wind_speed) + " km/h")
-#    reset_pulse_counter()
-#    sleep(wind_speed_acquisition_time)
-
 
 while True:
     start_time = time()
