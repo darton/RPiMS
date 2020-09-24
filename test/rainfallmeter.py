@@ -8,6 +8,7 @@ from time import sleep, time
 
 bucket_counter = 0
 rainfall_acquisition_time = 6
+rainfall_agregation_time = 3600*24
 rainfalls = []
 
 BUCKET_SIZE = 0.2794 #[mm]
@@ -35,7 +36,7 @@ while True:
         reset_bucket_counter()
         sleep(rainfall_acquisition_time)
         rainfall = calculate_rainfall()
-        if len(rainfalls) == (3600*24/rainfall_acquisition_time + 1):
+        if len(rainfalls) == (rainfall_agregation_time/rainfall_acquisition_time + 1):
             rainfalls.clear()
         rainfalls.append(rainfall)
     daily_rainfall = round(math.fsum(rainfalls),1)
