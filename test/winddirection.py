@@ -54,7 +54,7 @@ while True:
     Uwy = round(automationhat.analog.one.read(),1)
     Uwe = round(automationhat.analog.two.read(),1)
     if Uwe != Uwy:
-        R2 = int (1/(1 - Uwy/Uwe) * R1)
+        R2 = int (R1/(1 - Uwy/Uwe))
     for item in direction_mapr:
         if (R2 <= direction_mapr.get(item) * 1.005) and (R2 >= direction_mapr.get(item) * 0.995):
             angles.append(direction_mapa.get(item))
