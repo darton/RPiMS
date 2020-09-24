@@ -54,13 +54,10 @@ while True:
     Uwy = round(automationhat.analog.one.read(),1)
     Uwe = round(automationhat.analog.two.read(),1)
     if Uwe != Uwy:
-        R2 = int (Uwe/(Uwe - Uwy) * R1)
-        print(R2,Uwe,Uwy)
+        R2 = int (1/(1 - Uwy/Uwe) * R1)
     for item in direction_mapr:
         if (R2 <= direction_mapr.get(item) * 1.005) and (R2 >= direction_mapr.get(item) * 0.995):
             angles.append(direction_mapa.get(item))
-            print(item)
-            print(str(direction_mapa.get(item)))
-            print(angles)
+            print(direction_mapa.get(item), item)
             redis_db.set('wind_direction', item)
     sleep(0.1)
