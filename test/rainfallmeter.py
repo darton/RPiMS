@@ -26,7 +26,7 @@ def calculate_rainfall():
 
 
 redis_db = redis.StrictRedis(host="localhost", port=6379, db=0, charset="utf-8", decode_responses=True)
-rain_sensor = Button(21, hold_time=0.1)
+rain_sensor = Button(20, hold_time=0.1)
 rain_sensor.when_pressed = bucket_tipped
 
 while True:
