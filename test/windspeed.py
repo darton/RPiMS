@@ -9,8 +9,10 @@ from time import sleep, time
 redis_db = redis.StrictRedis(host="localhost", port=6379, db=0, charset="utf-8", decode_responses=True)
 
 wind_speed_acquisition_time = 6
+wind_speed_agregation_time = 3600
 wind_speed_sensor_pulse = 0
 wind_speeds = []
+pulse = 0
 
 def pulse_counter():
     global pulse
@@ -35,9 +37,8 @@ while True:
         reset_pulse_counter()
         sleep(wind_speed_acquisition_time)
         wind_speed = calculate_speed(wind_speed_acquisition_time)
-        if len(wind_speeds) == (3600/wind_speed_acquisition_time + 1):
+        if len(wind_speeds) == (wind_speed_agregation_time/wind_speed_acquisition_time + 1):
             del wind_speeds[0]
-        print (len(wind_speeds))
         wind_speeds.append(wind_speed)
     wind_gust = max(wind_speeds)
     wind_mean_speed = round(statistics.mean(wind_speeds),1)
