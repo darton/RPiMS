@@ -454,7 +454,6 @@ def wind_speed():
         redis_db.mset({'wind_mean_speed' : wind_mean_speed,'wind_gust' : wind_gust, 'wind_speed' : wind_speed})
 
 
-
 def wind_direction():
     import math
     def get_average(angles):
