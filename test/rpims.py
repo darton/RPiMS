@@ -454,6 +454,7 @@ def wind_speed():
         redis_db.mset({'wind_mean_speed' : wind_mean_speed,'wind_gust' : wind_gust, 'wind_speed' : wind_speed})
 
 
+
 def wind_direction():
     import math
     def get_average(angles):
@@ -676,10 +677,10 @@ if bool(config['use_DS18B20_sensor']) is True:
 if bool(config['use_DHT_sensor']) is True:
     threading_function(get_dht_data)
 
-#if bool(config['use_weather_station']) is True:
-threading_function(rainfall)
-threading_function(wind_speed)
-threading_function(wind_direction)
+if bool(config['use_weather_station']) is True:
+    threading_function(rainfall)
+    threading_function(wind_speed)
+    threading_function(wind_direction)
 
 if bool(config['use_serial_display']) is True:
     if config['serial_display_type'] == 'oled_sh1106_i2c':
