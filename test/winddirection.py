@@ -33,6 +33,15 @@ def get_average(angles):
     return 0.0 if average == 360 else average
 
 
+def read_adc(adc_type):
+    if adc_type == 'automationhat':
+        adc_inputs_values = []
+        adc_inputs_values.append(automationhat.analog.one.read())
+        adc_inputs_values.append(automationhat.analog.two.read())
+        adc_inputs_values.append(automationhat.analog.three.read())
+        return adc_inputs_values
+
+
 direction_mapr = {
 "N": 5080,
 "NNE": 5188,
@@ -80,8 +89,9 @@ while True:
     start_time = time()
     angles.clear()
     while time() - start_time <= wind_direction_acquisition_time:
-        Uwy = round(automationhat.analog.one.read(),1)
-        Uwe = round(automationhat.analog.two.read(),1)
+        adc_values = read_adc('automationhat')
+        Uwy = round(adc_values[0],1)
+        Uwe = round(adc_values[1],1)
         if Uwe != Uwy:
             R2 = int (R1/(1 - Uwy/Uwe))
             #print(R2,Uwe,Uwy)
