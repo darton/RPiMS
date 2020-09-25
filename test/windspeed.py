@@ -3,7 +3,6 @@
 import statistics
 import redis
 from gpiozero import Button
-from signal import pause
 from time import sleep, time
 
 
