@@ -676,7 +676,7 @@ if bool(config['use_DS18B20_sensor']) is True:
 if bool(config['use_DHT_sensor']) is True:
     threading_function(get_dht_data)
 
-#if bool(config['use_wheawer_meter']) is True:
+#if bool(config['use_weather_station']) is True:
 threading_function(rainfall)
 threading_function(wind_speed)
 threading_function(wind_direction)
