@@ -17,7 +17,7 @@ def reset_anemometer_pulse_counter():
 def calculate_speed(wind_speed_acquisition_time):
     global anemometer_pulse
     rotations = anemometer_pulse/2
-    wind_speed_km_per_hour = round(rotations * 2.4/wind_speed_acquisition_time,1)
+    wind_speed_km_per_hour = round(ANEMOMETER_FACTOR * rotations * 2.4/wind_speed_acquisition_time,1)
     return wind_speed_km_per_hour
 
 wind_speed_sensor = Button(21)
@@ -28,7 +28,7 @@ anemometer_pulse = 0
 wind_speed_acquisition_time = 6
 wind_speed_agregation_time = 3600
 wind_speeds = []
-
+ANEMOMETER_FACTOR = 1.18
 
 while True:
     start_time = time()
