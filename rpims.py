@@ -391,8 +391,8 @@ def rainfall():
     rain_sensor.when_pressed = bucket_tipped
 
     bucket_counter = 0
-    rainfall_acquisition_time = 6
-    rainfall_agregation_time = 3600*24
+    rainfall_acquisition_time = config['rainfall_acquisition_time']
+    rainfall_agregation_time = config['rainfall_agregation_time']
     rainfalls = []
 
     #global BUCKET_SIZE
@@ -434,8 +434,8 @@ def wind_speed():
     wind_speed_sensor.when_pressed = anemometer_pulse_counter
 
     anemometer_pulse = 0
-    wind_speed_acquisition_time = 6
-    wind_speed_agregation_time = 3600
+    wind_speed_acquisition_time = config['windspeed_acquisition_time']
+    wind_speed_agregation_time = config['windspeed_agregation_time']
     wind_speeds = []
     ANEMOMETER_FACTOR = 1.18
 
