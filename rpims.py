@@ -18,7 +18,7 @@ from gpiozero import LED, Button, MotionSensor
 from gpiozero.tools import all_values, any_values
 from subprocess import check_call, call
 from signal import pause
-from time import sleep
+from time import sleep, time
 import threading
 import redis
 import smbus2
@@ -371,6 +371,187 @@ def lcd_st7735():
         logger.error(err)
 
 
+def rainfall():
+    import math
+
+    def bucket_tipped():
+        nonlocal bucket_counter
+        bucket_counter += 1
+
+    def reset_bucket_counter():
+        nonlocal bucket_counter
+        bucket_counter = 0
+
+    def calculate_rainfall():
+        #global BUCKET_SIZE
+        rainfall = round(bucket_counter * BUCKET_SIZE,0)
+        return rainfall
+
+    rain_sensor = Button(20)
+    rain_sensor.when_pressed = bucket_tipped
+
+    bucket_counter = 0
+    rainfall_acquisition_time = 6
+    rainfall_agregation_time = 3600*24
+    rainfalls = []
+
+    #global BUCKET_SIZE
+    BUCKET_SIZE = 0.2794 #[mm]
+
+    while True:
+        start_time = time()
+        while time() - start_time <= rainfall_acquisition_time:
+            reset_bucket_counter()
+            sleep(rainfall_acquisition_time)
+            rainfall = calculate_rainfall()
+            if len(rainfalls) == (rainfall_agregation_time/rainfall_acquisition_time + 1):
+                rainfalls.clear()
+            rainfalls.append(rainfall)
+        daily_rainfall = round(math.fsum(rainfalls),1)
+        if bool(config['verbose']) is True :
+            print("Rainfall: " + str(rainfall) + " mm ", "Daily rainfall: " + str(daily_rainfall) + " mm")
+        redis_db.mset({'daily_rainfall': daily_rainfall,'rainfall': rainfall})
+
+
+def wind_speed():
+    import statistics
+
+    def anemometer_pulse_counter():
+        nonlocal anemometer_pulse
+        anemometer_pulse += 1
+
+    def reset_anemometer_pulse_counter():
+        nonlocal anemometer_pulse
+        anemometer_pulse = 0
+
+    def calculate_speed(wind_speed_acquisition_time):
+        nonlocal anemometer_pulse
+        rotations = anemometer_pulse/2
+        wind_speed_km_per_hour = round(ANEMOMETER_FACTOR * rotations * 2.4/wind_speed_acquisition_time,1)
+        return wind_speed_km_per_hour
+
+    wind_speed_sensor = Button(21)
+    wind_speed_sensor.when_pressed = anemometer_pulse_counter
+
+    anemometer_pulse = 0
+    wind_speed_acquisition_time = 6
+    wind_speed_agregation_time = 3600
+    wind_speeds = []
+    ANEMOMETER_FACTOR = 1.18
+
+    while True:
+        start_time = time()
+        while time() - start_time <= wind_speed_acquisition_time:
+            reset_anemometer_pulse_counter()
+            sleep(wind_speed_acquisition_time)
+            wind_speed = calculate_speed(wind_speed_acquisition_time)
+            if len(wind_speeds) == (wind_speed_agregation_time/wind_speed_acquisition_time + 1):
+                del wind_speeds[0]
+            wind_speeds.append(wind_speed)
+        wind_gust = max(wind_speeds)
+        wind_mean_speed = round(statistics.mean(wind_speeds),1)
+        print("Wind mean speed: " + str(wind_mean_speed) + " km/h", " Wind gust: " + str(wind_gust) + "km/h","Wind speed " + str(wind_speed) + " km/h" )
+        redis_db.mset({'wind_mean_speed' : wind_mean_speed,'wind_gust' : wind_gust, 'wind_speed' : wind_speed})
+
+
+
+def wind_direction():
+    import math
+    def get_average(angles):
+        sin_sum = 0.0
+        cos_sum = 0.0
+
+        for angle in angles:
+            r = math.radians(angle)
+            sin_sum += math.sin(r)
+            cos_sum += math.cos(r)
+
+        flen = float(len(angles))
+        s = sin_sum / flen
+        c = cos_sum / flen
+        arc = math.degrees(math.atan(s / c))
+        average = 0.0
+
+        if s > 0 and c > 0:
+            average = arc
+        elif c < 0:
+            average = arc + 180
+        elif s < 0 and c > 0:
+            average = arc + 360
+
+        return 0.0 if average == 360 else average
+
+    def read_adc(adc_type):
+        if adc_type == 'automationhat':
+            import automationhat
+            sleep(0.1) # Delay for automationhat
+            adc_inputs_values = []
+            adc_inputs_values.append(automationhat.analog.one.read())
+            adc_inputs_values.append(automationhat.analog.two.read())
+            adc_inputs_values.append(automationhat.analog.three.read())
+            return adc_inputs_values
+
+
+    direction_mapr = {
+     "N": 5080,
+    "NNE": 5188,
+    "NE": 6417,
+    "ENE": 6253,
+    "E": 17419,
+    "ESE": 9380,
+    "SE": 11613,
+    "SSE": 6968,
+    "S": 8129,
+    "SSW": 5419,
+    "SW": 5542,
+    "W": 4781,
+    "NW": 4977,
+    "NNW": 4877,
+    }
+
+    direction_mapa = {
+    "N": 0,
+    "NNE": 22.5,
+    "NE": 45,
+    "ENE": 67.5,
+    "E": 90,
+    "ESE": 112.5,
+    "SE": 135,
+    "SSE": 157.5,
+    "S": 180,
+    "SSW": 202.5,
+    "SW": 225,
+    "W": 270,
+    "NW": 315,
+    "NNW": 337.5
+    }
+
+    Uwe = 5.2
+    Uwy = 0
+    R1 = 4690
+    R2 = 0
+    wind_direction_acquisition_time = 6
+    angles = []
+
+    while True:
+        start_time = time()
+        angles.clear()
+        while time() - start_time <= wind_direction_acquisition_time:
+            adc_values = read_adc('automationhat')
+            Uwy = round(adc_values[0],1)
+            Uwe = round(adc_values[1],1)
+            if Uwe != Uwy:
+                R2 = int (R1/(1 - Uwy/Uwe))
+                #print(R2,Uwe,Uwy)
+            for item in direction_mapr:
+                if (R2 <= direction_mapr.get(item) * 1.005) and (R2 >= direction_mapr.get(item) * 0.995):
+                    angles.append(direction_mapa.get(item))
+                    average_wind_direction = int(round(get_average(angles),0))
+                    #print(direction_mapa.get(item), item)
+        print("Average direction of wind: " + str(average_wind_direction))
+        redis_db.mset({'average_wind_direction': average_wind_direction, 'wind_direction': item})
+
+
 def threading_function(function_name):
     t = threading.Thread(target=function_name, name=function_name)
     t.daemon = True
@@ -495,6 +676,11 @@ if bool(config['use_DS18B20_sensor']) is True:
 
 if bool(config['use_DHT_sensor']) is True:
     threading_function(get_dht_data)
+
+if bool(config['use_weather_station']) is True:
+    threading_function(rainfall)
+    threading_function(wind_speed)
+    threading_function(wind_direction)
 
 if bool(config['use_serial_display']) is True:
     if config['serial_display_type'] == 'oled_sh1106_i2c':
