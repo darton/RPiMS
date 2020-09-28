@@ -57,6 +57,10 @@ $windspeed_sensor_pin = $rpims['setup']['windspeed_sensor_pin'];
 $windspeed_acquisition_time = $rpims['setup']['windspeed_acquisition_time'];
 $windspeed_agregation_time = $rpims['setup']['windspeed_agregation_time'];
 
+$winddirection_acquisition_time = $rpims['setup']['winddirection_acquisition_time'];
+$winddirection_adc_type = $rpims['setup']['winddirection_adc_type'];
+$winddirection_adc_input = $rpims['setup']['winddirection_adc_input'];
+
 $rainfall_sensor_pin = $rpims['setup']['rainfall_sensor_pin'];
 $rainfall_acquisition_time = $rpims['setup']['rainfall_acquisition_time'];
 $rainfall_agregation_time = $rpims['setup']['rainfall_agregation_time'];

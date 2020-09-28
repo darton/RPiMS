@@ -214,11 +214,32 @@
 <tr>
 <td><label>Wind speed aquisition time:</label></td>
 <td><input name="windspeed_acquisition_time" class="w3-input" type="number" min="1" max="3600" size="4" value="<?= $windspeed_acquisition_time ?>" ></td>
+
 <td><label>Wind speed agregation time:</label></td>
 <td><input name="windspeed_agregation_time" class="w3-input" type="number" min="1" max="3600" size="4" value="<?= $windspeed_agregation_time ?>" ></td>
+
 <td><label for="windspeed_sensor_pin">Wind speed sensor pin:</label></td>
 <td><select id="windspeed_sensor_pin" name="windspeed_sensor_pin" class="w3-select">
   <option value = 21>21</option>
+</select></td>
+</tr>
+
+<tr>
+<td><label>Wind direction aquisition time:</label></td>
+<td><input name="winddirection_acquisition_time" class="w3-input" type="number" min="1" max="3600" size="4" value="<?= $winddirection_acquisition_time ?>" ></td>
+
+<td><label for="winddirection_adc_type">Wind direction ADC type:</label></td>
+<td><select id="winddirection_adc_type" name="winddirection_adc_type" class="w3-select">
+ <option value="automationhat" <?php if ($winddirection_adc_type == 'automationhat') echo 'selected="selected"'; ?> >AutomationHat</option>
+ <option value="ADS1115" <?php if ($winddirection_adc_type == 'ADS1115') echo 'selected="selected"'; ?> >ADS1115</option>
+</select></td>
+
+<td><label for="winddirection_adc_input">Wind direction ADC input:</label></td>
+<td><select id="winddirection_adc_input" name="winddirection_adc_input" class="w3-select">
+ <option value="1" <?php if ($winddirection_adc_input == '1') echo 'selected="selected"'; ?> >1</option>
+ <option value="2" <?php if ($winddirection_adc_input == '2') echo 'selected="selected"'; ?> >2</option>
+ <option value="3" <?php if ($winddirection_adc_input == '3') echo 'selected="selected"'; ?> >3</option>
+ <option value="4" <?php if ($winddirection_adc_input == '4') echo 'selected="selected"'; ?> >4</option>
 </select></td>
 </tr>
 

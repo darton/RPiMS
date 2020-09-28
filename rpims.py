@@ -482,7 +482,7 @@ def wind_direction():
         return 0.0 if average == 360 else average
 
     def read_adc(adc_type):
-        if adc_type == 'automationhat':
+        if config['winddirection_adc_type'] == 'automationhat':
             import automationhat
             sleep(0.1) # Delay for automationhat
             adc_inputs_values = []
@@ -530,7 +530,7 @@ def wind_direction():
     Uwy = 0
     R1 = 4690
     R2 = 0
-    wind_direction_acquisition_time = 6
+    wind_direction_acquisition_time = config['winddirection_acquisition_time']
     angles = []
 
     while True:
