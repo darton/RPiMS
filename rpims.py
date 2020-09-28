@@ -462,7 +462,8 @@ def wind_speed():
         average_wind_speeds.append(average_wind_speed)
         daily_average_wind_speed = round(statistics.mean(average_wind_speeds),1)
 
-        print("Wind speed " + str(wind_speed) + " km/h"," Wind gust: " + str(wind_gust) + "km/h", "Daily wind gust: " + str(daily_wind_gust) + "km/h", " Average wind speed: " + str(average_wind_speed) + " km/h","Daily average wind speed: " + str(daily_average_wind_speed) + " km/h"  )
+        if bool(config['verbose']) is True :
+            print("Wind speed " + str(wind_speed) + " km/h"," Wind gust: " + str(wind_gust) + "km/h", "Daily wind gust: " + str(daily_wind_gust) + "km/h", " Average wind speed: " + str(average_wind_speed) + " km/h","Daily average wind speed: " + str(daily_average_wind_speed) + " km/h"  )
         redis_db.mset({'wind_speed' : wind_speed, 'wind_gust' : wind_gust, 'daily_wind_gust' : daily_wind_gust, 'average_wind_speed' : average_wind_speed, 'daily_average_wind_speed' : daily_average_wind_speed})
 
 
@@ -579,7 +580,8 @@ def wind_direction():
                     angles.append(direction_mapa.get(item))
         average_wind_direction = int(round(get_average(angles),0))
         #print(direction_mapa.get(item), item)
-        print("Average Wind Direction: " + str(average_wind_direction))
+        if bool(config['verbose']) is True :
+            print("Average Wind Direction: " + str(average_wind_direction))
         redis_db.mset({'average_wind_direction': average_wind_direction, 'wind_direction': item})
 
 
