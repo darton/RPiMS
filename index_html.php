@@ -112,6 +112,22 @@ span.value {
 </div>
 <?php }?>
 
+
+<?php if ($rpims["use_weather_station"] == "True") {?>
+<div class="sensors">
+    <h3>Weather Meter</h3>
+    <ul style="list-style-type:none;">
+        <li>Wind speed: <span class="value"><?=$rpims["wind_speed"]?> km/h</span></li>
+        <li>Wind mean speed: <span class="value"><?=$rpims["wind_mean_speed"]?> km/h</span></li>
+        <li>Wind gust: <span class="value"><?=$rpims["wind_gust"]?> km/h</span></li>
+        <li>Wind direction: <span class="value"><?=$rpims["average_wind_direction"]?> </span></li>
+        <li>Daily Rainfall: <span class="value"><?=$rpims["daily_rainfall"]?> mm </span></li>
+    </ul>
+</div>
+<?php }?>
+
+
+
 <?php if ($rpims["use_picamera"] == "True") {?>
 <div class="sensors">
     <h3>Video Stream Url</h3>

@@ -12,6 +12,7 @@ setup:
   use_BME280_sensor: false
   use_DS18B20_sensor: false
   use_DHT_sensor: false
+  use_weather_station: true
   use_serial_display: false
   serial_display_type: oled_sh1106_spi
   serial_display_rotate: 2
@@ -23,6 +24,12 @@ setup:
   DHT_read_interval: 5
   DHT_type: DHT22
   DHT_pin: 17
+  windspeed_sensor_pin: 21
+  windspeed_acquisition_time: 6
+  windspeed_agregation_time: 3600
+  rainfall_sensor_pin: 20
+  rainfall_acquisition_time: 6
+  rainfall_agregation_time: 86400
 led_indicators:
   door_led:
     gpio_pin: 12
@@ -36,38 +43,38 @@ door_sensors:
   door_sensor_2:
     gpio_pin: 16
     hold_time: 1
-    name: door2 motion sensor
+    name: door2 door sensor
 motion_sensors:
   motion_sensor_1:
     gpio_pin: 5
     name: door1 motion sensor
   motion_sensor_2:
     gpio_pin: 13
-    name: door1 vibration sensor
+    name: door2 motion sensor
   motion_sensor_3:
     gpio_pin: 19
-    name: door2 door sensor
+    name: window sensor
   motion_sensor_4:
-    gpio_pin: 20
-    name: door2 vibration sensor
-  motion_sensor_5:
-    gpio_pin: 21
-    name: smoke sensor
-  motion_sensor_6:
     gpio_pin: 22
     name: water sensor
-  motion_sensor_7:
+  motion_sensor_5:
     gpio_pin: 23
     name: gas sensor
-  motion_sensor_8:
+  motion_sensor_6:
     gpio_pin: 26
     name: light sensor
 system_buttons: []
-reserved_gpio: []
+reserved_gpio:
+  reserved_1:
+    gpio_pin: 20
+    name: wheather station - wind speed meter
+  reserved_2:
+    gpio_pin: 21
+    name: wheather station - rainfall meter
 zabbix_agent:
   zabbix_server: zabbix.example.com
   zabbix_server_active: zabbix.example.com
-  location: Room 1
+  location: My Home
   hostname: rpims1.example.com
   chassis: embedded
   deployment: RPiMS

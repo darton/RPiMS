@@ -36,6 +36,7 @@ $use_CPU_sensor = filter_var($rpims['setup']['use_CPU_sensor'], FILTER_VALIDATE_
 $use_BME280_sensor = filter_var($rpims['setup']['use_BME280_sensor'], FILTER_VALIDATE_BOOLEAN);
 $use_DS18B20_sensor = filter_var($rpims['setup']['use_DS18B20_sensor'], FILTER_VALIDATE_BOOLEAN);
 $use_DHT_sensor = filter_var($rpims['setup']['use_DHT_sensor'], FILTER_VALIDATE_BOOLEAN);
+$use_weather_station = filter_var($rpims['setup']['use_weather_station'], FILTER_VALIDATE_BOOLEAN);
 
 $serial_display_refresh_rate = $rpims['setup']['serial_display_refresh_rate'];
 $serial_display_type = $rpims['setup']['serial_display_type'];
@@ -51,6 +52,15 @@ $DS18B20_read_interval = $rpims['setup']['DS18B20_read_interval'];
 $DHT_read_interval = $rpims['setup']['DHT_read_interval'];
 $DHT_type = $rpims['setup']['DHT_type'];
 $DHT_pin = $rpims['setup']['DHT_pin'];
+
+$windspeed_sensor_pin = $rpims['setup']['windspeed_sensor_pin'];
+$windspeed_acquisition_time = $rpims['setup']['windspeed_acquisition_time'];
+$windspeed_agregation_time = $rpims['setup']['windspeed_agregation_time'];
+
+$rainfall_sensor_pin = $rpims['setup']['rainfall_sensor_pin'];
+$rainfall_acquisition_time = $rpims['setup']['rainfall_acquisition_time'];
+$rainfall_agregation_time = $rpims['setup']['rainfall_agregation_time'];
+
 
 $motion_sensors_gpio = $rpims['motion_sensors'];
 $door_sensors_gpio = $rpims['door_sensors'];

@@ -109,6 +109,14 @@
 </tr>
 <tr>
 <td>
+<label>Use weather station:</label>
+</td>
+<td>
+<input name="use_weather_station" type="hidden" value="False"><input name="use_weather_station" type="checkbox" class="w3-check" <?php if ($use_weather_station) echo 'checked="checked"'; ?> value="True">
+</td>
+</tr>
+<tr>
+<td>
 <label>Use serial display:</label>
 </td>
 <td>
@@ -140,7 +148,7 @@
 <label>Serial display refresh rate:</label>
 </td>
 <td>
-<input name="serial_display_refresh_rate" type="number" min="1" max="50" size="2" value="<?= is_null($serial_display_refresh_rate) ? 0: 10 ?>" >
+<input name="serial_display_refresh_rate" type="number" min="1" max="50" size="2" value="<?= $serial_display_refresh_rate ?>" >
 </td>
 </tr>
 </table>
@@ -154,13 +162,13 @@
 <label>CPUtemp read interval:</label>
 </td>
 <td>
-<input name="CPUtemp_read_interval" type="number" min="1" max="3600" class="w3-input" size="4" value="<?= is_null($CPUtemp_read_interval) ? 0: 1 ?>" >
+<input name="CPUtemp_read_interval" type="number" min="1" max="3600" class="w3-input" size="4" value="<?= $CPUtemp_read_interval ?>" >
 </td></tr>
 <tr><td>
 <label>BME280 read interval:</label>
 </td>
 <td>
-<input name="BME280_read_interval" type="number" min="1" max="3600" class="w3-input" size="4" value="<?= is_null($BME280_read_interval) ? 0: 10 ?>" >
+<input name="BME280_read_interval" type="number" min="1" max="3600" class="w3-input" size="4" value="<?= $BME280_read_interval ?>" >
 </td>
 <td>
 <label for="BME280_i2c_address">BME280_i2c_address:</label>
@@ -175,12 +183,13 @@
 <label>DS18B20 read interval:</label>
 </td>
 <td>
-<input name="DS18B20_read_interval" class="w3-input" type="number" min="1" max="3600" size="4" value="<?= is_null($DS18B20_read_interval) ? 0: 60 ?>" >
+<input name="DS18B20_read_interval" class="w3-input" type="number" min="1" max="3600" size="4" value="<?= $DS18B20_read_interval ?>" >
 </td></tr>
+
 <tr><td>
 <label>DHT read interval:</label>
 </td><td>
-<input name="DHT_read_interval" class="w3-input" type="number" min="1" max="3600" size="4" value="<?= is_null($DHT_read_interval) ? 0: 5 ?>" >
+<input name="DHT_read_interval" class="w3-input" type="number" min="1" max="3600" size="4" value="<?= $DHT_read_interval ?>" >
 </td>
 <td>
 <label for="DHT_type">DHT type:</label>
@@ -200,6 +209,32 @@
   <option value = 17>17</option>
 </select>
 </td></tr>
+
+
+<tr>
+<td><label>Wind speed aquisition time:</label></td>
+<td><input name="windspeed_acquisition_time" class="w3-input" type="number" min="1" max="3600" size="4" value="<?= $windspeed_acquisition_time ?>" ></td>
+<td><label>Wind speed agregation time:</label></td>
+<td><input name="windspeed_agregation_time" class="w3-input" type="number" min="1" max="3600" size="4" value="<?= $windspeed_agregation_time ?>" ></td>
+<td><label for="windspeed_sensor_pin">Wind speed sensor pin:</label></td>
+<td><select id="windspeed_sensor_pin" name="windspeed_sensor_pin" class="w3-select">
+  <option value = 21>21</option>
+</select></td>
+</tr>
+
+
+<tr>
+<td><label>Rainfall aquisition time:</label></td>
+<td><input name="rainfall_acquisition_time" class="w3-input" type="number" min="1" max="3600" size="4" value="<?= $rainfall_acquisition_time ?>" ></td>
+<td><label>Rainfall agregation time:</label></td>
+<td><input name="rainfall_agregation_time" class="w3-input" type="number" min="1" max="86400" size="4" value="<?= $rainfall_agregation_time ?>" ></td>
+<td><label for="rainfall_sensor_pin">Rainfall sensor pin:</label></td>
+<td><select id="rainfall_sensor_pin" name="rainfall_sensor_pin" class="w3-select">
+  <option value = 20>20</option>
+</select></td>
+</tr>
+
+
 </table>
 </fieldset>
 
@@ -213,7 +248,7 @@
 <td>
 <label for="GPIO_5">Input type:</label>
 <select id="GPIO_5" name="GPIO_5[type]" style="width: 160px;" class="w3-select">
-  <option <?php if ($GPIO['GPIO_5']['type'] == 'DoorSensos') echo 'selected="selected"'; ?> value="DoorSensor">Button</option>
+  <option <?php if ($GPIO['GPIO_5']['type'] == 'DoorSensor') echo 'selected="selected"'; ?> value="DoorSensor">Button</option>
   <option <?php if ($GPIO['GPIO_5']['type'] == 'MotionSensor') echo 'selected="selected"'; ?> value="MotionSensor">Motion Sensor</option>
   <option <?php if ($GPIO['GPIO_5']['type'] == 'Reserved') echo 'selected="selected"'; ?> value="Reserved">Reserved</option>
 </select>

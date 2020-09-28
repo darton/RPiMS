@@ -19,6 +19,7 @@ $setup = array(
     "use_BME280_sensor" => filter_var($_POST['use_BME280_sensor'], FILTER_VALIDATE_BOOLEAN),
     "use_DS18B20_sensor" => filter_var($_POST['use_DS18B20_sensor'], FILTER_VALIDATE_BOOLEAN),
     "use_DHT_sensor" => filter_var($_POST['use_DHT_sensor'], FILTER_VALIDATE_BOOLEAN),
+    "use_weather_station" => filter_var($_POST['use_weather_station'], FILTER_VALIDATE_BOOLEAN),
     "use_serial_display" => filter_var($_POST['use_serial_display'], FILTER_VALIDATE_BOOLEAN),
 
     "serial_display_type" => $_POST['serial_display_type'],
@@ -35,6 +36,14 @@ $setup = array(
     "DHT_read_interval" => (int)$_POST['DHT_read_interval'],
     "DHT_type" => $_POST['DHT_type'],
     "DHT_pin" => (int)$_POST['DHT_pin'],
+
+    "windspeed_sensor_pin" => (int)$_POST['windspeed_sensor_pin'],
+    "windspeed_acquisition_time" => (int)$_POST['windspeed_acquisition_time'],
+    "windspeed_agregation_time" => (int)$_POST['windspeed_agregation_time'],
+
+    "rainfall_sensor_pin" => (int)$_POST['rainfall_sensor_pin'],
+    "rainfall_acquisition_time" => (int)$_POST['rainfall_acquisition_time'],
+    "rainfall_agregation_time" => (int)$_POST['rainfall_agregation_time'],
 );
 
 $door_sensors = array();
