@@ -159,7 +159,7 @@ RPi   [GPIO.3 pin 5] ----------------------------- [SDC]  DS3231
 * Raspberri Pi Case - 1 pcs
 * RTC DS3231 I2C - 1 pcs
 * LCD OLED 1,3" I2C SH1106 or 1.44" lcd_st7735 - 1 pcs
-* Weather Station - 1 pcs
+* Weather Meter Kit - 1 pcs
 
 Optional
 
@@ -200,7 +200,7 @@ Optional
 * [Sensor Case](https://pl.farnell.com/camdenboss/cbrs01vwh/enclosure-room-sensor-vented-white/dp/2472317?gclid=EAIaIQobChMIvvLvy47-5wIVQswYCh19AA4JEAQYAiABEgKsW_D_BwE&gross_price=true&mckv=Y1xp9UYm_dc|pcrid|155087520124|&CMP=KNC-GPL-GEN-SHOPPING-ALL_PRODUCTS)
 * [Zabbix](https://zabbix.org/wiki/Main_Page)
 
-* [Weather Station](https://learn.sparkfun.com/tutorials/weather-meter-hookup-guide?_ga=2.69275472.1527856563.1581318845-1560292620.1572271230)
+* [Weather Meter Kit](https://learn.sparkfun.com/tutorials/weather-meter-hookup-guide?_ga=2.69275472.1527856563.1581318845-1560292620.1572271230)
 
 * [WaveShare 1.3inch OLED HAT](https://www.waveshare.com/wiki/1.3inch_OLED_HAT)
 
