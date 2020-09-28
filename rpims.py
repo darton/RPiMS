@@ -404,7 +404,7 @@ def rainfall():
             reset_bucket_counter()
             sleep(rainfall_acquisition_time)
             rainfall = calculate_rainfall()
-            if len(rainfalls) == (rainfall_agregation_time/rainfall_acquisition_time + 1):
+            if len(rainfalls) == (rainfall_agregation_time/rainfall_acquisition_time):
                 rainfalls.clear()
             rainfalls.append(rainfall)
         daily_rainfall = round(math.fsum(rainfalls),1)
@@ -437,6 +437,8 @@ def wind_speed():
     wind_speed_acquisition_time = config['windspeed_acquisition_time']
     wind_speed_agregation_time = config['windspeed_agregation_time']
     wind_speeds = []
+    average_wind_speeds = []
+    daily_wind_gusts = []
     ANEMOMETER_FACTOR = 1.18
 
     while True:
@@ -445,14 +447,23 @@ def wind_speed():
             reset_anemometer_pulse_counter()
             sleep(wind_speed_acquisition_time)
             wind_speed = calculate_speed(wind_speed_acquisition_time)
-            if len(wind_speeds) == (wind_speed_agregation_time/wind_speed_acquisition_time + 1):
+            if len(wind_speeds) == (wind_speed_agregation_time/wind_speed_acquisition_time):
                 del wind_speeds[0]
             wind_speeds.append(wind_speed)
         wind_gust = max(wind_speeds)
-        wind_mean_speed = round(statistics.mean(wind_speeds),1)
-        print("Wind mean speed: " + str(wind_mean_speed) + " km/h", " Wind gust: " + str(wind_gust) + "km/h","Wind speed " + str(wind_speed) + " km/h" )
-        redis_db.mset({'wind_mean_speed' : wind_mean_speed,'wind_gust' : wind_gust, 'wind_speed' : wind_speed})
+        if len(daily_wind_gusts) == (86400/wind_speed_acquisition_time):
+            del daily_wind_gusts[0]
+        daily_wind_gusts.append(wind_gust)
+        daily_wind_gust = max(daily_wind_gusts)
 
+        average_wind_speed = round(statistics.mean(wind_speeds),1)
+        if len(average_wind_speeds) == (86400/wind_speed_agregation_time):
+                del average_wind_speeds[0]
+        average_wind_speeds.append(average_wind_speed)
+        daily_average_wind_speed = round(statistics.mean(average_wind_speeds),1)
+
+        print("Wind speed " + str(wind_speed) + " km/h"," Wind gust: " + str(wind_gust) + "km/h", "Daily wind gust: " + str(daily_wind_gust) + "km/h", " Average wind speed: " + str(average_wind_speed) + " km/h","Daily average wind speed: " + str(daily_average_wind_speed) + " km/h"  )
+        redis_db.mset({'wind_speed' : wind_speed, 'wind_gust' : wind_gust, 'daily_wind_gust' : daily_wind_gust, 'average_wind_speed' : average_wind_speed, 'daily_average_wind_speed' : daily_average_wind_speed})
 
 
 def wind_direction():
@@ -583,11 +594,11 @@ def threading_function(function_name):
 print('# RPiMS is running #')
 
 redis_db = redis.StrictRedis(host="localhost", port=6379, db=0, charset="utf-8", decode_responses=True)
-redis_db.flushdb()
-#for key in redis_db.scan_iter("motion_sensor_*"):
-#    redis_db.delete(key)
-#for key in redis_db.scan_iter("door_sensor_*"):
-#    redis_db.delete(key)
+#redis_db.flushdb()
+for key in redis_db.scan_iter("motion_sensor_*"):
+    redis_db.delete(key)
+for key in redis_db.scan_iter("door_sensor_*"):
+    redis_db.delete(key)
 
 logging.basicConfig(filename='/tmp/rpims.log', level=logging.DEBUG, format='%(asctime)s %(levelname)s %(name)s %(message)s')
 logger=logging.getLogger(__name__)
