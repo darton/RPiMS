@@ -30,6 +30,7 @@ setup:
   winddirection_acquisition_time: 6
   winddirection_adc_type: automationhat
   winddirection_adc_input: 1
+  reference_voltage_adc_input: 2
   rainfall_sensor_pin: 20
   rainfall_acquisition_time: 6
   rainfall_agregation_time: 86400

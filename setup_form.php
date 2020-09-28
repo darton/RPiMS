@@ -44,6 +44,7 @@ $setup = array(
     "winddirection_acquisition_time" => (int)$_POST['winddirection_acquisition_time'],
     "winddirection_adc_type" => $_POST['winddirection_adc_type'],
     "winddirection_adc_input" => (int)$_POST['winddirection_adc_input'],
+    "reference_voltage_adc_input" => (int)$_POST['reference_voltage_adc_input'],
 
     "rainfall_sensor_pin" => (int)$_POST['rainfall_sensor_pin'],
     "rainfall_acquisition_time" => (int)$_POST['rainfall_acquisition_time'],

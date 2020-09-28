@@ -241,8 +241,15 @@
  <option value="3" <?php if ($winddirection_adc_input == '3') echo 'selected="selected"'; ?> >3</option>
  <option value="4" <?php if ($winddirection_adc_input == '4') echo 'selected="selected"'; ?> >4</option>
 </select></td>
-</tr>
 
+<td><label for="_adc_input">Reference voltage ADC input:</label></td>
+<td><select id="reference_voltage_adc_input" name="reference_voltage_adc_input" class="w3-select">
+ <option value="1" <?php if ($reference_voltage_adc_input == '1') echo 'selected="selected"'; ?> >1</option>
+ <option value="2" <?php if ($reference_voltage_adc_input == '2') echo 'selected="selected"'; ?> >2</option>
+ <option value="3" <?php if ($reference_voltage_adc_input == '3') echo 'selected="selected"'; ?> >3</option>
+ <option value="4" <?php if ($reference_voltage_adc_input == '4') echo 'selected="selected"'; ?> >4</option>
+</select></td>
+</tr>
 
 <tr>
 <td><label>Rainfall aquisition time:</label></td>
