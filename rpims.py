@@ -526,29 +526,49 @@ def wind_direction():
     "NNW": 337.5
     }
 
-    Uwe = 5.2
-    Uwy = 0
+    Uin = 5.2
+    Uout = 0
     R1 = 4690
     R2 = 0
     wind_direction_acquisition_time = config['winddirection_acquisition_time']
     angles = []
+    average_wind_direction = 0
 
     while True:
         start_time = time()
         angles.clear()
         while time() - start_time <= wind_direction_acquisition_time:
             adc_values = read_adc('automationhat')
-            Uwy = round(adc_values[0],1)
-            Uwe = round(adc_values[1],1)
-            if Uwe != Uwy:
-                R2 = int (R1/(1 - Uwy/Uwe))
-                #print(R2,Uwe,Uwy)
+
+            if config['winddirection_adc_input'] == 1:
+                Uout = round(adc_values[0],1)
+            if config['winddirection_adc_input'] == 4:
+                Uout = round(adc_values[1],1)
+            if config['winddirection_adc_input'] == 4:
+                Uout = round(adc_values[2],1)
+            if config['winddirection_adc_input'] == 4:
+                Uout = round(adc_values[3],1)
+
+            if config['reference_voltage_adc_input'] == 1:
+                Uin = round(adc_values[0],1)
+            if config['reference_voltage_adc_input'] == 2:
+                Uin = round(adc_values[1],1)
+            if config['reference_voltage_adc_input'] == 3:
+                Uin = round(adc_values[2],1)
+            if config['reference_voltage_adc_input'] == 4:
+                Uin = round(adc_values[3],1)
+
+            if Uin != Uout and Uin != 0:
+                R2 = int (R1/(1 - Uout/Uin))
+                #print(R2,Uin,Uout)
+            else:
+                print("Check connections to ADC")
             for item in direction_mapr:
                 if (R2 <= direction_mapr.get(item) * 1.005) and (R2 >= direction_mapr.get(item) * 0.995):
                     angles.append(direction_mapa.get(item))
-                    average_wind_direction = int(round(get_average(angles),0))
-                    #print(direction_mapa.get(item), item)
-        print("Average direction of wind: " + str(average_wind_direction))
+        average_wind_direction = int(round(get_average(angles),0))
+        #print(direction_mapa.get(item), item)
+        print("Average Wind Direction: " + str(average_wind_direction))
         redis_db.mset({'average_wind_direction': average_wind_direction, 'wind_direction': item})
 
 
