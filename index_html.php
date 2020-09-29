@@ -98,7 +98,7 @@ span.value {
     <h3>Door sensors</h3>
     <ul style="list-style-type:none;">
     <?php foreach ($door_sensors as $key => $value) {
-    echo "<li>"; echo $key; echo ": <span class='value' id='$key'></span>";  echo "</li>";
+    echo "<li>"; echo $value; echo ": <span class='value' id='$value'></span>";  echo "</li>";
 }
 ?>
     </ul>
@@ -111,7 +111,7 @@ span.value {
     <h3>Motion sensors</h3>
     <ul style="list-style-type:none;">
 <?php foreach ($motion_sensors as $key => $value) {
-    echo "<li>"; echo $key; echo ": <span class='value' id='$key'></span>";  echo "</li>";
+    echo "<li>"; echo $value; echo ": <span class='value' id='$value'></span>";  echo "</li>";
 }
 ?>
     </ul>
