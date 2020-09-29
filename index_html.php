@@ -60,9 +60,9 @@ span.value {
 <div class="sensors">
     <h3>BME280</h3>
     <ul style="list-style-type:none;">
-        <li>Temperature: <span class="value" id="BME280_Temperature"><?=round($rpims["BME280_Temperature"],2)?></span><span class="value"> &#8451</span></li>
-        <li>Humidity: <span class="value" id="BME280_Humidity"><?=round($rpims["BME280_Humidity"],2)?></span><span class="value"> %</span></li>
-        <li>Pressure: <span class="value" id="BME280_Pressure"><?=round($rpims["BME280_Pressure"],0)?></span><span class="value"> hPa</span></li>
+        <li>Temperature: <span class="value" id="BME280_Temperature"></span><span class="value"> &#8451</span></li>
+        <li>Humidity: <span class="value" id="BME280_Humidity"></span><span class="value"> %</span></li>
+        <li>Pressure: <span class="value" id="BME280_Pressure"></span><span class="value"> hPa</span></li>
     </ul>
 </div>
 <?php }?>
