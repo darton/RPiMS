@@ -65,7 +65,7 @@ if ($rpims["use_DS18B20_sensor"] == "True"){
     foreach ($rpimskeys as $key){
 	$sensor_type = 'DS18B20-';
 	if (strpos($key, $sensor_type) !== false) {
-	    $rpims_api["DS18B20_sensors"]["$key"] = $rpims[$key];
+	    $rpims_api["DS18B20_sensors"]["$key"] = round($rpims[$key],1);
 	}
     }
 }
