@@ -15,6 +15,7 @@ rpims.php
 setup.php
 setup_html.php
 setup_form.php
+favicon.ico
 .htpasswd
 motd
 cron
