@@ -10,6 +10,10 @@ foreach ($rpimskeys as $key) {
     $rpims[$key] = $value;
 }
 
+$door_sensors = $redis->smembers('door_sensors');
+$motion_sensors = $redis->smembers('motion_sensors');
+
+
 $rpims_api["hostname"] = $rpims["hostname"];
 $rpims_api["location"] = $rpims["location"];
 
@@ -43,21 +47,15 @@ if ($rpims["use_weather_station"] == "True"){
     $rpims_api["daily_rainfall"] = $rpims["daily_rainfall"];
 }
 
-$rpims_yaml = yaml_parse_file ("/var/www/html/conf/rpims.yaml");
-
-
-
 if ($rpims["use_motion_sensor"] == "True"){
-    $motion_sensors = $rpims_yaml['motion_sensors'];
     foreach ($motion_sensors as $key => $value){
-	$rpims_api["motion_sensors"]["$key"] = $rpims[$key];
+	$rpims_api["motion_sensors"]["$value"] = $rpims[$value];
     }
 }
 
 if ($rpims["use_door_sensor"] == "True"){
-    $door_sensors = $rpims_yaml['door_sensors'];
     foreach ($door_sensors as $key => $value){
-	$rpims_api["door_sensors"]["$key"] = $rpims[$key];
+	$rpims_api["door_sensors"]["$value"] = $rpims[$value];
     }
 }
 
@@ -72,4 +70,3 @@ if ($rpims["use_DS18B20_sensor"] == "True"){
 
 Header("Content-type: text/json");
 echo json_encode($rpims_api);
-
