@@ -10,6 +10,8 @@ zabbix_rpims.conf
 nginx-default
 index.php
 index_html.php
+index_html.js
+rpims.php
 setup.php
 setup_html.php
 setup_form.php

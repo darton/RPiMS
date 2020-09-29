@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <script src="jquery.min.js"></script>
+<script type="text/javascript" src="index_html.js"></script>
 <title>RPiMS</title>
 <meta charset="utf-8"/>
 <style>
@@ -81,9 +82,13 @@ span.value {
 <div class="sensors">
     <h3>DS18B20</h3>
     <ul style="list-style-type:none;">
-<?php  foreach ($rpimskeys as $key) { $sensor_type = 'DS18B20-'; if (strpos($key, $sensor_type) !== false) {?>
-        <li><?php $key?> Temperature:	 <span class="value"><?=round($rpims[$key],2)?> &#8451</span></li>
-<?php }}?>
+<?php  foreach ($rpimskeys as $key) {
+    $sensor_type = 'DS18B20-';
+    if (strpos($key, $sensor_type) !== false) {
+	echo "<li>"; echo $key; echo ": <span class='value' id='$key'></span>"; echo "<span class='value'> &#8451</span></li>";
+    }
+}
+?>
     </ul>
 </div>
 <?php }?>
@@ -93,19 +98,20 @@ span.value {
     <h3>Door sensors</h3>
     <ul style="list-style-type:none;">
     <?php foreach ($door_sensors as $key => $value) {
-    echo "<li>"; echo $key; echo "<span class='value'>: "; echo $rpims["$key"]; echo " </span></li>";
+    echo "<li>"; echo $key; echo ": <span class='value' id='$key'></span>";  echo "</li>";
 }
 ?>
     </ul>
 </div>
 <?php }?>
 
+
 <?php if ($rpims["use_motion_sensor"] == "True") {?>
 <div class="sensors">
     <h3>Motion sensors</h3>
     <ul style="list-style-type:none;">
 <?php foreach ($motion_sensors as $key => $value) {
-    echo "<li>"; echo $key; echo "<span class='value'>: "; echo $rpims["$key"]; echo " </span></li>";
+    echo "<li>"; echo $key; echo ": <span class='value' id='$key'></span>";  echo "</li>";
 }
 ?>
     </ul>
@@ -134,36 +140,14 @@ span.value {
 <div class="sensors">
     <h3>Video Stream Url</h3>
     <ul style="list-style-type:none;">
-    <li>rtsp://<span><?=$rpims["hostip"]?>:8554/</span></li>
+    <li>rtsp://<span id="hostip"></span><span>:8554/</span></li>
     </ul>
 </div>
 <?php }?>
 
 <div class="footer"></div>
 </div>
-<div></div>
-<script type="text/javascript">
-setInterval(function() {
-$.getJSON("rpims.php", function(data) {
-$("#average_wind_direction").html(data['average_wind_direction']);
-$("#daily_average_wind_speed").html(data['daily_average_wind_speed']);
-$("#average_wind_speed").html(data['average_wind_speed']);
-$("#wind_speed").html(data['wind_speed']);
-$("#wind_gust").html(data['wind_gust']);
-$("#daily_wind_gust").html(data['daily_wind_gust']);
-$("#daily_rainfall").html(data['daily_rainfall']);
-$("#CPU_Temperature").html(data['CPU_Temperature']);
-$("#hostip").html(data['hostip']);
-$("#hostname").html(data['hostname']);
-$("#location").html(data['location']);
-$("#BME280_Temperature").html(data['BME280_Temperature']);
-$("#BME280_Humidity").html(data['BME280_Humidity']);
-$("#BME280_Pressure").html(data['BME280_Pressure']);
-$("#DHT_Temperature").html(data['DHT_Temperature']);
-$("#DHT_Humidity").html(data['DHT_Humidity']);
-});
-}, 100);
-</script>
-
+<div id="door_sensor_1"></div>
+<div id="motion_sensor_1"></div>
 </body>
 </html>
