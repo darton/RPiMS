@@ -147,7 +147,5 @@ span.value {
 
 <div class="footer"></div>
 </div>
-<div id="door_sensor_1"></div>
-<div id="motion_sensor_1"></div>
 </body>
 </html>
