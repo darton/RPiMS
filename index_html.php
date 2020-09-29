@@ -67,7 +67,7 @@ span.value {
 </div>
 <?php }?>
 
-<?php if ($rpims["use_DHT_sensor"] == "False") {?>
+<?php if ($rpims["use_DHT_sensor"] == "True") {?>
 <div class="sensors">
     <h3><?=$rpims["DHT_type"]?></h3>
     <ul style="list-style-type:none;">
