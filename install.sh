@@ -30,7 +30,7 @@ for file in $(curl -sS https://raw.githubusercontent.com/darton/RPiMS/master/fil
    curl -sS https://raw.githubusercontent.com/darton/RPiMS/master/$file > $installdir/$file
 done
 curl -sS https://www.w3schools.com/w3css/4/w3.css > $installdir/w3.css
-
+curl -ss https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js $installdir/jquery.min.js
 chmod u+x $installdir/*.py $installdir/*.sh
 
 sudo apt-get -y install git python3-gpiozero python3-pip build-essential python3-dev python3-numpy python3-picamera python3-w1thermsensor python3-automationhat
@@ -58,7 +58,7 @@ PHPFPMSERVICE=$(sudo systemctl -a |grep fpm.service|awk '{print $1}'|grep php)
 sudo systemctl restart $PHPFPMSERVICE
 sudo systemctl enable $PHPFPMSERVICE
 
-for item in index.php index_html.php
+for item in index.php index_html.php jquery.min.js
    do sudo mv $installdir/$item $wwwdir/
 done
 
