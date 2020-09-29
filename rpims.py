@@ -628,12 +628,16 @@ for item in config_yaml.get("zabbix_agent"):
     zabbix_agent[item] = config_yaml['zabbix_agent'][item]
 
 if bool(config['use_door_sensor']) is True:
+    redis_db.delete("door_sensors")
     for item in config_yaml.get("door_sensors"):
         door_sensors_list[item] = Button(config_yaml['door_sensors'][item]['gpio_pin'], hold_time=config_yaml['door_sensors'][item]['hold_time'])
+        redis_db.sadd("door_sensors", item)
 
 if bool(config['use_motion_sensor']) is True:
+    redis_db.delete("motion_sensors")
     for item in config_yaml.get("motion_sensors"):
         motion_sensors_list[item] = MotionSensor(config_yaml['motion_sensors'][item]['gpio_pin'])
+        redis_db.sadd("motion_sensors", item)
 
 if bool(config['use_system_buttons']) is True:
     for item in config_yaml.get("system_buttons"):
