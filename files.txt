@@ -8,9 +8,9 @@ videorecorder.sh
 zabbix_sender.sh
 zabbix_rpims.conf
 nginx-default
+index.js
 index.php
 index_html.php
-index_html.js
 rpims.php
 setup.js
 setup.php

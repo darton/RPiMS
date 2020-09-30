@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<script src="jquery.min.js"></script>
-<script type="text/javascript" src="index_html.js"></script>
+
 <title>RPiMS</title>
 <meta charset="utf-8"/>
 <style>
@@ -42,9 +41,10 @@ span.value {
   font-size: 160%;
 }
 </style>
+<script src="jquery.min.js"></script>
+<script type="text/javascript" src="index.js"></script>
 </head>
 <body>
-
 <div class="rpimsbg">
 <div class="header"></div>
 <div class="rpims">
@@ -132,7 +132,6 @@ span.value {
 <?php }?>
 
 
-
 <?php if ($rpims["use_picamera"] == "True") {?>
 <div class="sensors">
     <h3>Video Stream Url</h3>
@@ -141,7 +140,6 @@ span.value {
     </ul>
 </div>
 <?php }?>
-
 <div class="footer"></div>
 </div>
 </body>
