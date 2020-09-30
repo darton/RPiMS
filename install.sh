@@ -30,7 +30,7 @@ for file in $(curl -sS https://raw.githubusercontent.com/darton/RPiMS/master/fil
    curl -sS https://raw.githubusercontent.com/darton/RPiMS/master/$file > $installdir/$file
 done
 curl -sS https://www.w3schools.com/w3css/4/w3.css > $installdir/w3.css
-curl -ss https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js > $installdir/jquery.min.js
+curl -ss https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js > $wwwdir/jquery.min.js
 chmod u+x $installdir/*.py $installdir/*.sh
 
 sudo apt-get -y install git python3-gpiozero python3-pip build-essential python3-dev python3-numpy python3-picamera python3-w1thermsensor python3-automationhat
