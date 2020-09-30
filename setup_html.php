@@ -229,8 +229,8 @@
 
 <td><label for="winddirection_adc_type">Wind direction ADC type:</label></td>
 <td><select id="winddirection_adc_type" name="winddirection_adc_type" class="w3-select">
- <option value="automationhat" <?php if ($winddirection_adc_type == 'automationhat') echo 'selected="selected"'; ?> >AutomationHat</option>
- <option value="ADS1115" <?php if ($winddirection_adc_type == 'ADS1115') echo 'selected="selected"'; ?> >ADS1115</option>
+ <option value="AutomationPhat" <?php if ($winddirection_adc_type == 'AutomationPhat') echo 'selected="selected"'; ?> >AutomationPhat</option>
+ <option value="STM32F030" <?php if ($winddirection_adc_type == 'STM32F030') echo 'selected="selected"'; ?> >STM32F030</option>
 </select></td>
 
 <td><label for="winddirection_adc_input">Wind direction ADC input:</label></td>

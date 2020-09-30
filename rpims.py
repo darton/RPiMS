@@ -469,6 +469,50 @@ def wind_speed():
         redis_db.mset({'wind_speed' : wind_speed, 'wind_gust' : wind_gust, 'daily_wind_gust' : daily_wind_gust, 'average_wind_speed' : average_wind_speed, 'daily_average_wind_speed' : daily_average_wind_speed})
 
 
+def adc_stm32f030():
+    from grove.i2c import Bus
+
+    ADC_DEFAULT_IIC_ADDR = 0X04
+    ADC_CHAN_NUM = 8
+
+    REG_RAW_DATA_START = 0X10
+    REG_VOL_START = 0X20
+    REG_RTO_START = 0X30
+
+    REG_SET_ADDR = 0XC0
+
+    class Pi_hat_adc():
+        def __init__(self,bus_num=1,addr=ADC_DEFAULT_IIC_ADDR):
+            self.bus=Bus(bus_num)
+            self.addr=addr
+
+        def get_all_vol_milli_data(self):
+            array = []
+            for i in range(ADC_CHAN_NUM):
+                data=self.bus.read_i2c_block_data(self.addr,REG_VOL_START+i,2)
+                val=data[1]<<8|data[0]
+                array.append(val)
+            return array
+
+        def get_nchan_vol_milli_data(self,n):
+            data=self.bus.read_i2c_block_data(self.addr,REG_VOL_START+n,2)
+            val =data[1]<<8|data[0]
+            return val
+
+    adc = Pi_hat_adc()
+    adc_inputs_values = adc.get_all_vol_milli_data()
+    return adc_inputs_values
+
+
+def adc_automationphat():
+        import automationhat
+        sleep(0.1) # Delay for automationhat
+        adc_inputs_values = []
+        adc_inputs_values.append(automationhat.analog.one.read())
+        adc_inputs_values.append(automationhat.analog.two.read())
+        adc_inputs_values.append(automationhat.analog.three.read())
+        return adc_inputs_values
+
 def wind_direction():
     import math
     def get_average(angles):
@@ -495,15 +539,6 @@ def wind_direction():
 
         return 0.0 if average == 360 else average
 
-    def read_adc(adc_type):
-        if config['winddirection_adc_type'] == 'automationhat':
-            import automationhat
-            sleep(0.1) # Delay for automationhat
-            adc_inputs_values = []
-            adc_inputs_values.append(automationhat.analog.one.read())
-            adc_inputs_values.append(automationhat.analog.two.read())
-            adc_inputs_values.append(automationhat.analog.three.read())
-            return adc_inputs_values
 
 
     direction_mapr = {
@@ -552,13 +587,16 @@ def wind_direction():
         start_time = time()
         angles.clear()
         while time() - start_time <= wind_direction_acquisition_time:
-            adc_values = read_adc('automationhat')
+            if config['winddirection_adc_type'] == 'AutomationPhat':
+                adc_values = adc_automationphat()
+            if config['winddirection_adc_type'] == 'STM32F030':
+                adc_values = adc_stm32f030()
 
             if config['winddirection_adc_input'] == 1:
                 Uout = round(adc_values[0],1)
-            if config['winddirection_adc_input'] == 4:
+            if config['winddirection_adc_input'] == 2:
                 Uout = round(adc_values[1],1)
-            if config['winddirection_adc_input'] == 4:
+            if config['winddirection_adc_input'] == 3:
                 Uout = round(adc_values[2],1)
             if config['winddirection_adc_input'] == 4:
                 Uout = round(adc_values[3],1)
@@ -586,11 +624,11 @@ def wind_direction():
             for item in direction_mapr:
                 if (R2 <= direction_mapr.get(item) * 1.005) and (R2 >= direction_mapr.get(item) * 0.995):
                     angles.append(direction_mapa.get(item))
-        average_wind_direction = int(round(get_average(angles),0))
-        #print(direction_mapa.get(item), item)
-        if bool(config['verbose']) is True :
-            print("Average Wind Direction: " + str(average_wind_direction))
-        redis_db.mset({'average_wind_direction': average_wind_direction, 'wind_direction': item})
+        if len(angles) != 0:
+            average_wind_direction = int(round(get_average(angles),0))
+            if bool(config['verbose']) is True :
+                print("Average Wind Direction: " + str(average_wind_direction))
+            redis_db.mset({'average_wind_direction': average_wind_direction, 'wind_direction': item})
 
 
 def threading_function(function_name):
