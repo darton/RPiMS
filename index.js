@@ -10,18 +10,18 @@ setInterval(function() {
 
 	$("#daily_rainfall").html(data['daily_rainfall']);
 
-	$("#CPU_Temperature").html(data['CPU_Temperature']);
+	$("#CPU_Temperature").html(data['sensors']['CPU']['Temperature']);
 
 	$("#hostip").html(data['hostip']);
 	$("#hostname").html(data['hostname']);
 	$("#location").html(data['location']);
 
-	$("#BME280_Temperature").html(data['BME280_Temperature']);
-	$("#BME280_Humidity").html(data['BME280_Humidity']);
-	$("#BME280_Pressure").html(data['BME280_Pressure']);
+	$("#BME280_Temperature").html(data['sensors']['BME280']['Temperature']);
+	$("#BME280_Humidity").html(data['sensors']['BME280']['Humidity']);
+	$("#BME280_Pressure").html(data['sensors']['BME280']['Pressure']);
 
-	$("#DHT_Temperature").html(data['DHT_Temperature']);
-	$("#DHT_Humidity").html(data['DHT_Humidity']);
+	$("#DHT_Temperature").html(data['sensors']['DHT']['Temperature']);
+	$("#DHT_Humidity").html(data['sensors']['DHT']['Humidity']);
 
 	for (var key in data['DS18B20_sensors']){
 	    var value = data['DS18B20_sensors'][key];
@@ -37,5 +37,6 @@ setInterval(function() {
 	    var value = data['motion_sensors'][key];
 	    $("#" + key).html(value);
 	}
-	});
+
+});
 }, 500);
