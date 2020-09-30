@@ -26,7 +26,6 @@ setInterval(function() {
 	for (var key in data['DS18B20_sensors']){
 	    var value = data['DS18B20_sensors'][key];
 	    $("#" + key).html(value);
-            console.log(key, value)
 	}
 
 	for (var key in data['door_sensors']){
