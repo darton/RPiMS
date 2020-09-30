@@ -14,9 +14,9 @@ $door_sensors = $redis->smembers('door_sensors');
 $motion_sensors = $redis->smembers('motion_sensors');
 $DS18B20_sensors = $redis->smembers('DS18B20_sensors');
 
-$rpims_api["hostip"] = $rpims["hostip"];
-$rpims_api["hostname"] = $rpims["hostname"];
-$rpims_api["location"] = $rpims["location"];
+$rpims_api['system']["hostip"] = $rpims["hostip"];
+$rpims_api['system']["hostname"] = $rpims["hostname"];
+$rpims_api['system']["location"] = $rpims["location"];
 
 if ($rpims["use_CPU_sensor"] == "True"){
     $rpims_api["sensors"]["CPU"]["Temperature"] = round($rpims["CPU_Temperature"],1);
