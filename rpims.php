@@ -58,15 +58,6 @@ if ($rpims["use_door_sensor"] == "True"){
     }
 }
 
-//if ($rpims["use_DS18B20_sensor"] == "True"){
-//    foreach ($rpimskeys as $key){
-//	$sensor_type = 'DS18B20-';
-//	if (strpos($key, $sensor_type) !== false) {
-//	    $rpims_api["DS18B20_sensors"]["$key"] = round($rpims[$key],1);
-//	}
-//    }
-//}
-
 if ($rpims["use_DS18B20_sensor"] == "True"){
     foreach ($DS18B20_sensors as $key => $value){
 	$rpims_api["DS18B20_sensors"]["$value"] = $rpims[$value];
