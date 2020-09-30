@@ -576,7 +576,13 @@ def wind_direction():
                 R2 = int (R1/(1 - Uout/Uin))
                 #print(R2,Uin,Uout)
             else:
-                print("Check connections to ADC")
+                print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+                print("Uin = ", Uin)
+                print("Uout = ", Uout)
+                print("Check sensor connections to ADC")
+                print("Wind Direction Meter program was terminated")
+                print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+                quit()
             for item in direction_mapr:
                 if (R2 <= direction_mapr.get(item) * 1.005) and (R2 >= direction_mapr.get(item) * 0.995):
                     angles.append(direction_mapa.get(item))
