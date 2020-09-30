@@ -12,11 +12,10 @@ foreach ($rpimskeys as $key) {
 
 $door_sensors = $redis->smembers('door_sensors');
 $motion_sensors = $redis->smembers('motion_sensors');
-
+$DS18B20_sensors = $redis->smembers('DS18B20_sensors');
 
 $rpims_api["hostname"] = $rpims["hostname"];
 $rpims_api["location"] = $rpims["location"];
-
 
 if ($rpims["use_picamera"] == "True"){
     $rpims_api["hostip"] = $rpims["hostip"];
@@ -59,14 +58,21 @@ if ($rpims["use_door_sensor"] == "True"){
     }
 }
 
+//if ($rpims["use_DS18B20_sensor"] == "True"){
+//    foreach ($rpimskeys as $key){
+//	$sensor_type = 'DS18B20-';
+//	if (strpos($key, $sensor_type) !== false) {
+//	    $rpims_api["DS18B20_sensors"]["$key"] = round($rpims[$key],1);
+//	}
+//    }
+//}
+
 if ($rpims["use_DS18B20_sensor"] == "True"){
-    foreach ($rpimskeys as $key){
-	$sensor_type = 'DS18B20-';
-	if (strpos($key, $sensor_type) !== false) {
-	    $rpims_api["DS18B20_sensors"]["$key"] = round($rpims[$key],1);
+    foreach ($DS18B20_sensors as $key => $value){
+	$rpims_api["DS18B20_sensors"]["$value"] = $rpims[$value];
 	}
     }
-}
+
 
 Header("Content-type: text/json");
 echo json_encode($rpims_api);

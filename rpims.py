@@ -185,7 +185,7 @@ def get_ds18b20_data():
             for sensor in data:
                 redis_db.delete('DS18B20_sensors')
                 redis_db.sadd('DS18B20_sensors', sensor.id)
-                redis_db.set('DS18B20-' + sensor.id, sensor.get_temperature())
+                redis_db.set(sensor.id, sensor.get_temperature())
                 redis_db.expire('DS18B20-' + sensor.id, config['DS18B20_read_interval']*2)
                 if bool(config['verbose']) is True :
                     print("Sensor %s temperature %.2f"%(sensor.id,sensor.get_temperature()),"\xb0C")

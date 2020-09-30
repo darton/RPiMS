@@ -16,6 +16,6 @@ foreach ($rpimskeys as $key) {
 
 $door_sensors = $redis->smembers('door_sensors');
 $motion_sensors = $redis->smembers('motion_sensors');
-
+$DS18B20_sensors = $redis->smembers('DS18B20_sensors');
 
 include 'index_html.php';
