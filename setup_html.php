@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
 <title>RPiMS configuration</title>
 <meta charset="utf-8"/>
@@ -11,8 +10,8 @@
   background-color: #f1f1c1;
 }
 </style>
+<script type="text/javascript" src="setup.js"></script>
 </head>
-
 <body>
 <div class="w3-responsive">
 <form action="setup_form.php" method="post" class="w3-container">
@@ -587,29 +586,5 @@ if ($GPIO['GPIO_26']['type'] == 'DoorSensor'){
 <input type="submit" value="Save" class="w3-bar">
 </form>
 </div>
-
-    <script>
-	var tlspskidentityid = "TLSPSKIdentity";
-	var tlspskid = "TLSPSK";
-
-        /* Function to generate combination of PSK */
-        function generateP(lenght) {
-            var pass = '';
-            var str = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' +
-                    'abcdefghijklmnopqrstuvwxyz0123456789';
-            for (i = 1; i <= lenght; i++) {
-                var char = Math.floor(Math.random()
-                            * str.length + 1);
-                pass += str.charAt(char)
-            }
-            return pass;
-        }
-
-        function gfg_Run(psk_len,id) {
-            document.getElementById(id).value =  generateP(psk_len);
-        }
-
-    </script>
-
 </body>
 </html>

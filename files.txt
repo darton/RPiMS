@@ -12,6 +12,7 @@ index.php
 index_html.php
 index_html.js
 rpims.php
+setup.js
 setup.php
 setup_html.php
 setup_form.php
