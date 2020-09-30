@@ -66,7 +66,7 @@ for item in .htpasswd rpims.yaml zabbix_rpims_userparameter.conf
    do sudo mv $installdir/$item $wwwdir/conf/
 done
 
-for item in setup.php setup_html.php setup_form.php w3.css
+for item in setup.php setup_html.php setup_form.php setup.js w3.css
    do sudo mv $installdir/$item $wwwdir/setup
 done
 sudo ln -s $wwwdir/setup/setup.php $wwwdir/setup/index.php
