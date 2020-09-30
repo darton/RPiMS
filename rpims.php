@@ -19,7 +19,6 @@ $rpims_api["hostname"] = $rpims["hostname"];
 $rpims_api["location"] = $rpims["location"];
 
 if ($rpims["use_CPU_sensor"] == "True"){
-    $rpims_api["CPU_Temperature"] = round($rpims["CPU_Temperature"],1);
     $rpims_api["sensors"]["CPU"]["Temperature"] = round($rpims["CPU_Temperature"],1);
 }
 
@@ -42,14 +41,6 @@ if ($rpims["use_DHT_sensor"] == "True"){
 }
 
 if ($rpims["use_weather_station"] == "True"){
-    $rpims_api["wind_speed"] = $rpims["wind_speed"];
-    $rpims_api["average_wind_speed"] = $rpims["average_wind_speed"];
-    $rpims_api["daily_average_wind_speed"] = $rpims["daily_average_wind_speed"];
-    $rpims_api["wind_gust"] = $rpims["wind_gust"];
-    $rpims_api["daily_wind_gust"] = $rpims["daily_wind_gust"];
-    $rpims_api["average_wind_direction"] = $rpims["average_wind_direction"];
-    $rpims_api["daily_rainfall"] = $rpims["daily_rainfall"];
-
     $rpims_api['weather_station']["wind_speed"] = $rpims["wind_speed"];
     $rpims_api['weather_station']["average_wind_speed"] = $rpims["average_wind_speed"];
     $rpims_api['weather_station']["daily_average_wind_speed"] = $rpims["daily_average_wind_speed"];
