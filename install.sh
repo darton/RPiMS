@@ -58,7 +58,7 @@ PHPFPMSERVICE=$(sudo systemctl -a |grep fpm.service|awk '{print $1}'|grep php)
 sudo systemctl restart $PHPFPMSERVICE
 sudo systemctl enable $PHPFPMSERVICE
 
-for item in index.php index_html.php index.js jquery.min.js
+for item in index.php index_html.php index.js jquery.min.js rpims.php
    do sudo mv $installdir/$item $wwwdir/
 done
 
