@@ -24,3 +24,8 @@ echo "$(tput setaf 2)
 $(tput sgr0)"
 
 echo
+
+_IP=$(hostname -I) || true
+if [ "$_IP" ]; then
+  printf "RPiMS address is %s\n" "$_IP"
+fi
