@@ -84,8 +84,8 @@ def Main():
             temperature = filtered_temperature.pop()
             humidity = filtered_humidity.pop()
             if math.isnan(temperature) == False and math.isnan(humidity) == False:
-                redis_db.set('DHT22_Humidity', humidity)
-                redis_db.set('DHT22_Temperature', temperature)
+                redis_db.set('DHT_Humidity', humidity)
+                redis_db.set('DHT_Temperature', temperature)
                 if verbose is 'yes' :
                     print('{}, Temperature: {:.01f}°C, Humidity: {:.01f}%' .format(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), temperature, humidity))
 
