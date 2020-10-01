@@ -1,3 +1,4 @@
+
 setInterval(function() {
     $.getJSON("rpims.php", function(data) {
 	if (data['system']['use_weather_station'] == "True") {
@@ -47,6 +48,31 @@ setInterval(function() {
 	$("#hostip").html(data['system']['hostip']);
 	$("#hostname").html(data['system']['hostname']);
 	$("#location").html(data['system']['location']);
+
+var BME280Temperature = Math.round(data['sensors']['BME280']['Temperature'] * 10)/10;
+var BME280Humidity = Math.round(data['sensors']['BME280']['Humidity']);
+var BME280Pressure = data['sensors']['BME280']['Pressure'];
+//console.log("BME280Humidity", BME280Humidity)
+var WindSpeed = Math.round(data['weather_station']['wind_speed']);
+
+function setGaugeValue(gauge, value, divisor, unit ) {
+  if (value < 0 || value > 1) {
+    return;
+  }
+
+  gauge.querySelector(".gauge__fill").style.transform = `rotate(${value / 2 }turn)`;
+  gauge.querySelector(".gauge__cover").textContent = `${ value * divisor } ${unit} `;
+}
+
+const g1 = document.querySelector("#g1");
+const g2 = document.querySelector("#g2");
+const g3 = document.querySelector("#g3");
+const g4 = document.querySelector("#g4");
+
+setGaugeValue(g1, BME280Temperature/100, 100, "°C");
+setGaugeValue(g2, BME280Humidity/100, 100, "%");
+setGaugeValue(g3, BME280Pressure/1100, 1100, "hPa");
+setGaugeValue(g4, WindSpeed/100, 100, "km/h");
 
 });
 }, 500);

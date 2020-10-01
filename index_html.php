@@ -4,6 +4,57 @@
 <title>RPiMS</title>
 <meta charset="utf-8"/>
 <style>
+
+.gauge {
+  width: 100%;
+  max-width: 250px;
+  font-family: "Roboto", sans-serif;
+  font-size: 30px;
+  color: #004033;
+}
+
+.gauge__body {
+  width: 100%;
+  height: 0;
+  padding-bottom: 50%;
+  background: #b4c0be;
+  position: relative;
+  border-top-left-radius: 100% 200%;
+  border-top-right-radius: 100% 200%;
+  overflow: hidden;
+}
+
+.gauge__fill {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: inherit;
+  height: 100%;
+  background: #009578;
+  transform-origin: center top;
+  transform: rotate(0.25turn);
+  transition: transform 0.2s ease-out;
+}
+
+.gauge__cover {
+  width: 75%;
+  height: 150%;
+  background: #ffffff;
+  border-radius: 50%;
+  position: absolute;
+  top: 25%;
+  left: 50%;
+  transform: translateX(-50%);
+
+  /* Text */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 25%;
+  box-sizing: border-box;
+}
+
+
 span.value {
   font-size: 100%;
   color: yellow;
@@ -29,21 +80,22 @@ span.value {
   background-color: darkslateblue;
   color: white;
   padding: 8px;
-  margin: 8px;
-  font-size: 160%;
+  margin: 4px;
+  font-size: 120%;
 }
 .sensors {
   background-color: darkslategray;
   color: white;
   padding: 8px;
-  margin: 8px;
-  font-size: 160%;
+  margin: 4px;
+  font-size: 120%;
 }
 </style>
 <script src="jquery.min.js"></script>
 <script type="text/javascript" src="index.js"></script>
 </head>
 <body>
+
 <div class="rpimsbg">
 <div class="header"></div>
 <div class="rpims">
@@ -58,13 +110,32 @@ span.value {
 
 <?php if ($rpims["use_BME280_sensor"] == "True") {?>
 <div class="sensors">
-    <h3>BME280</h3>
-    <ul style="list-style-type:none;">
-        <li>Temperature: <span class="value" id="BME280_Temperature"></span><span class="value"> &#8451</span></li>
-        <li>Humidity: <span class="value" id="BME280_Humidity"></span><span class="value"> %</span></li>
-        <li>Pressure: <span class="value" id="BME280_Pressure"></span><span class="value"> hPa</span></li>
-    </ul>
+
+<div class="gauge" id="g1">
+  <div class="gauge__body">
+    <div class="gauge__fill"></div>
+    <div class="gauge__cover"></div>
+  </div>
 </div>
+<h5>Air Temperature</h5>
+
+<div class="gauge" id="g2">
+  <div class="gauge__body">
+    <div class="gauge__fill"></div>
+    <div class="gauge__cover"></div>
+  </div>
+</div>
+<h5>Air Humidity</h5>
+
+<div class="gauge" id="g3">
+  <div class="gauge__body">
+    <div class="gauge__fill"></div>
+    <div class="gauge__cover"></div>
+  </div>
+</div>
+<h5>Air Pressure</h5>
+</div>
+
 <?php }?>
 
 <?php if ($rpims["use_DHT_sensor"] == "True") {?>
@@ -116,12 +187,20 @@ span.value {
 
 
 <?php if ($rpims["use_weather_station"] == "True") {?>
-<div class="sensors">
-    <h3>Weather Meter</h3>
+<div class="sensors"
+<h2>Weather Station</h2>
+
+<div class="gauge" id="g4" style="text-align:center">
+  <div class="gauge__body">
+    <div class="gauge__fill"></div>
+    <div class="gauge__cover"></div>
+  </div>
+</div>
+<h5>Wind Speed</h5>
     <ul style="list-style-type:none;">
         <li>Wind speed: <span class="value" id="wind_speed"></span><span class="value"> km/h</span></li>
         <li>Average Wind speed: <span class="value" id="average_wind_speed"></span><span class="value"> km/h</span></li>
-        <li>Average Wind speed From the Past 24 Hours: <span class="value" id="daily_average_wind_speed"></span><span class="value"> km/h</span></li>
+        <li>Average Wind speed From the Past 24h: <span class="value" id="daily_average_wind_speed"></span><span class="value"> km/h</span></li>
         <li>Wind gust: <span class="value" id="wind_gust"></span><span class="value"> km/h</span></li>
         <li>Peak Wind Gust From the Past 24 Hours: <span class="value" id="daily_wind_gust"></span><span class="value"> km/h</span></li>
         <li>Wind direction: <span class="value" id="average_wind_direction"></span><span class="value"> &#176 </span></li>
@@ -129,6 +208,7 @@ span.value {
     </ul>
 </div>
 <?php }?>
+
 
 
 <?php if ($rpims["use_picamera"] == "True") {?>
@@ -139,6 +219,8 @@ span.value {
     </ul>
 </div>
 <?php }?>
+
+
 <div class="footer"></div>
 </div>
 </body>
