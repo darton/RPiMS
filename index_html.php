@@ -13,8 +13,8 @@ td {
   width: 100%;
   max-width: 250px;
   font-family: "Roboto", sans-serif;
-  font-size: 35px;
-  color: #004033;
+  font-size: 32px;
+  #color: #004033;
 }
 
 .gauge__body {
@@ -43,7 +43,8 @@ td {
 .gauge__cover {
   width: 75%;
   height: 150%;
-  background: #ffffff;
+  #background: #ffffff;
+  background: darkslategray;
   border-radius: 50%;
   position: absolute;
   top: 25%;
@@ -89,10 +90,11 @@ span.value {
 }
 .sensors {
   background-color: darkslategray;
+  #background-color: white;
   color: white;
   padding: 8px;
   margin: 10px;
-  font-size: 85%;
+  font-size: 100%;
   text-align: center;
 }
 
@@ -101,7 +103,7 @@ span.value {
   color: white;
   padding: 0px;
   margin: 0px;
-  font-size: 110%;
+  font-size: 130%;
   text-align: left;
 }
 
@@ -125,30 +127,34 @@ span.value {
 
 <?php if ($rpims["use_BME280_sensor"] == "True") {?>
 <div class="sensors">
-
-<div class="gauge" id="g1">
+<div style="width: 100%; display: table;">
+<div style="display: table-row">
+<div class="gauge" id="g1"  style="width: 300px;  display: table-cell";>
   <div class="gauge__body">
     <div class="gauge__fill"></div>
     <div class="gauge__cover"></div>
   </div>
-<div class="sensors">Air Temperature</div>
+<div class="sensors">Temperature</div>
 </div>
 
-<div class="gauge" id="g2">
+<div class="gauge" id="g2"  style="width: 300px; display: table-cell";>
  <div class="gauge__body">
     <div class="gauge__fill"></div>
     <div class="gauge__cover"></div>
   </div>
-<div class="sensors">Air Humidity</div>
+<div class="sensors">Humidity</div>
 </div>
 
-<div class="gauge" id="g3">
+<div class="gauge" id="g3"  style="width: 300px; display: table-cell";>
   <div class="gauge__body">
     <div class="gauge__fill"></div>
     <div class="gauge__cover"></div>
   </div>
-<div class="sensors">Air Pressure</div>
+<div class="sensors">Pressure</div>
 </div>
+</div>
+</div>
+
 </div>
 
 <?php }?>
@@ -210,14 +216,14 @@ span.value {
   </div>
 <div class="sensors">Wind Speed</div>
 </div>
-<table>
+<table class="table">
 <tr><td>Wind speed: </td><td><span class="value" id="wind_speed"></span><span class="value"> km/h</span></td></tr>
 <tr><td>Average Wind speed: </td><td><span class="value" id="average_wind_speed"></span><span class="value"> km/h</span></td></tr>
-<tr><td>Average Wind speed From the Past 24h: </td><td><span class="value" id="daily_average_wind_speed"></span><span class="value"> km/h</span></td></tr>
+<tr><td>Average Wind speed (Past 24h): </td><td><span class="value" id="daily_average_wind_speed"></span><span class="value"> km/h</span></td></tr>
 <tr><td>Wind gust: </td><td><span class="value" id="wind_gust"></span><span class="value"> km/h</span></td></tr>
-<tr><td>Peak Wind Gust From the Past 24 Hours: </td><td><span class="value" id="daily_wind_gust"></span><span class="value"> km/h</span></td></tr>
+<tr><td>Peak Wind Gust (Past 24h): </td><td><span class="value" id="daily_wind_gust"></span><span class="value"> km/h</span></td></tr>
 <tr><td>Wind direction: </td><td><span class="value" id="average_wind_direction"></span><span class="value"> &#176 </span></td></tr>
-<tr><td>Rainfall From the Past 24 Hours: </td><td><span class="value" id="daily_rainfall"></span><span class="value"> mm</span></td></tr>
+<tr><td>Rainfall (Past 24h): </td><td><span class="value" id="daily_rainfall"></span><span class="value"> mm</span></td></tr>
 </table>
 </div>
 <?php }?>
@@ -232,8 +238,6 @@ span.value {
     </ul>
 </div>
 <?php }?>
-
-
 <div class="footer"></div>
 </div>
 </body>
