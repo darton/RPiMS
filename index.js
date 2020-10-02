@@ -49,6 +49,13 @@ setInterval(function() {
 	$("#hostname").html(data['system']['hostname']);
 	$("#location").html(data['system']['location']);
 
+function roundPrecised(number, precision) {
+    var power = Math.pow(10, precision);
+
+    return Math.round(number * power) / power;
+}
+
+
 var BME280Temperature = Math.round(data['sensors']['BME280']['Temperature'] * 10)/10;
 var BME280Humidity = Math.round(data['sensors']['BME280']['Humidity']);
 var BME280Pressure = data['sensors']['BME280']['Pressure'];
@@ -57,13 +64,16 @@ var WindSpeed = Math.round(data['weather_station']['wind_speed']);
 var WindGust = Math.round(data['weather_station']['wind_gust']);
 var WindGust24h = Math.round(data['weather_station']['daily_wind_gust']);
 
+
 function setGaugeValue(gauge, value, divisor, unit ) {
   if (value < 0 || value > 1) {
     return;
   }
+  var value1 = value/2;
+  var value2 = roundPrecised((value*divisor), 2);
 
-  gauge.querySelector(".gauge__fill").style.transform = `rotate(${value / 2 }turn)`;
-  gauge.querySelector(".gauge__cover").textContent = `${ value * divisor } ${unit} `;
+  gauge.querySelector(".gauge__fill").style.transform = `rotate(${value1}turn)`;
+  gauge.querySelector(".gauge__cover").textContent = `${ value2 } ${unit}`;
 }
 
 const g1 = document.querySelector("#g1");
