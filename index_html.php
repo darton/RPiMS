@@ -209,13 +209,35 @@ span.value {
 
 <?php if ($rpims["use_weather_station"] == "True") {?>
 <div class="sensors">
-<div class="gauge" id="g4" style="text-align:center">
+
+<div style="width: 100%; display: table;">
+<div style="display: table-row">
+<div class="gauge" id="g4" style="width: 300px; display: table-cell">
   <div class="gauge__body">
     <div class="gauge__fill"></div>
     <div class="gauge__cover"></div>
   </div>
 <div class="sensors">Wind Speed</div>
 </div>
+
+<div class="gauge" id="g5" style="width: 300px; display: table-cell">
+  <div class="gauge__body">
+    <div class="gauge__fill"></div>
+    <div class="gauge__cover"></div>
+  </div>
+<div class="sensors">Wind Gust</div>
+</div>
+
+<div class="gauge" id="g6" style="width: 300px; display: table-cell">
+  <div class="gauge__body">
+    <div class="gauge__fill"></div>
+    <div class="gauge__cover"></div>
+  </div>
+<div class="sensors">Wind Gust 24h</div>
+</div>
+</div>
+</div>
+
 <table class="table">
 <tr><td>Wind speed: </td><td><span class="value" id="wind_speed"></span><span class="value"> km/h</span></td></tr>
 <tr><td>Average Wind speed: </td><td><span class="value" id="average_wind_speed"></span><span class="value"> km/h</span></td></tr>
