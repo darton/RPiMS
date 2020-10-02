@@ -5,11 +5,15 @@
 <meta charset="utf-8"/>
 <style>
 
+td {
+  text-align: left;
+}
+
 .gauge {
   width: 100%;
   max-width: 250px;
   font-family: "Roboto", sans-serif;
-  font-size: 30px;
+  font-size: 35px;
   color: #004033;
 }
 
@@ -80,16 +84,27 @@ span.value {
   background-color: darkslateblue;
   color: white;
   padding: 8px;
-  margin: 4px;
+  margin: 10px;
   font-size: 120%;
 }
 .sensors {
   background-color: darkslategray;
   color: white;
   padding: 8px;
-  margin: 4px;
-  font-size: 120%;
+  margin: 10px;
+  font-size: 85%;
+  text-align: center;
 }
+
+.table {
+  background-color: darkslategray;
+  color: white;
+  padding: 0px;
+  margin: 0px;
+  font-size: 110%;
+  text-align: left;
+}
+
 </style>
 <script src="jquery.min.js"></script>
 <script type="text/javascript" src="index.js"></script>
@@ -116,24 +131,24 @@ span.value {
     <div class="gauge__fill"></div>
     <div class="gauge__cover"></div>
   </div>
+<div class="sensors">Air Temperature</div>
 </div>
-<h5>Air Temperature</h5>
 
 <div class="gauge" id="g2">
-  <div class="gauge__body">
+ <div class="gauge__body">
     <div class="gauge__fill"></div>
     <div class="gauge__cover"></div>
   </div>
+<div class="sensors">Air Humidity</div>
 </div>
-<h5>Air Humidity</h5>
 
 <div class="gauge" id="g3">
   <div class="gauge__body">
     <div class="gauge__fill"></div>
     <div class="gauge__cover"></div>
   </div>
+<div class="sensors">Air Pressure</div>
 </div>
-<h5>Air Pressure</h5>
 </div>
 
 <?php }?>
@@ -187,25 +202,23 @@ span.value {
 
 
 <?php if ($rpims["use_weather_station"] == "True") {?>
-<div class="sensors"
-<h2>Weather Station</h2>
-
+<div class="sensors">
 <div class="gauge" id="g4" style="text-align:center">
   <div class="gauge__body">
     <div class="gauge__fill"></div>
     <div class="gauge__cover"></div>
   </div>
+<div class="sensors">Wind Speed</div>
 </div>
-<h5>Wind Speed</h5>
-    <ul style="list-style-type:none;">
-        <li>Wind speed: <span class="value" id="wind_speed"></span><span class="value"> km/h</span></li>
-        <li>Average Wind speed: <span class="value" id="average_wind_speed"></span><span class="value"> km/h</span></li>
-        <li>Average Wind speed From the Past 24h: <span class="value" id="daily_average_wind_speed"></span><span class="value"> km/h</span></li>
-        <li>Wind gust: <span class="value" id="wind_gust"></span><span class="value"> km/h</span></li>
-        <li>Peak Wind Gust From the Past 24 Hours: <span class="value" id="daily_wind_gust"></span><span class="value"> km/h</span></li>
-        <li>Wind direction: <span class="value" id="average_wind_direction"></span><span class="value"> &#176 </span></li>
-        <li>Rainfall From the Past 24 Hours: <span class="value" id="daily_rainfall"></span><span class="value"> mm</span></li>
-    </ul>
+<table>
+<tr><td>Wind speed: </td><td><span class="value" id="wind_speed"></span><span class="value"> km/h</span></td></tr>
+<tr><td>Average Wind speed: </td><td><span class="value" id="average_wind_speed"></span><span class="value"> km/h</span></td></tr>
+<tr><td>Average Wind speed From the Past 24h: </td><td><span class="value" id="daily_average_wind_speed"></span><span class="value"> km/h</span></td></tr>
+<tr><td>Wind gust: </td><td><span class="value" id="wind_gust"></span><span class="value"> km/h</span></td></tr>
+<tr><td>Peak Wind Gust From the Past 24 Hours: </td><td><span class="value" id="daily_wind_gust"></span><span class="value"> km/h</span></td></tr>
+<tr><td>Wind direction: </td><td><span class="value" id="average_wind_direction"></span><span class="value"> &#176 </span></td></tr>
+<tr><td>Rainfall From the Past 24 Hours: </td><td><span class="value" id="daily_rainfall"></span><span class="value"> mm</span></td></tr>
+</table>
 </div>
 <?php }?>
 
