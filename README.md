@@ -160,6 +160,7 @@ RPi   [GPIO.3 pin 5] ----------------------------- [SDC]  DS3231
 * RTC DS3231 I2C - 1 pcs
 * LCD OLED 1,3" I2C SH1106 or 1.44" lcd_st7735 - 1 pcs
 * Weather Meter Kit - 1 pcs
+* ADC(STM32F030) or Pimoroni AutomationHat- 1pcs
 
 Optional
 
@@ -221,6 +222,8 @@ Optional
 * [Raspberry Pi Zero OTG Mode](https://gist.github.com/gbaman/50b6cca61dd1c3f88f41)
 
 * [RPi - Setting up a wireless LAN via the command line](https://www.raspberrypi.org/documentation/configuration/wireless/wireless-cli.md)
+
+* [Moduł 8-Channel 12-Bit ADC, Seeed Studio](https://pl.rs-online.com/web/p/products/1887099/)
 
 ## Configure if you have RTC (DS3231 I2C)
 
