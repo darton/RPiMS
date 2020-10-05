@@ -59,7 +59,6 @@ td {
   box-sizing: border-box;
 }
 
-
 span.value {
   font-size: 100%;
   color: yellow;
@@ -181,6 +180,18 @@ span.value {
 </div>
 <?php }?>
 
+<?php if ($rpims["use_DS18B20_sensor"] == "True") {?>
+<div class="sensors">
+    <h3>DS18B20</h3>
+    <ul style="list-style-type:none;">
+<?php  foreach ($DS18B20_sensors as $key => $value) {;
+    echo "<li>"; echo $value; echo ": <span class='value' id='$value'></span>"; echo "<span class='value'> &#8451</span></li>";
+}
+?>
+    </ul>
+</div>
+<?php }?>
+
 <?php if ($rpims["use_door_sensor"] == "True") {?>
 <div class="sensors">
     <h3>Door sensors</h3>
@@ -193,7 +204,6 @@ span.value {
 </div>
 <?php }?>
 
-
 <?php if ($rpims["use_motion_sensor"] == "True") {?>
 <div class="sensors">
     <h3>Motion sensors</h3>
@@ -205,7 +215,6 @@ span.value {
     </ul>
 </div>
 <?php }?>
-
 
 <?php if ($rpims["use_weather_station"] == "True") {?>
 <div class="sensors">
@@ -249,8 +258,6 @@ span.value {
 </table>
 </div>
 <?php }?>
-
-
 
 <?php if ($rpims["use_picamera"] == "True") {?>
 <div class="sensors">
