@@ -68,6 +68,11 @@ if (data['system']['use_weather_station'] == "True") {
     var WindGust24h = Math.round(data['weather_station']['daily_wind_gust']);
 }
 
+if (data['system']['use_DHT_sensor'] == "True") {
+    var DHTTemperature = Math.round(data['sensors']['DHT']['Temperature'] * 10)/10;
+    var DHTHumidity = Math.round(data['sensors']['DHT']['Humidity']);
+}
+
 function setGaugeValue(gauge, value, divisor, unit ) {
   if (value < 0 || value > 1) {
     return;
@@ -86,6 +91,9 @@ const g4 = document.querySelector("#g4");
 const g5 = document.querySelector("#g5");
 const g6 = document.querySelector("#g6");
 
+const g11 = document.querySelector("#g11");
+const g12 = document.querySelector("#g12");
+
 if (data['system']['use_BME280_sensor'] == "True") {
     setGaugeValue(g1, BME280Temperature/100, 100, "°C");
     setGaugeValue(g2, BME280Humidity/100, 100, "%");
@@ -97,5 +105,11 @@ if (data['system']['use_weather_station'] == "True") {
     setGaugeValue(g5, WindGust/100, 100, "km/h");
     setGaugeValue(g6, WindGust24h/100, 100, "km/h");
 }
+
+if (data['system']['use_DHT_sensor'] == "True") {
+    setGaugeValue(g11, DHTTemperature/100, 100, "°C");
+    setGaugeValue(g12, DHTHumidity/100, 100, "%");
+}
+
 });
 }, 500);

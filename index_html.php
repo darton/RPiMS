@@ -161,23 +161,23 @@ span.value {
 
 <?php if ($rpims["use_DHT_sensor"] == "True") {?>
 <div class="sensors">
-    <h3><?=$rpims["DHT_type"]?></h3>
-    <ul style="list-style-type:none;">
-        <li>Temperature: <span class="value" id="DHT_Temperature"></span><span class="value"> &#8451</span></li>
-        <li>Humidity: <span class="value" id="DHT_Humidity"></span><span class="value"> %</span></li>
-    </ul>
-</div>
-<?php }?>
 
-<?php if ($rpims["use_DS18B20_sensor"] == "True") {?>
-<div class="sensors">
-    <h3>DS18B20</h3>
-    <ul style="list-style-type:none;">
-<?php  foreach ($DS18B20_sensors as $key => $value) {;
-	echo "<li>"; echo $value; echo ": <span class='value' id='$value'></span>"; echo "<span class='value'> &#8451</span></li>";
-}
-?>
-    </ul>
+<div style="width: 100%; display: table;">
+<div style="display: table-row">
+<div class="gauge" id="g11"  style="width: 300px;  display: table-cell";>
+  <div class="gauge__body">
+    <div class="gauge__fill"></div>
+    <div class="gauge__cover"></div>
+  </div>
+<div class="sensors">Temperature</div>
+</div>
+
+<div class="gauge" id="g12"  style="width: 300px; display: table-cell";>
+ <div class="gauge__body">
+    <div class="gauge__fill"></div>
+    <div class="gauge__cover"></div>
+  </div>
+<div class="sensors">Humidity</div>
 </div>
 <?php }?>
 
