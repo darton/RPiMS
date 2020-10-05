@@ -55,15 +55,18 @@ function roundPrecised(number, precision) {
     return Math.round(number * power) / power;
 }
 
+if (data['system']['use_BME280_sensor'] == "True") {
+    var BME280Temperature = Math.round(data['sensors']['BME280']['Temperature'] * 10)/10;
+    var BME280Humidity = Math.round(data['sensors']['BME280']['Humidity']);
+    var BME280Pressure = data['sensors']['BME280']['Pressure'];
+}
 
-var BME280Temperature = Math.round(data['sensors']['BME280']['Temperature'] * 10)/10;
-var BME280Humidity = Math.round(data['sensors']['BME280']['Humidity']);
-var BME280Pressure = data['sensors']['BME280']['Pressure'];
 //console.log("BME280Humidity", BME280Humidity)
-var WindSpeed = Math.round(data['weather_station']['wind_speed']);
-var WindGust = Math.round(data['weather_station']['wind_gust']);
-var WindGust24h = Math.round(data['weather_station']['daily_wind_gust']);
-
+if (data['system']['use_weather_station'] == "True") {
+    var WindSpeed = Math.round(data['weather_station']['wind_speed']);
+    var WindGust = Math.round(data['weather_station']['wind_gust']);
+    var WindGust24h = Math.round(data['weather_station']['daily_wind_gust']);
+}
 
 function setGaugeValue(gauge, value, divisor, unit ) {
   if (value < 0 || value > 1) {
@@ -83,11 +86,16 @@ const g4 = document.querySelector("#g4");
 const g5 = document.querySelector("#g5");
 const g6 = document.querySelector("#g6");
 
-setGaugeValue(g1, BME280Temperature/100, 100, "°C");
-setGaugeValue(g2, BME280Humidity/100, 100, "%");
-setGaugeValue(g3, BME280Pressure/1100, 1100, "hPa");
-setGaugeValue(g4, WindSpeed/100, 100, "km/h");
-setGaugeValue(g5, WindGust/100, 100, "km/h");
-setGaugeValue(g6, WindGust24h/100, 100, "km/h");
+if (data['system']['use_BME280_sensor'] == "True") {
+    setGaugeValue(g1, BME280Temperature/100, 100, "°C");
+    setGaugeValue(g2, BME280Humidity/100, 100, "%");
+    setGaugeValue(g3, BME280Pressure/1100, 1100, "hPa");
+}
+
+if (data['system']['use_weather_station'] == "True") {
+    setGaugeValue(g4, WindSpeed/100, 100, "km/h");
+    setGaugeValue(g5, WindGust/100, 100, "km/h");
+    setGaugeValue(g6, WindGust24h/100, 100, "km/h");
+}
 });
 }, 500);
