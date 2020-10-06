@@ -317,7 +317,8 @@ span.value {
 
 <div style="width: 100%; display: table;">
 <div style="display: table-row">
-<div class="gauge" id="g4" style="width: 300px; display: table-cell">
+
+<div class="gauge" id="g4" style="width: 33%; display: table-cell">
   <div class="gauge__body">
     <div class="gauge__fill"></div>
     <div class="gauge__cover"></div>
@@ -325,7 +326,7 @@ span.value {
 <div class="sensors">Wind Speed</div>
 </div>
 
-<div class="gauge" id="g5" style="width: 300px; display: table-cell">
+<div class="gauge" id="g5" style="width: 33%; display: table-cell">
   <div class="gauge__body">
     <div class="gauge__fill"></div>
     <div class="gauge__cover"></div>
@@ -333,13 +334,14 @@ span.value {
 <div class="sensors">Wind Gust</div>
 </div>
 
-<div class="gauge" id="g6" style="width: 300px; display: table-cell">
+<div class="gauge" id="g6" style="width: 33%; display: table-cell">
   <div class="gauge__body">
     <div class="gauge__fill"></div>
     <div class="gauge__cover"></div>
   </div>
 <div class="sensors">Wind Gust 24h</div>
 </div>
+
 </div>
 </div>
 
