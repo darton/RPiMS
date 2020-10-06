@@ -61,7 +61,7 @@ td {
   width: 100%;
   max-width: 250px;
   font-family: "Roboto", sans-serif;
-  font-size: 32px;
+  font-size: 4vw;
   #color: #004033;
 }
 
@@ -133,7 +133,7 @@ span.value {
   color: white;
   padding: 8px;
   margin: 10px;
-  font-size: 120%;
+  font-size: 100%;
 }
 .sensors {
   background-color: darkslategray;
