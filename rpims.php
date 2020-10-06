@@ -67,10 +67,11 @@ if ($rpims["use_door_sensor"] == "True"){
 if ($rpims["use_DS18B20_sensor"] == "True"){
     $DS18B20_sensors = $redis->smembers('DS18B20_sensors');
     foreach ($DS18B20_sensors as $key => $value){
-	$rpims_api["DS18B20_sensors"]["$value"] = $rpims[$value];
+	$rpims_api["sensors"]["DS18B20_sensors"]["$value"] = $rpims[$value];
 	}
     }
 
 
-Header("Content-type: text/json");
+Header("Content-type: application/json");
 echo json_encode($rpims_api);
+?>
