@@ -150,7 +150,7 @@ span.value {
   color: white;
   padding: 0px;
   margin: 0px;
-  font-size: 130%;
+  font-size: 100%;
   text-align: left;
 }
 
