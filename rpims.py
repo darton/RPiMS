@@ -182,11 +182,11 @@ def get_ds18b20_data():
         from w1thermsensor import W1ThermSensor
         while True :
             data = W1ThermSensor.get_available_sensors([W1ThermSensor.THERM_SENSOR_DS18B20,W1ThermSensor.THERM_SENSOR_DS18S20])
+            redis_db.delete('DS18B20_sensors')
             for sensor in data:
-                redis_db.delete('DS18B20_sensors')
                 redis_db.sadd('DS18B20_sensors', sensor.id)
                 redis_db.set(sensor.id, sensor.get_temperature())
-                redis_db.expire(sensor.id, config['DS18B20_read_interval']*2)
+                #redis_db.expire(sensor.id, config['DS18B20_read_interval']*2.5)
                 if bool(config['verbose']) is True :
                     print("Sensor %s temperature %.2f"%(sensor.id,sensor.get_temperature()),"\xb0C")
                     print("")
