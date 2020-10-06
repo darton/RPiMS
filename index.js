@@ -25,12 +25,12 @@ setInterval(function() {
 		$("#DHT_Humidity").html(data['sensors']['DHT']['Humidity']);
 	}
 
-	if (data['system']['use_DS18B20_sensor'] == "True") {
-		for (var key in data['DS18B20_sensors']){
-	    		var value = data['DS18B20_sensors'][key];
-	    		$("#" + key).html(value);
-		}
-	}
+//	if (data['system']['use_DS18B20_sensor'] == "True") {
+//		for (var DS18B20_id in data['sensors']['DS18B20_sensors']){
+//	    		var value = Math.round(data['sensors']['DS18B20_sensors'][DS18B20_id]*10)/10;
+//	    		$("#" + DS18B20_id).html(value);
+//		}
+//	}
 
 	if (data['system']['use_door_sensor'] == "True") {
 		for (var key in data['door_sensors']){
@@ -61,7 +61,6 @@ if (data['system']['use_BME280_sensor'] == "True") {
     var BME280Pressure = data['sensors']['BME280']['Pressure'];
 }
 
-//console.log("BME280Humidity", BME280Humidity)
 if (data['system']['use_weather_station'] == "True") {
     var WindSpeed = Math.round(data['weather_station']['wind_speed']);
     var WindGust = Math.round(data['weather_station']['wind_gust']);
@@ -71,6 +70,13 @@ if (data['system']['use_weather_station'] == "True") {
 if (data['system']['use_DHT_sensor'] == "True") {
     var DHTTemperature = Math.round(data['sensors']['DHT']['Temperature'] * 10)/10;
     var DHTHumidity = Math.round(data['sensors']['DHT']['Humidity']);
+}
+
+if (data['system']['use_DS18B20_sensor'] == "True") {
+    var DS18B20 = {};
+    for (var DS18B20_id in data['sensors']['DS18B20_sensors']){
+    DS18B20[DS18B20_id] = data['sensors']['DS18B20_sensors'][DS18B20_id];
+}
 }
 
 function setGaugeValue(gauge, value, divisor, unit ) {
@@ -111,5 +117,14 @@ if (data['system']['use_DHT_sensor'] == "True") {
     setGaugeValue(g12, DHTHumidity/100, 100, "%");
 }
 
+if (data['system']['use_DS18B20_sensor'] == "True") {
+    var DS18B20_prefix = 'DS18B20_';
+    for (var DS18B20_id in data['sensors']['DS18B20_sensors']){
+    var sensor_name = DS18B20_prefix + DS18B20_id;
+    var sensor_value = DS18B20[DS18B20_id];
+    //console.log(eval(sensor_name));
+    setGaugeValue(eval(sensor_name), sensor_value/100, 100, "°C");
+}
+}
 });
-}, 500);
+}, 1000);
