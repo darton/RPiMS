@@ -3,7 +3,55 @@
 <head>
 <title>RPiMS</title>
 <meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
+
+
+/* Dropdown Button */
+.dropbtn {
+  background-color: #3498DB;
+  color: white;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+}
+
+/* Dropdown button on hover & focus */
+.dropbtn:hover, .dropbtn:focus {
+  background-color: #2980B9;
+}
+
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {background-color: #ddd}
+
+/* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
+.show {display:block;}
+
 
 td {
   text-align: left;
@@ -114,7 +162,19 @@ span.value {
 
 <div class="rpimsbg">
 <div class="header"></div>
+
+
 <div class="rpims">
+
+<div class="dropdown">
+  <button onclick="myFunction()" class="dropbtn">Config</button>
+  <div id="myDropdown" class="dropdown-content">
+    <a href="/setup/">Setup</a>
+    <a href="/rpims.php">API</a>
+  </div>
+</div>
+
+<div>
     <ul style="list-style-type:none;">
     <li>Hostname: <span class="value" id="hostname"></span></li>
     <li>Location: <span class="value" id="location"></span></li>
@@ -123,6 +183,10 @@ span.value {
 <?php }?>
     </ul>
 </div>
+
+</div>
+
+
 
 <?php if ($rpims["use_BME280_sensor"] == "True") {?>
 <div class="sensors">
@@ -299,6 +363,7 @@ span.value {
     </ul>
 </div>
 <?php }?>
+
 <div class="footer"></div>
 </div>
 </body>
