@@ -33,9 +33,6 @@ if ($rpims["use_BME280_sensor"] == "True"){
 }
 
 if ($rpims["use_DHT_sensor"] == "True"){
-    $rpims_api["DHT_Temperature"] = $rpims["DHT_Temperature"];
-    $rpims_api["DHT_Humidity"] = $rpims["DHT_Humidity"];
-
     $rpims_api["sensors"]["DHT"]["Temperature"] = $rpims["DHT_Temperature"];
     $rpims_api["sensors"]["DHT"]["Humidity"] = $rpims["DHT_Humidity"];
 }
