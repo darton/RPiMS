@@ -27,7 +27,11 @@ if len(sys.argv) > 1:
             print('Temperature={0:0.2f};Humidity={1:0.2f};Pressure={2:0.2f};'.format(float(temperature),float(humidity),float(pressure)))
     elif sys.argv[1] == 'DS18B20':
         if redis_db.get('use_DS18B20_sensor') == 'True':
-            for sensor in redis_db.smembers('DS18B20_sensors'):
+            ds18b20_sensors = []
+            for item in redis_db.smembers('DS18B20_sensors'):
+                ds18b20_sensors.append(item)
+            ds18b20_sensors.sort()
+            for sensor in ds18b20_sensors:
                 print(sensor + '={0:0.2f}'.format(float(redis_db.get(sensor))), end=';')
             print('')
     elif sys.argv[1] == 'DHT':
