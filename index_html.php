@@ -263,8 +263,8 @@ span.value {
 ?>
 </ul>
 </div>
-<?php }?>
 -->
+<?php }?>
 
 <?php if ($rpims["use_DS18B20_sensor"] == "True") {?>
 <div class="sensors">
