@@ -10,20 +10,20 @@ foreach ($rpimskeys as $key) {
     $rpims[$key] = $value;
 }
 
-$rpims_api["system"]["use_CPU_sensor"] = $rpims["use_CPU_sensor"];
-$rpims_api["system"]["use_BME280_sensor"] = $rpims["use_BME280_sensor"];
-$rpims_api["system"]["use_DHT_sensor"] = $rpims["use_DHT_sensor"];
-$rpims_api["system"]["use_DS18B20_sensor"] = $rpims["use_DS18B20_sensor"];
-$rpims_api["system"]["use_weather_station"] = $rpims["use_weather_station"];
-$rpims_api["system"]["use_door_sensor"] = $rpims["use_door_sensor"];
-$rpims_api["system"]["use_motion_sensor"] = $rpims["use_motion_sensor"];
-$rpims_api["system"]["hostip"] = $rpims["hostip"];
-$rpims_api["system"]["hostname"] = $rpims["hostname"];
-$rpims_api["system"]["location"] = $rpims["location"];
+$rpims_api["settings"]["use_CPU_sensor"] = $rpims["use_CPU_sensor"];
+$rpims_api["settings"]["use_BME280_sensor"] = $rpims["use_BME280_sensor"];
+$rpims_api["settings"]["use_DHT_sensor"] = $rpims["use_DHT_sensor"];
+$rpims_api["settings"]["use_DS18B20_sensor"] = $rpims["use_DS18B20_sensor"];
+$rpims_api["settings"]["use_weather_station"] = $rpims["use_weather_station"];
+$rpims_api["settings"]["use_door_sensor"] = $rpims["use_door_sensor"];
+$rpims_api["settings"]["use_motion_sensor"] = $rpims["use_motion_sensor"];
+$rpims_api["settings"]["hostip"] = $rpims["hostip"];
+$rpims_api["settings"]["hostname"] = $rpims["hostname"];
+$rpims_api["settings"]["location"] = $rpims["location"];
 
 
 if ($rpims["use_CPU_sensor"] == "True"){
-    $rpims_api["sensors"]["CPU"]["Temperature"] = round($rpims["CPU_Temperature"],1);
+    $rpims_api["sensors"]["CPU"]["Temperature"] = $rpims["CPU_Temperature"];
 }
 
 if ($rpims["use_BME280_sensor"] == "True"){
