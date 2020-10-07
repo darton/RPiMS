@@ -176,6 +176,7 @@ fwrite($zabpskfile, $TLSPSK);
 
 fclose($zabconfile);
 fclose($zabpskfile);
+
 sleep(2);
-header("Location: /index.php");
+header("Location: /");
 ?>
