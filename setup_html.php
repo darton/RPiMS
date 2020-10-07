@@ -582,8 +582,9 @@ if ($GPIO['GPIO_26']['type'] == 'DoorSensor'){
 
 </table>
 </fieldset>
-
+<fieldset>
 <input type="submit" value="Save" class="w3-bar">
+</fieldset>
 </form>
 </div>
 </body>
