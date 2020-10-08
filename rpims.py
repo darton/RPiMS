@@ -507,13 +507,36 @@ def adc_stm32f030():
 
 
 def adc_automationphat():
-        import automationhat
-        sleep(0.1) # Delay for automationhat
-        adc_inputs_values = []
-        adc_inputs_values.append(automationhat.analog.one.read())
-        adc_inputs_values.append(automationhat.analog.two.read())
-        adc_inputs_values.append(automationhat.analog.three.read())
-        return adc_inputs_values
+    import automationhat
+    sleep(0.1) # Delay for automationhat
+    adc_inputs_values = []
+    adc_inputs_values.append(automationhat.analog.one.read())
+    adc_inputs_values.append(automationhat.analog.two.read())
+    adc_inputs_values.append(automationhat.analog.three.read())
+    return adc_inputs_values
+
+
+def adc_ads1115():
+    import time
+    import board
+    import busio
+    import adafruit_ads1x15.ads1115 as ADS
+    from adafruit_ads1x15.analog_in import AnalogIn
+    # Create the I2C bus
+    i2c = busio.I2C(board.SCL, board.SDA)
+    # Create the ADC object using the I2C bus
+    ads = ADS.ADS1115(i2c)
+    chan1 = AnalogIn(ads, ADS.P0)
+    chan2 = AnalogIn(ads, ADS.P1)
+    chan3 = AnalogIn(ads, ADS.P2)
+    chan4 = AnalogIn(ads, ADS.P3)
+    adc_inputs_values = []
+    adc_inputs_values.append(chan1.voltage)
+    adc_inputs_values.append(chan2.voltage)
+    adc_inputs_values.append(chan3.voltage)
+    adc_inputs_values.append(chan4.voltage)
+    return adc_inputs_values
+
 
 def wind_direction():
     import math
@@ -593,6 +616,8 @@ def wind_direction():
                 adc_values = adc_automationphat()
             if config['winddirection_adc_type'] == 'STM32F030':
                 adc_values = adc_stm32f030()
+            if config['winddirection_adc_type'] == 'ADS1115':
+                adc_values = adc_ads1115()
 
             if config['winddirection_adc_input'] == 1:
                 Uout = round(adc_values[0],1)
