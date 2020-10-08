@@ -11,8 +11,8 @@
 .dropbtn {
   background-color: #3498DB;
   color: white;
-  padding: 16px;
-  font-size: 16px;
+  padding: 4vw;
+  font-size: 4vw;
   border: none;
   cursor: pointer;
 }
@@ -133,7 +133,7 @@ span.value {
   color: white;
   padding: 8px;
   margin: 10px;
-  font-size: 100%;
+  font-size: 4vw;
 }
 .sensors {
   background-color: darkslategray;
@@ -141,7 +141,7 @@ span.value {
   color: white;
   padding: 8px;
   margin: 10px;
-  font-size: 100%;
+  font-size: 4vw;
   text-align: center;
 }
 
@@ -150,7 +150,7 @@ span.value {
   color: white;
   padding: 0px;
   margin: 0px;
-  font-size: 100%;
+  font-size: 4vw;
   text-align: left;
 }
 

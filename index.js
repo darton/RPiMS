@@ -1,28 +1,35 @@
+function roundPrecised(number, precision) {
+    var power = Math.pow(10, precision);
+
+    return Math.round(number * power) / power;
+}
 
 setInterval(function() {
     $.getJSON("rpims.php", function(data) {
-	if (data['settings']['use_weather_station'] == "True") {
-		$("#average_wind_direction").html(data['weather_station']['average_wind_direction']);
-		$("#daily_average_wind_speed").html(data['weather_station']['daily_average_wind_speed']);
-		$("#average_wind_speed").html(data['weather_station']['average_wind_speed']);
-		$("#wind_speed").html(data['weather_station']['wind_speed']);
-		$("#wind_gust").html(data['weather_station']['wind_gust']);
-		$("#daily_wind_gust").html(data['weather_station']['daily_wind_gust']);
-		$("#daily_rainfall").html(data['weather_station']['daily_rainfall']);
+
+	if (data['settings']['useWeatherStation'] == "True") {
+		$("#average_wind_direction").html(data['weather_station']['averageWindDirection']);
+		$("#daily_average_wind_speed").html(data['weather_station']['dailyAverageWindSpeed']);
+		$("#average_wind_speed").html(data['weather_station']['averageWindSpeed']);
+		$("#wind_speed").html(data['weather_station']['windSpeed']);
+		$("#wind_gust").html(data['weather_station']['windGust']);
+		$("#daily_wind_gust").html(data['weather_station']['dailyWindGust']);
+		$("#daily_rainfall").html(data['weather_station']['dailyRainfall']);
 	}
 
-	if (data['settings']['use_CPU_sensor'] == "True") {
-		$("#CPU_Temperature").html(data['sensors']['CPU']['Temperature']);
-	}
-	if (data['settings']['use_BME280_sensor'] == "True") {
-		$("#BME280_Temperature").html(data['sensors']['BME280']['Temperature']);
-		$("#BME280_Humidity").html(data['sensors']['BME280']['Humidity']);
-		$("#BME280_Pressure").html(data['sensors']['BME280']['Pressure']);
+	if (data['settings']['useCpuSensor'] == "True") {
+		$("#CPU_Temperature").html(roundPrecised(data['sensors']['CPU']['temperature'],1));
 	}
 
-	if (data['settings']['use_DHT_sensor'] == "True") {
-		$("#DHT_Temperature").html(data['sensors']['DHT']['Temperature']);
-		$("#DHT_Humidity").html(data['sensors']['DHT']['Humidity']);
+	if (data['settings']['useBME280Sensor'] == "True") {
+		$("#BME280_Temperature").html(data['sensors']['BME280']['temperature']);
+		$("#BME280_Humidity").html(data['sensors']['BME280']['humidity']);
+		$("#BME280_Pressure").html(data['sensors']['BME280']['pressure']);
+	}
+
+	if (data['settings']['useDHTSensor'] == "True") {
+		$("#DHT_Temperature").html(data['sensors']['DHT']['temperature']);
+		$("#DHT_Humidity").html(data['sensors']['DHT']['humidity']);
 	}
 
 //	if (data['settings']['use_DS18B20_sensor'] == "True") {
@@ -32,15 +39,15 @@ setInterval(function() {
 //		}
 //	}
 
-	if (data['settings']['use_door_sensor'] == "True") {
-		for (var key in data['door_sensors']){
-	    		var value = data['door_sensors'][key];
+	if (data['settings']['useDoorSensor'] == "True") {
+		for (var key in data['sensors']['door_sensors']){
+	    		var value = data['sensors']['door_sensors'][key];
 	    		$("#" + key).html(value);
 		}
 	}
-	if (data['settings']['use_motion_sensor'] == "True") {
-		for (var key in data['motion_sensors']){
-	    		var value = data['motion_sensors'][key];
+	if (data['settings']['useMotionSensor'] == "True") {
+		for (var key in data['sensors']['motion_sensors']){
+	    		var value = data['sensors']['motion_sensors'][key];
 	    		$("#" + key).html(value);
 		}
 	}
@@ -49,33 +56,29 @@ setInterval(function() {
 	$("#hostname").html(data['settings']['hostname']);
 	$("#location").html(data['settings']['location']);
 
-function roundPrecised(number, precision) {
-    var power = Math.pow(10, precision);
 
-    return Math.round(number * power) / power;
+if (data['settings']['useBME280Sensor'] == "True") {
+    var BME280Temperature = roundPrecised(data['sensors']['BME280']['temperature'],1);
+    var BME280Humidity = Math.round(data['sensors']['BME280']['humidity']);
+    var BME280Pressure = Math.round(data['sensors']['BME280']['pressure']);
 }
 
-if (data['settings']['use_BME280_sensor'] == "True") {
-    var BME280Temperature = Math.round(data['sensors']['BME280']['Temperature'] * 10)/10;
-    var BME280Humidity = Math.round(data['sensors']['BME280']['Humidity']);
-    var BME280Pressure = data['sensors']['BME280']['Pressure'];
+if (data['settings']['useWeatherStation'] == "True") {
+    var WindSpeed = Math.round(data['weather_station']['windSpeed']);
+    var WindGust = Math.round(data['weather_station']['windGust']);
+    var WindGust24h = Math.round(data['weather_station']['dailyWindGust']);
 }
 
-if (data['settings']['use_weather_station'] == "True") {
-    var WindSpeed = Math.round(data['weather_station']['wind_speed']);
-    var WindGust = Math.round(data['weather_station']['wind_gust']);
-    var WindGust24h = Math.round(data['weather_station']['daily_wind_gust']);
+if (data['settings']['useDHTSensor'] == "True") {
+    var DHTTemperature = roundPrecised(data['sensors']['DHT']['temperature'],1);
+    var DHTHumidity = Math.round(data['sensors']['DHT']['humidity']);
 }
 
-if (data['settings']['use_DHT_sensor'] == "True") {
-    var DHTTemperature = Math.round(data['sensors']['DHT']['Temperature'] * 10)/10;
-    var DHTHumidity = Math.round(data['sensors']['DHT']['Humidity']);
-}
-
-if (data['settings']['use_DS18B20_sensor'] == "True") {
+if (data['settings']['useDS18B20Sensor'] == "True") {
     var DS18B20 = {};
-    for (var DS18B20_id in data['sensors']['DS18B20_sensors']){
-    DS18B20[DS18B20_id] = data['sensors']['DS18B20_sensors'][DS18B20_id];
+    for (var DS18B20_id in data['sensors']['DS18B20_sensors']['array']){
+    console.log(DS18B20_id)
+    DS18B20[DS18B20_id] = roundPrecised(data['sensors']['DS18B20_sensors']['array'][DS18B20_id],1);
 }
 }
 
@@ -100,29 +103,29 @@ const g6 = document.querySelector("#g6");
 const g11 = document.querySelector("#g11");
 const g12 = document.querySelector("#g12");
 
-if (data['settings']['use_BME280_sensor'] == "True") {
+if (data['settings']['useBME280Sensor'] == "True") {
     setGaugeValue(g1, BME280Temperature/100, 100, "°C");
     setGaugeValue(g2, BME280Humidity/100, 100, "%");
     setGaugeValue(g3, BME280Pressure/1100, 1100, "hPa");
 }
 
-if (data['settings']['use_weather_station'] == "True") {
+if (data['settings']['useWeatherStation'] == "True") {
     setGaugeValue(g4, WindSpeed/100, 100, "km/h");
     setGaugeValue(g5, WindGust/100, 100, "km/h");
     setGaugeValue(g6, WindGust24h/100, 100, "km/h");
 }
 
-if (data['settings']['use_DHT_sensor'] == "True") {
+if (data['settings']['useDHTSensor'] == "True") {
     setGaugeValue(g11, DHTTemperature/100, 100, "°C");
     setGaugeValue(g12, DHTHumidity/100, 100, "%");
 }
 
-if (data['settings']['use_DS18B20_sensor'] == "True") {
+if (data['settings']['useDS18B20Sensor'] == "True") {
     var DS18B20_prefix = 'DS18B20_';
-    for (var DS18B20_id in data['sensors']['DS18B20_sensors']){
+    for (var DS18B20_id in data['sensors']['DS18B20_sensors']['array']){
     var sensor_name = DS18B20_prefix + DS18B20_id;
     var sensor_value = DS18B20[DS18B20_id];
-    //console.log(eval(sensor_name));
+    console.log(eval(sensor_name));
     setGaugeValue(eval(sensor_name), sensor_value/100, 100, "°C");
 }
 }
