@@ -31,9 +31,11 @@ if ($picture == 'list'){
 	    $picamera['pictures'] = $pictures_lst;
    }
 }
+
+}
+
 Header("Content-type: application/json");
 echo json_encode($picamera);
 
-}
 
 ?>
