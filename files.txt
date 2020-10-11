@@ -9,6 +9,7 @@ zabbix_sender.sh
 zabbix_rpims.conf
 nginx-default
 index.js
+index.css
 index.php
 index_html.php
 rpims.php

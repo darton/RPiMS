@@ -60,7 +60,7 @@ sudo systemctl enable $PHPFPMSERVICE
 
 sudo rm $wwwdir/index.nginx-debian.html
 
-for item in index.php index_html.php index.js jquery.min.js rpims.php
+for item in index.php index_html.php index.js index.css jquery.min.js rpims.php
    do sudo mv $installdir/$item $wwwdir/
 done
 
