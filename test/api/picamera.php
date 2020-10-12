@@ -14,17 +14,22 @@ $picamera['settings']['picture_delete'] = "/api/picamera.php?picture=delete&file
 if (isset($picture) and isset($id) ){
     if ($picture == 'grab'){
 	exec("sudo /home/pi/scripts/RPiMS/grab_pictures.sh ".$id);
-	echo "<p>Photo ".$id." grabbed - " .date("Y/m/d h:i:sa")." </p>";
+	//echo "<p>Photo ".$id." grabbed - " .date("Y/m/d h:i:sa")." </p>";
+        $picamera = [];
+	$picamera['status'] = "Photo $id grabbed";
     }
 
     if ($picture == 'delete'){
 	exec("sudo /home/pi/scripts/RPiMS/delete_pictures.sh ". $id);
-	echo "<p>Photo ".$id. " deleted - "  .date("Y/m/d h:i:sa")." </p>";
+	//echo "<p>Photo ".$id. " deleted - "  .date("Y/m/d h:i:sa")." </p>";
+        $picamera = [];
+        $picamera['status'] = "Photo $id deleted";
     }
 }
 
 if ($picture == 'list'){
     $files = scandir($dir);
+    $picamera = [];
     foreach ($files as $key => $value) {
         if ('.' !== $value && '..' !== $value){
 	    $pictures_lst[]=$value;
@@ -36,6 +41,5 @@ if ($picture == 'list'){
 
 Header("Content-type: application/json");
 echo json_encode($picamera);
-
 
 ?>
