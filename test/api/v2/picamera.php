@@ -14,16 +14,19 @@ $picamera['settings']['picture_delete'] = "/api/picamera.php?picture=delete&file
 if (isset($picture) and isset($id) ){
     if ($picture == 'grab'){
 	exec("sudo /home/pi/scripts/RPiMS/grab_pictures.sh ".$id);
-	//echo "<p>Photo ".$id." grabbed - " .date("Y/m/d h:i:sa")." </p>";
         $picamera = [];
 	$picamera['status'] = "Photo $id grabed";
     }
 
     if ($picture == 'delete'){
-	exec("sudo /home/pi/scripts/RPiMS/delete_pictures.sh ". $id);
-	//echo "<p>Photo ".$id. " deleted - "  .date("Y/m/d h:i:sa")." </p>";
-        $picamera = [];
-        $picamera['status'] = "Photo $id deleted";
+	if (!unlink($dir."/".$id)) {
+	    $picamera = [];
+    	    $picamera['status'] = "Photo $id can not be deleted";
+	}
+	else {
+	    $picamera = [];
+	    $picamera['status'] = "Photo $id has been deleted";
+	    }
     }
 }
 
