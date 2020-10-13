@@ -178,20 +178,22 @@ def get_bme280_data():
 
 
 def get_ds18b20_data():
+    logging.basicConfig(filename='/tmp/ds18b20.log', level=logging.DEBUG, format='%(asctime)s %(levelname)s %(name)s %(message)s')
+    logger=logging.getLogger(__name__)
     try:
         from w1thermsensor import W1ThermSensor
         while True :
             data = W1ThermSensor.get_available_sensors([W1ThermSensor.THERM_SENSOR_DS18B20,W1ThermSensor.THERM_SENSOR_DS18S20])
-            redis_db.delete('DS18B20_sensors')
+            #redis_db.delete('DS18B20_sensors')
             for sensor in data:
                 redis_db.sadd('DS18B20_sensors', sensor.id)
-                sleep(1)
                 redis_db.set(sensor.id, sensor.get_temperature())
                 sleep(1)
-                #redis_db.expire(sensor.id, config['DS18B20_read_interval']*2.5)
+                redis_db.expire(sensor.id, config['DS18B20_read_interval']*2)
                 if bool(config['verbose']) is True :
                     print("Sensor %s temperature %.2f"%(sensor.id,sensor.get_temperature()),"\xb0C")
                     print("")
+            redis_db.expire('DS18B20_sensors', config['DS18B20_read_interval']*3)
             sleep(config['DS18B20_read_interval'])
     except Exception as err :
         logger.error(err)
