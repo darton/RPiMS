@@ -71,7 +71,7 @@ http://rpiipaddress
 
 ## Known issues
 DHT22 sensor is not reliable. Required library libgpiod_pulsein may take 100% CPU or return bad reading or not return any readings, those are known bugs with issues in progress:
-* [adafruit/Adafruit_Blinka: 100% CPU use of libgpiod_pulsein on Raspberry Pi](https://github.com/adafruit/Adafruit_Blinka/issues/210)
+* [adafruit/Adafruit_Blinka: 100% CPU use of libgpiod_pulsein on Raspberry Pi](https://github.com/adafruit/Adafruit_CircuitPython_DHT/issues/50)
 
 
 ## Hardware setup - Raspberry Pi
