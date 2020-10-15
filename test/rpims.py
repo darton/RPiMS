@@ -162,8 +162,6 @@ def get_bme280_data():
 
 
 def get_ds18b20_data():
-    logging.basicConfig(filename='/tmp/ds18b20.log', level=logging.DEBUG, format='%(asctime)s %(levelname)s %(name)s %(message)s')
-    logger=logging.getLogger(__name__)
     try:
         from w1thermsensor import W1ThermSensor
         while True :
