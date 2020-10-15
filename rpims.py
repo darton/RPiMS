@@ -151,7 +151,6 @@ def get_cputemp_data():
                 print("")
             sleep(config['CPUtemp_read_interval'])
     except Exception as err :
-        logger.error(err)
         print('Problem with ' + str(err))
 
 
@@ -173,13 +172,10 @@ def get_bme280_data():
                 print("")
             sleep(config['BME280_read_interval'])
     except Exception as err :
-        logger.error(err)
         print('Problem with ' + str(err))
 
 
 def get_ds18b20_data():
-    logging.basicConfig(filename='/tmp/ds18b20.log', level=logging.DEBUG, format='%(asctime)s %(levelname)s %(name)s %(message)s')
-    logger=logging.getLogger(__name__)
     try:
         from w1thermsensor import W1ThermSensor
         while True :
@@ -195,7 +191,6 @@ def get_ds18b20_data():
             redis_db.expire('DS18B20_sensors', config['DS18B20_read_interval']*3)
             sleep(config['DS18B20_read_interval'])
     except Exception as err :
-        logger.error(err)
         print('Problem with ' + str(err))
 
 
@@ -566,7 +561,6 @@ def wind_direction():
         return 0.0 if average == 360 else average
 
 
-
     direction_mapr = {
      "N": 5080,
     "NNE": 5188,
@@ -682,7 +676,6 @@ logger=logging.getLogger(__name__)
 try:
     with open(r'/var/www/html/conf/rpims.yaml') as file:
         config_yaml = yaml.full_load(file)
-
 except Exception as err :
     logger.error(err)
     print('Problem with ' + str(err))
@@ -701,6 +694,15 @@ for item in config_yaml.get("setup"):
 for item in config_yaml.get("zabbix_agent"):
     zabbix_agent[item] = config_yaml['zabbix_agent'][item]
 
+hostname = config_yaml['zabbix_agent']['hostname']
+location = config_yaml['zabbix_agent']['location']
+chassis = config_yaml['zabbix_agent']['chassis']
+deployment = config_yaml['zabbix_agent']['deployment']
+hostnamectl_sh('set-hostname', hostname)
+hostnamectl_sh('set-location', location)
+hostnamectl_sh('set-chassis', chassis)
+hostnamectl_sh('set-deployment', deployment)
+    
 if bool(config['use_door_sensor']) is True:
     redis_db.delete("door_sensors")
     for item in config_yaml.get("door_sensors"):
@@ -720,15 +722,6 @@ if bool(config['use_system_buttons']) is True:
 if bool(config['use_led_indicators']) is True:
     for item in config_yaml.get("led_indicators"):
         led_indicators_list[item] = LED(config_yaml['led_indicators'][item]['gpio_pin'])
-
-hostname = config_yaml['zabbix_agent']['hostname']
-location = config_yaml['zabbix_agent']['location']
-chassis = config_yaml['zabbix_agent']['chassis']
-deployment = config_yaml['zabbix_agent']['deployment']
-hostnamectl_sh('set-hostname', hostname)
-hostnamectl_sh('set-location', location)
-hostnamectl_sh('set-chassis', chassis)
-hostnamectl_sh('set-deployment', deployment)
 
 if bool(config['verbose']) is True :
     print('')
