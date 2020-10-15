@@ -3,7 +3,7 @@
 # -*- coding:utf-8 -*-
 #
 #  Author : Dariusz Kowalczyk
-#  https://github.com/darton/RPiMS
+#
 #  This program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License Version 2 as
 #  published by the Free Software Foundation.
@@ -12,20 +12,6 @@
 #  but WITHOUT ANY WARRANTY; without even the implied warranty of
 #  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #  GNU General Public License for more details.
-
-#from picamera import PiCamera
-from gpiozero import LED, Button, MotionSensor
-from gpiozero.tools import all_values, any_values
-from subprocess import check_call, call
-from signal import pause
-from time import sleep, time
-import threading
-import redis
-import smbus2
-import logging
-import sys
-import yaml
-
 
 # --- Funcions ---
 def door_action_closed(door_id):
@@ -151,7 +137,6 @@ def get_cputemp_data():
                 print("")
             sleep(config['CPUtemp_read_interval'])
     except Exception as err :
-        logger.error(err)
         print('Problem with ' + str(err))
 
 
@@ -173,7 +158,6 @@ def get_bme280_data():
                 print("")
             sleep(config['BME280_read_interval'])
     except Exception as err :
-        logger.error(err)
         print('Problem with ' + str(err))
 
 
@@ -195,7 +179,6 @@ def get_ds18b20_data():
             redis_db.expire('DS18B20_sensors', config['DS18B20_read_interval']*3)
             sleep(config['DS18B20_read_interval'])
     except Exception as err :
-        logger.error(err)
         print('Problem with ' + str(err))
 
 
@@ -392,7 +375,7 @@ def rainfall():
         rainfall = round(bucket_counter * BUCKET_SIZE,0)
         return rainfall
 
-    rain_sensor = Button(20)
+    rain_sensor = Button(config['rainfall_sensor_pin'])
     rain_sensor.when_pressed = bucket_tipped
 
     bucket_counter = 0
@@ -435,7 +418,7 @@ def wind_speed():
         wind_speed_km_per_hour = round(ANEMOMETER_FACTOR * rotations * 2.4/wind_speed_acquisition_time,1)
         return wind_speed_km_per_hour
 
-    wind_speed_sensor = Button(21)
+    wind_speed_sensor = Button(config['windspeed_sensor_pin'])
     wind_speed_sensor.when_pressed = anemometer_pulse_counter
 
     anemometer_pulse = 0
@@ -509,6 +492,7 @@ def adc_stm32f030():
 
 def adc_automationphat():
     import automationhat
+    from time import sleep
     sleep(0.1) # Delay for automationhat
     adc_inputs_values = []
     adc_inputs_values.append(automationhat.analog.one.read())
@@ -564,7 +548,6 @@ def wind_direction():
             average = arc + 360
 
         return 0.0 if average == 360 else average
-
 
 
     direction_mapr = {
@@ -660,150 +643,214 @@ def wind_direction():
 
 
 def threading_function(function_name):
+    import threading
     t = threading.Thread(target=function_name, name=function_name)
     t.daemon = True
     t.start()
 
 
+def db_connect():
+    try:
+        import redis
+        global redis_db
+        redis_db = redis.StrictRedis(host="localhost", port=6379, db=0, charset="utf-8", decode_responses=True)
+    except Exception as err :
+        print('Problem with ' + str(err))
+
+
+def config_load(path_to_config):
+    try:
+        import yaml
+        with open(path_to_config, mode = 'r') as file:
+            global config_yaml
+            config_yaml = yaml.full_load(file)
+    except Exception as err :
+        print('Problem with ' + str(err))
+
+
+def use_logger():
+    import logging
+    logging.basicConfig(filename='/tmp/rpims.log', level=logging.DEBUG, format='%(asctime)s %(levelname)s %(name)s %(message)s')
+    global logger
+    logger=logging.getLogger(__name__)
+
+
+def main():
+    global gpiozero, Button, MotionSensor, LED, all_values, any_values, subprocess, call, check_call, signal, time, sleep,  threading, redis, smbus2, logging, sys, yaml
+    #from picamera import PiCamera
+    from gpiozero import LED, Button, MotionSensor
+    from gpiozero.tools import all_values, any_values
+    from subprocess import check_call
+    from subprocess import call
+    from signal import pause
+    from time import sleep, time
+    #import threading
+    #import redis
+    import smbus2
+    #import logging
+    import sys
+    #import yaml
+
+    print('# RPiMS is running #')
+    use_logger()
+    #global redis_db
+    #redis_db = redis.StrictRedis(host="localhost", port=6379, db=0, charset="utf-8", decode_responses=True)
+
+    db_connect()
+
+    #redis_db.flushdb()
+
+    for key in redis_db.scan_iter("motion_sensor_*"):
+        redis_db.delete(key)
+    for key in redis_db.scan_iter("door_sensor_*"):
+        redis_db.delete(key)
+
+#    logging.basicConfig(filename='/tmp/rpims.log', level=logging.DEBUG, format='%(asctime)s %(levelname)s %(name)s %(message)s')
+
+#    global logger
+#    logger=logging.getLogger(__name__)
+#    use_logger()
+
+    #try:
+    #    with open(r'/var/www/html/conf/rpims.yaml') as file:
+    #        config_yaml = yaml.full_load(file)
+
+    #except Exception as err :
+    #    logger.error(err)
+    #    print('Problem with ' + str(err))
+    #    sys.exit(1)
+
+    config_load('/var/www/html/conf/rpims.yaml')
+
+
+    #global config, zabbix_agent, door_sensors_list, motion_sensors_list, system_buttons_list, led_indicators_list
+
+    global config
+    config = {}
+    for item in config_yaml.get("setup"):
+        config[item] = config_yaml['setup'][item]
+
+    global zabbix_agent
+    zabbix_agent = {}
+    for item in config_yaml.get("zabbix_agent"):
+        zabbix_agent[item] = config_yaml['zabbix_agent'][item]
+    hostname = config_yaml['zabbix_agent']['hostname']
+    location = config_yaml['zabbix_agent']['location']
+    chassis = config_yaml['zabbix_agent']['chassis']
+    deployment = config_yaml['zabbix_agent']['deployment']
+    hostnamectl_sh('set-hostname', hostname)
+    hostnamectl_sh('set-location', location)
+    hostnamectl_sh('set-chassis', chassis)
+    hostnamectl_sh('set-deployment', deployment)
+
+    if bool(config['use_door_sensor']) is True:
+        global door_sensors_list
+        door_sensors_list = {}
+        redis_db.delete("door_sensors")
+        for item in config_yaml.get("door_sensors"):
+            door_sensors_list[item] = Button(config_yaml['door_sensors'][item]['gpio_pin'], hold_time=config_yaml['door_sensors'][item]['hold_time'])
+            redis_db.sadd("door_sensors", item)
+
+    if bool(config['use_motion_sensor']) is True:
+        global motion_sensors_list
+        motion_sensors_list = {}
+        redis_db.delete("motion_sensors")
+        for item in config_yaml.get("motion_sensors"):
+            motion_sensors_list[item] = MotionSensor(config_yaml['motion_sensors'][item]['gpio_pin'])
+            redis_db.sadd("motion_sensors", item)
+
+    if bool(config['use_system_buttons']) is True:
+        global system_buttons_list
+        system_buttons_list = {}
+        for item in config_yaml.get("system_buttons"):
+            system_buttons_list[item] = Button(config_yaml['system_buttons'][item]['gpio_pin'], hold_time=config_yaml['system_buttons'][item]['hold_time'])
+
+    if bool(config['use_led_indicators']) is True:
+        global led_indicators_list
+        led_indicators_list = {}
+        for item in config_yaml.get("led_indicators"):
+            led_indicators_list[item] = LED(config_yaml['led_indicators'][item]['gpio_pin'])
+
+    if bool(config['verbose']) is True :
+        print('')
+
+    for s in config :
+        redis_db.set(s, str(config[s]))
+        if bool(config['verbose']) is True :
+            print(s + ' = ' + str(config[s]))
+
+    if bool(config['verbose']) is True :
+        print('')
+
+    for s in zabbix_agent :
+        redis_db.set(s, str(zabbix_agent[s]))
+        if bool(config['verbose']) is True :
+            print(s + ' = ' + str(zabbix_agent[s]))
+
+    if bool(config['verbose']) is True :
+        print('')
+
+    if bool(config['use_door_sensor']) is True :
+        for s in door_sensors_list:
+            if door_sensors_list[s].value == 0:
+                door_status_open(s)
+            else:
+                door_status_close(s)
+        for s in door_sensors_list:
+                door_sensors_list[s].when_held = lambda s=s : door_action_closed(s)
+                door_sensors_list[s].when_released = lambda s=s : door_action_opened(s)
+        if bool(config['use_led_indicators']) is True :
+            led_indicators_list['door_led'].source = all_values(*door_sensors_list.values())
+
+    if bool(config['use_motion_sensor']) is True :
+        for s in motion_sensors_list:
+            if motion_sensors_list[s].value == 0:
+                motion_sensor_when_no_motion(s)
+            else:
+                motion_sensor_when_motion(s)
+        for s in motion_sensors_list:
+                motion_sensors_list[s].when_motion = lambda s=s : motion_sensor_when_motion(s)
+                motion_sensors_list[s].when_no_motion = lambda s=s : motion_sensor_when_no_motion(s)
+        if bool(config['use_led_indicators']) is True :
+            led_indicators_list['motion_led'].source = any_values(*motion_sensors_list.values())
+
+    if bool(config['use_system_buttons']) is True:
+        system_buttons_list['shutdown_button'].when_held = shutdown
+
+    if bool(config['use_CPU_sensor']) is True:
+        threading_function(get_cputemp_data)
+
+    if bool(config['use_BME280_sensor']) is True:
+        threading_function(get_bme280_data)
+
+    if bool(config['use_DS18B20_sensor']) is True:
+        threading_function(get_ds18b20_data)
+
+    if bool(config['use_DHT_sensor']) is True:
+        threading_function(get_dht_data)
+
+    if bool(config['use_weather_station']) is True:
+        threading_function(rainfall)
+        threading_function(wind_speed)
+        threading_function(wind_direction)
+
+    if bool(config['use_serial_display']) is True:
+        if config['serial_display_type'] == 'oled_sh1106_i2c':
+            serial_type = 'i2c'
+            threading_function(oled_sh1106)
+        if config['serial_display_type'] == 'oled_sh1106_spi':
+            serial_type = 'spi'
+            threading_function(oled_sh1106)
+        if config['serial_display_type'] == 'lcd_st7735':
+            threading_function(lcd_st7735)
+
+    if bool(config['use_picamera']) is True and bool(config['use_picamera_recording']) is False and bool(config['use_door_sensor']) is False and bool(config['use_motion_sensor']) is False :
+        av_stream('start')
+
+    pause()
+
+
 # --- Main program ---
+if __name__ == '__main__':
+    main()
 
-print('# RPiMS is running #')
-
-redis_db = redis.StrictRedis(host="localhost", port=6379, db=0, charset="utf-8", decode_responses=True)
-#redis_db.flushdb()
-for key in redis_db.scan_iter("motion_sensor_*"):
-    redis_db.delete(key)
-for key in redis_db.scan_iter("door_sensor_*"):
-    redis_db.delete(key)
-
-logging.basicConfig(filename='/tmp/rpims.log', level=logging.DEBUG, format='%(asctime)s %(levelname)s %(name)s %(message)s')
-logger=logging.getLogger(__name__)
-
-try:
-    with open(r'/var/www/html/conf/rpims.yaml') as file:
-        config_yaml = yaml.full_load(file)
-
-except Exception as err :
-    logger.error(err)
-    print('Problem with ' + str(err))
-    sys.exit(1)
-
-config = {}
-zabbix_agent = {}
-door_sensors_list = {}
-motion_sensors_list = {}
-system_buttons_list = {}
-led_indicators_list = {}
-
-for item in config_yaml.get("setup"):
-    config[item] = config_yaml['setup'][item]
-
-for item in config_yaml.get("zabbix_agent"):
-    zabbix_agent[item] = config_yaml['zabbix_agent'][item]
-
-if bool(config['use_door_sensor']) is True:
-    redis_db.delete("door_sensors")
-    for item in config_yaml.get("door_sensors"):
-        door_sensors_list[item] = Button(config_yaml['door_sensors'][item]['gpio_pin'], hold_time=config_yaml['door_sensors'][item]['hold_time'])
-        redis_db.sadd("door_sensors", item)
-
-if bool(config['use_motion_sensor']) is True:
-    redis_db.delete("motion_sensors")
-    for item in config_yaml.get("motion_sensors"):
-        motion_sensors_list[item] = MotionSensor(config_yaml['motion_sensors'][item]['gpio_pin'])
-        redis_db.sadd("motion_sensors", item)
-
-if bool(config['use_system_buttons']) is True:
-    for item in config_yaml.get("system_buttons"):
-        system_buttons_list[item] = Button(config_yaml['system_buttons'][item]['gpio_pin'], hold_time=config_yaml['system_buttons'][item]['hold_time'])
-
-if bool(config['use_led_indicators']) is True:
-    for item in config_yaml.get("led_indicators"):
-        led_indicators_list[item] = LED(config_yaml['led_indicators'][item]['gpio_pin'])
-
-hostname = config_yaml['zabbix_agent']['hostname']
-location = config_yaml['zabbix_agent']['location']
-chassis = config_yaml['zabbix_agent']['chassis']
-deployment = config_yaml['zabbix_agent']['deployment']
-hostnamectl_sh('set-hostname', hostname)
-hostnamectl_sh('set-location', location)
-hostnamectl_sh('set-chassis', chassis)
-hostnamectl_sh('set-deployment', deployment)
-
-if bool(config['verbose']) is True :
-    print('')
-
-for s in config :
-    redis_db.set(s, str(config[s]))
-    if bool(config['verbose']) is True :
-        print(s + ' = ' + str(config[s]))
-
-if bool(config['verbose']) is True :
-    print('')
-
-for s in zabbix_agent :
-    redis_db.set(s, str(zabbix_agent[s]))
-    if bool(config['verbose']) is True :
-        print(s + ' = ' + str(zabbix_agent[s]))
-
-if bool(config['verbose']) is True :
-    print('')
-
-if bool(config['use_door_sensor']) is True :
-    for s in door_sensors_list:
-        if door_sensors_list[s].value == 0:
-            door_status_open(s)
-        else:
-            door_status_close(s)
-    for s in door_sensors_list:
-            door_sensors_list[s].when_held = lambda s=s : door_action_closed(s)
-            door_sensors_list[s].when_released = lambda s=s : door_action_opened(s)
-    if bool(config['use_led_indicators']) is True :
-        led_indicators_list['door_led'].source = all_values(*door_sensors_list.values())
-
-if bool(config['use_motion_sensor']) is True :
-    for s in motion_sensors_list:
-        if motion_sensors_list[s].value == 0:
-            motion_sensor_when_no_motion(s)
-        else:
-            motion_sensor_when_motion(s)
-    for s in motion_sensors_list:
-            motion_sensors_list[s].when_motion = lambda s=s : motion_sensor_when_motion(s)
-            motion_sensors_list[s].when_no_motion = lambda s=s : motion_sensor_when_no_motion(s)
-    if bool(config['use_led_indicators']) is True :
-        led_indicators_list['motion_led'].source = any_values(*motion_sensors_list.values())
-
-if bool(config['use_system_buttons']) is True :
-    system_buttons_list['shutdown_button'].when_held = shutdown
-
-if bool(config['use_CPU_sensor']) is True:
-    threading_function(get_cputemp_data)
-
-if bool(config['use_BME280_sensor']) is True:
-    threading_function(get_bme280_data)
-
-if bool(config['use_DS18B20_sensor']) is True:
-    threading_function(get_ds18b20_data)
-
-if bool(config['use_DHT_sensor']) is True:
-    threading_function(get_dht_data)
-
-if bool(config['use_weather_station']) is True:
-    threading_function(rainfall)
-    threading_function(wind_speed)
-    threading_function(wind_direction)
-
-if bool(config['use_serial_display']) is True:
-    if config['serial_display_type'] == 'oled_sh1106_i2c':
-        serial_type = 'i2c'
-        threading_function(oled_sh1106)
-    if config['serial_display_type'] == 'oled_sh1106_spi':
-        serial_type = 'spi'
-        threading_function(oled_sh1106)
-    if config['serial_display_type'] == 'lcd_st7735':
-        threading_function(lcd_st7735)
-
-if bool(config['use_picamera']) is True and bool(config['use_picamera_recording']) is False and bool(config['use_door_sensor']) is False and bool(config['use_motion_sensor']) is False :
-    av_stream('start')
-
-pause()
