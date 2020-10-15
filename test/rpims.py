@@ -13,20 +13,6 @@
 #  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #  GNU General Public License for more details.
 
-#from picamera import PiCamera
-from gpiozero import LED, Button, MotionSensor
-from gpiozero.tools import all_values, any_values
-from subprocess import check_call, call
-from signal import pause
-from time import sleep, time
-import threading
-import redis
-import smbus2
-import logging
-import sys
-import yaml
-
-
 # --- Funcions ---
 def door_action_closed(door_id):
     redis_db.set(str(door_id), 'close')
@@ -151,7 +137,6 @@ def get_cputemp_data():
                 print("")
             sleep(config['CPUtemp_read_interval'])
     except Exception as err :
-        logger.error(err)
         print('Problem with ' + str(err))
 
 
@@ -173,24 +158,27 @@ def get_bme280_data():
                 print("")
             sleep(config['BME280_read_interval'])
     except Exception as err :
-        logger.error(err)
         print('Problem with ' + str(err))
 
 
 def get_ds18b20_data():
+    logging.basicConfig(filename='/tmp/ds18b20.log', level=logging.DEBUG, format='%(asctime)s %(levelname)s %(name)s %(message)s')
+    logger=logging.getLogger(__name__)
     try:
         from w1thermsensor import W1ThermSensor
         while True :
             data = W1ThermSensor.get_available_sensors([W1ThermSensor.THERM_SENSOR_DS18B20,W1ThermSensor.THERM_SENSOR_DS18S20])
             for sensor in data:
-                redis_db.set('DS18B20-' + sensor.id, sensor.get_temperature())
-                redis_db.expire('DS18B20-' + sensor.id, config['DS18B20_read_interval']*2)
+                redis_db.sadd('DS18B20_sensors', sensor.id)
+                redis_db.set(sensor.id, sensor.get_temperature())
+                sleep(1)
+                redis_db.expire(sensor.id, config['DS18B20_read_interval']*2)
                 if bool(config['verbose']) is True :
                     print("Sensor %s temperature %.2f"%(sensor.id,sensor.get_temperature()),"\xb0C")
                     print("")
+            redis_db.expire('DS18B20_sensors', config['DS18B20_read_interval']*3)
             sleep(config['DS18B20_read_interval'])
     except Exception as err :
-        logger.error(err)
         print('Problem with ' + str(err))
 
 
@@ -387,12 +375,12 @@ def rainfall():
         rainfall = round(bucket_counter * BUCKET_SIZE,0)
         return rainfall
 
-    rain_sensor = Button(20)
+    rain_sensor = Button(config['rainfall_sensor_pin'])
     rain_sensor.when_pressed = bucket_tipped
 
     bucket_counter = 0
-    rainfall_acquisition_time = 6
-    rainfall_agregation_time = 3600*24
+    rainfall_acquisition_time = config['rainfall_acquisition_time']
+    rainfall_agregation_time = config['rainfall_agregation_time']
     rainfalls = []
 
     #global BUCKET_SIZE
@@ -404,7 +392,7 @@ def rainfall():
             reset_bucket_counter()
             sleep(rainfall_acquisition_time)
             rainfall = calculate_rainfall()
-            if len(rainfalls) == (rainfall_agregation_time/rainfall_acquisition_time + 1):
+            if len(rainfalls) == (rainfall_agregation_time/rainfall_acquisition_time):
                 rainfalls.clear()
             rainfalls.append(rainfall)
         daily_rainfall = round(math.fsum(rainfalls),1)
@@ -430,13 +418,15 @@ def wind_speed():
         wind_speed_km_per_hour = round(ANEMOMETER_FACTOR * rotations * 2.4/wind_speed_acquisition_time,1)
         return wind_speed_km_per_hour
 
-    wind_speed_sensor = Button(21)
+    wind_speed_sensor = Button(config['windspeed_sensor_pin'])
     wind_speed_sensor.when_pressed = anemometer_pulse_counter
 
     anemometer_pulse = 0
-    wind_speed_acquisition_time = 6
-    wind_speed_agregation_time = 3600
+    wind_speed_acquisition_time = config['windspeed_acquisition_time']
+    wind_speed_agregation_time = config['windspeed_agregation_time']
     wind_speeds = []
+    average_wind_speeds = []
+    daily_wind_gusts = []
     ANEMOMETER_FACTOR = 1.18
 
     while True:
@@ -445,14 +435,92 @@ def wind_speed():
             reset_anemometer_pulse_counter()
             sleep(wind_speed_acquisition_time)
             wind_speed = calculate_speed(wind_speed_acquisition_time)
-            if len(wind_speeds) == (wind_speed_agregation_time/wind_speed_acquisition_time + 1):
+            if len(wind_speeds) == (wind_speed_agregation_time/wind_speed_acquisition_time):
                 del wind_speeds[0]
             wind_speeds.append(wind_speed)
         wind_gust = max(wind_speeds)
-        wind_mean_speed = round(statistics.mean(wind_speeds),1)
-        print("Wind mean speed: " + str(wind_mean_speed) + " km/h", " Wind gust: " + str(wind_gust) + "km/h","Wind speed " + str(wind_speed) + " km/h" )
-        redis_db.mset({'wind_mean_speed' : wind_mean_speed,'wind_gust' : wind_gust, 'wind_speed' : wind_speed})
+        if len(daily_wind_gusts) == (86400/wind_speed_acquisition_time):
+            del daily_wind_gusts[0]
+        daily_wind_gusts.append(wind_gust)
+        daily_wind_gust = max(daily_wind_gusts)
 
+        average_wind_speed = round(statistics.mean(wind_speeds),1)
+        if len(average_wind_speeds) == (86400/wind_speed_agregation_time):
+                del average_wind_speeds[0]
+        average_wind_speeds.append(average_wind_speed)
+        daily_average_wind_speed = round(statistics.mean(average_wind_speeds),1)
+
+        if bool(config['verbose']) is True :
+            print("Wind speed " + str(wind_speed) + " km/h"," Wind gust: " + str(wind_gust) + "km/h", "Daily wind gust: " + str(daily_wind_gust) + "km/h", " Average wind speed: " + str(average_wind_speed) + " km/h","Daily average wind speed: " + str(daily_average_wind_speed) + " km/h"  )
+        redis_db.mset({'wind_speed' : wind_speed, 'wind_gust' : wind_gust, 'daily_wind_gust' : daily_wind_gust, 'average_wind_speed' : average_wind_speed, 'daily_average_wind_speed' : daily_average_wind_speed})
+
+
+def adc_stm32f030():
+    from grove.i2c import Bus
+
+    ADC_DEFAULT_IIC_ADDR = 0X04
+    ADC_CHAN_NUM = 8
+
+    REG_RAW_DATA_START = 0X10
+    REG_VOL_START = 0X20
+    REG_RTO_START = 0X30
+
+    REG_SET_ADDR = 0XC0
+
+    class Pi_hat_adc():
+        def __init__(self,bus_num=1,addr=ADC_DEFAULT_IIC_ADDR):
+            self.bus=Bus(bus_num)
+            self.addr=addr
+
+        def get_all_vol_milli_data(self):
+            array = []
+            for i in range(ADC_CHAN_NUM):
+                data=self.bus.read_i2c_block_data(self.addr,REG_VOL_START+i,2)
+                val=data[1]<<8|data[0]
+                array.append(val)
+            return array
+
+        def get_nchan_vol_milli_data(self,n):
+            data=self.bus.read_i2c_block_data(self.addr,REG_VOL_START+n,2)
+            val =data[1]<<8|data[0]
+            return val
+
+    adc = Pi_hat_adc()
+    adc_inputs_values = adc.get_all_vol_milli_data()
+    return adc_inputs_values
+
+
+def adc_automationphat():
+    import automationhat
+    from time import sleep
+    sleep(0.1) # Delay for automationhat
+    adc_inputs_values = []
+    adc_inputs_values.append(automationhat.analog.one.read())
+    adc_inputs_values.append(automationhat.analog.two.read())
+    adc_inputs_values.append(automationhat.analog.three.read())
+    return adc_inputs_values
+
+
+def adc_ads1115():
+    import time
+    import board
+    import busio
+    import adafruit_ads1x15.ads1115 as ADS
+    from adafruit_ads1x15.analog_in import AnalogIn
+    # Create the I2C bus
+    i2c = busio.I2C(board.SCL, board.SDA)
+    # Create the ADC object using the I2C bus
+    ads = ADS.ADS1115(i2c)
+    chan1 = AnalogIn(ads, ADS.P0)
+    chan2 = AnalogIn(ads, ADS.P1)
+    chan3 = AnalogIn(ads, ADS.P2)
+    chan4 = AnalogIn(ads, ADS.P3)
+    adc_inputs_values = []
+    adc_inputs_values.append(chan1.voltage)
+    adc_inputs_values.append(chan2.voltage)
+    adc_inputs_values.append(chan3.voltage)
+    adc_inputs_values.append(chan4.voltage)
+    return adc_inputs_values
 
 
 def wind_direction():
@@ -480,16 +548,6 @@ def wind_direction():
             average = arc + 360
 
         return 0.0 if average == 360 else average
-
-    def read_adc(adc_type):
-        if adc_type == 'automationhat':
-            import automationhat
-            sleep(0.1) # Delay for automationhat
-            adc_inputs_values = []
-            adc_inputs_values.append(automationhat.analog.one.read())
-            adc_inputs_values.append(automationhat.analog.two.read())
-            adc_inputs_values.append(automationhat.analog.three.read())
-            return adc_inputs_values
 
 
     direction_mapr = {
@@ -526,173 +584,280 @@ def wind_direction():
     "NNW": 337.5
     }
 
-    Uwe = 5.2
-    Uwy = 0
+    Uin = 5.2
+    Uout = 0
     R1 = 4690
     R2 = 0
-    wind_direction_acquisition_time = 6
+    wind_direction_acquisition_time = config['winddirection_acquisition_time']
     angles = []
+    average_wind_direction = 0
 
     while True:
         start_time = time()
         angles.clear()
         while time() - start_time <= wind_direction_acquisition_time:
-            adc_values = read_adc('automationhat')
-            Uwy = round(adc_values[0],1)
-            Uwe = round(adc_values[1],1)
-            if Uwe != Uwy:
-                R2 = int (R1/(1 - Uwy/Uwe))
-                #print(R2,Uwe,Uwy)
+            if config['winddirection_adc_type'] == 'AutomationPhat':
+                adc_values = adc_automationphat()
+            if config['winddirection_adc_type'] == 'STM32F030':
+                adc_values = adc_stm32f030()
+            if config['winddirection_adc_type'] == 'ADS1115':
+                adc_values = adc_ads1115()
+
+            if config['winddirection_adc_input'] == 1:
+                Uout = round(adc_values[0],1)
+            if config['winddirection_adc_input'] == 2:
+                Uout = round(adc_values[1],1)
+            if config['winddirection_adc_input'] == 3:
+                Uout = round(adc_values[2],1)
+            if config['winddirection_adc_input'] == 4:
+                Uout = round(adc_values[3],1)
+
+            if config['reference_voltage_adc_input'] == 1:
+                Uin = round(adc_values[0],1)
+            if config['reference_voltage_adc_input'] == 2:
+                Uin = round(adc_values[1],1)
+            if config['reference_voltage_adc_input'] == 3:
+                Uin = round(adc_values[2],1)
+            if config['reference_voltage_adc_input'] == 4:
+                Uin = round(adc_values[3],1)
+
+            if Uin != Uout and Uin != 0:
+                R2 = int (R1/(1 - Uout/Uin))
+                #print(R2,Uin,Uout)
+            else:
+                print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+                print("Uin = ", Uin)
+                print("Uout = ", Uout)
+                print("Check sensor connections to ADC")
+                print("Wind Direction Meter program was terminated")
+                print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+                quit()
             for item in direction_mapr:
                 if (R2 <= direction_mapr.get(item) * 1.005) and (R2 >= direction_mapr.get(item) * 0.995):
                     angles.append(direction_mapa.get(item))
-                    average_wind_direction = int(round(get_average(angles),0))
-                    #print(direction_mapa.get(item), item)
-        print("Average direction of wind: " + str(average_wind_direction))
-        redis_db.mset({'average_wind_direction': average_wind_direction, 'wind_direction': item})
+        if len(angles) != 0:
+            average_wind_direction = int(round(get_average(angles),0))
+            if bool(config['verbose']) is True :
+                print("Average Wind Direction: " + str(average_wind_direction))
+            redis_db.mset({'average_wind_direction': average_wind_direction, 'wind_direction': item})
 
 
 def threading_function(function_name):
+    import threading
     t = threading.Thread(target=function_name, name=function_name)
     t.daemon = True
     t.start()
 
 
+def db_connect():
+    try:
+        import redis
+        global redis_db
+        redis_db = redis.StrictRedis(host="localhost", port=6379, db=0, charset="utf-8", decode_responses=True)
+    except Exception as err :
+        print('Problem with ' + str(err))
+        sys.exit(1)
+
+
+def config_load(path_to_config):
+    try:
+        import yaml
+        with open(path_to_config, mode = 'r') as file:
+            global config_yaml
+            config_yaml = yaml.full_load(file)
+    except Exception as err :
+        print('Problem with ' + str(err))
+        sys.exit(1)
+
+
+def use_logger():
+    import logging
+    logging.basicConfig(filename='/tmp/rpims.log', level=logging.DEBUG, format='%(asctime)s %(levelname)s %(name)s %(message)s')
+    global logger
+    logger=logging.getLogger(__name__)
+
+
+def main():
+    global gpiozero, Button, MotionSensor, LED, all_values, any_values, subprocess, call, check_call, signal, time, sleep,  threading, redis, smbus2, logging, sys, yaml
+    #from picamera import PiCamera
+    from gpiozero import LED, Button, MotionSensor
+    from gpiozero.tools import all_values, any_values
+    from subprocess import check_call
+    from subprocess import call
+    from signal import pause
+    from time import sleep, time
+    #import threading
+    #import redis
+    import smbus2
+    #import logging
+    import sys
+    #import yaml
+
+    print('# RPiMS is running #')
+    use_logger()
+    #global redis_db
+    #redis_db = redis.StrictRedis(host="localhost", port=6379, db=0, charset="utf-8", decode_responses=True)
+
+    db_connect()
+
+    #redis_db.flushdb()
+
+    for key in redis_db.scan_iter("motion_sensor_*"):
+        redis_db.delete(key)
+    for key in redis_db.scan_iter("door_sensor_*"):
+        redis_db.delete(key)
+
+#    logging.basicConfig(filename='/tmp/rpims.log', level=logging.DEBUG, format='%(asctime)s %(levelname)s %(name)s %(message)s')
+
+#    global logger
+#    logger=logging.getLogger(__name__)
+#    use_logger()
+
+    #try:
+    #    with open(r'/var/www/html/conf/rpims.yaml') as file:
+    #        config_yaml = yaml.full_load(file)
+
+    #except Exception as err :
+    #    logger.error(err)
+    #    print('Problem with ' + str(err))
+    #    sys.exit(1)
+
+    config_load('/var/www/html/conf/rpims.yaml')
+
+
+    #global config, zabbix_agent, door_sensors_list, motion_sensors_list, system_buttons_list, led_indicators_list
+
+    global config
+    config = {}
+    for item in config_yaml.get("setup"):
+        config[item] = config_yaml['setup'][item]
+
+    global zabbix_agent
+    zabbix_agent = {}
+    for item in config_yaml.get("zabbix_agent"):
+        zabbix_agent[item] = config_yaml['zabbix_agent'][item]
+
+
+    if bool(config['use_door_sensor']) is True:
+        global door_sensors_list
+        door_sensors_list = {}
+        redis_db.delete("door_sensors")
+        for item in config_yaml.get("door_sensors"):
+            door_sensors_list[item] = Button(config_yaml['door_sensors'][item]['gpio_pin'], hold_time=config_yaml['door_sensors'][item]['hold_time'])
+            redis_db.sadd("door_sensors", item)
+
+
+    if bool(config['use_motion_sensor']) is True:
+        global motion_sensors_list
+        motion_sensors_list = {}
+        redis_db.delete("motion_sensors")
+        for item in config_yaml.get("motion_sensors"):
+            motion_sensors_list[item] = MotionSensor(config_yaml['motion_sensors'][item]['gpio_pin'])
+            redis_db.sadd("motion_sensors", item)
+
+
+    if bool(config['use_system_buttons']) is True:
+        global system_buttons_list
+        system_buttons_list = {}
+        for item in config_yaml.get("system_buttons"):
+            system_buttons_list[item] = Button(config_yaml['system_buttons'][item]['gpio_pin'], hold_time=config_yaml['system_buttons'][item]['hold_time'])
+
+
+    if bool(config['use_led_indicators']) is True:
+        global led_indicators_list
+        led_indicators_list = {}
+        for item in config_yaml.get("led_indicators"):
+            led_indicators_list[item] = LED(config_yaml['led_indicators'][item]['gpio_pin'])
+
+    hostname = config_yaml['zabbix_agent']['hostname']
+    location = config_yaml['zabbix_agent']['location']
+    chassis = config_yaml['zabbix_agent']['chassis']
+    deployment = config_yaml['zabbix_agent']['deployment']
+    hostnamectl_sh('set-hostname', hostname)
+    hostnamectl_sh('set-location', location)
+    hostnamectl_sh('set-chassis', chassis)
+    hostnamectl_sh('set-deployment', deployment)
+
+    if bool(config['verbose']) is True :
+        print('')
+
+    for s in config :
+        redis_db.set(s, str(config[s]))
+        if bool(config['verbose']) is True :
+            print(s + ' = ' + str(config[s]))
+
+    if bool(config['verbose']) is True :
+        print('')
+
+    for s in zabbix_agent :
+        redis_db.set(s, str(zabbix_agent[s]))
+        if bool(config['verbose']) is True :
+            print(s + ' = ' + str(zabbix_agent[s]))
+
+    if bool(config['verbose']) is True :
+        print('')
+
+    if bool(config['use_door_sensor']) is True :
+        for s in door_sensors_list:
+            if door_sensors_list[s].value == 0:
+                door_status_open(s)
+            else:
+                door_status_close(s)
+        for s in door_sensors_list:
+                door_sensors_list[s].when_held = lambda s=s : door_action_closed(s)
+                door_sensors_list[s].when_released = lambda s=s : door_action_opened(s)
+        if bool(config['use_led_indicators']) is True :
+            led_indicators_list['door_led'].source = all_values(*door_sensors_list.values())
+
+    if bool(config['use_motion_sensor']) is True :
+        for s in motion_sensors_list:
+            if motion_sensors_list[s].value == 0:
+                motion_sensor_when_no_motion(s)
+            else:
+                motion_sensor_when_motion(s)
+        for s in motion_sensors_list:
+                motion_sensors_list[s].when_motion = lambda s=s : motion_sensor_when_motion(s)
+                motion_sensors_list[s].when_no_motion = lambda s=s : motion_sensor_when_no_motion(s)
+        if bool(config['use_led_indicators']) is True :
+            led_indicators_list['motion_led'].source = any_values(*motion_sensors_list.values())
+
+    if bool(config['use_system_buttons']) is True:
+        system_buttons_list['shutdown_button'].when_held = shutdown
+
+    if bool(config['use_CPU_sensor']) is True:
+        threading_function(get_cputemp_data)
+
+    if bool(config['use_BME280_sensor']) is True:
+        threading_function(get_bme280_data)
+
+    if bool(config['use_DS18B20_sensor']) is True:
+        threading_function(get_ds18b20_data)
+
+    if bool(config['use_DHT_sensor']) is True:
+        threading_function(get_dht_data)
+
+    if bool(config['use_weather_station']) is True:
+        threading_function(rainfall)
+        threading_function(wind_speed)
+        threading_function(wind_direction)
+
+    if bool(config['use_serial_display']) is True:
+        if config['serial_display_type'] == 'oled_sh1106_i2c':
+            serial_type = 'i2c'
+            threading_function(oled_sh1106)
+        if config['serial_display_type'] == 'oled_sh1106_spi':
+            serial_type = 'spi'
+            threading_function(oled_sh1106)
+        if config['serial_display_type'] == 'lcd_st7735':
+            threading_function(lcd_st7735)
+
+    if bool(config['use_picamera']) is True and bool(config['use_picamera_recording']) is False and bool(config['use_door_sensor']) is False and bool(config['use_motion_sensor']) is False :
+        av_stream('start')
+
+    pause()
+
+
 # --- Main program ---
+if __name__ == '__main__':
+    main()
 
-print('# RPiMS is running #')
-
-redis_db = redis.StrictRedis(host="localhost", port=6379, db=0, charset="utf-8", decode_responses=True)
-redis_db.flushdb()
-#for key in redis_db.scan_iter("motion_sensor_*"):
-#    redis_db.delete(key)
-#for key in redis_db.scan_iter("door_sensor_*"):
-#    redis_db.delete(key)
-
-logging.basicConfig(filename='/tmp/rpims.log', level=logging.DEBUG, format='%(asctime)s %(levelname)s %(name)s %(message)s')
-logger=logging.getLogger(__name__)
-
-try:
-    with open(r'/var/www/html/conf/rpims.yaml') as file:
-        config_yaml = yaml.full_load(file)
-
-except Exception as err :
-    logger.error(err)
-    print('Problem with ' + str(err))
-    sys.exit(1)
-
-config = {}
-zabbix_agent = {}
-door_sensors_list = {}
-motion_sensors_list = {}
-system_buttons_list = {}
-led_indicators_list = {}
-
-for item in config_yaml.get("setup"):
-    config[item] = config_yaml['setup'][item]
-
-for item in config_yaml.get("zabbix_agent"):
-    zabbix_agent[item] = config_yaml['zabbix_agent'][item]
-
-if bool(config['use_door_sensor']) is True:
-    for item in config_yaml.get("door_sensors"):
-        door_sensors_list[item] = Button(config_yaml['door_sensors'][item]['gpio_pin'], hold_time=config_yaml['door_sensors'][item]['hold_time'])
-
-if bool(config['use_motion_sensor']) is True:
-    for item in config_yaml.get("motion_sensors"):
-        motion_sensors_list[item] = MotionSensor(config_yaml['motion_sensors'][item]['gpio_pin'])
-
-if bool(config['use_system_buttons']) is True:
-    for item in config_yaml.get("system_buttons"):
-        system_buttons_list[item] = Button(config_yaml['system_buttons'][item]['gpio_pin'], hold_time=config_yaml['system_buttons'][item]['hold_time'])
-
-if bool(config['use_led_indicators']) is True:
-    for item in config_yaml.get("led_indicators"):
-        led_indicators_list[item] = LED(config_yaml['led_indicators'][item]['gpio_pin'])
-
-hostname = config_yaml['zabbix_agent']['hostname']
-location = config_yaml['zabbix_agent']['location']
-chassis = config_yaml['zabbix_agent']['chassis']
-deployment = config_yaml['zabbix_agent']['deployment']
-hostnamectl_sh('set-hostname', hostname)
-hostnamectl_sh('set-location', location)
-hostnamectl_sh('set-chassis', chassis)
-hostnamectl_sh('set-deployment', deployment)
-
-if bool(config['verbose']) is True :
-    print('')
-
-for s in config :
-    redis_db.set(s, str(config[s]))
-    if bool(config['verbose']) is True :
-        print(s + ' = ' + str(config[s]))
-
-if bool(config['verbose']) is True :
-    print('')
-
-for s in zabbix_agent :
-    redis_db.set(s, str(zabbix_agent[s]))
-    if bool(config['verbose']) is True :
-        print(s + ' = ' + str(zabbix_agent[s]))
-
-if bool(config['verbose']) is True :
-    print('')
-
-if bool(config['use_door_sensor']) is True :
-    for s in door_sensors_list:
-        if door_sensors_list[s].value == 0:
-            door_status_open(s)
-        else:
-            door_status_close(s)
-    for s in door_sensors_list:
-            door_sensors_list[s].when_held = lambda s=s : door_action_closed(s)
-            door_sensors_list[s].when_released = lambda s=s : door_action_opened(s)
-    if bool(config['use_led_indicators']) is True :
-        led_indicators_list['door_led'].source = all_values(*door_sensors_list.values())
-
-if bool(config['use_motion_sensor']) is True :
-    for s in motion_sensors_list:
-        if motion_sensors_list[s].value == 0:
-            motion_sensor_when_no_motion(s)
-        else:
-            motion_sensor_when_motion(s)
-    for s in motion_sensors_list:
-            motion_sensors_list[s].when_motion = lambda s=s : motion_sensor_when_motion(s)
-            motion_sensors_list[s].when_no_motion = lambda s=s : motion_sensor_when_no_motion(s)
-    if bool(config['use_led_indicators']) is True :
-        led_indicators_list['motion_led'].source = any_values(*motion_sensors_list.values())
-
-if bool(config['use_system_buttons']) is True :
-    system_buttons_list['shutdown_button'].when_held = shutdown
-
-if bool(config['use_CPU_sensor']) is True:
-    threading_function(get_cputemp_data)
-
-if bool(config['use_BME280_sensor']) is True:
-    threading_function(get_bme280_data)
-
-if bool(config['use_DS18B20_sensor']) is True:
-    threading_function(get_ds18b20_data)
-
-if bool(config['use_DHT_sensor']) is True:
-    threading_function(get_dht_data)
-
-if bool(config['use_weather_station']) is True:
-    threading_function(rainfall)
-    threading_function(wind_speed)
-    threading_function(wind_direction)
-
-if bool(config['use_serial_display']) is True:
-    if config['serial_display_type'] == 'oled_sh1106_i2c':
-        serial_type = 'i2c'
-        threading_function(oled_sh1106)
-    if config['serial_display_type'] == 'oled_sh1106_spi':
-        serial_type = 'spi'
-        threading_function(oled_sh1106)
-    if config['serial_display_type'] == 'lcd_st7735':
-        threading_function(lcd_st7735)
-
-if bool(config['use_picamera']) is True and bool(config['use_picamera_recording']) is False and bool(config['use_door_sensor']) is False and bool(config['use_motion_sensor']) is False :
-    av_stream('start')
-
-pause()
