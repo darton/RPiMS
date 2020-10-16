@@ -23,6 +23,7 @@ $setup = array(
     "use_serial_display" => filter_var($_POST['use_serial_display'], FILTER_VALIDATE_BOOLEAN),
 
     "serial_display_type" => $_POST['serial_display_type'],
+    "serial_type" => $_POST['serial_type'],
     "serial_display_rotate" => (int)$_POST['serial_display_rotate'],
     "serial_display_refresh_rate" => (int)$_POST['serial_display_refresh_rate'],
 

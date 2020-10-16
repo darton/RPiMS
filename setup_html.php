@@ -128,9 +128,14 @@
 </td>
 <td>
 <select id="serial_display_type" name="serial_display_type" class="w3-select">
-<option value="oled_sh1106_i2c"<?php if ($serial_display_type == 'oled_sh1106_i2c') echo 'selected="selected"'; ?> >oled_sh1106_i2c</option>
-<option value="oled_sh1106_spi"<?php if ($serial_display_type == 'oled_sh1106_spi') echo 'selected="selected"'; ?> >oled_sh1106_spi</option>
+<option value="oled_sh1106"<?php if ($serial_display_type == 'oled_sh1106') echo 'selected="selected"'; ?> >oled_sh1106</option>
 <option value="lcd_st7735"<?php if ($serial_display_type == 'lcd_st7735') echo 'selected="selected"'; ?> >lcd_st7735</option>
+</select>
+</td>
+<td>
+<select id="serial_type" name="serial_type" class="w3-select">
+<option value="i2c"<?php if ($serial_type == 'i2c') echo 'selected="selected"'; ?> >i2c</option>
+<option value="spi"<?php if ($serial_type == 'spi') echo 'selected="selected"'; ?> >spi</option>
 </select>
 </td>
 <td>

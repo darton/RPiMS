@@ -40,6 +40,7 @@ $use_weather_station = filter_var($rpims['setup']['use_weather_station'], FILTER
 
 $serial_display_refresh_rate = $rpims['setup']['serial_display_refresh_rate'];
 $serial_display_type = $rpims['setup']['serial_display_type'];
+$serial_type = $rpims['setup']['serial_type'];
 $serial_display_rotate = $rpims['setup']['serial_display_rotate'];
 
 $CPUtemp_read_interval = $rpims['setup']['CPUtemp_read_interval'];
@@ -94,8 +95,6 @@ foreach ($reserved_gpio as $key => $value) {
     $GPIO[$gpioname]['type'] = 'Reserved';
     $GPIO[$gpioname]['name'] = $value['name'];
 }
-
-//var_dump($GPIO['GPIO_16']['hold_time']);
 
 include 'setup_html.php';
 ?>
