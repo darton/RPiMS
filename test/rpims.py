@@ -236,7 +236,7 @@ def get_dht_data(**kwargs):
 
 def serial_displays(**kwargs):
 
-    if kwargs['serial_display_type'] == oled_sh1106:
+    if kwargs['serial_display_type'] == 'oled_sh1106':
         from luma.core.interface.serial import i2c, spi, noop
         from luma.core.render import canvas
         from luma.core import lib
@@ -299,7 +299,7 @@ def serial_displays(**kwargs):
             logger.error(err)
 
 
-    if kwargs['serial_display_type'] == lcd_st7735:
+    if kwargs['serial_display_type'] == 'lcd_st7735':
         from luma.core.interface.serial import spi, noop
         from luma.core.render import canvas
         from luma.core import lib
