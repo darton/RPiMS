@@ -21,7 +21,7 @@ def door_action_closed(door_id,**kwargs):
     if bool(kwargs['use_zabbix_sender']) is True :
         zabbix_sender_call('info_when_door_has_been_closed',door_id)
     if bool(kwargs['use_picamera']) is True:
-         if detect_no_alarms():
+         if detect_no_alarms(**config):
              av_stream('stop')
 
 
@@ -55,7 +55,7 @@ def door_status_close(door_id,**kwargs):
     if bool(kwargs['use_zabbix_sender']) is True :
         zabbix_sender_call('info_when_door_is_closed',door_id)
     if bool(kwargs['use_picamera']) is True:
-         if detect_no_alarms():
+         if detect_no_alarms(**config):
              av_stream('stop')
 
 
@@ -74,7 +74,7 @@ def motion_sensor_when_no_motion(ms_id,**kwargs):
     if bool(kwargs['verbose']) is True :
         print("The " + str(ms_id) + ": no motion")
     if bool(kwargs['use_picamera']) is True:
-         if detect_no_alarms():
+         if detect_no_alarms(**config):
              av_stream('stop')
 
 
@@ -731,7 +731,8 @@ def main():
         redis_db.delete(key)
 
     config_yaml=config_load('/var/www/html/conf/rpims.yaml')
-
+    
+    global config
     config = config_yaml['setup']
     zabbix_agent = config_yaml['zabbix_agent']
     hostnamectl_sh(**zabbix_agent)
