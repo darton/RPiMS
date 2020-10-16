@@ -674,11 +674,11 @@ def threading_function(function_name, **kwargs):
     t.start()
 
 
-def db_connect():
+def db_connect(dbhost, dbnum):
     try:
         import redis, sys
         global redis_db
-        redis_db = redis.StrictRedis(host="localhost", port=6379, db=0, charset="utf-8", decode_responses=True)
+        redis_db = redis.StrictRedis(host=dbhost, port=6379, db=str(dbnum), charset="utf-8", decode_responses=True)
     except Exception as err :
         print('Problem with connection to database')
         sys.exit(1)
@@ -702,24 +702,16 @@ def use_logger():
 
 
 def main():
-    #global gpiozero, Button, MotionSensor, LED, all_values, any_values
     #from picamera import PiCamera
     from gpiozero import LED, Button, MotionSensor
     from gpiozero.tools import all_values, any_values
-    #from subprocess import check_call
-    #from subprocess import call
     from signal import pause
-    #from time import sleep, time
-    #import threading
-    #import redis
-    #import smbus2
     #import logging
     import sys
-    #import yaml
 
     print('# RPiMS is running #')
     try:
-        db_connect()
+        db_connect('localhost', 0)
     except Exception as err :
         print("Blad połączenia")
         sys.exit(1)
@@ -732,8 +724,6 @@ def main():
         redis_db.delete(key)
 
     config_yaml=config_load('/var/www/html/conf/rpims.yaml')
-
-    #global config, zabbix_agent, door_sensors_list, motion_sensors_list, system_buttons_list, led_indicators_list
 
     config = config_yaml['setup']
 
