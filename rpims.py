@@ -273,7 +273,7 @@ def serial_displays(**kwargs):
         logger=logging.getLogger(__name__)
 
         serial_type = kwargs['serial_type']
-        print(serial_type)
+
         if serial_type == 'i2c' :
             serial = i2c(port=1, address=0x3c)
         if serial_type == 'spi' :
