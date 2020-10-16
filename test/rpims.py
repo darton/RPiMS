@@ -14,66 +14,66 @@
 #  GNU General Public License for more details.
 
 # --- Funcions ---
-def door_action_closed(door_id):
+def door_action_closed(door_id,**kwargs):
     redis_db.set(str(door_id), 'close')
-    if bool(config['verbose']) is True :
+    if bool(kwargs['verbose']) is True :
         print("The " + str(door_id) + " has been closed!")
-    if bool(config['use_zabbix_sender']) is True :
+    if bool(kwargs['use_zabbix_sender']) is True :
         zabbix_sender_call('info_when_door_has_been_closed',door_id)
-    if bool(config['use_picamera']) is True:
+    if bool(kwargs['use_picamera']) is True:
          if detect_no_alarms():
              av_stream('stop')
 
 
-def door_action_opened(door_id):
+def door_action_opened(door_id,**kwargs):
     redis_db.set(str(door_id), 'open')
-    if bool(config['verbose']) is True :
+    if bool(kwargs['verbose']) is True :
         print("The " + str(door_id) + " has been opened!")
-    if bool(config['use_zabbix_sender']) is True :
+    if bool(kwargs['use_zabbix_sender']) is True :
         zabbix_sender_call('info_when_door_has_been_opened',door_id)
-    if bool(config['use_picamera']) is True :
-        if bool(config['use_picamera_recording']) is True:
+    if bool(kwargs['use_picamera']) is True :
+        if bool(kwargs['use_picamera_recording']) is True:
             av_stream('stop')
             av_recording()
         av_stream('start')
 
 
-def door_status_open(door_id):
+def door_status_open(door_id,**kwargs):
     redis_db.set(str(door_id), 'open')
-    if bool(config['verbose']) is True :
+    if bool(kwargs['verbose']) is True :
         print("The " + str(door_id) + " is opened!")
-    if bool(config['use_zabbix_sender']) is True:
+    if bool(kwargs['use_zabbix_sender']) is True:
         zabbix_sender_call('info_when_door_is_opened',door_id)
-    if bool(config['use_picamera']) is True:
+    if bool(kwargs['use_picamera']) is True:
         av_stream('start')
 
 
-def door_status_close(door_id):
+def door_status_close(door_id,**kwargs):
     redis_db.set(str(door_id), 'close')
-    if bool(config['verbose']) is True :
+    if bool(kwargs['verbose']) is True :
         print("The " + str(door_id) + " is closed!")
-    if bool(config['use_zabbix_sender']) is True :
+    if bool(kwargs['use_zabbix_sender']) is True :
         zabbix_sender_call('info_when_door_is_closed',door_id)
-    if bool(config['use_picamera']) is True:
+    if bool(kwargs['use_picamera']) is True:
          if detect_no_alarms():
              av_stream('stop')
 
 
-def motion_sensor_when_motion(ms_id):
+def motion_sensor_when_motion(ms_id,**kwargs):
     redis_db.set(str(ms_id), 'motion')
-    if bool(config['verbose']) is True :
+    if bool(kwargs['verbose']) is True :
         print("The " + str(ms_id) + ": motion was detected")
-    if bool(config['use_zabbix_sender']) is True :
+    if bool(kwargs['use_zabbix_sender']) is True :
         zabbix_sender_call('info_when_motion',ms_id)
-    if bool(config['use_picamera']) is True:
+    if bool(kwargs['use_picamera']) is True:
         av_stream('start')
 
 
-def motion_sensor_when_no_motion(ms_id):
+def motion_sensor_when_no_motion(ms_id,**kwargs):
     redis_db.set(str(ms_id), 'nomotion')
-    if bool(config['verbose']) is True :
+    if bool(kwargs['verbose']) is True :
         print("The " + str(ms_id) + ": no motion")
-    if bool(config['use_picamera']) is True:
+    if bool(kwargs['use_picamera']) is True:
          if detect_no_alarms():
              av_stream('stop')
 
@@ -103,26 +103,31 @@ def detect_no_alarms():
 
 
 def av_stream(state):
+    from subprocess import call
     _cmd = '/home/pi/scripts/RPiMS/videostreamer.sh' + " " +  state
     call(_cmd, shell=True)
 
 
 def av_recording():
+    from subprocess import call
     _cmd = '/home/pi/scripts/RPiMS/videorecorder.sh'
     call(_cmd, shell=True)
 
 
 def zabbix_sender_call(message,sensor_id):
+    from subprocess import call
     _cmd ='/home/pi/scripts/RPiMS/zabbix_sender.sh ' + message + " " + str(sensor_id)
     call(_cmd, shell=True)
 
 
 def hostnamectl_sh(arg1,arg2):
+    from subprocess import call
     _cmd = 'sudo /usr/bin/hostnamectl ' + arg1 + " " + '"' + arg2 + '"'
     call(_cmd, shell=True)
 
 
 def shutdown():
+    from subprocess import check_call
     check_call(['sudo', 'poweroff'])
 
 
@@ -130,6 +135,7 @@ def get_cputemp_data(**kwargs):
     verbose=kwargs['verbose']
     read_interval=kwargs['CPUtemp_read_interval']
     try:
+        from time import sleep
         from gpiozero import CPUTemperature
         while True :
             data = CPUTemperature()
@@ -146,6 +152,7 @@ def get_bme280_data(**kwargs):
     verbose=kwargs['verbose']
     read_interval=kwargs['BME280_read_interval']
     try:
+        import smbus2
         import bme280
         from time import sleep
         port = 1
@@ -171,6 +178,7 @@ def get_ds18b20_data(**kwargs):
     read_interval=kwargs['DS18B20_read_interval']
     try:
         from w1thermsensor import W1ThermSensor
+        from time import sleep
         while True :
             data = W1ThermSensor.get_available_sensors([W1ThermSensor.THERM_SENSOR_DS18B20,W1ThermSensor.THERM_SENSOR_DS18S20])
             for sensor in data:
@@ -299,10 +307,11 @@ def lcd_st7735(**kwargs):
     from PIL import ImageFont
     from PIL import ImageColor
     #import RPi.GPIO as GPIO
-    import time
+    from time import time, sleep
     import datetime
     import logging
     #import socket
+    import redis
 # Load default font.
     font = ImageFont.load_default()
 #Display width/height
@@ -373,6 +382,7 @@ def lcd_st7735(**kwargs):
 
 
 def rainfall(**kwargs):
+    from time import time, sleep
     import math
 
     def bucket_tipped():
@@ -416,6 +426,7 @@ def rainfall(**kwargs):
 
 def wind_speed(**kwargs):
     import statistics
+    from time import time, sleep
 
     def anemometer_pulse_counter():
         nonlocal anemometer_pulse
@@ -537,6 +548,7 @@ def adc_ads1115():
 
 
 def wind_direction(**kwargs):
+    from time import time
     import math
     def get_average(angles):
         sin_sum = 0.0
@@ -664,22 +676,23 @@ def threading_function(function_name, **kwargs):
 
 def db_connect():
     try:
-        import redis
+        import redis, sys
         global redis_db
         redis_db = redis.StrictRedis(host="localhost", port=6379, db=0, charset="utf-8", decode_responses=True)
     except Exception as err :
-        print('Problem with ' + str(err))
+        print('Problem with connection to database')
+        sys.exit(1)
 
 
 def config_load(path_to_config):
     try:
-        import yaml
+        import yaml, sys
         with open(path_to_config, mode = 'r') as file:
             config_yaml = yaml.full_load(file)
         return config_yaml
     except Exception as err :
         print('Problem with ' + str(err))
-
+        sys.exit(1)
 
 def use_logger():
     import logging
@@ -689,24 +702,27 @@ def use_logger():
 
 
 def main():
-    global gpiozero, Button, MotionSensor, LED, all_values, any_values, subprocess, call, check_call, signal, time, sleep,  threading, redis, smbus2, logging, sys, yaml
+    #global gpiozero, Button, MotionSensor, LED, all_values, any_values
     #from picamera import PiCamera
     from gpiozero import LED, Button, MotionSensor
     from gpiozero.tools import all_values, any_values
-    from subprocess import check_call
-    from subprocess import call
+    #from subprocess import check_call
+    #from subprocess import call
     from signal import pause
-    from time import sleep, time
+    #from time import sleep, time
     #import threading
     #import redis
-    import smbus2
+    #import smbus2
     #import logging
     import sys
     #import yaml
 
     print('# RPiMS is running #')
-
-    db_connect()
+    try:
+        db_connect()
+    except Exception as err :
+        print("Blad połączenia")
+        sys.exit(1)
 
     #redis_db.flushdb()
 
@@ -719,12 +735,8 @@ def main():
 
     #global config, zabbix_agent, door_sensors_list, motion_sensors_list, system_buttons_list, led_indicators_list
 
-    global config
-    config = {}
-    for item in config_yaml.get("setup"):
-        config[item] = config_yaml['setup'][item]
+    config = config_yaml['setup']
 
-    global zabbix_agent
     zabbix_agent = {}
     for item in config_yaml.get("zabbix_agent"):
         zabbix_agent[item] = config_yaml['zabbix_agent'][item]
@@ -787,24 +799,24 @@ def main():
     if bool(config['use_door_sensor']) is True :
         for s in door_sensors_list:
             if door_sensors_list[s].value == 0:
-                door_status_open(s)
+                door_status_open(s,**config)
             else:
-                door_status_close(s)
+                door_status_close(s,**config)
         for s in door_sensors_list:
-                door_sensors_list[s].when_held = lambda s=s : door_action_closed(s)
-                door_sensors_list[s].when_released = lambda s=s : door_action_opened(s)
+                door_sensors_list[s].when_held = lambda s=s : door_action_closed(s,**config)
+                door_sensors_list[s].when_released = lambda s=s : door_action_opened(s,**config)
         if bool(config['use_led_indicators']) is True :
             led_indicators_list['door_led'].source = all_values(*door_sensors_list.values())
 
     if bool(config['use_motion_sensor']) is True :
         for s in motion_sensors_list:
             if motion_sensors_list[s].value == 0:
-                motion_sensor_when_no_motion(s)
+                motion_sensor_when_no_motion(s,**config)
             else:
-                motion_sensor_when_motion(s)
+                motion_sensor_when_motion(s,**config)
         for s in motion_sensors_list:
-                motion_sensors_list[s].when_motion = lambda s=s : motion_sensor_when_motion(s)
-                motion_sensors_list[s].when_no_motion = lambda s=s : motion_sensor_when_no_motion(s)
+                motion_sensors_list[s].when_motion = lambda s=s : motion_sensor_when_motion(s,**config)
+                motion_sensors_list[s].when_no_motion = lambda s=s : motion_sensor_when_no_motion(s,**config)
         if bool(config['use_led_indicators']) is True :
             led_indicators_list['motion_led'].source = any_values(*motion_sensors_list.values())
 
@@ -826,9 +838,9 @@ def main():
     if bool(config['use_weather_station']) is True:
         threading_function(rainfall, **config)
         threading_function(wind_speed, **config)
-        #threading_function(wind_direction, **config)
+        threading_function(wind_direction, **config)
 
-    if bool(config['use_serial_display']) is False:
+    if bool(config['use_serial_display']) is True:
         if config['serial_display_type'] == 'oled_sh1106_i2c':
             threading_function(oled_sh1106, **config)
         if config['serial_display_type'] == 'oled_sh1106_spi':
