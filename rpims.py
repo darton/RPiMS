@@ -15,13 +15,14 @@
 
 # --- Funcions ---
 def door_action_closed(door_id,**kwargs):
+    lconfig = dict(kwargs)
     redis_db.set(str(door_id), 'close')
     if bool(kwargs['verbose']) is True :
         print("The " + str(door_id) + " has been closed!")
     if bool(kwargs['use_zabbix_sender']) is True :
         zabbix_sender_call('info_when_door_has_been_closed',door_id)
     if bool(kwargs['use_picamera']) is True:
-         if detect_no_alarms(**config):
+         if detect_no_alarms(**lconfig):
              av_stream('stop')
 
 
@@ -49,13 +50,14 @@ def door_status_open(door_id,**kwargs):
 
 
 def door_status_close(door_id,**kwargs):
+    lconfig = dict(kwargs)
     redis_db.set(str(door_id), 'close')
     if bool(kwargs['verbose']) is True :
         print("The " + str(door_id) + " is closed!")
     if bool(kwargs['use_zabbix_sender']) is True :
         zabbix_sender_call('info_when_door_is_closed',door_id)
     if bool(kwargs['use_picamera']) is True:
-         if detect_no_alarms(**config):
+         if detect_no_alarms(**lconfig):
              av_stream('stop')
 
 
@@ -70,11 +72,12 @@ def motion_sensor_when_motion(ms_id,**kwargs):
 
 
 def motion_sensor_when_no_motion(ms_id,**kwargs):
+    lconfig = dict(kwargs)
     redis_db.set(str(ms_id), 'nomotion')
     if bool(kwargs['verbose']) is True :
         print("The " + str(ms_id) + ": no motion")
     if bool(kwargs['use_picamera']) is True:
-         if detect_no_alarms(**config):
+         if detect_no_alarms(**lconfig):
              av_stream('stop')
 
 
@@ -219,7 +222,7 @@ def get_dht_data(**kwargs):
             humidity = dhtDevice.humidity
             redis_db.mset({'DHT_Humidity' : humidity,'DHT_Temperature' : temperature,})
             if bool(verbose) is True :
-                print(dht_type + " Temperature: {:.1f} °C ".format(temperature))
+                print(dht_type + " Temperature: {:.1f}°C ".format(temperature))
                 print(dht_type + " Humidity: {}% ".format(humidity))
                 print("")
             delay -= 1
@@ -731,8 +734,7 @@ def main():
         redis_db.delete(key)
 
     config_yaml=config_load('/var/www/html/conf/rpims.yaml')
-    
-    global config
+
     config = config_yaml['setup']
     zabbix_agent = config_yaml['zabbix_agent']
     hostnamectl_sh(**zabbix_agent)
