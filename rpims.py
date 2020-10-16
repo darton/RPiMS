@@ -122,14 +122,10 @@ def zabbix_sender_call(message,sensor_id):
 
 def hostnamectl_sh(**kwargs):
     from subprocess import call
-    _cmd = 'sudo /usr/bin/hostnamectl ' + 'set-hostname '  + '"' + kwargs['hostname'] + '"'
-    call(_cmd, shell=True)
-    _cmd = 'sudo /usr/bin/hostnamectl ' + 'set-location '  + '"' + kwargs['location'] + '"'
-    call(_cmd, shell=True)
-    _cmd = 'sudo /usr/bin/hostnamectl ' + 'set-chassis '  + '"' + kwargs['chassis'] + '"'
-    call(_cmd, shell=True)
-    _cmd = 'sudo /usr/bin/hostnamectl ' + 'set-deployment '  + '"' + kwargs['deployment'] + '"'
-    call(_cmd, shell=True)
+    hctldict = {"hostname":"set-hostname", "location":"set-location", "chassis":"set-chassis", "deployment":"set-deployment",}
+    for item in hctldict:
+        _cmd = 'sudo /usr/bin/hostnamectl ' + hctldict[item]  + ' "' + kwargs[item] + '"'
+        call(_cmd, shell=True)
 
 
 def shutdown():

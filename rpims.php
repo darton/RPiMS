@@ -9,7 +9,10 @@ foreach ($rpimskeys as $key) {
     $value = $redis->get($key);
     $rpims[$key] = $value;
 }
-
+$rpims_api["settings"]["verbose"] = $rpims["verbose"];
+$rpims_api["settings"]["useZabbixSender"] = $rpims["use_zabbix_sender"];
+$rpims_api["settings"]["usePiCamera"] = $rpims["use_picamera"];
+$rpims_api["settings"]["usePiCameraRecording"] = $rpims["use_picamera_recording"];
 $rpims_api["settings"]["useCpuSensor"] = $rpims["use_CPU_sensor"];
 $rpims_api["settings"]["useBME280Sensor"] = $rpims["use_BME280_sensor"];
 $rpims_api["settings"]["useDHTSensor"] = $rpims["use_DHT_sensor"];
@@ -17,6 +20,12 @@ $rpims_api["settings"]["useDS18B20Sensor"] = $rpims["use_DS18B20_sensor"];
 $rpims_api["settings"]["useWeatherStation"] = $rpims["use_weather_station"];
 $rpims_api["settings"]["useDoorSensor"] = $rpims["use_door_sensor"];
 $rpims_api["settings"]["useMotionSensor"] = $rpims["use_motion_sensor"];
+$rpims_api["settings"]["useLedIndicators"] = $rpims["use_led_indicators"];
+$rpims_api["settings"]["useSerialDisplay"] = $rpims["use_serial_display"];
+$rpims_api["settings"]["serialDisplayType"] = $rpims["serial_display_type"];
+$rpims_api["settings"]["serialDisplayRotate"] = $rpims["serial_display_rotate"];
+$rpims_api["settings"]["serialDisplayRefreshRate"] = $rpims["serial_display_refresh_rate"];
+$rpims_api["settings"]["serialType"] = $rpims["serial_type"];
 $rpims_api["settings"]["hostip"] = $rpims["hostip"];
 $rpims_api["settings"]["hostname"] = $rpims["hostname"];
 $rpims_api["settings"]["location"] = $rpims["location"];
@@ -37,18 +46,24 @@ if ($rpims["use_BME280_sensor"] == "True"){
 
 if ($rpims["use_DHT_sensor"] == "True"){
     $rpims_api["sensors"]["DHT"]["readInterval"] = $rpims["DHT_read_interval"];
+    $rpims_api["sensors"]["DHT"]["gpioPin"] = $rpims["DHT_pin"];
+    $rpims_api["sensors"]["DHT"]["dhtType"] = $rpims["DHT_type"];
     $rpims_api["sensors"]["DHT"]["temperature"] = $rpims["DHT_Temperature"];
     $rpims_api["sensors"]["DHT"]["humidity"] = $rpims["DHT_Humidity"];
 }
 
 if ($rpims["use_weather_station"] == "True"){
     $rpims_api["weather_station"]["windSpeed"] = $rpims["wind_speed"];
+    $rpims_api["weather_station"]["windSpeedAcquisitionTime"] = $rpims["windspeed_acquisition_time"];
+    $rpims_api["weather_station"]["windSpeedAgregationTime"] = $rpims["windspeed_agregation_time"];
     $rpims_api["weather_station"]["averageWindSpeed"] = $rpims["average_wind_speed"];
     $rpims_api["weather_station"]["dailyAveragewindSpeed"] = $rpims["daily_average_wind_speed"];
     $rpims_api["weather_station"]["windGust"] = $rpims["wind_gust"];
     $rpims_api["weather_station"]["dailyWindGust"] = $rpims["daily_wind_gust"];
     $rpims_api["weather_station"]["averageWindDirection"] = $rpims["average_wind_direction"];
     $rpims_api["weather_station"]["dailyRainfall"] = $rpims["daily_rainfall"];
+    $rpims_api["weather_station"]["rainfallAcquisitionTime"] = $rpims["rainfall_acquisition_time"];
+    $rpims_api["weather_station"]["rainfallAgregationTime"] = $rpims["rainfall_agregation_time"];
 }
 
 if ($rpims["use_motion_sensor"] == "True"){
@@ -66,8 +81,8 @@ if ($rpims["use_door_sensor"] == "True"){
 }
 
 if ($rpims["use_DS18B20_sensor"] == "True"){
-    $DS18B20_sensors = $redis->smembers('DS18B20_sensors');
     $rpims_api["sensors"]["DS18B20_sensors"]["readInterval"] = $rpims["DS18B20_read_interval"];
+    $DS18B20_sensors = $redis->smembers('DS18B20_sensors');
     foreach ($DS18B20_sensors as $key => $value){
 	$rpims_api["sensors"]["DS18B20_sensors"]["array"]["$value"] = round($rpims[$value],2);
 	}

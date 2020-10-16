@@ -216,7 +216,7 @@
 
 
 <tr>
-<td><label>Wind speed aquisition time:</label></td>
+<td><label>Wind speed acquisition time:</label></td>
 <td><input name="windspeed_acquisition_time" class="w3-input" type="number" min="1" max="3600" size="4" value="<?= $windspeed_acquisition_time ?>" ></td>
 
 <td><label>Wind speed agregation time:</label></td>
@@ -229,7 +229,7 @@
 </tr>
 
 <tr>
-<td><label>Wind direction aquisition time:</label></td>
+<td><label>Wind direction acquisition time:</label></td>
 <td><input name="winddirection_acquisition_time" class="w3-input" type="number" min="1" max="3600" size="4" value="<?= $winddirection_acquisition_time ?>" ></td>
 
 <td><label for="winddirection_adc_type">Wind direction ADC type:</label></td>
