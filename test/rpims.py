@@ -126,23 +126,28 @@ def shutdown():
     check_call(['sudo', 'poweroff'])
 
 
-def get_cputemp_data():
+def get_cputemp_data(**kwargs):
+    verbose=kwargs['verbose']
+    read_interval=kwargs['CPUtemp_read_interval']
     try:
         from gpiozero import CPUTemperature
         while True :
             data = CPUTemperature()
             redis_db.set('CPU_Temperature', data.temperature)
-            if bool(config['verbose']) is True :
+            if bool(verbose) is True :
                 print('CPU temperature: {0:0.1f}'.format(data.temperature),chr(176)+'C', sep='')
                 print("")
-            sleep(config['CPUtemp_read_interval'])
+            sleep(read_interval)
     except Exception as err :
         print('Problem with ' + str(err))
 
 
-def get_bme280_data():
+def get_bme280_data(**kwargs):
+    verbose=kwargs['verbose']
+    read_interval=kwargs['BME280_read_interval']
     try:
         import bme280
+        from time import sleep
         port = 1
         address = config['BME280_i2c_address']
         bus = smbus2.SMBus(port)
@@ -150,18 +155,20 @@ def get_bme280_data():
             calibration_params = bme280.load_calibration_params(bus, address)
             data = bme280.sample(bus, address, calibration_params)
             redis_db.mset({'BME280_Humidity' : data.humidity,'BME280_Temperature' : data.temperature, 'BME280_Pressure' : data.pressure})
-            if bool(config['verbose']) is True :
+            if bool(verbose) is True :
                 print('')
                 print('BME280 Humidity: {0:0.0f}%'.format(data.humidity))
                 print('BME280 Temperature: {0:0.1f}\xb0C'.format(data.temperature))
                 print('BME280 Pressure: {0:0.0f}hPa'.format(data.pressure))
                 print("")
-            sleep(config['BME280_read_interval'])
+            sleep(read_interval)
     except Exception as err :
         print('Problem with ' + str(err))
 
 
-def get_ds18b20_data():
+def get_ds18b20_data(**kwargs):
+    verbose=kwargs['verbose']
+    read_interval=kwargs['DS18B20_read_interval']
     try:
         from w1thermsensor import W1ThermSensor
         while True :
@@ -170,25 +177,30 @@ def get_ds18b20_data():
                 redis_db.sadd('DS18B20_sensors', sensor.id)
                 redis_db.set(sensor.id, sensor.get_temperature())
                 sleep(1)
-                redis_db.expire(sensor.id, config['DS18B20_read_interval']*2)
-                if bool(config['verbose']) is True :
+                redis_db.expire(sensor.id, read_interval*2)
+                if bool(verbose) is True :
                     print("Sensor %s temperature %.2f"%(sensor.id,sensor.get_temperature()),"\xb0C")
                     print("")
-            redis_db.expire('DS18B20_sensors', config['DS18B20_read_interval']*3)
-            sleep(config['DS18B20_read_interval'])
+            redis_db.expire('DS18B20_sensors', read_interval*3)
+            sleep(read_interval)
     except Exception as err :
         print('Problem with ' + str(err))
 
 
-def get_dht_data():
+def get_dht_data(**kwargs):
+    verbose=kwargs['verbose']
+    read_interval=kwargs['DHT_read_interval']
+    dht_type = kwargs['DHT_type']
+    pin = kwargs['DHT_pin']
     import adafruit_dht
-    pin = config['DHT_pin']
+    from time import sleep
+
     debug = "no"
     delay = 0
 
-    if config['DHT_type'] == "DHT22":
+    if dht_type == "DHT22":
         dhtDevice = adafruit_dht.DHT22(pin)
-    if config['DHT_type'] == "DHT11":
+    if dht_type == "DHT11":
         dhtDevice = adafruit_dht.DHT11(pin)
 
     while True:
@@ -196,7 +208,7 @@ def get_dht_data():
             temperature = dhtDevice.temperature
             humidity = dhtDevice.humidity
             redis_db.mset({'DHT_Humidity' : humidity,'DHT_Temperature' : temperature,})
-            if bool(config['verbose']) is True :
+            if bool(verbose) is True :
                 print(config['DHT_type'] + " Temperature: {:.1f} °C ".format(temperature))
                 print(config['DHT_type'] + " Humidity: {}% ".format(humidity))
                 print("")
@@ -211,10 +223,10 @@ def get_dht_data():
             if debug is 'yes':
                 print("DHT delay: " + str(delay))
             redis_db.set('DHT_delay', delay)
-            sleep(config['DHT_read_interval']+delay)
+            sleep(read_interval+delay)
 
 
-def oled_sh1106():
+def oled_sh1106(**kwargs):
     from luma.core.interface.serial import i2c, spi, noop
     from luma.core.render import canvas
     from luma.core import lib
@@ -223,6 +235,7 @@ def oled_sh1106():
     #from PIL import ImageDraw
     from PIL import ImageFont
     import time
+    import logging
     #import socket
 
     # Load default font.
@@ -236,13 +249,14 @@ def oled_sh1106():
     padding = 0
     top = padding
     bottom = height-padding
-    display_rotate = config['serial_display_rotate']
+    display_rotate = kwargs['serial_display_rotate']
     # Move left to right keeping track of the current x position for drawing shapes.
     x = 0
 
     logging.basicConfig(filename='/tmp/rpims_serial_display.log', level=logging.DEBUG, format='%(asctime)s %(levelname)s %(name)s %(message)s')
     logger=logging.getLogger(__name__)
 
+    serial_type = kwargs['serial_display_type_interface']
     if serial_type == 'i2c' :
         serial = i2c(port=1, address=0x3c)
     if serial_type == 'spi' :
@@ -270,12 +284,12 @@ def oled_sh1106():
                 draw.text((x, top+36),    'Door 1.......' + str(door_sensor_1),  font=font, fill=255)
                 draw.text((x, top+45),    'Door 2.......' + str(door_sensor_2),  font=font, fill=255)
                 draw.text((x, top+54),    'CpuTemp......' + str(cputemp) + '*C', font=font, fill=255)
-            sleep(1/config['serial_display_refresh_rate'])
+            sleep(1/kwargs['serial_display_refresh_rate'])
     except Exception as err :
         logger.error(err)
 
 
-def lcd_st7735():
+def lcd_st7735(**kwargs):
     from luma.core.interface.serial import spi, noop
     from luma.core.render import canvas
     from luma.core import lib
@@ -287,6 +301,7 @@ def lcd_st7735():
     #import RPi.GPIO as GPIO
     import time
     import datetime
+    import logging
     #import socket
 # Load default font.
     font = ImageFont.load_default()
@@ -302,7 +317,7 @@ def lcd_st7735():
 
     logging.basicConfig(filename='/tmp/rpims_serial_display.log', level=logging.DEBUG, format='%(asctime)s %(levelname)s %(name)s %(message)s')
     logger=logging.getLogger(__name__)
-    display_rotate = config['serial_display_rotate']
+    display_rotate = kwargs['serial_display_rotate']
     serial = spi(device=0, port=0, bus_speed_hz = 8000000, transfer_size = 4096, gpio_DC = 25, gpio_RST = 27)
 
     try:
@@ -352,12 +367,12 @@ def lcd_st7735():
 
                 draw.text((x+5, top+115),now.strftime("%Y-%m-%d %H:%M:%S"),  font=font, fill="floralwhite")
 
-            sleep(1/config['serial_display_refresh_rate'])
+            sleep(1/kwargs['serial_display_refresh_rate'])
     except Exception as err :
         logger.error(err)
 
 
-def rainfall():
+def rainfall(**kwargs):
     import math
 
     def bucket_tipped():
@@ -373,12 +388,12 @@ def rainfall():
         rainfall = round(bucket_counter * BUCKET_SIZE,0)
         return rainfall
 
-    rain_sensor = Button(config['rainfall_sensor_pin'])
+    rain_sensor = Button(kwargs['rainfall_sensor_pin'])
     rain_sensor.when_pressed = bucket_tipped
 
     bucket_counter = 0
-    rainfall_acquisition_time = config['rainfall_acquisition_time']
-    rainfall_agregation_time = config['rainfall_agregation_time']
+    rainfall_acquisition_time = kwargs['rainfall_acquisition_time']
+    rainfall_agregation_time = kwargs['rainfall_agregation_time']
     rainfalls = []
 
     #global BUCKET_SIZE
@@ -399,7 +414,7 @@ def rainfall():
         redis_db.mset({'daily_rainfall': daily_rainfall,'rainfall': rainfall})
 
 
-def wind_speed():
+def wind_speed(**kwargs):
     import statistics
 
     def anemometer_pulse_counter():
@@ -416,12 +431,12 @@ def wind_speed():
         wind_speed_km_per_hour = round(ANEMOMETER_FACTOR * rotations * 2.4/wind_speed_acquisition_time,1)
         return wind_speed_km_per_hour
 
-    wind_speed_sensor = Button(config['windspeed_sensor_pin'])
+    wind_speed_sensor = Button(kwargs['windspeed_sensor_pin'])
     wind_speed_sensor.when_pressed = anemometer_pulse_counter
 
     anemometer_pulse = 0
-    wind_speed_acquisition_time = config['windspeed_acquisition_time']
-    wind_speed_agregation_time = config['windspeed_agregation_time']
+    wind_speed_acquisition_time = kwargs['windspeed_acquisition_time']
+    wind_speed_agregation_time = kwargs['windspeed_agregation_time']
     wind_speeds = []
     average_wind_speeds = []
     daily_wind_gusts = []
@@ -448,7 +463,7 @@ def wind_speed():
         average_wind_speeds.append(average_wind_speed)
         daily_average_wind_speed = round(statistics.mean(average_wind_speeds),1)
 
-        if bool(config['verbose']) is True :
+        if bool(kwargs['verbose']) is True :
             print("Wind speed " + str(wind_speed) + " km/h"," Wind gust: " + str(wind_gust) + "km/h", "Daily wind gust: " + str(daily_wind_gust) + "km/h", " Average wind speed: " + str(average_wind_speed) + " km/h","Daily average wind speed: " + str(daily_average_wind_speed) + " km/h"  )
         redis_db.mset({'wind_speed' : wind_speed, 'wind_gust' : wind_gust, 'daily_wind_gust' : daily_wind_gust, 'average_wind_speed' : average_wind_speed, 'daily_average_wind_speed' : daily_average_wind_speed})
 
@@ -521,7 +536,7 @@ def adc_ads1115():
     return adc_inputs_values
 
 
-def wind_direction():
+def wind_direction(**kwargs):
     import math
     def get_average(angles):
         sin_sum = 0.0
@@ -586,7 +601,7 @@ def wind_direction():
     Uout = 0
     R1 = 4690
     R2 = 0
-    wind_direction_acquisition_time = config['winddirection_acquisition_time']
+    wind_direction_acquisition_time = kwargs['winddirection_acquisition_time']
     angles = []
     average_wind_direction = 0
 
@@ -594,29 +609,29 @@ def wind_direction():
         start_time = time()
         angles.clear()
         while time() - start_time <= wind_direction_acquisition_time:
-            if config['winddirection_adc_type'] == 'AutomationPhat':
+            if kwargs['winddirection_adc_type'] == 'AutomationPhat':
                 adc_values = adc_automationphat()
-            if config['winddirection_adc_type'] == 'STM32F030':
+            if kwargs['winddirection_adc_type'] == 'STM32F030':
                 adc_values = adc_stm32f030()
-            if config['winddirection_adc_type'] == 'ADS1115':
+            if kwargs['winddirection_adc_type'] == 'ADS1115':
                 adc_values = adc_ads1115()
 
-            if config['winddirection_adc_input'] == 1:
+            if kwargs['winddirection_adc_input'] == 1:
                 Uout = round(adc_values[0],1)
-            if config['winddirection_adc_input'] == 2:
+            if kwargs['winddirection_adc_input'] == 2:
                 Uout = round(adc_values[1],1)
-            if config['winddirection_adc_input'] == 3:
+            if kwargs['winddirection_adc_input'] == 3:
                 Uout = round(adc_values[2],1)
-            if config['winddirection_adc_input'] == 4:
+            if kwargs['winddirection_adc_input'] == 4:
                 Uout = round(adc_values[3],1)
 
-            if config['reference_voltage_adc_input'] == 1:
+            if kwargs['reference_voltage_adc_input'] == 1:
                 Uin = round(adc_values[0],1)
-            if config['reference_voltage_adc_input'] == 2:
+            if kwargs['reference_voltage_adc_input'] == 2:
                 Uin = round(adc_values[1],1)
-            if config['reference_voltage_adc_input'] == 3:
+            if kwargs['reference_voltage_adc_input'] == 3:
                 Uin = round(adc_values[2],1)
-            if config['reference_voltage_adc_input'] == 4:
+            if kwargs['reference_voltage_adc_input'] == 4:
                 Uin = round(adc_values[3],1)
 
             if Uin != Uout and Uin != 0:
@@ -635,14 +650,14 @@ def wind_direction():
                     angles.append(direction_mapa.get(item))
         if len(angles) != 0:
             average_wind_direction = int(round(get_average(angles),0))
-            if bool(config['verbose']) is True :
+            if bool(kwargs['verbose']) is True :
                 print("Average Wind Direction: " + str(average_wind_direction))
             redis_db.mset({'average_wind_direction': average_wind_direction, 'wind_direction': item})
 
 
-def threading_function(function_name):
+def threading_function(function_name, **kwargs):
     import threading
-    t = threading.Thread(target=function_name, name=function_name)
+    t = threading.Thread(target=function_name, name=function_name, kwargs=kwargs)
     t.daemon = True
     t.start()
 
@@ -654,18 +669,16 @@ def db_connect():
         redis_db = redis.StrictRedis(host="localhost", port=6379, db=0, charset="utf-8", decode_responses=True)
     except Exception as err :
         print('Problem with ' + str(err))
-        sys.exit(1)
 
 
 def config_load(path_to_config):
     try:
         import yaml
         with open(path_to_config, mode = 'r') as file:
-            global config_yaml
             config_yaml = yaml.full_load(file)
+        return config_yaml
     except Exception as err :
         print('Problem with ' + str(err))
-        sys.exit(1)
 
 
 def use_logger():
@@ -692,9 +705,6 @@ def main():
     #import yaml
 
     print('# RPiMS is running #')
-    use_logger()
-    #global redis_db
-    #redis_db = redis.StrictRedis(host="localhost", port=6379, db=0, charset="utf-8", decode_responses=True)
 
     db_connect()
 
@@ -705,23 +715,7 @@ def main():
     for key in redis_db.scan_iter("door_sensor_*"):
         redis_db.delete(key)
 
-#    logging.basicConfig(filename='/tmp/rpims.log', level=logging.DEBUG, format='%(asctime)s %(levelname)s %(name)s %(message)s')
-
-#    global logger
-#    logger=logging.getLogger(__name__)
-#    use_logger()
-
-    #try:
-    #    with open(r'/var/www/html/conf/rpims.yaml') as file:
-    #        config_yaml = yaml.full_load(file)
-
-    #except Exception as err :
-    #    logger.error(err)
-    #    print('Problem with ' + str(err))
-    #    sys.exit(1)
-
-    config_load('/var/www/html/conf/rpims.yaml')
-
+    config_yaml=config_load('/var/www/html/conf/rpims.yaml')
 
     #global config, zabbix_agent, door_sensors_list, motion_sensors_list, system_buttons_list, led_indicators_list
 
@@ -734,7 +728,14 @@ def main():
     zabbix_agent = {}
     for item in config_yaml.get("zabbix_agent"):
         zabbix_agent[item] = config_yaml['zabbix_agent'][item]
-
+    hostname = config_yaml['zabbix_agent']['hostname']
+    location = config_yaml['zabbix_agent']['location']
+    chassis = config_yaml['zabbix_agent']['chassis']
+    deployment = config_yaml['zabbix_agent']['deployment']
+    hostnamectl_sh('set-hostname', hostname)
+    hostnamectl_sh('set-location', location)
+    hostnamectl_sh('set-chassis', chassis)
+    hostnamectl_sh('set-deployment', deployment)
 
     if bool(config['use_door_sensor']) is True:
         global door_sensors_list
@@ -744,7 +745,6 @@ def main():
             door_sensors_list[item] = Button(config_yaml['door_sensors'][item]['gpio_pin'], hold_time=config_yaml['door_sensors'][item]['hold_time'])
             redis_db.sadd("door_sensors", item)
 
-
     if bool(config['use_motion_sensor']) is True:
         global motion_sensors_list
         motion_sensors_list = {}
@@ -753,28 +753,17 @@ def main():
             motion_sensors_list[item] = MotionSensor(config_yaml['motion_sensors'][item]['gpio_pin'])
             redis_db.sadd("motion_sensors", item)
 
-
     if bool(config['use_system_buttons']) is True:
         global system_buttons_list
         system_buttons_list = {}
         for item in config_yaml.get("system_buttons"):
             system_buttons_list[item] = Button(config_yaml['system_buttons'][item]['gpio_pin'], hold_time=config_yaml['system_buttons'][item]['hold_time'])
 
-
     if bool(config['use_led_indicators']) is True:
         global led_indicators_list
         led_indicators_list = {}
         for item in config_yaml.get("led_indicators"):
             led_indicators_list[item] = LED(config_yaml['led_indicators'][item]['gpio_pin'])
-
-    hostname = config_yaml['zabbix_agent']['hostname']
-    location = config_yaml['zabbix_agent']['location']
-    chassis = config_yaml['zabbix_agent']['chassis']
-    deployment = config_yaml['zabbix_agent']['deployment']
-    hostnamectl_sh('set-hostname', hostname)
-    hostnamectl_sh('set-location', location)
-    hostnamectl_sh('set-chassis', chassis)
-    hostnamectl_sh('set-deployment', deployment)
 
     if bool(config['verbose']) is True :
         print('')
@@ -823,31 +812,30 @@ def main():
         system_buttons_list['shutdown_button'].when_held = shutdown
 
     if bool(config['use_CPU_sensor']) is True:
-        threading_function(get_cputemp_data)
+        threading_function(get_cputemp_data, **config)
 
     if bool(config['use_BME280_sensor']) is True:
-        threading_function(get_bme280_data)
+        threading_function(get_bme280_data, **config)
 
     if bool(config['use_DS18B20_sensor']) is True:
-        threading_function(get_ds18b20_data)
+        threading_function(get_ds18b20_data, **config)
 
     if bool(config['use_DHT_sensor']) is True:
-        threading_function(get_dht_data)
+        threading_function(get_dht_data, **config)
 
     if bool(config['use_weather_station']) is True:
-        threading_function(rainfall)
-        threading_function(wind_speed)
-        threading_function(wind_direction)
+        threading_function(rainfall, **config)
+        threading_function(wind_speed, **config)
+        #threading_function(wind_direction, **config)
 
-    if bool(config['use_serial_display']) is True:
+    if bool(config['use_serial_display']) is False:
         if config['serial_display_type'] == 'oled_sh1106_i2c':
-            serial_type = 'i2c'
-            threading_function(oled_sh1106)
+            threading_function(oled_sh1106, **config)
         if config['serial_display_type'] == 'oled_sh1106_spi':
-            serial_type = 'spi'
-            threading_function(oled_sh1106)
+            threading_function(oled_sh1106, **config)
         if config['serial_display_type'] == 'lcd_st7735':
-            threading_function(lcd_st7735)
+            threading_function(lcd_st7735, **config)
+
 
     if bool(config['use_picamera']) is True and bool(config['use_picamera_recording']) is False and bool(config['use_door_sensor']) is False and bool(config['use_motion_sensor']) is False :
         av_stream('start')
