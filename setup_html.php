@@ -133,6 +133,9 @@
 </select>
 </td>
 <td>
+<label for="serial_type">Serial type</label>
+</td>
+<td>
 <select id="serial_type" name="serial_type" class="w3-select">
 <option value="i2c"<?php if ($serial_type == 'i2c') echo 'selected="selected"'; ?> >i2c</option>
 <option value="spi"<?php if ($serial_type == 'spi') echo 'selected="selected"'; ?> >spi</option>
