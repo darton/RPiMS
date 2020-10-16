@@ -234,47 +234,108 @@ def get_dht_data(**kwargs):
             sleep(read_interval+delay)
 
 
-def oled_sh1106(**kwargs):
-    from luma.core.interface.serial import i2c, spi, noop
-    from luma.core.render import canvas
-    from luma.core import lib
-    from luma.oled.device import sh1106
-    #from PIL import Image
-    #from PIL import ImageDraw
-    from PIL import ImageFont
-    import time
-    import logging
-    #import socket
+def serial_displays(**kwargs):
 
+    if kwargs['serial_display_type'] == oled_sh1106:
+        from luma.core.interface.serial import i2c, spi, noop
+        from luma.core.render import canvas
+        from luma.core import lib
+        from luma.oled.device import sh1106
+        #from PIL import Image
+        #from PIL import ImageDraw
+        from PIL import ImageFont
+        import time
+        import logging
+        #import socket
+
+        # Load default font.
+        font = ImageFont.load_default()
+        # Create blank image for drawing.
+        # Make sure to create image with mode '1' for 1-bit color.
+        width = 128
+        height = 64
+        #image = Image.new('1', (width, height))
+        # First define some constants to allow easy resizing of shapes.
+        padding = 0
+        top = padding
+        bottom = height-padding
+        display_rotate = kwargs['serial_display_rotate']
+        # Move left to right keeping track of the current x position for drawing shapes.
+        x = 0
+
+        logging.basicConfig(filename='/tmp/rpims_serial_display.log', level=logging.DEBUG, format='%(asctime)s %(levelname)s %(name)s %(message)s')
+        logger=logging.getLogger(__name__)
+
+        serial_type = kwargs['serial_display_type_interface']
+        if serial_type == 'i2c' :
+            serial = i2c(port=1, address=0x3c)
+        if serial_type == 'spi' :
+            serial = spi(device=0, port=0, bus_speed_hz = 8000000, transfer_size = 4096, gpio_DC = 24, gpio_RST = 25)
+
+        try:
+            device = sh1106(serial, rotate=display_rotate)
+
+            while True:
+                with canvas(device) as draw:
+                    #get data from redis db
+                    values = redis_db.mget('BME280_Temperature', 'BME280_Humidity', 'BME280_Pressure', 'door_sensor_1', 'door_sensor_2', 'CPU_Temperature', 'hostip')
+                    temperature = round(float(values[0]),1)
+                    humidity = int(round(float(values[1]),1))
+                    pressure = int(round(float(values[2]),1))
+                    door_sensor_1 = values[3]
+                    door_sensor_2 = values[4]
+                    cputemp = round(float(values[5]),1)
+                    hostip = values[6]
+                    #draw on oled
+                    draw.text((x, top),       'IP:' + str(hostip), font=font, fill=255)
+                    draw.text((x, top+9),     'Temperature..' + str(temperature) + '*C', font=font, fill=255)
+                    draw.text((x, top+18),    'Humidity.....' + str(humidity) + '%',  font=font, fill=255)
+                    draw.text((x, top+27),    'Pressure.....' + str(pressure) + 'hPa',  font=font, fill=255)
+                    draw.text((x, top+36),    'Door 1.......' + str(door_sensor_1),  font=font, fill=255)
+                    draw.text((x, top+45),    'Door 2.......' + str(door_sensor_2),  font=font, fill=255)
+                    draw.text((x, top+54),    'CpuTemp......' + str(cputemp) + '*C', font=font, fill=255)
+                sleep(1/kwargs['serial_display_refresh_rate'])
+        except Exception as err :
+            logger.error(err)
+
+
+    if kwargs['serial_display_type'] == lcd_st7735:
+        from luma.core.interface.serial import spi, noop
+        from luma.core.render import canvas
+        from luma.core import lib
+        from luma.lcd.device import st7735
+        from PIL import Image
+        from PIL import ImageDraw
+        from PIL import ImageFont
+        from PIL import ImageColor
+        #import RPi.GPIO as GPIO
+        from time import time, sleep
+        import datetime
+        import logging
+        #import socket
+        import redis
     # Load default font.
-    font = ImageFont.load_default()
-    # Create blank image for drawing.
-    # Make sure to create image with mode '1' for 1-bit color.
-    width = 128
-    height = 64
-    #image = Image.new('1', (width, height))
+        font = ImageFont.load_default()
+    #Display width/height
+        width = 128
+        height = 128
     # First define some constants to allow easy resizing of shapes.
-    padding = 0
-    top = padding
-    bottom = height-padding
-    display_rotate = kwargs['serial_display_rotate']
+        padding = 0
+        top = padding
+        bottom = height-padding
     # Move left to right keeping track of the current x position for drawing shapes.
-    x = 0
+        x = 0
 
-    logging.basicConfig(filename='/tmp/rpims_serial_display.log', level=logging.DEBUG, format='%(asctime)s %(levelname)s %(name)s %(message)s')
-    logger=logging.getLogger(__name__)
+        logging.basicConfig(filename='/tmp/rpims_serial_display.log', level=logging.DEBUG, format='%(asctime)s %(levelname)s %(name)s %(message)s')
+        logger=logging.getLogger(__name__)
+        display_rotate = kwargs['serial_display_rotate']
+        serial = spi(device=0, port=0, bus_speed_hz = 8000000, transfer_size = 4096, gpio_DC = 25, gpio_RST = 27)
 
-    serial_type = kwargs['serial_display_type_interface']
-    if serial_type == 'i2c' :
-        serial = i2c(port=1, address=0x3c)
-    if serial_type == 'spi' :
-        serial = spi(device=0, port=0, bus_speed_hz = 8000000, transfer_size = 4096, gpio_DC = 24, gpio_RST = 25)
+        try:
+            device = st7735(serial)
+            device = st7735(serial, width=128, height=128, h_offset=1, v_offset=2, bgr=True, persist=False, rotate=display_rotate)
 
-    try:
-        device = sh1106(serial, rotate=display_rotate)
-
-        while True:
-            with canvas(device) as draw:
+            while True:
                 #get data from redis db
                 values = redis_db.mget('BME280_Temperature', 'BME280_Humidity', 'BME280_Pressure', 'door_sensor_1', 'door_sensor_2', 'CPU_Temperature', 'hostip')
                 temperature = round(float(values[0]),1)
@@ -284,101 +345,42 @@ def oled_sh1106(**kwargs):
                 door_sensor_2 = values[4]
                 cputemp = round(float(values[5]),1)
                 hostip = values[6]
-                #draw on oled
-                draw.text((x, top),       'IP:' + str(hostip), font=font, fill=255)
-                draw.text((x, top+9),     'Temperature..' + str(temperature) + '*C', font=font, fill=255)
-                draw.text((x, top+18),    'Humidity.....' + str(humidity) + '%',  font=font, fill=255)
-                draw.text((x, top+27),    'Pressure.....' + str(pressure) + 'hPa',  font=font, fill=255)
-                draw.text((x, top+36),    'Door 1.......' + str(door_sensor_1),  font=font, fill=255)
-                draw.text((x, top+45),    'Door 2.......' + str(door_sensor_2),  font=font, fill=255)
-                draw.text((x, top+54),    'CpuTemp......' + str(cputemp) + '*C', font=font, fill=255)
-            sleep(1/kwargs['serial_display_refresh_rate'])
-    except Exception as err :
-        logger.error(err)
+                now = datetime.datetime.now()
+                # Draw
+                with canvas(device) as draw:
+                    draw.text((x+35, top),'R P i M S', font=font, fill="cyan")
+                    draw.text((x, top+15),' Temperature', font=font, fill="lime")
+                    #draw.text((x+71, top+15),'', font=font, fill="blue")
+                    draw.text((x+77, top+15),str(temperature) + ' *C', font=font, fill="lime")
 
+                    draw.text((x, top+28),' Humidity',  font=font, fill="lime")
+                    #draw.text((x+70, top+28),'', font=font, fill="blue")
+                    draw.text((x+77, top+28),str(humidity) + ' %',  font=font, fill="lime")
 
-def lcd_st7735(**kwargs):
-    from luma.core.interface.serial import spi, noop
-    from luma.core.render import canvas
-    from luma.core import lib
-    from luma.lcd.device import st7735
-    from PIL import Image
-    from PIL import ImageDraw
-    from PIL import ImageFont
-    from PIL import ImageColor
-    #import RPi.GPIO as GPIO
-    from time import time, sleep
-    import datetime
-    import logging
-    #import socket
-    import redis
-# Load default font.
-    font = ImageFont.load_default()
-#Display width/height
-    width = 128
-    height = 128
-# First define some constants to allow easy resizing of shapes.
-    padding = 0
-    top = padding
-    bottom = height-padding
-# Move left to right keeping track of the current x position for drawing shapes.
-    x = 0
+                    draw.text((x, top+41),' Pressure',  font=font, fill="lime")
+                    #draw.text((x+70, top+41),'', font=font, fill="blue")
+                    draw.text((x+77, top+41),str(pressure) + ' hPa',  font=font, fill="lime")
 
-    logging.basicConfig(filename='/tmp/rpims_serial_display.log', level=logging.DEBUG, format='%(asctime)s %(levelname)s %(name)s %(message)s')
-    logger=logging.getLogger(__name__)
-    display_rotate = kwargs['serial_display_rotate']
-    serial = spi(device=0, port=0, bus_speed_hz = 8000000, transfer_size = 4096, gpio_DC = 25, gpio_RST = 27)
+                    draw.text((x, top+57),' Door 1',  font=font, fill="yellow")
+                    #draw.text((x+70, top+57),'', font=font, fill="yellow")
+                    draw.text((x+77, top+57),str(door_sensor_1),  font=font, fill="yellow")
 
-    try:
-        device = st7735(serial)
-        device = st7735(serial, width=128, height=128, h_offset=1, v_offset=2, bgr=True, persist=False, rotate=display_rotate)
+                    draw.text((x, top+70),' Door 2',  font=font, fill="yellow")
+                    #draw.text((x+70, top+70),'', font=font, fill="yellow")
+                    draw.text((x+77, top+70),str(door_sensor_2),  font=font, fill="yellow")
 
-        while True:
-            #get data from redis db
-            values = redis_db.mget('BME280_Temperature', 'BME280_Humidity', 'BME280_Pressure', 'door_sensor_1', 'door_sensor_2', 'CPU_Temperature', 'hostip')
-            temperature = round(float(values[0]),1)
-            humidity = int(round(float(values[1]),1))
-            pressure = int(round(float(values[2]),1))
-            door_sensor_1 = values[3]
-            door_sensor_2 = values[4]
-            cputemp = round(float(values[5]),1)
-            hostip = values[6]
-            now = datetime.datetime.now()
-            # Draw
-            with canvas(device) as draw:
-                draw.text((x+35, top),'R P i M S', font=font, fill="cyan")
-                draw.text((x, top+15),' Temperature', font=font, fill="lime")
-                #draw.text((x+71, top+15),'', font=font, fill="blue")
-                draw.text((x+77, top+15),str(temperature) + ' *C', font=font, fill="lime")
+                    draw.text((x, top+86),' CPUtemp',  font=font, fill="cyan")
+                    draw.text((x+77, top+86),str(cputemp)+ " *C",  font=font, fill="cyan")
 
-                draw.text((x, top+28),' Humidity',  font=font, fill="lime")
-                #draw.text((x+70, top+28),'', font=font, fill="blue")
-                draw.text((x+77, top+28),str(humidity) + ' %',  font=font, fill="lime")
+                    draw.text((x, top+99),' IP', font=font, fill="cyan")
+                    draw.text((x+17, top+99),':', font=font, fill="cyan")
+                    draw.text((x+36, top+99),str(hostip), font=font, fill="cyan")
 
-                draw.text((x, top+41),' Pressure',  font=font, fill="lime")
-                #draw.text((x+70, top+41),'', font=font, fill="blue")
-                draw.text((x+77, top+41),str(pressure) + ' hPa',  font=font, fill="lime")
+                    draw.text((x+5, top+115),now.strftime("%Y-%m-%d %H:%M:%S"),  font=font, fill="floralwhite")
 
-                draw.text((x, top+57),' Door 1',  font=font, fill="yellow")
-                #draw.text((x+70, top+57),'', font=font, fill="yellow")
-                draw.text((x+77, top+57),str(door_sensor_1),  font=font, fill="yellow")
-
-                draw.text((x, top+70),' Door 2',  font=font, fill="yellow")
-                #draw.text((x+70, top+70),'', font=font, fill="yellow")
-                draw.text((x+77, top+70),str(door_sensor_2),  font=font, fill="yellow")
-
-                draw.text((x, top+86),' CPUtemp',  font=font, fill="cyan")
-                draw.text((x+77, top+86),str(cputemp)+ " *C",  font=font, fill="cyan")
-
-                draw.text((x, top+99),' IP', font=font, fill="cyan")
-                draw.text((x+17, top+99),':', font=font, fill="cyan")
-                draw.text((x+36, top+99),str(hostip), font=font, fill="cyan")
-
-                draw.text((x+5, top+115),now.strftime("%Y-%m-%d %H:%M:%S"),  font=font, fill="floralwhite")
-
-            sleep(1/kwargs['serial_display_refresh_rate'])
-    except Exception as err :
-        logger.error(err)
+                sleep(1/kwargs['serial_display_refresh_rate'])
+        except Exception as err :
+            logger.error(err)
 
 
 def rainfall(**kwargs):
@@ -831,12 +833,8 @@ def main():
         threading_function(wind_direction, **config)
 
     if bool(config['use_serial_display']) is True:
-        if config['serial_display_type'] == 'oled_sh1106_i2c':
-            threading_function(oled_sh1106, **config)
-        if config['serial_display_type'] == 'oled_sh1106_spi':
-            threading_function(oled_sh1106, **config)
-        if config['serial_display_type'] == 'lcd_st7735':
-            threading_function(lcd_st7735, **config)
+        threading_function(serial_displays, **config)
+
 
 
     if bool(config['use_picamera']) is True and bool(config['use_picamera_recording']) is False and bool(config['use_door_sensor']) is False and bool(config['use_motion_sensor']) is False :
