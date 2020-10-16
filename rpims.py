@@ -388,6 +388,7 @@ def serial_displays(**kwargs):
 
 def rainfall(**kwargs):
     from time import time, sleep
+    from gpiozero import Button
     import math
 
     def bucket_tipped():
@@ -431,6 +432,7 @@ def rainfall(**kwargs):
 
 def wind_speed(**kwargs):
     import statistics
+    from gpiozero import Button
     from time import time, sleep
 
     def anemometer_pulse_counter():
