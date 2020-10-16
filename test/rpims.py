@@ -120,9 +120,15 @@ def zabbix_sender_call(message,sensor_id):
     call(_cmd, shell=True)
 
 
-def hostnamectl_sh(arg1,arg2):
+def hostnamectl_sh(**kwargs):
     from subprocess import call
-    _cmd = 'sudo /usr/bin/hostnamectl ' + arg1 + " " + '"' + arg2 + '"'
+    _cmd = 'sudo /usr/bin/hostnamectl ' + 'set-hostname '  + '"' + kwargs['hostname'] + '"'
+    call(_cmd, shell=True)
+    _cmd = 'sudo /usr/bin/hostnamectl ' + 'set-location '  + '"' + kwargs['location'] + '"'
+    call(_cmd, shell=True)
+    _cmd = 'sudo /usr/bin/hostnamectl ' + 'set-chassis '  + '"' + kwargs['chassis'] + '"'
+    call(_cmd, shell=True)
+    _cmd = 'sudo /usr/bin/hostnamectl ' + 'set-deployment '  + '"' + kwargs['deployment'] + '"'
     call(_cmd, shell=True)
 
 
@@ -728,18 +734,8 @@ def main():
     config_yaml=config_load('/var/www/html/conf/rpims.yaml')
 
     config = config_yaml['setup']
-
-    zabbix_agent = {}
-    for item in config_yaml.get("zabbix_agent"):
-        zabbix_agent[item] = config_yaml['zabbix_agent'][item]
-    hostname = config_yaml['zabbix_agent']['hostname']
-    location = config_yaml['zabbix_agent']['location']
-    chassis = config_yaml['zabbix_agent']['chassis']
-    deployment = config_yaml['zabbix_agent']['deployment']
-    hostnamectl_sh('set-hostname', hostname)
-    hostnamectl_sh('set-location', location)
-    hostnamectl_sh('set-chassis', chassis)
-    hostnamectl_sh('set-deployment', deployment)
+    zabbix_agent = config_yaml['zabbix_agent']
+    hostnamectl_sh(**zabbix_agent)
 
     if bool(config['use_door_sensor']) is True:
         global door_sensors_list
@@ -834,8 +830,6 @@ def main():
 
     if bool(config['use_serial_display']) is True:
         threading_function(serial_displays, **config)
-
-
 
     if bool(config['use_picamera']) is True and bool(config['use_picamera_recording']) is False and bool(config['use_door_sensor']) is False and bool(config['use_motion_sensor']) is False :
         av_stream('start')
