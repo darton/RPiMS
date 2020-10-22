@@ -25,6 +25,7 @@ if len(sys.argv) > 1:
             humidity = redis_db.get('BME280_Humidity')
             pressure = redis_db.get('BME280_Pressure')
             print('Temperature={0:0.2f};Humidity={1:0.2f};Pressure={2:0.2f};'.format(float(temperature),float(humidity),float(pressure)))
+
     elif sys.argv[1] == 'DS18B20':
         if redis_db.get('use_DS18B20_sensor') == 'True':
             ds18b20_sensors = []
@@ -34,13 +35,20 @@ if len(sys.argv) > 1:
             for sensor in ds18b20_sensors:
                 print(sensor + '={0:0.2f}'.format(float(redis_db.get(sensor))), end=';')
             print('')
+
+    elif sys.argv[1] == 'ds18b20':
+        wire_id = sys.argv[2]
+        if redis_db.get('use_DS18B20_sensor') == 'True':
+            print(redis_db.get(wire_id))
+
     elif sys.argv[1] == 'DHT':
         if redis_db.get('use_DHT_sensor') == 'True':
             temperature = redis_db.get('DHT_Temperature')
             humidity = redis_db.get('DHT_Humidity')
             print('Temperature={0:0.2f};Humidity={1:0.2f};'.format(float(temperature),float(humidity)))
+
     elif sys.argv[1] == 'CPUTEMP':
         temperature = redis_db.get('CPU_Temperature')
         print('CPUTemperature' + '={0:0.2f};'.format(float(temperature)))
 else:
-    print('You must use one parameter from list BME280, DS18B20, DHT22, CPUTEMP')
+    print('You must use one parameter from list BME280, DHT22, CPUTEMP, DS18B20, ds18b20 address')
