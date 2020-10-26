@@ -149,7 +149,7 @@ RPi   [GPIO.3 pin 5] ----------------------------- [SDC]  DS3231
 * BME280 - 1 pcs
 * DS18B20 - 1 pcs or more (or DS18S20) 
 * Resistor 4k7 (for DS18B20 sensor) - 1 psc
-* DHT11/DHT22/AM2302 - 1 pcs (NOT RECOMMENDED, POOR QUALITY, UNSTABLE MEASUREMENTS)
+* DHT11/DHT22/AM2302 - 1 pcs (NOT RECOMMENDED for RPi, UNSTABLE MEASUREMENTS)
 * Door/window sensor - 1-2 pcs
 * Motion Sensor - 1-5 pcs
 * PiCamera - 1 pcs
