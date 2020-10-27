@@ -1,3 +1,5 @@
+document.addEventListener("DOMContentLoaded", () => {
+
 function roundPrecised(number, precision) {
     var power = Math.pow(10, precision);
 
@@ -151,3 +153,5 @@ window.onclick = function(event) {
     }
   }
 }
+
+});

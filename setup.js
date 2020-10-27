@@ -1,3 +1,5 @@
+document.addEventListener("DOMContentLoaded", () => {
+
 var tlspskidentityid = "TLSPSKIdentity";
 var tlspskid = "TLSPSK";
 
@@ -17,3 +19,5 @@ function generateP(lenght) {
         function gfg_Run(psk_len,id) {
             document.getElementById(id).value =  generateP(psk_len);
         }
+
+});
