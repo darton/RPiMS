@@ -14,6 +14,7 @@
 #  GNU General Public License for more details.
 
 # --- Funcions ---
+
 def door_action_closed(door_id, **kwargs):
     lconfig = dict(kwargs)
     redis_db.set(str(door_id), 'close')
