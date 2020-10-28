@@ -572,7 +572,7 @@ def wind_direction(**kwargs):
             average = arc
         elif c < 0:
             average = arc + 180
-        elif s < 0 and c > 0:
+        elif s < 0 < c:
             average = arc + 360
 
         return 0.0 if average == 360 else average
