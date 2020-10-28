@@ -17,20 +17,20 @@
 def door_action_closed(door_id, **kwargs):
     lconfig = dict(kwargs)
     redis_db.set(str(door_id), 'close')
-    if bool(kwargs['verbose']) is True :
+    if bool(kwargs['verbose']) is True:
         print("The " + str(door_id) + " has been closed!")
-    if bool(kwargs['use_zabbix_sender']) is True :
+    if bool(kwargs['use_zabbix_sender']) is True:
         zabbix_sender_call('info_when_door_has_been_closed', door_id)
     if bool(kwargs['use_picamera']) is True:
-         if detect_no_alarms(**lconfig):
-             av_stream('stop')
+        if detect_no_alarms(**lconfig):
+        av_stream('stop')
 
 
 def door_action_opened(door_id, **kwargs):
     redis_db.set(str(door_id), 'open')
-    if bool(kwargs['verbose']) is True :
+    if bool(kwargs['verbose']) is True:
         print("The " + str(door_id) + " has been opened!")
-    if bool(kwargs['use_zabbix_sender']) is True :
+    if bool(kwargs['use_zabbix_sender']) is True:
         zabbix_sender_call('info_when_door_has_been_opened', door_id)
     if bool(kwargs['use_picamera']) is True:
         if bool(kwargs['use_picamera_recording']) is True:
@@ -220,7 +220,7 @@ def get_dht_data(**kwargs):
         try:
             temperature = dht_device.temperature
             humidity = dht_device.humidity
-            redis_db.mset({'DHT_Humidity' : humidity,'DHT_Temperature' : temperature,})
+            redis_db.mset({'DHT_Humidity': humidity, 'DHT_Temperature': temperature,})
             if bool(verbose) is True :
                 print(dht_type + " Temperature: {:.1f}°C ".format(temperature))
                 print(dht_type + " Humidity: {}% ".format(humidity))
@@ -242,9 +242,9 @@ def get_dht_data(**kwargs):
 def serial_displays(**kwargs):
 
     if kwargs['serial_display_type'] == 'oled_sh1106':
-        from luma.core.interface.serial import i2c, spi, noop
+        from luma.core.interface.serial import i2c, spi
         from luma.core.render import canvas
-        from luma.core import lib
+        # from luma.core import lib
         from luma.oled.device import sh1106
         # from PIL import Image
         # from PIL import ImageDraw
@@ -276,7 +276,7 @@ def serial_displays(**kwargs):
         if serial_type == 'i2c':
             serial = i2c(port=1, address=0x3c)
         if serial_type == 'spi':
-            serial = spi(device=0, port=0, bus_speed_hz = 8000000, transfer_size = 4096, gpio_DC = 24, gpio_RST = 25)
+            serial = spi(device=0, port=0, bus_speed_hz=8000000, transfer_size=4096, gpio_DC=24, gpio_RST=25)
 
         try:
             device = sh1106(serial, rotate=display_rotate)
@@ -306,14 +306,14 @@ def serial_displays(**kwargs):
 
 
     if kwargs['serial_display_type'] == 'lcd_st7735':
-        from luma.core.interface.serial import spi, noop
+        from luma.core.interface.serial import spi
         from luma.core.render import canvas
-        from luma.core import lib
+        # from luma.core import lib
         from luma.lcd.device import st7735
-        from PIL import Image
-        from PIL import ImageDraw
+        # from PIL import Image
+        # from PIL import ImageDraw
         from PIL import ImageFont
-        from PIL import ImageColor
+        # from PIL import ImageColor
         # import RPi.GPIO as GPIO
         from time import time, sleep
         import datetime
@@ -328,7 +328,7 @@ def serial_displays(**kwargs):
     # First define some constants to allow easy resizing of shapes.
         padding = 0
         top = padding
-        bottom = height-padding
+        # bottom = height-padding
     # Move left to right keeping track of the current x position for drawing shapes.
         x = 0
 
@@ -536,7 +536,6 @@ def adc_automationphat():
 
 
 def adc_ads1115():
-    import time
     import board
     import busio
     import adafruit_ads1x15.ads1115 as ADS
@@ -672,7 +671,7 @@ def wind_direction(**kwargs):
                     angles.append(direction_mapa.get(item))
         if len(angles) != 0:
             average_wind_direction = int(round(get_average(angles),0))
-            if bool(kwargs['verbose']) is True :
+            if bool(kwargs['verbose']) is True:
                 print("Average Wind Direction: " + str(average_wind_direction))
             redis_db.mset({'average_wind_direction': average_wind_direction, 'wind_direction': item})
 
@@ -689,15 +688,15 @@ def db_connect(dbhost, dbnum):
         import redis, sys
         global redis_db
         redis_db = redis.StrictRedis(host=dbhost, port=6379, db=str(dbnum), charset="utf-8", decode_responses=True)
-    except Exception as err :
-        print('Problem with connection to database')
+    except Exception as err:
+        print('Problem with connection to database', err)
         sys.exit(1)
 
 
 def config_load(path_to_config):
     try:
         import yaml, sys
-        with open(path_to_config, mode = 'r') as file:
+        with open(path_to_config, mode='r') as file:
             config_yaml = yaml.full_load(file)
         return config_yaml
     except Exception as err :
@@ -722,8 +721,8 @@ def main():
     print('# RPiMS is running #')
     try:
         db_connect('localhost', 0)
-    except Exception as err :
-        print("Blad połączenia")
+    except Exception as err:
+        print("Error connection", err)
         sys.exit(1)
 
     # redis_db.flushdb()
