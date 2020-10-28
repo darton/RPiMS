@@ -14,67 +14,67 @@
 #  GNU General Public License for more details.
 
 # --- Funcions ---
-def door_action_closed(door_id,**kwargs):
+def door_action_closed(door_id, **kwargs):
     lconfig = dict(kwargs)
     redis_db.set(str(door_id), 'close')
     if bool(kwargs['verbose']) is True :
         print("The " + str(door_id) + " has been closed!")
     if bool(kwargs['use_zabbix_sender']) is True :
-        zabbix_sender_call('info_when_door_has_been_closed',door_id)
+        zabbix_sender_call('info_when_door_has_been_closed', door_id)
     if bool(kwargs['use_picamera']) is True:
          if detect_no_alarms(**lconfig):
              av_stream('stop')
 
 
-def door_action_opened(door_id,**kwargs):
+def door_action_opened(door_id, **kwargs):
     redis_db.set(str(door_id), 'open')
     if bool(kwargs['verbose']) is True :
         print("The " + str(door_id) + " has been opened!")
     if bool(kwargs['use_zabbix_sender']) is True :
-        zabbix_sender_call('info_when_door_has_been_opened',door_id)
-    if bool(kwargs['use_picamera']) is True :
+        zabbix_sender_call('info_when_door_has_been_opened', door_id)
+    if bool(kwargs['use_picamera']) is True:
         if bool(kwargs['use_picamera_recording']) is True:
             av_stream('stop')
             av_recording()
         av_stream('start')
 
 
-def door_status_open(door_id,**kwargs):
+def door_status_open(door_id, **kwargs):
     redis_db.set(str(door_id), 'open')
-    if bool(kwargs['verbose']) is True :
+    if bool(kwargs['verbose']) is True:
         print("The " + str(door_id) + " is opened!")
     if bool(kwargs['use_zabbix_sender']) is True:
-        zabbix_sender_call('info_when_door_is_opened',door_id)
+        zabbix_sender_call('info_when_door_is_opened', door_id)
     if bool(kwargs['use_picamera']) is True:
         av_stream('start')
 
 
-def door_status_close(door_id,**kwargs):
+def door_status_close(door_id, **kwargs):
     lconfig = dict(kwargs)
     redis_db.set(str(door_id), 'close')
-    if bool(kwargs['verbose']) is True :
+    if bool(kwargs['verbose']) is True:
         print("The " + str(door_id) + " is closed!")
-    if bool(kwargs['use_zabbix_sender']) is True :
-        zabbix_sender_call('info_when_door_is_closed',door_id)
+    if bool(kwargs['use_zabbix_sender']) is True:
+        zabbix_sender_call('info_when_door_is_closed', door_id)
     if bool(kwargs['use_picamera']) is True:
          if detect_no_alarms(**lconfig):
              av_stream('stop')
 
 
-def motion_sensor_when_motion(ms_id,**kwargs):
+def motion_sensor_when_motion(ms_id, **kwargs):
     redis_db.set(str(ms_id), 'motion')
-    if bool(kwargs['verbose']) is True :
+    if bool(kwargs['verbose']) is True:
         print("The " + str(ms_id) + ": motion was detected")
-    if bool(kwargs['use_zabbix_sender']) is True :
-        zabbix_sender_call('info_when_motion',ms_id)
+    if bool(kwargs['use_zabbix_sender']) is True:
+        zabbix_sender_call('info_when_motion', ms_id)
     if bool(kwargs['use_picamera']) is True:
         av_stream('start')
 
 
-def motion_sensor_when_no_motion(ms_id,**kwargs):
+def motion_sensor_when_no_motion(ms_id, **kwargs):
     lconfig = dict(kwargs)
     redis_db.set(str(ms_id), 'nomotion')
-    if bool(kwargs['verbose']) is True :
+    if bool(kwargs['verbose']) is True:
         print("The " + str(ms_id) + ": no motion")
     if bool(kwargs['use_picamera']) is True:
          if detect_no_alarms(**lconfig):
@@ -142,14 +142,14 @@ def get_cputemp_data(**kwargs):
     try:
         from time import sleep
         from gpiozero import CPUTemperature
-        while True :
+        while True:
             data = CPUTemperature()
             redis_db.set('CPU_Temperature', data.temperature)
-            if bool(verbose) is True :
+            if bool(verbose) is True:
                 print('CPU temperature: {0:0.1f}'.format(data.temperature),chr(176)+'C', sep='')
                 print("")
             sleep(read_interval)
-    except Exception as err :
+    except Exception as err:
         print('Problem with ' + str(err))
 
 
@@ -163,18 +163,18 @@ def get_bme280_data(**kwargs):
         port = 1
         address = kwargs['BME280_i2c_address']
         bus = smbus2.SMBus(port)
-        while True :
+        while True:
             calibration_params = bme280.load_calibration_params(bus, address)
             data = bme280.sample(bus, address, calibration_params)
             redis_db.mset({'BME280_Humidity' : data.humidity,'BME280_Temperature' : data.temperature, 'BME280_Pressure' : data.pressure})
-            if bool(verbose) is True :
+            if bool(verbose) is True:
                 print('')
                 print('BME280 Humidity: {0:0.0f}%'.format(data.humidity))
                 print('BME280 Temperature: {0:0.1f}\xb0C'.format(data.temperature))
                 print('BME280 Pressure: {0:0.0f}hPa'.format(data.pressure))
                 print("")
             sleep(read_interval)
-    except Exception as err :
+    except Exception as err:
         print('Problem with ' + str(err))
 
 
@@ -184,19 +184,19 @@ def get_ds18b20_data(**kwargs):
     try:
         from w1thermsensor import W1ThermSensor
         from time import sleep
-        while True :
-            data = W1ThermSensor.get_available_sensors([W1ThermSensor.THERM_SENSOR_DS18B20,W1ThermSensor.THERM_SENSOR_DS18S20])
+        while True:
+            data = W1ThermSensor.get_available_sensors([W1ThermSensor.THERM_SENSOR_DS18B20, W1ThermSensor.THERM_SENSOR_DS18S20])
             for sensor in data:
                 redis_db.sadd('DS18B20_sensors', sensor.id)
                 redis_db.set(sensor.id, sensor.get_temperature())
                 sleep(1)
                 redis_db.expire(sensor.id, read_interval*2)
-                if bool(verbose) is True :
+                if bool(verbose) is True:
                     print("Sensor %s temperature %.2f"%(sensor.id,sensor.get_temperature()),"\xb0C")
                     print("")
             redis_db.expire('DS18B20_sensors', read_interval*3)
             sleep(read_interval)
-    except Exception as err :
+    except Exception as err:
         print('Problem with ' + str(err))
 
 
@@ -212,14 +212,14 @@ def get_dht_data(**kwargs):
     delay = 0
 
     if dht_type == "DHT22":
-        dhtDevice = adafruit_dht.DHT22(pin)
+        dht_device = adafruit_dht.DHT22(pin)
     if dht_type == "DHT11":
-        dhtDevice = adafruit_dht.DHT11(pin)
+        dht_device = adafruit_dht.DHT11(pin)
 
     while True:
         try:
-            temperature = dhtDevice.temperature
-            humidity = dhtDevice.humidity
+            temperature = dht_device.temperature
+            humidity = dht_device.humidity
             redis_db.mset({'DHT_Humidity' : humidity,'DHT_Temperature' : temperature,})
             if bool(verbose) is True :
                 print(dht_type + " Temperature: {:.1f}°C ".format(temperature))
@@ -246,12 +246,12 @@ def serial_displays(**kwargs):
         from luma.core.render import canvas
         from luma.core import lib
         from luma.oled.device import sh1106
-        #from PIL import Image
-        #from PIL import ImageDraw
+        # from PIL import Image
+        # from PIL import ImageDraw
         from PIL import ImageFont
         import time
         import logging
-        #import socket
+        # import socket
 
         # Load default font.
         font = ImageFont.load_default()
@@ -259,7 +259,7 @@ def serial_displays(**kwargs):
         # Make sure to create image with mode '1' for 1-bit color.
         width = 128
         height = 64
-        #image = Image.new('1', (width, height))
+        # image = Image.new('1', (width, height))
         # First define some constants to allow easy resizing of shapes.
         padding = 0
         top = padding
@@ -273,9 +273,9 @@ def serial_displays(**kwargs):
 
         serial_type = kwargs['serial_type']
 
-        if serial_type == 'i2c' :
+        if serial_type == 'i2c':
             serial = i2c(port=1, address=0x3c)
-        if serial_type == 'spi' :
+        if serial_type == 'spi':
             serial = spi(device=0, port=0, bus_speed_hz = 8000000, transfer_size = 4096, gpio_DC = 24, gpio_RST = 25)
 
         try:
@@ -283,7 +283,7 @@ def serial_displays(**kwargs):
 
             while True:
                 with canvas(device) as draw:
-                    #get data from redis db
+                    # get data from redis db
                     values = redis_db.mget('BME280_Temperature', 'BME280_Humidity', 'BME280_Pressure', 'door_sensor_1', 'door_sensor_2', 'CPU_Temperature', 'hostip')
                     temperature = round(float(values[0]),1)
                     humidity = int(round(float(values[1]),1))
@@ -292,7 +292,7 @@ def serial_displays(**kwargs):
                     door_sensor_2 = values[4]
                     cputemp = round(float(values[5]),1)
                     hostip = values[6]
-                    #draw on oled
+                    # draw on oled
                     draw.text((x, top),       'IP:' + str(hostip), font=font, fill=255)
                     draw.text((x, top+9),     'Temperature..' + str(temperature) + '*C', font=font, fill=255)
                     draw.text((x, top+18),    'Humidity.....' + str(humidity) + '%',  font=font, fill=255)
@@ -301,7 +301,7 @@ def serial_displays(**kwargs):
                     draw.text((x, top+45),    'Door 2.......' + str(door_sensor_2),  font=font, fill=255)
                     draw.text((x, top+54),    'CpuTemp......' + str(cputemp) + '*C', font=font, fill=255)
                 sleep(1/kwargs['serial_display_refresh_rate'])
-        except Exception as err :
+        except Exception as err:
             logger.error(err)
 
 
@@ -314,15 +314,15 @@ def serial_displays(**kwargs):
         from PIL import ImageDraw
         from PIL import ImageFont
         from PIL import ImageColor
-        #import RPi.GPIO as GPIO
+        # import RPi.GPIO as GPIO
         from time import time, sleep
         import datetime
         import logging
-        #import socket
+        # import socket
         import redis
     # Load default font.
         font = ImageFont.load_default()
-    #Display width/height
+    # Display width/height
         width = 128
         height = 128
     # First define some constants to allow easy resizing of shapes.
@@ -335,14 +335,14 @@ def serial_displays(**kwargs):
         logging.basicConfig(filename='/tmp/rpims_serial_display.log', level=logging.DEBUG, format='%(asctime)s %(levelname)s %(name)s %(message)s')
         logger=logging.getLogger(__name__)
         display_rotate = kwargs['serial_display_rotate']
-        serial = spi(device=0, port=0, bus_speed_hz = 8000000, transfer_size = 4096, gpio_DC = 25, gpio_RST = 27)
+        serial = spi(device=0, port=0, bus_speed_hz=8000000, transfer_size=4096, gpio_DC=25, gpio_RST=27)
 
         try:
             device = st7735(serial)
             device = st7735(serial, width=128, height=128, h_offset=1, v_offset=2, bgr=True, persist=False, rotate=display_rotate)
 
             while True:
-                #get data from redis db
+                # get data from redis db
                 values = redis_db.mget('BME280_Temperature', 'BME280_Humidity', 'BME280_Pressure', 'door_sensor_1', 'door_sensor_2', 'CPU_Temperature', 'hostip')
                 temperature = round(float(values[0]),1)
                 humidity = int(round(float(values[1]),1))
@@ -354,38 +354,38 @@ def serial_displays(**kwargs):
                 now = datetime.datetime.now()
                 # Draw
                 with canvas(device) as draw:
-                    draw.text((x+35, top),'R P i M S', font=font, fill="cyan")
-                    draw.text((x, top+15),' Temperature', font=font, fill="lime")
-                    #draw.text((x+71, top+15),'', font=font, fill="blue")
-                    draw.text((x+77, top+15),str(temperature) + ' *C', font=font, fill="lime")
+                    draw.text((x+35, top), 'R P i M S', font=font, fill="cyan")
+                    draw.text((x, top+15), ' Temperature', font=font, fill="lime")
+                    # draw.text((x+71, top+15),'', font=font, fill="blue")
+                    draw.text((x+77, top+15), str(temperature) + ' *C', font=font, fill="lime")
 
-                    draw.text((x, top+28),' Humidity',  font=font, fill="lime")
-                    #draw.text((x+70, top+28),'', font=font, fill="blue")
-                    draw.text((x+77, top+28),str(humidity) + ' %',  font=font, fill="lime")
+                    draw.text((x, top+28), ' Humidity',  font=font, fill="lime")
+                    # draw.text((x+70, top+28),'', font=font, fill="blue")
+                    draw.text((x+77, top+28), str(humidity) + ' %',  font=font, fill="lime")
 
-                    draw.text((x, top+41),' Pressure',  font=font, fill="lime")
-                    #draw.text((x+70, top+41),'', font=font, fill="blue")
-                    draw.text((x+77, top+41),str(pressure) + ' hPa',  font=font, fill="lime")
+                    draw.text((x, top+41), ' Pressure',  font=font, fill="lime")
+                    # draw.text((x+70, top+41),'', font=font, fill="blue")
+                    draw.text((x+77, top+41), str(pressure) + ' hPa',  font=font, fill="lime")
 
-                    draw.text((x, top+57),' Door 1',  font=font, fill="yellow")
-                    #draw.text((x+70, top+57),'', font=font, fill="yellow")
-                    draw.text((x+77, top+57),str(door_sensor_1),  font=font, fill="yellow")
+                    draw.text((x, top+57), ' Door 1',  font=font, fill="yellow")
+                    # draw.text((x+70, top+57),'', font=font, fill="yellow")
+                    draw.text((x+77, top+57), str(door_sensor_1),  font=font, fill="yellow")
 
-                    draw.text((x, top+70),' Door 2',  font=font, fill="yellow")
-                    #draw.text((x+70, top+70),'', font=font, fill="yellow")
-                    draw.text((x+77, top+70),str(door_sensor_2),  font=font, fill="yellow")
+                    draw.text((x, top+70), ' Door 2',  font=font, fill="yellow")
+                    # draw.text((x+70, top+70),'', font=font, fill="yellow")
+                    draw.text((x+77, top+70), str(door_sensor_2),  font=font, fill="yellow")
 
-                    draw.text((x, top+86),' CPUtemp',  font=font, fill="cyan")
-                    draw.text((x+77, top+86),str(cputemp)+ " *C",  font=font, fill="cyan")
+                    draw.text((x, top+86), ' CPUtemp',  font=font, fill="cyan")
+                    draw.text((x+77, top+86), str(cputemp)+ " *C",  font=font, fill="cyan")
 
-                    draw.text((x, top+99),' IP', font=font, fill="cyan")
-                    draw.text((x+17, top+99),':', font=font, fill="cyan")
-                    draw.text((x+36, top+99),str(hostip), font=font, fill="cyan")
+                    draw.text((x, top+99), ' IP', font=font, fill="cyan")
+                    draw.text((x+17, top+99), ':', font=font, fill="cyan")
+                    draw.text((x+36, top+99), str(hostip), font=font, fill="cyan")
 
-                    draw.text((x+5, top+115),now.strftime("%Y-%m-%d %H:%M:%S"),  font=font, fill="floralwhite")
+                    draw.text((x+5, top+115), now.strftime("%Y-%m-%d %H:%M:%S"),  font=font, fill="floralwhite")
 
                 sleep(1/kwargs['serial_display_refresh_rate'])
-        except Exception as err :
+        except Exception as err:
             logger.error(err)
 
 
@@ -403,8 +403,8 @@ def rainfall(**kwargs):
         bucket_counter = 0
 
     def calculate_rainfall():
-        #global BUCKET_SIZE
-        rainfall = round(bucket_counter * BUCKET_SIZE,0)
+        # global BUCKET_SIZE
+        rainfall = round(bucket_counter * BUCKET_SIZE, 0)
         return rainfall
 
     rain_sensor = Button(kwargs['rainfall_sensor_pin'])
@@ -415,8 +415,8 @@ def rainfall(**kwargs):
     rainfall_agregation_time = kwargs['rainfall_agregation_time']
     rainfalls = []
 
-    #global BUCKET_SIZE
-    BUCKET_SIZE = 0.2794 #[mm]
+    # global BUCKET_SIZE
+    BUCKET_SIZE = 0.2794  # [mm]
 
     while True:
         start_time = time()
@@ -449,7 +449,7 @@ def wind_speed(**kwargs):
     def calculate_speed(wind_speed_acquisition_time):
         nonlocal anemometer_pulse
         rotations = anemometer_pulse/2
-        wind_speed_km_per_hour = round(ANEMOMETER_FACTOR * rotations * 2.4/wind_speed_acquisition_time,1)
+        wind_speed_km_per_hour = round(ANEMOMETER_FACTOR * rotations * 2.4/wind_speed_acquisition_time, 1)
         return wind_speed_km_per_hour
 
     wind_speed_sensor = Button(kwargs['windspeed_sensor_pin'])
@@ -482,7 +482,7 @@ def wind_speed(**kwargs):
         if len(average_wind_speeds) == (86400/wind_speed_agregation_time):
                 del average_wind_speeds[0]
         average_wind_speeds.append(average_wind_speed)
-        daily_average_wind_speed = round(statistics.mean(average_wind_speeds),1)
+        daily_average_wind_speed = round(statistics.mean(average_wind_speeds), 1)
 
         if bool(kwargs['verbose']) is True :
             print("Wind speed " + str(wind_speed) + " km/h"," Wind gust: " + str(wind_gust) + "km/h", "Daily wind gust: " + str(daily_wind_gust) + "km/h", " Average wind speed: " + str(average_wind_speed) + " km/h","Daily average wind speed: " + str(daily_average_wind_speed) + " km/h"  )
@@ -527,7 +527,7 @@ def adc_stm32f030():
 def adc_automationphat():
     import automationhat
     from time import sleep
-    sleep(0.1) # Delay for automationhat
+    sleep(0.1)  # Delay for automationhat
     adc_inputs_values = []
     adc_inputs_values.append(automationhat.analog.one.read())
     adc_inputs_values.append(automationhat.analog.two.read())
@@ -658,7 +658,7 @@ def wind_direction(**kwargs):
 
             if Uin != Uout and Uin != 0:
                 R2 = int (R1/(1 - Uout/Uin))
-                #print(R2,Uin,Uout)
+                # print(R2,Uin,Uout)
             else:
                 print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
                 print("Uin = ", Uin)
@@ -712,11 +712,11 @@ def use_logger():
 
 
 def main():
-    #from picamera import PiCamera
+    # from picamera import PiCamera
     from gpiozero import LED, Button, MotionSensor
     from gpiozero.tools import all_values, any_values
     from signal import pause
-    #import logging
+    # import logging
     import sys
 
     print('# RPiMS is running #')
@@ -726,7 +726,7 @@ def main():
         print("Blad połączenia")
         sys.exit(1)
 
-    #redis_db.flushdb()
+    # redis_db.flushdb()
 
     for key in redis_db.scan_iter("motion_sensor_*"):
         redis_db.delete(key)
@@ -767,26 +767,26 @@ def main():
         for item in config_yaml.get("led_indicators"):
             led_indicators_list[item] = LED(config_yaml['led_indicators'][item]['gpio_pin'])
 
-    if bool(config['verbose']) is True :
+    if bool(config['verbose']) is True:
         print('')
 
-    for s in config :
+    for s in config:
         redis_db.set(s, str(config[s]))
-        if bool(config['verbose']) is True :
+        if bool(config['verbose']) is True:
             print(s + ' = ' + str(config[s]))
 
-    if bool(config['verbose']) is True :
+    if bool(config['verbose']) is True:
         print('')
 
-    for s in zabbix_agent :
+    for s in zabbix_agent:
         redis_db.set(s, str(zabbix_agent[s]))
-        if bool(config['verbose']) is True :
+        if bool(config['verbose']) is True:
             print(s + ' = ' + str(zabbix_agent[s]))
 
-    if bool(config['verbose']) is True :
+    if bool(config['verbose']) is True:
         print('')
 
-    if bool(config['use_door_sensor']) is True :
+    if bool(config['use_door_sensor']) is True:
         for s in door_sensors_list:
             if door_sensors_list[s].value == 0:
                 door_status_open(s,**config)
