@@ -13,7 +13,7 @@
 #  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #  GNU General Public License for more details.
 
-# --- Funcions ---
+# --- Functions ---
 
 def door_action_closed(door_id, **kwargs):
     lconfig = dict(kwargs)
@@ -211,9 +211,7 @@ def get_dht_data(**kwargs):
 
     debug = "no"
     delay = 0
-
-    if dht_type == "DHT22":
-        dht_device = adafruit_dht.DHT22(pin)
+    dht_device = adafruit_dht.DHT22(pin)
     if dht_type == "DHT11":
         dht_device = adafruit_dht.DHT11(pin)
 
@@ -274,14 +272,13 @@ def serial_displays(**kwargs):
 
         serial_type = kwargs['serial_type']
 
-        if serial_type == 'i2c':
-            serial = i2c(port=1, address=0x3c)
+        #if serial_type == 'i2c':
+        serial = i2c(port=1, address=0x3c)
         if serial_type == 'spi':
             serial = spi(device=0, port=0, bus_speed_hz=8000000, transfer_size=4096, gpio_DC=24, gpio_RST=25)
 
         try:
             device = sh1106(serial, rotate=display_rotate)
-
             while True:
                 with canvas(device) as draw:
                     # get data from redis db
@@ -376,7 +373,7 @@ def serial_displays(**kwargs):
                     draw.text((x+77, top+70), str(door_sensor_2),  font=font, fill="yellow")
 
                     draw.text((x, top+86), ' CPUtemp',  font=font, fill="cyan")
-                    draw.text((x+77, top+86), str(cputemp)+ " *C",  font=font, fill="cyan")
+                    draw.text((x+77, top+86), str(cputemp) + " *C",  font=font, fill="cyan")
 
                     draw.text((x, top+99), ' IP', font=font, fill="cyan")
                     draw.text((x+17, top+99), ':', font=font, fill="cyan")
@@ -612,10 +609,10 @@ def wind_direction(**kwargs):
         "NNW": 337.5
         }
 
-    Uin = 5.2
-    Uout = 0
-    R1 = 4690
-    R2 = 0
+    uin = 5.2
+    uout = 0
+    r1 = 4690
+    r2 = 0
     wind_direction_acquisition_time = kwargs['winddirection_acquisition_time']
     angles = []
     average_wind_direction = 0
@@ -632,36 +629,36 @@ def wind_direction(**kwargs):
                 adc_values = adc_ads1115()
 
             if kwargs['winddirection_adc_input'] == 1:
-                Uout = round(adc_values[0], 1)
+                uout = round(adc_values[0], 1)
             if kwargs['winddirection_adc_input'] == 2:
-                Uout = round(adc_values[1], 1)
+                uout = round(adc_values[1], 1)
             if kwargs['winddirection_adc_input'] == 3:
-                Uout = round(adc_values[2], 1)
+                uout = round(adc_values[2], 1)
             if kwargs['winddirection_adc_input'] == 4:
-                Uout = round(adc_values[3], 1)
+                uout = round(adc_values[3], 1)
 
             if kwargs['reference_voltage_adc_input'] == 1:
-                Uin = round(adc_values[0], 1)
+                uin = round(adc_values[0], 1)
             if kwargs['reference_voltage_adc_input'] == 2:
-                Uin = round(adc_values[1], 1)
+                uin = round(adc_values[1], 1)
             if kwargs['reference_voltage_adc_input'] == 3:
-                Uin = round(adc_values[2], 1)
+                uin = round(adc_values[2], 1)
             if kwargs['reference_voltage_adc_input'] == 4:
-                Uin = round(adc_values[3], 1)
+                uin = round(adc_values[3], 1)
 
-            if Uin != Uout and Uin != 0:
-                R2 = int(R1/(1 - Uout/Uin))
-                # print(R2,Uin,Uout)
+            if uin != uout and uin != 0:
+                r2 = int(r1/(1 - uout/uin))
+                # print(r2,uin,Uout)
             else:
                 print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-                print("Uin = ", Uin)
-                print("Uout = ", Uout)
+                print("uin = ", uin)
+                print("Uout = ", uout)
                 print("Check sensor connections to ADC")
                 print("Wind Direction Meter program was terminated")
                 print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
                 quit()
             for item in direction_mapr:
-                if (R2 <= direction_mapr.get(item) * 1.005) and (R2 >= direction_mapr.get(item) * 0.995):
+                if (r2 <= direction_mapr.get(item) * 1.005) and (r2 >= direction_mapr.get(item) * 0.995):
                     angles.append(direction_mapa.get(item))
         if len(angles) != 0:
             average_wind_direction = int(round(get_average(angles), 0))
@@ -689,9 +686,9 @@ def db_connect(dbhost, dbnum):
 
 
 def config_load(path_to_config):
+    import sys
     try:
         import yaml
-        import sys
         with open(path_to_config, mode='r') as file:
             config_yaml = yaml.full_load(file)
         return config_yaml
