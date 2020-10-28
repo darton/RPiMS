@@ -57,8 +57,8 @@ def door_status_close(door_id, **kwargs):
     if bool(kwargs['use_zabbix_sender']) is True:
         zabbix_sender_call('info_when_door_is_closed', door_id)
     if bool(kwargs['use_picamera']) is True:
-         if detect_no_alarms(**lconfig):
-             av_stream('stop')
+        if detect_no_alarms(**lconfig):
+            av_stream('stop')
 
 
 def motion_sensor_when_motion(ms_id, **kwargs):
@@ -77,8 +77,8 @@ def motion_sensor_when_no_motion(ms_id, **kwargs):
     if bool(kwargs['verbose']) is True:
         print("The " + str(ms_id) + ": no motion")
     if bool(kwargs['use_picamera']) is True:
-         if detect_no_alarms(**lconfig):
-             av_stream('stop')
+        if detect_no_alarms(**lconfig):
+            av_stream('stop')
 
 
 def detect_no_alarms(**kwargs):
@@ -107,7 +107,7 @@ def detect_no_alarms(**kwargs):
 
 def av_stream(state):
     from subprocess import call
-    _cmd = '/home/pi/scripts/RPiMS/videostreamer.sh' + " " +  state
+    _cmd = '/home/pi/scripts/RPiMS/videostreamer.sh' + " " + state
     call(_cmd, shell=True)
 
 
@@ -117,17 +117,17 @@ def av_recording():
     call(_cmd, shell=True)
 
 
-def zabbix_sender_call(message,sensor_id):
+def zabbix_sender_call(message, sensor_id):
     from subprocess import call
-    _cmd ='/home/pi/scripts/RPiMS/zabbix_sender.sh ' + message + " " + str(sensor_id)
+    _cmd = '/home/pi/scripts/RPiMS/zabbix_sender.sh ' + message + " " + str(sensor_id)
     call(_cmd, shell=True)
 
 
 def hostnamectl_sh(**kwargs):
     from subprocess import call
-    hctldict = {"hostname":"set-hostname", "location":"set-location", "chassis":"set-chassis", "deployment":"set-deployment",}
+    hctldict = {"hostname": "set-hostname", "location": "set-location", "chassis": "set-chassis", "deployment": "set-deployment", }
     for item in hctldict:
-        _cmd = 'sudo /usr/bin/hostnamectl ' + hctldict[item]  + ' "' + kwargs[item] + '"'
+        _cmd = 'sudo /usr/bin/hostnamectl ' + hctldict[item] + ' "' + kwargs[item] + '"'
         call(_cmd, shell=True)
 
 
@@ -137,8 +137,8 @@ def shutdown():
 
 
 def get_cputemp_data(**kwargs):
-    verbose=kwargs['verbose']
-    read_interval=kwargs['CPUtemp_read_interval']
+    verbose = kwargs['verbose']
+    read_interval = kwargs['CPUtemp_read_interval']
     try:
         from time import sleep
         from gpiozero import CPUTemperature
@@ -146,7 +146,7 @@ def get_cputemp_data(**kwargs):
             data = CPUTemperature()
             redis_db.set('CPU_Temperature', data.temperature)
             if bool(verbose) is True:
-                print('CPU temperature: {0:0.1f}'.format(data.temperature),chr(176)+'C', sep='')
+                print('CPU temperature: {0:0.1f}'.format(data.temperature), chr(176)+'C', sep='')
                 print("")
             sleep(read_interval)
     except Exception as err:
@@ -154,8 +154,8 @@ def get_cputemp_data(**kwargs):
 
 
 def get_bme280_data(**kwargs):
-    verbose=kwargs['verbose']
-    read_interval=kwargs['BME280_read_interval']
+    verbose = kwargs['verbose']
+    read_interval = kwargs['BME280_read_interval']
     try:
         import smbus2
         import bme280
@@ -166,7 +166,7 @@ def get_bme280_data(**kwargs):
         while True:
             calibration_params = bme280.load_calibration_params(bus, address)
             data = bme280.sample(bus, address, calibration_params)
-            redis_db.mset({'BME280_Humidity' : data.humidity,'BME280_Temperature' : data.temperature, 'BME280_Pressure' : data.pressure})
+            redis_db.mset({'BME280_Humidity': data.humidity, 'BME280_Temperature': data.temperature, 'BME280_Pressure': data.pressure})
             if bool(verbose) is True:
                 print('')
                 print('BME280 Humidity: {0:0.0f}%'.format(data.humidity))
@@ -179,8 +179,8 @@ def get_bme280_data(**kwargs):
 
 
 def get_ds18b20_data(**kwargs):
-    verbose=kwargs['verbose']
-    read_interval=kwargs['DS18B20_read_interval']
+    verbose = kwargs['verbose']
+    read_interval = kwargs['DS18B20_read_interval']
     try:
         from w1thermsensor import W1ThermSensor
         from time import sleep
@@ -192,7 +192,7 @@ def get_ds18b20_data(**kwargs):
                 sleep(1)
                 redis_db.expire(sensor.id, read_interval*2)
                 if bool(verbose) is True:
-                    print("Sensor %s temperature %.2f"%(sensor.id,sensor.get_temperature()),"\xb0C")
+                    print("Sensor %s temperature %.2f" % (sensor.id, sensor.get_temperature()), "\xb0C")
                     print("")
             redis_db.expire('DS18B20_sensors', read_interval*3)
             sleep(read_interval)
@@ -201,8 +201,8 @@ def get_ds18b20_data(**kwargs):
 
 
 def get_dht_data(**kwargs):
-    verbose=kwargs['verbose']
-    read_interval=kwargs['DHT_read_interval']
+    verbose = kwargs['verbose']
+    read_interval = kwargs['DHT_read_interval']
     dht_type = kwargs['DHT_type']
     pin = kwargs['DHT_pin']
     import adafruit_dht
@@ -220,8 +220,8 @@ def get_dht_data(**kwargs):
         try:
             temperature = dht_device.temperature
             humidity = dht_device.humidity
-            redis_db.mset({'DHT_Humidity': humidity, 'DHT_Temperature': temperature,})
-            if bool(verbose) is True :
+            redis_db.mset({'DHT_Humidity': humidity, 'DHT_Temperature': temperature, })
+            if bool(verbose) is True:
                 print(dht_type + " Temperature: {:.1f}°C ".format(temperature))
                 print(dht_type + " Humidity: {}% ".format(humidity))
                 print("")
@@ -269,7 +269,7 @@ def serial_displays(**kwargs):
         x = 0
 
         logging.basicConfig(filename='/tmp/rpims_serial_display.log', level=logging.DEBUG, format='%(asctime)s %(levelname)s %(name)s %(message)s')
-        logger=logging.getLogger(__name__)
+        logger = logging.getLogger(__name__)
 
         serial_type = kwargs['serial_type']
 
@@ -285,12 +285,12 @@ def serial_displays(**kwargs):
                 with canvas(device) as draw:
                     # get data from redis db
                     values = redis_db.mget('BME280_Temperature', 'BME280_Humidity', 'BME280_Pressure', 'door_sensor_1', 'door_sensor_2', 'CPU_Temperature', 'hostip')
-                    temperature = round(float(values[0]),1)
-                    humidity = int(round(float(values[1]),1))
-                    pressure = int(round(float(values[2]),1))
+                    temperature = round(float(values[0]), 1)
+                    humidity = int(round(float(values[1]), 1))
+                    pressure = int(round(float(values[2]), 1))
                     door_sensor_1 = values[3]
                     door_sensor_2 = values[4]
-                    cputemp = round(float(values[5]),1)
+                    cputemp = round(float(values[5]), 1)
                     hostip = values[6]
                     # draw on oled
                     draw.text((x, top),       'IP:' + str(hostip), font=font, fill=255)
@@ -303,7 +303,6 @@ def serial_displays(**kwargs):
                 sleep(1/kwargs['serial_display_refresh_rate'])
         except Exception as err:
             logger.error(err)
-
 
     if kwargs['serial_display_type'] == 'lcd_st7735':
         from luma.core.interface.serial import spi
@@ -333,7 +332,7 @@ def serial_displays(**kwargs):
         x = 0
 
         logging.basicConfig(filename='/tmp/rpims_serial_display.log', level=logging.DEBUG, format='%(asctime)s %(levelname)s %(name)s %(message)s')
-        logger=logging.getLogger(__name__)
+        logger = logging.getLogger(__name__)
         display_rotate = kwargs['serial_display_rotate']
         serial = spi(device=0, port=0, bus_speed_hz=8000000, transfer_size=4096, gpio_DC=25, gpio_RST=27)
 
@@ -344,12 +343,12 @@ def serial_displays(**kwargs):
             while True:
                 # get data from redis db
                 values = redis_db.mget('BME280_Temperature', 'BME280_Humidity', 'BME280_Pressure', 'door_sensor_1', 'door_sensor_2', 'CPU_Temperature', 'hostip')
-                temperature = round(float(values[0]),1)
-                humidity = int(round(float(values[1]),1))
-                pressure = int(round(float(values[2]),1))
+                temperature = round(float(values[0]), 1)
+                humidity = int(round(float(values[1]), 1))
+                pressure = int(round(float(values[2]), 1))
                 door_sensor_1 = values[3]
                 door_sensor_2 = values[4]
-                cputemp = round(float(values[5]),1)
+                cputemp = round(float(values[5]), 1)
                 hostip = values[6]
                 now = datetime.datetime.now()
                 # Draw
@@ -427,10 +426,10 @@ def rainfall(**kwargs):
             if len(rainfalls) == (rainfall_agregation_time/rainfall_acquisition_time):
                 rainfalls.clear()
             rainfalls.append(rainfall)
-        daily_rainfall = round(math.fsum(rainfalls),1)
-        if bool(kwargs['verbose']) is True :
+        daily_rainfall = round(math.fsum(rainfalls), 1)
+        if bool(kwargs['verbose']) is True:
             print("Rainfall: " + str(rainfall) + " mm ", "Daily rainfall: " + str(daily_rainfall) + " mm")
-        redis_db.mset({'daily_rainfall': daily_rainfall,'rainfall': rainfall})
+        redis_db.mset({'daily_rainfall': daily_rainfall, 'rainfall': rainfall})
 
 
 def wind_speed(**kwargs):
@@ -478,15 +477,15 @@ def wind_speed(**kwargs):
         daily_wind_gusts.append(wind_gust)
         daily_wind_gust = max(daily_wind_gusts)
 
-        average_wind_speed = round(statistics.mean(wind_speeds),1)
+        average_wind_speed = round(statistics.mean(wind_speeds), 1)
         if len(average_wind_speeds) == (86400/wind_speed_agregation_time):
-                del average_wind_speeds[0]
+            del average_wind_speeds[0]
         average_wind_speeds.append(average_wind_speed)
         daily_average_wind_speed = round(statistics.mean(average_wind_speeds), 1)
 
-        if bool(kwargs['verbose']) is True :
-            print("Wind speed " + str(wind_speed) + " km/h"," Wind gust: " + str(wind_gust) + "km/h", "Daily wind gust: " + str(daily_wind_gust) + "km/h", " Average wind speed: " + str(average_wind_speed) + " km/h","Daily average wind speed: " + str(daily_average_wind_speed) + " km/h"  )
-        redis_db.mset({'wind_speed' : wind_speed, 'wind_gust' : wind_gust, 'daily_wind_gust' : daily_wind_gust, 'average_wind_speed' : average_wind_speed, 'daily_average_wind_speed' : daily_average_wind_speed})
+        if bool(kwargs['verbose']) is True:
+            print("Wind speed " + str(wind_speed) + " km/h", " Wind gust: " + str(wind_gust) + "km/h", "Daily wind gust: " + str(daily_wind_gust) + "km/h", " Average wind speed: " + str(average_wind_speed) + " km/h", "Daily average wind speed: " + str(daily_average_wind_speed) + " km/h")
+        redis_db.mset({'wind_speed': wind_speed, 'wind_gust': wind_gust, 'daily_wind_gust': daily_wind_gust, 'average_wind_speed': average_wind_speed, 'daily_average_wind_speed': daily_average_wind_speed})
 
 
 def adc_stm32f030():
@@ -502,21 +501,21 @@ def adc_stm32f030():
     REG_SET_ADDR = 0XC0
 
     class Pi_hat_adc():
-        def __init__(self,bus_num=1,addr=ADC_DEFAULT_IIC_ADDR):
+        def __init__(self, bus_num=1, addr=ADC_DEFAULT_IIC_ADDR):
             self.bus=Bus(bus_num)
             self.addr=addr
 
         def get_all_vol_milli_data(self):
             array = []
             for i in range(ADC_CHAN_NUM):
-                data=self.bus.read_i2c_block_data(self.addr,REG_VOL_START+i,2)
-                val=data[1]<<8|data[0]
+                data = self.bus.read_i2c_block_data(self.addr, REG_VOL_START+i, 2)
+                val = data[1] << 8 | data[0]
                 array.append(val)
             return array
 
-        def get_nchan_vol_milli_data(self,n):
-            data=self.bus.read_i2c_block_data(self.addr,REG_VOL_START+n,2)
-            val =data[1]<<8|data[0]
+        def get_nchan_vol_milli_data(self, n):
+            data = self.bus.read_i2c_block_data(self.addr, REG_VOL_START+n, 2)
+            val = data[1] << 8 | data[0]
             return val
 
     adc = Pi_hat_adc()
@@ -528,10 +527,8 @@ def adc_automationphat():
     import automationhat
     from time import sleep
     sleep(0.1)  # Delay for automationhat
-    adc_inputs_values = []
-    adc_inputs_values.append(automationhat.analog.one.read())
-    adc_inputs_values.append(automationhat.analog.two.read())
-    adc_inputs_values.append(automationhat.analog.three.read())
+    adc_inputs_values = [automationhat.analog.one.read(), automationhat.analog.two.read(),
+                         automationhat.analog.three.read()]
     return adc_inputs_values
 
 
@@ -548,17 +545,14 @@ def adc_ads1115():
     chan2 = AnalogIn(ads, ADS.P1)
     chan3 = AnalogIn(ads, ADS.P2)
     chan4 = AnalogIn(ads, ADS.P3)
-    adc_inputs_values = []
-    adc_inputs_values.append(chan1.voltage)
-    adc_inputs_values.append(chan2.voltage)
-    adc_inputs_values.append(chan3.voltage)
-    adc_inputs_values.append(chan4.voltage)
+    adc_inputs_values = [chan1.voltage, chan2.voltage, chan3.voltage, chan4.voltage]
     return adc_inputs_values
 
 
 def wind_direction(**kwargs):
     from time import time
     import math
+
     def get_average(angles):
         sin_sum = 0.0
         cos_sum = 0.0
@@ -583,40 +577,39 @@ def wind_direction(**kwargs):
 
         return 0.0 if average == 360 else average
 
-
     direction_mapr = {
-     "N": 5080,
-    "NNE": 5188,
-    "NE": 6417,
-    "ENE": 6253,
-    "E": 17419,
-    "ESE": 9380,
-    "SE": 11613,
-    "SSE": 6968,
-    "S": 8129,
-    "SSW": 5419,
-    "SW": 5542,
-    "W": 4781,
-    "NW": 4977,
-    "NNW": 4877,
-    }
+        "N": 5080,
+        "NNE": 5188,
+        "NE": 6417,
+        "ENE": 6253,
+        "E": 17419,
+        "ESE": 9380,
+        "SE": 11613,
+        "SSE": 6968,
+        "S": 8129,
+        "SSW": 5419,
+        "SW": 5542,
+        "W": 4781,
+        "NW": 4977,
+        "NNW": 4877,
+        }
 
     direction_mapa = {
-    "N": 0,
-    "NNE": 22.5,
-    "NE": 45,
-    "ENE": 67.5,
-    "E": 90,
-    "ESE": 112.5,
-    "SE": 135,
-    "SSE": 157.5,
-    "S": 180,
-    "SSW": 202.5,
-    "SW": 225,
-    "W": 270,
-    "NW": 315,
-    "NNW": 337.5
-    }
+        "N": 0,
+        "NNE": 22.5,
+        "NE": 45,
+        "ENE": 67.5,
+        "E": 90,
+        "ESE": 112.5,
+        "SE": 135,
+        "SSE": 157.5,
+        "S": 180,
+        "SSW": 202.5,
+        "SW": 225,
+        "W": 270,
+        "NW": 315,
+        "NNW": 337.5
+        }
 
     Uin = 5.2
     Uout = 0
@@ -638,25 +631,25 @@ def wind_direction(**kwargs):
                 adc_values = adc_ads1115()
 
             if kwargs['winddirection_adc_input'] == 1:
-                Uout = round(adc_values[0],1)
+                Uout = round(adc_values[0], 1)
             if kwargs['winddirection_adc_input'] == 2:
-                Uout = round(adc_values[1],1)
+                Uout = round(adc_values[1], 1)
             if kwargs['winddirection_adc_input'] == 3:
-                Uout = round(adc_values[2],1)
+                Uout = round(adc_values[2], 1)
             if kwargs['winddirection_adc_input'] == 4:
-                Uout = round(adc_values[3],1)
+                Uout = round(adc_values[3], 1)
 
             if kwargs['reference_voltage_adc_input'] == 1:
-                Uin = round(adc_values[0],1)
+                Uin = round(adc_values[0], 1)
             if kwargs['reference_voltage_adc_input'] == 2:
-                Uin = round(adc_values[1],1)
+                Uin = round(adc_values[1], 1)
             if kwargs['reference_voltage_adc_input'] == 3:
-                Uin = round(adc_values[2],1)
+                Uin = round(adc_values[2], 1)
             if kwargs['reference_voltage_adc_input'] == 4:
-                Uin = round(adc_values[3],1)
+                Uin = round(adc_values[3], 1)
 
             if Uin != Uout and Uin != 0:
-                R2 = int (R1/(1 - Uout/Uin))
+                R2 = int(R1/(1 - Uout/Uin))
                 # print(R2,Uin,Uout)
             else:
                 print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
@@ -670,7 +663,7 @@ def wind_direction(**kwargs):
                 if (R2 <= direction_mapr.get(item) * 1.005) and (R2 >= direction_mapr.get(item) * 0.995):
                     angles.append(direction_mapa.get(item))
         if len(angles) != 0:
-            average_wind_direction = int(round(get_average(angles),0))
+            average_wind_direction = int(round(get_average(angles), 0))
             if bool(kwargs['verbose']) is True:
                 print("Average Wind Direction: " + str(average_wind_direction))
             redis_db.mset({'average_wind_direction': average_wind_direction, 'wind_direction': item})
@@ -685,7 +678,8 @@ def threading_function(function_name, **kwargs):
 
 def db_connect(dbhost, dbnum):
     try:
-        import redis, sys
+        import redis
+        import sys
         global redis_db
         redis_db = redis.StrictRedis(host=dbhost, port=6379, db=str(dbnum), charset="utf-8", decode_responses=True)
     except Exception as err:
@@ -695,19 +689,21 @@ def db_connect(dbhost, dbnum):
 
 def config_load(path_to_config):
     try:
-        import yaml, sys
+        import yaml
+        import sys
         with open(path_to_config, mode='r') as file:
             config_yaml = yaml.full_load(file)
         return config_yaml
-    except Exception as err :
+    except Exception as err:
         print('Problem with ' + str(err))
         sys.exit(1)
+
 
 def use_logger():
     import logging
     logging.basicConfig(filename='/tmp/rpims.log', level=logging.DEBUG, format='%(asctime)s %(levelname)s %(name)s %(message)s')
     global logger
-    logger=logging.getLogger(__name__)
+    logger = logging.getLogger(__name__)
 
 
 def main():
@@ -732,7 +728,7 @@ def main():
     for key in redis_db.scan_iter("door_sensor_*"):
         redis_db.delete(key)
 
-    config_yaml=config_load('/var/www/html/conf/rpims.yaml')
+    config_yaml = config_load('/var/www/html/conf/rpims.yaml')
 
     config = config_yaml['setup']
     zabbix_agent = config_yaml['zabbix_agent']
@@ -788,25 +784,25 @@ def main():
     if bool(config['use_door_sensor']) is True:
         for s in door_sensors_list:
             if door_sensors_list[s].value == 0:
-                door_status_open(s,**config)
+                door_status_open(s, **config)
             else:
-                door_status_close(s,**config)
+                door_status_close(s, **config)
         for s in door_sensors_list:
-                door_sensors_list[s].when_held = lambda s=s : door_action_closed(s,**config)
-                door_sensors_list[s].when_released = lambda s=s : door_action_opened(s,**config)
-        if bool(config['use_led_indicators']) is True :
+            door_sensors_list[s].when_held = lambda s=s: door_action_closed(s, **config)
+            door_sensors_list[s].when_released = lambda s=s: door_action_opened(s, **config)
+        if bool(config['use_led_indicators']) is True:
             led_indicators_list['door_led'].source = all_values(*door_sensors_list.values())
 
-    if bool(config['use_motion_sensor']) is True :
+    if bool(config['use_motion_sensor']) is True:
         for s in motion_sensors_list:
             if motion_sensors_list[s].value == 0:
-                motion_sensor_when_no_motion(s,**config)
+                motion_sensor_when_no_motion(s, **config)
             else:
-                motion_sensor_when_motion(s,**config)
+                motion_sensor_when_motion(s, **config)
         for s in motion_sensors_list:
-                motion_sensors_list[s].when_motion = lambda s=s : motion_sensor_when_motion(s,**config)
-                motion_sensors_list[s].when_no_motion = lambda s=s : motion_sensor_when_no_motion(s,**config)
-        if bool(config['use_led_indicators']) is True :
+            motion_sensors_list[s].when_motion = lambda s=s: motion_sensor_when_motion(s, **config)
+            motion_sensors_list[s].when_no_motion = lambda s=s: motion_sensor_when_no_motion(s, **config)
+        if bool(config['use_led_indicators']) is True:
             led_indicators_list['motion_led'].source = any_values(*motion_sensors_list.values())
 
     if bool(config['use_system_buttons']) is True:
@@ -832,7 +828,7 @@ def main():
     if bool(config['use_serial_display']) is True:
         threading_function(serial_displays, **config)
 
-    if bool(config['use_picamera']) is True and bool(config['use_picamera_recording']) is False and bool(config['use_door_sensor']) is False and bool(config['use_motion_sensor']) is False :
+    if bool(config['use_picamera']) is True and bool(config['use_picamera_recording']) is False and bool(config['use_door_sensor']) is False and bool(config['use_motion_sensor']) is False:
         av_stream('start')
 
     pause()
@@ -841,4 +837,3 @@ def main():
 # --- Main program ---
 if __name__ == '__main__':
     main()
-
