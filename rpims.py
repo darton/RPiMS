@@ -23,7 +23,7 @@ def door_action_closed(door_id, **kwargs):
         zabbix_sender_call('info_when_door_has_been_closed', door_id)
     if bool(kwargs['use_picamera']) is True:
         if detect_no_alarms(**lconfig):
-        av_stream('stop')
+            av_stream('stop')
 
 
 def door_action_opened(door_id, **kwargs):
@@ -249,7 +249,7 @@ def serial_displays(**kwargs):
         # from PIL import Image
         # from PIL import ImageDraw
         from PIL import ImageFont
-        import time
+        from time import sleep
         import logging
         # import socket
 
