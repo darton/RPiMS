@@ -676,9 +676,7 @@ def threading_function(function_name, **kwargs):
 
 def multiprocessing_function(function_name, **kwargs):
     import multiprocessing
-    jobs = []
     p = multiprocessing.Process(target=function_name, name=function_name, kwargs=kwargs)
-    jobs.append(p)
     p.start()
 
 
