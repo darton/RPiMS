@@ -420,10 +420,10 @@ def rainfall(**kwargs):
         while time() - start_time <= rainfall_acquisition_time:
             reset_bucket_counter()
             sleep(rainfall_acquisition_time)
-            rainfall = calculate_rainfall()
+            # rainfall = calculate_rainfall()
             if len(rainfalls) == (rainfall_agregation_time/rainfall_acquisition_time):
                 rainfalls.clear()
-            rainfalls.append(rainfall)
+            rainfalls.append(calculate_rainfall())
         daily_rainfall = round(math.fsum(rainfalls), 1)
         if bool(kwargs['verbose']) is True:
             print("Rainfall: " + str(rainfall) + " mm ", "Daily rainfall: " + str(daily_rainfall) + " mm")
@@ -465,10 +465,10 @@ def wind_speed(**kwargs):
         while time() - start_time <= wind_speed_acquisition_time:
             reset_anemometer_pulse_counter()
             sleep(wind_speed_acquisition_time)
-            wind_speed = calculate_speed(wind_speed_acquisition_time)
+            # wind_speed = calculate_speed(wind_speed_acquisition_time)
             if len(wind_speeds) == (wind_speed_agregation_time/wind_speed_acquisition_time):
                 del wind_speeds[0]
-            wind_speeds.append(wind_speed)
+            wind_speeds.append(calculate_speed(wind_speed_acquisition_time))
         wind_gust = max(wind_speeds)
         if len(daily_wind_gusts) == (86400/wind_speed_acquisition_time):
             del daily_wind_gusts[0]
@@ -648,7 +648,7 @@ def wind_direction(**kwargs):
 
             if uin != uout and uin != 0:
                 r2 = int(r1/(1 - uout/uin))
-                # print(r2,uin,Uout)
+                # print(r2,uin,uout)
             else:
                 print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
                 print("uin = ", uin)
