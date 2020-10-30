@@ -229,7 +229,11 @@ def get_dht_data(**kwargs):
                 delay = 0
         except OverflowError as error:
             if debug is 'yes':
-                print("DHT - " + str(error.args[0]))
+                print("DHT - " + str(error))
+            delay += 1
+        except  RuntimeError as error:
+            if debug is 'yes':
+                print("DHT - " + str(error))
             delay += 1
         finally:
             if debug is 'yes':
