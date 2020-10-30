@@ -209,7 +209,7 @@ def get_dht_data(**kwargs):
     import adafruit_dht
     from time import sleep
 
-    debug = "no"
+    debug = "yes"
     delay = 0
     dht_device = adafruit_dht.DHT22(pin)
     if dht_type == "DHT11":
@@ -227,7 +227,7 @@ def get_dht_data(**kwargs):
             delay -= 1
             if delay < 0:
                 delay = 0
-        except RuntimeError as error:
+        except OverflowError as error:
             if debug is 'yes':
                 print("DHT - " + str(error.args[0]))
             delay += 1
