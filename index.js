@@ -1,5 +1,3 @@
-document.addEventListener("DOMContentLoaded", () => {
-
 function roundPrecised(number, precision) {
     var power = Math.pow(10, precision);
 
@@ -9,30 +7,30 @@ function roundPrecised(number, precision) {
 setInterval(function() {
     $.getJSON("rpims.php", function(data) {
 
-	if (data['settings']['useWeatherStation'] == "True") {
-		$("#average_wind_direction").html(data['weather_station']['averageWindDirection']);
-		$("#daily_average_wind_speed").html(data['weather_station']['dailyAverageWindSpeed']);
-		$("#average_wind_speed").html(data['weather_station']['averageWindSpeed']);
-		$("#wind_speed").html(data['weather_station']['windSpeed']);
-		$("#wind_gust").html(data['weather_station']['windGust']);
-		$("#daily_wind_gust").html(data['weather_station']['dailyWindGust']);
-		$("#daily_rainfall").html(data['weather_station']['dailyRainfall']);
-	}
+    if (data['settings']['useWeatherStation'] == "True") {
+	$("#average_wind_direction").html(data['weather_station']['averageWindDirection']);
+	$("#daily_average_wind_speed").html(data['weather_station']['dailyAverageWindSpeed']);
+	$("#average_wind_speed").html(data['weather_station']['averageWindSpeed']);
+	$("#wind_speed").html(data['weather_station']['windSpeed']);
+	$("#wind_gust").html(data['weather_station']['windGust']);
+	$("#daily_wind_gust").html(data['weather_station']['dailyWindGust']);
+	$("#daily_rainfall").html(data['weather_station']['dailyRainfall']);
+    }
 
-	if (data['settings']['useCpuSensor'] == "True") {
-		$("#CPU_Temperature").html(roundPrecised(data['sensors']['CPU']['temperature'],1));
-	}
+    if (data['settings']['useCpuSensor'] == "True") {
+	$("#CPU_Temperature").html(roundPrecised(data['sensors']['CPU']['temperature'],1));
+    }
 
-	if (data['settings']['useBME280Sensor'] == "True") {
-		$("#BME280_Temperature").html(data['sensors']['BME280']['temperature']);
-		$("#BME280_Humidity").html(data['sensors']['BME280']['humidity']);
-		$("#BME280_Pressure").html(data['sensors']['BME280']['pressure']);
-	}
+    if (data['settings']['useBME280Sensor'] == "True") {
+	$("#BME280_Temperature").html(data['sensors']['BME280']['temperature']);
+	$("#BME280_Humidity").html(data['sensors']['BME280']['humidity']);
+	$("#BME280_Pressure").html(data['sensors']['BME280']['pressure']);
+    }
 
-	if (data['settings']['useDHTSensor'] == "True") {
-		$("#DHT_Temperature").html(data['sensors']['DHT']['temperature']);
-		$("#DHT_Humidity").html(data['sensors']['DHT']['humidity']);
-	}
+    if (data['settings']['useDHTSensor'] == "True") {
+	$("#DHT_Temperature").html(data['sensors']['DHT']['temperature']);
+	$("#DHT_Humidity").html(data['sensors']['DHT']['humidity']);
+    }
 
 //	if (data['settings']['use_DS18B20_sensor'] == "True") {
 //		for (var DS18B20_id in data['sensors']['DS18B20_sensors']){
@@ -41,22 +39,22 @@ setInterval(function() {
 //		}
 //	}
 
-	if (data['settings']['useDoorSensor'] == "True") {
-		for (var key in data['sensors']['door_sensors']){
-	    		var value = data['sensors']['door_sensors'][key];
-	    		$("#" + key).html(value);
-		}
+    if (data['settings']['useDoorSensor'] == "True") {
+	for (var key in data['sensors']['door_sensors']){
+    	    var value = data['sensors']['door_sensors'][key];
+    	    $("#" + key).html(value);
 	}
-	if (data['settings']['useMotionSensor'] == "True") {
-		for (var key in data['sensors']['motion_sensors']){
-	    		var value = data['sensors']['motion_sensors'][key];
-	    		$("#" + key).html(value);
-		}
+    }
+    if (data['settings']['useMotionSensor'] == "True") {
+	for (var key in data['sensors']['motion_sensors']){
+    	    var value = data['sensors']['motion_sensors'][key];
+    	    $("#" + key).html(value);
 	}
+    }
 
-	$("#hostip").html(data['settings']['hostip']);
-	$("#hostname").html(data['settings']['hostname']);
-	$("#location").html(data['settings']['location']);
+    $("#hostip").html(data['settings']['hostip']);
+    $("#hostname").html(data['settings']['hostname']);
+    $("#location").html(data['settings']['location']);
 
 
 if (data['settings']['useBME280Sensor'] == "True") {
@@ -153,5 +151,3 @@ window.onclick = function(event) {
     }
   }
 }
-
-});
