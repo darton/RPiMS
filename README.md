@@ -150,8 +150,8 @@ RPi   [GPIO.3 pin 5] ----------------------------- [SDC]  DS3231
 * DS18B20 - 1 pcs or more (or DS18S20) 
 * Resistor 4k7 (for DS18B20 sensor) - 1 psc
 * DHT11/DHT22/AM2302 - 1 pcs 
-* Door/window sensor - 1-2 pcs
-* Motion Sensor - 1-5 pcs
+* Door/window sensor - 1 or more pcs
+* Motion Sensor - 1 or more pcs
 * PiCamera - 1 pcs
 * PiCamera Case - 1pcs
 * Power Adapter (5V/2.5A or 5V1/3A for RPi4) - 1 pcs
