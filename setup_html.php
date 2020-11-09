@@ -351,7 +351,7 @@
 <td><label id="GPIO_19_TYPE_DS">Hold time: <input id="GPIO_19_TYPE_DS_HT" name="GPIO_19[hold_time]" type="number" min="1" max="60" value="<?=$GPIO['GPIO_19']['hold_time']?>" size="2"></label></td>
 </tr>
 
-
+<!--
 <tr>
 <td><label>GPIO 20<input name="GPIO_20[gpio_pin]" type="hidden" value="20"></label></td>
 <td>
@@ -366,7 +366,7 @@
 <td><label id="GPIO_20_TYPE_DS">Hold time: <input id="GPIO_20_TYPE_DS_HT" name="GPIO_20[hold_time]" type="number" min="1" max="60" value="<?=$GPIO['GPIO_20']['hold_time']?>" size="2"></label></td>
 </tr>
 
-<!--
+
 <tr>
 <td><label>GPIO 21<input name="GPIO_21[gpio_pin]" type="hidden" value="21"></label></td>
 <td>
