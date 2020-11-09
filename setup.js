@@ -19,11 +19,11 @@ function generateP(lenght) {
             document.getElementById(id).value =  generateP(psk_len);
         }
 
+
 document.addEventListener("DOMContentLoaded", () => {
 
 /* When the page is loaded it shows the input Hold Time for the GPIO Button input type. 
 Hides the field for another GPIO input type value.  */
-
 $('.gpioinputs').each(function(){
             var selectedGPIOtype = $(this).children("option:selected").val();
             var z = $(this).attr('id') + "_" + 'DS'
@@ -34,8 +34,6 @@ $('.gpioinputs').each(function(){
                 $("#" + z).hide();
             }
         });
-
-
 
 /* Shows input Hold Time when GPIO input type is selected as Button, 
 and sets default hold time value to 1. 
