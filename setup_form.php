@@ -67,7 +67,6 @@ $GPIO = array(
     "GPIO_18" => $_POST['GPIO_18'],
     "GPIO_19" => $_POST['GPIO_19'],
     "GPIO_20" => $_POST['GPIO_20'],
-    "GPIO_21" => $_POST['GPIO_21'],
     "GPIO_22" => $_POST['GPIO_22'],
     "GPIO_23" => $_POST['GPIO_23'],
     "GPIO_26" => $_POST['GPIO_26'],
@@ -145,6 +144,7 @@ $rpims = array(
     "system_buttons" => $system_buttons,
     "reserved_gpio"  => $reserved_gpio,
     "zabbix_agent"   => $zabbix_agent,
+    "gpio"           => $GPIO,
 );
 
 yaml_emit_file ("/var/www/html/conf/rpims.yaml", $rpims, YAML_UTF8_ENCODING, YAML_ANY_BREAK);
