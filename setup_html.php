@@ -10,8 +10,10 @@
   background-color: #f1f1c1;
 }
 </style>
-<script type="text/javascript" src="setup.js"></script>
+<script src="../jquery.min.js"></script>
+<script src="setup.js" defer></script>
 </head>
+
 <body>
 <div class="w3-responsive">
 <form action="setup_form.php" method="post" class="w3-container">
@@ -280,216 +282,146 @@
 <table id="t01" class="w3-table">
 
 <tr>
-<td>GPIO 5</td>
+<td><label>GPIO 5<input name="GPIO_5[gpio_pin]" type="hidden" value="5"></label></td>
 <td>
 <label for="GPIO_5">Input type:</label>
-<select id="GPIO_5" name="GPIO_5[type]" style="width: 160px;" class="w3-select">
+<select id="GPIO_5_TYPE" name="GPIO_5[type]" style="width: 160px;"  class="gpioinputs">
   <option <?php if ($GPIO['GPIO_5']['type'] == 'DoorSensor') echo 'selected="selected"'; ?> value="DoorSensor">Button</option>
   <option <?php if ($GPIO['GPIO_5']['type'] == 'MotionSensor') echo 'selected="selected"'; ?> value="MotionSensor">Motion Sensor</option>
   <option <?php if ($GPIO['GPIO_5']['type'] == 'Reserved') echo 'selected="selected"'; ?> value="Reserved">Reserved</option>
 </select>
 </td>
 <td><label>Name: <input name="GPIO_5[name]" type="text" value="<?=$GPIO['GPIO_5']['name']?>" size="30"></label></td>
-<?php
-if ($GPIO['GPIO_5']['type'] == 'DoorSensor'){
-    if ($GPIO['GPIO_5']['hold_time'] == 0 ){ $GPIO_5_hold_time = 1;}
-    else { $GPIO_5_hold_time = $GPIO['GPIO_5']['hold_time']; }
-?>
-<td><label>Hold time: <input name="GPIO_5[hold_time]" type="number" min="1" max="10" value="<?=$GPIO_5_hold_time?>" size="2"></label></td>
-<?php } ?>
-<label><input name="GPIO_5[gpio_pin]" type="hidden" value="5"></label>
+<td><label id="GPIO_5_TYPE_DS">Hold time: <input id="GPIO_5_TYPE_DS_HT" name="GPIO_5[hold_time]" type="number" min="1" max="60" value="<?=$GPIO['GPIO_5']['hold_time']?>" size="2"></label></td>
 </tr>
 
 <tr>
-<td>GPIO 6</td>
+<td><label>GPIO 6<input name="GPIO_6[gpio_pin]" type="hidden" value="6"></label></td>
 <td>
 <label for="GPIO_6">Input type:</label>
-<select id="GPIO_6" name="GPIO_6[type]" style="width: 160px;" class="w3-select">
+<select id="GPIO_6_TYPE" name="GPIO_6[type]" style="width: 160px;" class="gpioinputs">
   <option <?php if ($GPIO['GPIO_6']['type'] == 'DoorSensor') echo 'selected="selected"'; ?> value="DoorSensor">Button</option>
   <option <?php if ($GPIO['GPIO_6']['type'] == 'MotionSensor') echo 'selected="selected"'; ?> value="MotionSensor">Motion Sensor</option>
   <option <?php if ($GPIO['GPIO_6']['type'] == 'Reserved') echo 'selected="selected"'; ?> value="Reserved">Reserved</option>
 </select>
 </td>
 <td><label>Name: <input name="GPIO_6[name]" type="text" value="<?=$GPIO['GPIO_6']['name']?>" size="30"></label></td>
-<?php
-if ($GPIO['GPIO_6']['type'] == 'DoorSensor'){
-    if ($GPIO['GPIO_6']['hold_time'] == 0 ){ $GPIO_6_hold_time = 1;}
-    else { $GPIO_6_hold_time = $GPIO['GPIO_6']['hold_time']; }
-?>
-<td><label>Hold time: <input name="GPIO_6[hold_time]" type="number" min="1" max="10" value="<?=$GPIO_6_hold_time?>" size="2"></label></td>
-<?php } ?>
-<label><input name="GPIO_6[gpio_pin]" type="hidden" value="6"></label>
+<td><label id="GPIO_6_TYPE_DS">Hold time: <input id="GPIO_6_TYPE_DS_HT" name="GPIO_6[hold_time]" type="number" min="1" max="60" value="<?=$GPIO['GPIO_6']['hold_time']?>" size="2"></label></td>
 </tr>
 
 <tr>
-<td>GPIO 13</td>
+<td><label>GPIO 13<input name="GPIO_13[gpio_pin]" type="hidden" value="13"></label></td>
 <td>
 <label for="GPIO_13">Input type:</label>
-<select id="GPIO_13" name="GPIO_13[type]" style="width: 160px;" class="w3-select">
+<select id="GPIO_13_TYPE" name="GPIO_13[type]" style="width: 160px;" class="gpioinputs">
   <option <?php if ($GPIO['GPIO_13']['type'] == 'DoorSensor') echo 'selected="selected"'; ?> value="DoorSensor">Button</option>
   <option <?php if ($GPIO['GPIO_13']['type'] == 'MotionSensor') echo 'selected="selected"'; ?> value="MotionSensor">Motion Sensor</option>
   <option <?php if ($GPIO['GPIO_13']['type'] == 'Reserved') echo 'selected="selected"'; ?> value="Reserved">Reserved</option>
 </select>
 </td>
 <td><label>Name: <input name="GPIO_13[name]" type="text" value="<?=$GPIO['GPIO_13']['name']?>" size="30"></label></td>
-<?php
-if ($GPIO['GPIO_13']['type'] == 'DoorSensor'){
-    if ($GPIO['GPIO_13']['hold_time'] == 0 ){ $GPIO_13_hold_time = 1;}
-    else { $GPIO_13_hold_time = $GPIO['GPIO_13']['hold_time']; }
-?>
-<td><label>Hold time: <input name="GPIO_13[hold_time]" type="number" min="1" max="10" value="<?=$GPIO_13_hold_time?>" size="2"></label></td>
-<?php } ?>
-<label><input name="GPIO_13[gpio_pin]" type="hidden" value="13"></label>
+<td><label id="GPIO_13_TYPE_DS">Hold time: <input id="GPIO_13_TYPE_DS_HT" name="GPIO_13[hold_time]" type="number" min="1" max="60" value="<?=$GPIO['GPIO_13']['hold_time']?>" size="2"></label></td>
 </tr>
 
 <tr>
-<td>GPIO 16</td>
+<td><label>GPIO 16<input name="GPIO_16[gpio_pin]" type="hidden" value="16"></label></td>
 <td>
 <label for="GPIO_16">Input type:</label>
-<select id="GPIO_16" name="GPIO_16[type]" style="width: 160px;" class="w3-select">
+<select id="GPIO_16_TYPE" name="GPIO_16[type]" style="width: 160px;" class="gpioinputs">
   <option <?php if ($GPIO['GPIO_16']['type'] == 'DoorSensor') echo 'selected="selected"'; ?> value="DoorSensor">Button</option>
   <option <?php if ($GPIO['GPIO_16']['type'] == 'MotionSensor') echo 'selected="selected"'; ?> value="MotionSensor">Motion Sensor</option>
-  <option <?php if ($GPIO['GPIO_16']['type'] == 'ShutdownButton') echo 'selected="selected"'; ?> value="ShutdownButton">Shutdown Button</option>
   <option <?php if ($GPIO['GPIO_16']['type'] == 'Reserved') echo 'selected="selected"'; ?> value="Reserved">Reserved</option>
 </select>
 </td>
 <td><label>Name: <input name="GPIO_16[name]" type="text" value="<?=$GPIO['GPIO_16']['name']?>" size="30"></label></td>
-<?php
-if ($GPIO['GPIO_16']['type'] == 'DoorSensor' OR $GPIO['GPIO_16']['type'] == 'ShutdownButton') {
-    if ($GPIO['GPIO_16']['hold_time'] == 0 ){ $GPIO_16_hold_time = 1;}
-    else { $GPIO_16_hold_time = $GPIO['GPIO_16']['hold_time']; }
-?>
-<td>
-<label>Hold time: <input name="GPIO_16[hold_time]" type="number" min="1" max="10"  value="<?=$GPIO_16_hold_time?>" size="2"></label>
-</td>
-<?php } ?>
-<label><input name="GPIO_16[gpio_pin]" type="hidden" value="16"></label>
+<td><label id="GPIO_16_TYPE_DS">Hold time: <input id="GPIO_16_TYPE_DS_HT" name="GPIO_16[hold_time]" type="number" min="1" max="60" value="<?=$GPIO['GPIO_16']['hold_time']?>" size="2"></label></td>
 </tr>
 
-<tr><td>GPIO 19</td>
+<tr>
+<td><label>GPIO 19<input name="GPIO_19[gpio_pin]" type="hidden" value="19"></label></td>
 <td>
 <label for="GPIO_19">Input type:</label>
-<select id="GPIO_19" name="GPIO_19[type]" style="width: 160px;" class="w3-select">
+<select id="GPIO_19_TYPE" name="GPIO_19[type]" style="width: 160px;" class="gpioinputs">
   <option <?php if ($GPIO['GPIO_19']['type'] == 'DoorSensor') echo 'selected="selected"'; ?> value="DoorSensor">Button</option>
   <option <?php if ($GPIO['GPIO_19']['type'] == 'MotionSensor') echo 'selected="selected"'; ?> value="MotionSensor">Motion Sensor</option>
   <option <?php if ($GPIO['GPIO_19']['type'] == 'Reserved') echo 'selected="selected"'; ?> value="Reserved">Reserved</option>
 </select>
 </td>
 <td><label>Name: <input name="GPIO_19[name]" type="text" value="<?=$GPIO['GPIO_19']['name']?>" size="30"></label></td>
-<?php
-if ($GPIO['GPIO_19']['type'] == 'DoorSensor'){
-    if ($GPIO['GPIO_19']['hold_time'] == 0 ){ $GPIO_19_hold_time = 1;}
-    else { $GPIO_19_hold_time = $GPIO['GPIO_19']['hold_time']; }
-?>
-<td><label>Hold time: <input name="GPIO_19[hold_time]" type="number" min="1" max="10" value="<?=$GPIO_19_hold_time?>" size="2"></label></td>
-<?php } ?>
-<label><input name="GPIO_19[gpio_pin]" type="hidden" value="19"></label>
+<td><label id="GPIO_19_TYPE_DS">Hold time: <input id="GPIO_19_TYPE_DS_HT" name="GPIO_19[hold_time]" type="number" min="1" max="60" value="<?=$GPIO['GPIO_19']['hold_time']?>" size="2"></label></td>
 </tr>
 
+
 <tr>
-<td>GPIO 20</td>
+<td><label>GPIO 20<input name="GPIO_20[gpio_pin]" type="hidden" value="20"></label></td>
 <td>
 <label for="GPIO_20">Input type:</label>
-<select id="GPIO_20" name="GPIO_20[type]" style="width: 160px;" class="w3-select">
+<select id="GPIO_20_TYPE" name="GPIO_20[type]" style="width: 160px;" class="gpioinputs">
   <option <?php if ($GPIO['GPIO_20']['type'] == 'DoorSensor') echo 'selected="selected"'; ?> value="DoorSensor">Button</option>
   <option <?php if ($GPIO['GPIO_20']['type'] == 'MotionSensor') echo 'selected="selected"'; ?> value="MotionSensor">Motion Sensor</option>
   <option <?php if ($GPIO['GPIO_20']['type'] == 'Reserved') echo 'selected="selected"'; ?> value="Reserved">Reserved</option>
 </select>
 </td>
 <td><label>Name: <input name="GPIO_20[name]" type="text" value="<?=$GPIO['GPIO_20']['name']?>" size="30"></label></td>
-<?php
-if ($GPIO['GPIO_20']['type'] == 'DoorSensor'){
-    if ($GPIO['GPIO_20']['hold_time'] == 0 ){ $GPIO_20_hold_time = 1;}
-    else { $GPIO_20_hold_time = $GPIO['GPIO_20']['hold_time']; }
-?>
-<td><label>Hold time: <input name="GPIO_20[hold_time]" type="number" min="1" max="10" value="<?=$GPIO_20_hold_time?>" size="2"></label></td>
-<?php } ?>
-<label><input name="GPIO_20[gpio_pin]" type="hidden" value="20"></label>
+<td><label id="GPIO_20_TYPE_DS">Hold time: <input id="GPIO_20_TYPE_DS_HT" name="GPIO_20[hold_time]" type="number" min="1" max="60" value="<?=$GPIO['GPIO_20']['hold_time']?>" size="2"></label></td>
 </tr>
 
 <tr>
-<td>GPIO 21</td>
+<td><label>GPIO 21<input name="GPIO_21[gpio_pin]" type="hidden" value="21"></label></td>
 <td>
 <label for="GPIO_21">Input type:</label>
-<select id="GPIO_21" name="GPIO_21[type]" style="width: 160px;" class="w3-select">
+<select id="GPIO_21_TYPE" name="GPIO_21[type]" style="width: 160px;" class="gpioinputs">
   <option <?php if ($GPIO['GPIO_21']['type'] == 'DoorSensor') echo 'selected="selected"'; ?> value="DoorSensor">Button</option>
   <option <?php if ($GPIO['GPIO_21']['type'] == 'MotionSensor') echo 'selected="selected"'; ?> value="MotionSensor">Motion Sensor</option>
   <option <?php if ($GPIO['GPIO_21']['type'] == 'Reserved') echo 'selected="selected"'; ?> value="Reserved">Reserved</option>
 </select>
 </td>
 <td><label>Name: <input name="GPIO_21[name]" type="text" value="<?=$GPIO['GPIO_21']['name']?>" size="30"></label></td>
-<?php
-if ($GPIO['GPIO_21']['type'] == 'DoorSensor'){
-    if ($GPIO['GPIO_21']['hold_time'] == 0 ){ $GPIO_21_hold_time = 1;}
-    else { $GPIO_21_hold_time = $GPIO['GPIO_21']['hold_time']; }
-?>
-<td><label>Hold time: <input name="GPIO_21[hold_time]" type="number" min="1" max="10" value="<?=$GPIO_21_hold_time?>" size="2"></label></td>
-<?php } ?>
-<label><input name="GPIO_21[gpio_pin]" type="hidden" value="21"></label>
+<td><label id="GPIO_21_TYPE_DS">Hold time: <input id="GPIO_21_TYPE_DS_HT" name="GPIO_21[hold_time]" type="number" min="1" max="60" value="<?=$GPIO['GPIO_21']['hold_time']?>" size="2"></label></td>
 </tr>
 
 <tr>
-<td>GPIO 22</td>
+<td><label>GPIO 22<input name="GPIO_22[gpio_pin]" type="hidden" value="22"></label></td>
 <td>
 <label for="GPIO_22">Input type:</label>
-<select id="GPIO_22" name="GPIO_22[type]" style="width: 160px;" class="w3-select">
+<select id="GPIO_22_TYPE" name="GPIO_22[type]" style="width: 160px;" class="gpioinputs">
   <option <?php if ($GPIO['GPIO_22']['type'] == 'DoorSensor') echo 'selected="selected"'; ?> value="DoorSensor">Button</option>
   <option <?php if ($GPIO['GPIO_22']['type'] == 'MotionSensor') echo 'selected="selected"'; ?> value="MotionSensor">Motion Sensor</option>
   <option <?php if ($GPIO['GPIO_22']['type'] == 'Reserved') echo 'selected="selected"'; ?> value="Reserved">Reserved</option>
 </select>
 </td>
 <td><label>Name: <input name="GPIO_22[name]" type="text" value="<?=$GPIO['GPIO_22']['name']?>" size="30"></label></td>
-<?php
-if ($GPIO['GPIO_22']['type'] == 'DoorSensor'){
-    if ($GPIO['GPIO_22']['hold_time'] == 0 ){ $GPIO_22_hold_time = 1;}
-    else { $GPIO_22_hold_time = $GPIO['GPIO_22']['hold_time']; }
-?>
-<td><label>Hold time: <input name="GPIO_22[hold_time]" type="number" min="1" max="10" value="<?=$GPIO_22_hold_time?>" size="2"></label></td>
-<?php } ?>
-<label><input name="GPIO_22[gpio_pin]" type="hidden" value="22"></label>
+<td><label id="GPIO_22_TYPE_DS">Hold time: <input id="GPIO_22_TYPE_DS_HT" name="GPIO_22[hold_time]" type="number" min="1" max="60" value="<?=$GPIO['GPIO_22']['hold_time']?>" size="2"></label></td>
 </tr>
 
 <tr>
-<td>GPIO 23</td>
+<td><label>GPIO 23<input name="GPIO_23[gpio_pin]" type="hidden" value="23"></label></td>
 <td>
 <label for="GPIO_23">Input type:</label>
-<select id="GPIO_23" name="GPIO_23[type]" style="width: 160px;" class="w3-select">
+<select id="GPIO_23_TYPE" name="GPIO_23[type]" style="width: 160px;" class="gpioinputs">
   <option <?php if ($GPIO['GPIO_23']['type'] == 'DoorSensor') echo 'selected="selected"'; ?> value="DoorSensor">Button</option>
   <option <?php if ($GPIO['GPIO_23']['type'] == 'MotionSensor') echo 'selected="selected"'; ?> value="MotionSensor">Motion Sensor</option>
   <option <?php if ($GPIO['GPIO_23']['type'] == 'Reserved') echo 'selected="selected"'; ?> value="Reserved">Reserved</option>
 </select>
 </td>
 <td><label>Name: <input name="GPIO_23[name]" type="text" value="<?=$GPIO['GPIO_23']['name']?>" size="30"></label></td>
-<?php
-if ($GPIO['GPIO_23']['type'] == 'DoorSensor'){
-    if ($GPIO['GPIO_23']['hold_time'] == 0 ){ $GPIO_23_hold_time = 1;}
-    else { $GPIO_23_hold_time = $GPIO['GPIO_23']['hold_time']; }
-?>
-<td><label>Hold time: <input name="GPIO_23[hold_time]" type="number" min="1" max="10" value="<?=$GPIO_23_hold_time?>" size="2"></label></td>
-<?php } ?>
-<label><input name="GPIO_23[gpio_pin]" type="hidden" value="23"></label>
+<td><label id="GPIO_23_TYPE_DS">Hold time: <input id="GPIO_23_TYPE_DS_HT" name="GPIO_23[hold_time]" type="number" min="1" max="60" value="<?=$GPIO['GPIO_23']['hold_time']?>" size="2"></label></td>
 </tr>
 
 <tr>
-<td>GPIO 26</t>
+<td><label>GPIO 26<input name="GPIO_26[gpio_pin]" type="hidden" value="26"></label></td>
 <td>
 <label for="GPIO_26">Input type:</label>
-<select id="GPIO_26" name="GPIO_26[type]" style="width: 160px;" class="w3-select">
+<select id="GPIO_26_TYPE" name="GPIO_26[type]" style="width: 160px;" class="gpioinputs">
   <option <?php if ($GPIO['GPIO_26']['type'] == 'DoorSensor') echo 'selected="selected"'; ?> value="DoorSensor">Button</option>
   <option <?php if ($GPIO['GPIO_26']['type'] == 'MotionSensor') echo 'selected="selected"'; ?> value="MotionSensor">Motion Sensor</option>
   <option <?php if ($GPIO['GPIO_26']['type'] == 'Reserved') echo 'selected="selected"'; ?> value="Reserved">Reserved</option>
 </select>
 </td>
 <td><label>Name: <input name="GPIO_26[name]" type="text" value="<?=$GPIO['GPIO_26']['name']?>" size="30"></label></td>
-<?php
-if ($GPIO['GPIO_26']['type'] == 'DoorSensor'){
-    if ($GPIO['GPIO_26']['hold_time'] == 0 ){ $GPIO_26_hold_time = 1;}
-    else { $GPIO_26_hold_time = $GPIO['GPIO_26']['hold_time']; }
-?>
-<td><label>Hold time: <input name="GPIO_26[hold_time]"  type="number" min="1" max="10" value="<?=$GPIO_26_hold_time?>" size="2"></label></td>
-<?php } ?>
-<label><input name="GPIO_26[gpio_pin]" type="hidden" value="26"></label>
+<td><label id="GPIO_26_TYPE_DS">Hold time: <input id="GPIO_26_TYPE_DS_HT" name="GPIO_26[hold_time]" type="number" min="1" max="60" value="<?=$GPIO['GPIO_26']['hold_time']?>" size="2"></label></td>
 </tr>
+
 </table>
 </fieldset>
 
