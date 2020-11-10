@@ -173,6 +173,14 @@
 <td>
 <input name="CPUtemp_read_interval" type="number" min="1" max="3600" class="w3-input" size="4" value="<?= $CPUtemp_read_interval ?>" >
 </td></tr>
+
+<tr><td>
+<label>DS18B20 read interval:</label>
+</td>
+<td>
+<input name="DS18B20_read_interval" class="w3-input" type="number" min="1" max="3600" size="4" value="<?= $DS18B20_read_interval ?>" >
+</td></tr>
+
 <tr><td>
 <label>BME280 read interval:</label>
 </td>
@@ -187,12 +195,6 @@
 <option <?php if ($BME280_i2c_address == '118') echo 'selected="selected"'; ?> value = "118" >0x76</option>
 <option <?php if ($BME280_i2c_address == '119') echo 'selected="selected"'; ?> value = "119" >0x77</option>
 </select>
-</td></tr>
-<tr><td>
-<label>DS18B20 read interval:</label>
-</td>
-<td>
-<input name="DS18B20_read_interval" class="w3-input" type="number" min="1" max="3600" size="4" value="<?= $DS18B20_read_interval ?>" >
 </td></tr>
 
 <tr><td>
@@ -221,6 +223,18 @@
 
 
 <tr>
+<td><label>Rainfall aquisition time:</label></td>
+<td><input name="rainfall_acquisition_time" class="w3-input" type="number" min="1" max="3600" size="4" value="<?= $rainfall_acquisition_time ?>" ></td>
+<td><label>Rainfall agregation time:</label></td>
+<td><input name="rainfall_agregation_time" class="w3-input" type="number" min="1" max="86400" size="4" value="<?= $rainfall_agregation_time ?>" ></td>
+<td><label for="rainfall_sensor_pin">Rainfall sensor pin:</label></td>
+<td><select id="rainfall_sensor_pin" name="rainfall_sensor_pin" class="w3-select">
+  <option value = 22>22</option>
+</select></td>
+</tr>
+
+
+<tr>
 <td><label>Wind speed acquisition time:</label></td>
 <td><input name="windspeed_acquisition_time" class="w3-input" type="number" min="1" max="3600" size="4" value="<?= $windspeed_acquisition_time ?>" ></td>
 
@@ -229,7 +243,7 @@
 
 <td><label for="windspeed_sensor_pin">Wind speed sensor pin:</label></td>
 <td><select id="windspeed_sensor_pin" name="windspeed_sensor_pin" class="w3-select">
-  <option value = 21>21</option>
+  <option value = 23>23</option>
 </select></td>
 </tr>
 
@@ -261,16 +275,6 @@
 </select></td>
 </tr>
 
-<tr>
-<td><label>Rainfall aquisition time:</label></td>
-<td><input name="rainfall_acquisition_time" class="w3-input" type="number" min="1" max="3600" size="4" value="<?= $rainfall_acquisition_time ?>" ></td>
-<td><label>Rainfall agregation time:</label></td>
-<td><input name="rainfall_agregation_time" class="w3-input" type="number" min="1" max="86400" size="4" value="<?= $rainfall_agregation_time ?>" ></td>
-<td><label for="rainfall_sensor_pin">Rainfall sensor pin:</label></td>
-<td><select id="rainfall_sensor_pin" name="rainfall_sensor_pin" class="w3-select">
-  <option value = 20>20</option>
-</select></td>
-</tr>
 
 
 </table>
@@ -351,7 +355,7 @@
 <td><label id="GPIO_19_TYPE_DS">Hold time: <input id="GPIO_19_TYPE_DS_HT" name="GPIO_19[hold_time]" type="number" min="1" max="60" value="<?=$GPIO['GPIO_19']['hold_time']?>" size="2"></label></td>
 </tr>
 
-<!--
+
 <tr>
 <td><label>GPIO 20<input name="GPIO_20[gpio_pin]" type="hidden" value="20"></label></td>
 <td>
@@ -380,7 +384,8 @@
 <td><label>Name: <input name="GPIO_21[name]" type="text" value="<?=$GPIO['GPIO_21']['name']?>" size="30"></label></td>
 <td><label id="GPIO_21_TYPE_DS">Hold time: <input id="GPIO_21_TYPE_DS_HT" name="GPIO_21[hold_time]" type="number" min="1" max="60" value="<?=$GPIO['GPIO_21']['hold_time']?>" size="2"></label></td>
 </tr>
--->
+
+<!--
 <tr>
 <td><label>GPIO 22<input name="GPIO_22[gpio_pin]" type="hidden" value="22"></label></td>
 <td>
@@ -408,7 +413,7 @@
 <td><label>Name: <input name="GPIO_23[name]" type="text" value="<?=$GPIO['GPIO_23']['name']?>" size="30"></label></td>
 <td><label id="GPIO_23_TYPE_DS">Hold time: <input id="GPIO_23_TYPE_DS_HT" name="GPIO_23[hold_time]" type="number" min="1" max="60" value="<?=$GPIO['GPIO_23']['hold_time']?>" size="2"></label></td>
 </tr>
-
+-->
 <tr>
 <td><label>GPIO 26<input name="GPIO_26[gpio_pin]" type="hidden" value="26"></label></td>
 <td>
@@ -430,32 +435,28 @@
 <fieldset>
 <legend>Output configuration</legend>
 <table id="t01" class="w3-table">
-<tr><td>
-<label for="GPIO_12">GPIO 12</label>
-</td>
+<tr>
+<td><label for="GPIO_12">GPIO 12<input name="GPIO_12[gpio_pin]" type="hidden" value="12"></label></td>
 <td>
 <select id="GPIO_12" name="GPIO_12[type]" class="w3-select" style="width: 160px;">
   <option value="motion_led">Motion Indicator</option>
   <option selected value="door_led">Door Indicator</option>
-</select>
-</td>
-<label><input name="GPIO_12[gpio_pin]" type="hidden" value="12"></label>
+  <option value="relay">Relay</option>
+</select></td>
 </tr>
 
-<tr><td>
-<label for="GPIO_18">GPIO 18</label>
-</td>
+<tr>
+<td><label for="GPIO_18">GPIO 18<input name="GPIO_18[gpio_pin]" type="hidden" value="18"></label></td>
 <td>
 <select id="GPIO_18" name="GPIO_18[type]" class="w3-select" style="width: 160px;">
   <option selected value="motion_led">Motion Indicator</option>
   <option value="door_led">Door Indicator</option>
+  <option value="relay">Relay</option>
 </select>
 </td>
-<label><input name="GPIO_18[gpio_pin]" type="hidden" value="18"></label>
 </tr>
 </table>
 </fieldset>
-
 
 <fieldset>
 <legend>Zabbix Agent configuration</legend>

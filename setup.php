@@ -8,8 +8,8 @@ $GPIO_13 = array();
 $GPIO_16 = array();
 $GPIO_18 = array();
 $GPIO_19 = array();
-$GPIO_22 = array();
-$GPIO_23 = array();
+$GPIO_20 = array();
+$GPIO_21 = array();
 $GPIO_26 = array();
 
 $rpims = yaml_parse_file ("/var/www/html/conf/rpims.yaml");
