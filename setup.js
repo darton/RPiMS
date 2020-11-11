@@ -27,7 +27,7 @@ Hides the field for another GPIO input type value.  */
 $('.gpioinputs').each(function(){
             var selectedGPIOtype = $(this).children("option:selected").val();
             var z = $(this).attr('id') + "_" + 'DS'
-            if (selectedGPIOtype == 'DoorSensor') {
+            if (selectedGPIOtype == 'DoorSensor' || selectedGPIOtype == 'ShutdownButton' ) {
                 $("#" + z).show();
             }
             else {
@@ -41,7 +41,7 @@ Hides this field when other GPIO input type is selected. */
 $('.gpioinputs').change(function(){
             var selectedGPIOtype = $(this).children("option:selected").val();
             var z = $(this).attr('id') + "_" + 'DS'
-            if (selectedGPIOtype == 'DoorSensor') {
+            if (selectedGPIOtype == 'DoorSensor' || selectedGPIOtype == 'ShutdownButton') {
                 $("#" + z).show();
 		$("#" + z + "_HT").val("1");
             }

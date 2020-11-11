@@ -108,6 +108,7 @@ foreach ($GPIO as $key => $value) {
         $system_buttons[$arrayName] = [];
         $system_buttons[$arrayName]['gpio_pin'] = (int)$value['gpio_pin'] ;
         $system_buttons[$arrayName]['hold_time'] = (int)$value['hold_time'];
+        $system_buttons[$arrayName]['name'] = $value['name'];
     }
 }
 

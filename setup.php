@@ -87,6 +87,7 @@ foreach ($system_buttons_gpio as $key => $value) {
     $gpioname = 'GPIO_'.$value['gpio_pin'];
     $GPIO[$gpioname]['type'] = 'ShutdownButton';
     $GPIO[$gpioname]['hold_time'] = $value['hold_time'];
+    $GPIO[$gpioname]['name'] = $value['name'];
 }
 foreach ($reserved_gpio as $key => $value) {
     $gpioname = 'GPIO_'.$value['gpio_pin'];
