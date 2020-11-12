@@ -94,6 +94,7 @@ sudo chmod ugo+x  /etc/update-motd.d/20-rpims
 rm $installdir/motd
 
 cat $installdir/cron |sudo tee /etc/cron.d/rpims
+sudo chown root.root /etc/cron.d/rpims
 rm $installdir/cron
 
 sudo mv $installdir/rpims.service /lib/systemd/system/rpims.service
