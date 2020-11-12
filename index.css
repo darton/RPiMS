@@ -145,3 +145,8 @@ span.value {
   font-size: 4vw;
   text-align: left;
 }
+
+.center {
+  margin-left: auto;
+  margin-right: auto;
+}

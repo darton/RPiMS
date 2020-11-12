@@ -66,17 +66,29 @@ if ($rpims["use_weather_station"] == "True"){
     $rpims_api["weather_station"]["rainfallAgregationTime"] = $rpims["rainfall_agregation_time"];
 }
 
-if ($rpims["use_motion_sensor"] == "True"){
-    $motion_sensors = $redis->smembers('motion_sensors');
-    foreach ($motion_sensors as $key => $value){
-	$rpims_api["sensors"]["motion_sensors"]["$value"] = $rpims[$value];
+$obj = $redis-> get('gpio');
+$gpio = json_decode($obj, true);
+
+foreach ($gpio as $key=> $value) {
+    if ($gpio[$key]["type"] == "DoorSensor" ){
+	$door_sensors[$key] = ($gpio[$key]);
+    }
+}
+foreach ($gpio as $key=> $value) {
+    if ($gpio[$key]["type"] == "MotionSensor" ){
+	$motion_sensors[$key] = ($gpio[$key]);
     }
 }
 
 if ($rpims["use_door_sensor"] == "True"){
-    $door_sensors = $redis->smembers('door_sensors');
     foreach ($door_sensors as $key => $value){
-	$rpims_api["sensors"]["door_sensors"]["$value"] = $rpims[$value];
+	$rpims_api["sensors"]["door_sensors"]["$key"] = $rpims[$key];
+    }
+}
+
+if ($rpims["use_motion_sensor"] == "True"){
+    foreach ($motion_sensors as $key => $value){
+	$rpims_api["sensors"]["motion_sensors"]["$key"] = $rpims[$key];
     }
 }
 
@@ -87,7 +99,6 @@ if ($rpims["use_DS18B20_sensor"] == "True"){
 	$rpims_api["sensors"]["DS18B20_sensors"]["array"]["$value"] = round($rpims[$value],2);
 	}
     }
-
 
 Header("Content-type: application/json");
 echo json_encode($rpims_api);

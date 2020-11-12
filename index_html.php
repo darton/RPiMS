@@ -139,26 +139,27 @@
 
 
 <?php if ($rpims["use_door_sensor"] == "True") {?>
+
 <div class="sensors">
     <h3>Door sensors</h3>
-    <ul style="list-style-type:none;">
+    <table class="center">
     <?php foreach ($door_sensors as $key => $value) {
-    echo "<li>"; echo $value; echo ": <span class='value' id='$value'></span></li>";
+    echo "<tr><td>"; echo $value["name"]; echo "</td><td>: <span class='value' id='$key'></span></td></tr>";
 }
 ?>
-    </ul>
+    </table>
 </div>
 <?php }?>
 
 <?php if ($rpims["use_motion_sensor"] == "True") {?>
 <div class="sensors">
     <h3>Motion sensors</h3>
-    <ul style="list-style-type:none;">
-<?php foreach ($motion_sensors as $key => $value) {
-    echo "<li>"; echo $value; echo ": <span class='value' id='$value'></span></li>";
+    <table class="center">
+    <?php foreach ($motion_sensors as $key => $value) {
+    echo "<tr><td>"; echo $value["name"]; echo "</td><td>: <span class='value' id='$key'></span></td></tr>";
 }
 ?>
-    </ul>
+    </table>
 </div>
 <?php }?>
 
