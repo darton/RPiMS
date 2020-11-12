@@ -1,17 +1,5 @@
 <?php
 
-$GPIO = array();
-$GPIO_5 = array();
-$GPIO_6 = array();
-$GPIO_12 = array();
-$GPIO_13 = array();
-$GPIO_16 = array();
-$GPIO_18 = array();
-$GPIO_19 = array();
-$GPIO_20 = array();
-$GPIO_21 = array();
-$GPIO_26 = array();
-
 $rpims = yaml_parse_file ("/var/www/html/conf/rpims.yaml");
 $location = $rpims['zabbix_agent']['location'];
 $hostname = $rpims['zabbix_agent']['hostname'];
@@ -65,35 +53,7 @@ $rainfall_sensor_pin = $rpims['setup']['rainfall_sensor_pin'];
 $rainfall_acquisition_time = $rpims['setup']['rainfall_acquisition_time'];
 $rainfall_agregation_time = $rpims['setup']['rainfall_agregation_time'];
 
-
-$motion_sensors_gpio = $rpims['motion_sensors'];
-$door_sensors_gpio = $rpims['door_sensors'];
-$system_buttons_gpio = $rpims['system_buttons'];
-$reserved_gpio = $rpims['reserved_gpio'];
-
-foreach ($door_sensors_gpio as $key => $value) {
-    $gpioname = 'GPIO_'.$value['gpio_pin'] ;
-    $GPIO[$gpioname]['type'] = 'DoorSensor';
-    $GPIO[$gpioname]['hold_time'] = $value['hold_time'];
-    $GPIO[$gpioname]['name'] = $value['name'];
-
-}
-foreach ($motion_sensors_gpio as $key => $value) {
-    $gpioname = 'GPIO_'.$value['gpio_pin'];
-    $GPIO[$gpioname]['type'] = 'MotionSensor';
-    $GPIO[$gpioname]['name'] = $value['name'];
-}
-foreach ($system_buttons_gpio as $key => $value) {
-    $gpioname = 'GPIO_'.$value['gpio_pin'];
-    $GPIO[$gpioname]['type'] = 'ShutdownButton';
-    $GPIO[$gpioname]['hold_time'] = $value['hold_time'];
-    $GPIO[$gpioname]['name'] = $value['name'];
-}
-foreach ($reserved_gpio as $key => $value) {
-    $gpioname = 'GPIO_'.$value['gpio_pin'];
-    $GPIO[$gpioname]['type'] = 'Reserved';
-    $GPIO[$gpioname]['name'] = $value['name'];
-}
+$GPIO = $rpims['gpio'];
 
 include 'setup_html.php';
 ?>

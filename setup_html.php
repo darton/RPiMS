@@ -439,22 +439,23 @@
 <tr>
 <td><label for="GPIO_12">GPIO 12<input name="GPIO_12[gpio_pin]" type="hidden" value="12"></label></td>
 <td>
+<label for="GPIO_12">Output type:</label>
 <select id="GPIO_12" name="GPIO_12[type]" class="w3-select" style="width: 160px;">
-  <option value="motion_led">Motion Indicator</option>
-  <option selected value="door_led">Door Indicator</option>
-  <option value="relay">Relay</option>
+  <option <?php if ($GPIO['GPIO_12']['type'] == 'door_led') echo 'selected="selected"'; ?> value="door_led">Door Indicator</option>
+  <option <?php if ($GPIO['GPIO_12']['type'] == 'led') echo 'selected="selected"'; ?>value="relay">Relay</option>
 </select></td>
+<td><label>Name: <input name="GPIO_12[name]" type="text" value="<?=$GPIO['GPIO_12']['name']?>" size="30"></label></td>
 </tr>
 
 <tr>
 <td><label for="GPIO_18">GPIO 18<input name="GPIO_18[gpio_pin]" type="hidden" value="18"></label></td>
 <td>
+<label for="GPIO_18">Output type:</label>
 <select id="GPIO_18" name="GPIO_18[type]" class="w3-select" style="width: 160px;">
-  <option selected value="motion_led">Motion Indicator</option>
-  <option value="door_led">Door Indicator</option>
-  <option value="relay">Relay</option>
-</select>
-</td>
+  <option <?php if ($GPIO['GPIO_18']['type'] == 'motion_led') echo 'selected="selected"'; ?> value="motion_led">Motion Indicator</option>
+  <option <?php if ($GPIO['GPIO_18']['type'] == 'led') echo 'selected="selected"'; ?>value="relay">Relay</option>
+</select></td>
+<td><label>Name: <input name="GPIO_18[name]" type="text" value="<?=$GPIO['GPIO_18']['name']?>" size="30"></label></td>
 </tr>
 </table>
 </fieldset>
