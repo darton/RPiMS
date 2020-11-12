@@ -720,6 +720,7 @@ def main():
     from gpiozero.tools import all_values, any_values
     from signal import pause
     # import logging
+    import json
     import sys
 
     print('# RPiMS is running #')
@@ -743,32 +744,29 @@ def main():
     hostnamectl_sh(**zabbix_agent)
     gpio = config_yaml.get("gpio")
 
+    redis_db.delete('gpio')
+    redis_db.set('gpio', json.dumps(gpio))
+
     if bool(config['use_door_sensor']) is True:
         global door_sensors_list
         door_sensors_list = {}
-        redis_db.delete("door_sensors")
         for item in gpio:
             if (gpio[item]['type'] == 'DoorSensor'):
                 door_sensors_list[item] = Button(gpio[item]['gpio_pin'], hold_time=int(gpio[item]['hold_time']))
-                redis_db.sadd("door_sensors", item)
 
     if bool(config['use_motion_sensor']) is True:
         global motion_sensors_list
         motion_sensors_list = {}
-        redis_db.delete("motion_sensors")
         for item in gpio:
             if (gpio[item]['type'] == 'MotionSensor'):
                 motion_sensors_list[item] = MotionSensor(gpio[item]['gpio_pin'])
-                redis_db.sadd("motion_sensors", item)
 
     if bool(config['use_system_buttons']) is True:
         global system_buttons_list
         system_buttons_list = {}
-        redis_db.delete("system_buttons")
         for item in gpio:
             if (gpio[item]['type'] == 'ShutdownButton') :
                 system_buttons_list['shutdown_button'] = Button(gpio[item]['gpio_pin'], hold_time=int(gpio[item]['hold_time']))
-                redis_db.sadd("system_buttons", item)
 
     if bool(config['use_led_indicators']) is True:
         global led_indicators_list
