@@ -797,26 +797,26 @@ def main():
         print('')
 
     if bool(config['use_door_sensor']) is True:
-        for s in door_sensors_list:
-            if door_sensors_list[s].value == 0:
-                door_status_open(s, **config)
+        for k, v in door_sensors_list.items():
+            if v.value == 0:
+                door_status_open(k, **config)
             else:
-                door_status_close(s, **config)
-        for s in door_sensors_list:
-            door_sensors_list[s].when_held = lambda s=s: door_action_closed(s, **config)
-            door_sensors_list[s].when_released = lambda s=s: door_action_opened(s, **config)
+                door_status_close(k, **config)
+        for k, v in door_sensors_list.items():
+            v.when_held = lambda s=k: door_action_closed(s, **config)
+            v.when_released = lambda s=k: door_action_opened(s, **config)
         if bool(config['use_led_indicators']) is True:
             led_indicators_list['door_led'].source = all_values(*door_sensors_list.values())
 
     if bool(config['use_motion_sensor']) is True:
-        for s in motion_sensors_list:
-            if motion_sensors_list[s].value == 0:
-                motion_sensor_when_no_motion(s, **config)
+        for k, v in motion_sensors_list.items():
+            if v.value == 0:
+                motion_sensor_when_no_motion(k, **config)
             else:
-                motion_sensor_when_motion(s, **config)
-        for s in motion_sensors_list:
-            motion_sensors_list[s].when_motion = lambda s=s: motion_sensor_when_motion(s, **config)
-            motion_sensors_list[s].when_no_motion = lambda s=s: motion_sensor_when_no_motion(s, **config)
+                motion_sensor_when_motion(k, **config)
+        for k, v in motion_sensors_list.items():
+            v.when_motion = lambda s=k: motion_sensor_when_motion(k, **config)
+            v.when_no_motion = lambda s=k: motion_sensor_when_no_motion(k, **config)
         if bool(config['use_led_indicators']) is True:
             led_indicators_list['motion_led'].source = any_values(*motion_sensors_list.values())
 
