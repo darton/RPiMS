@@ -1,2 +1,2 @@
 # RPiMS  cron jobs
-* * * * * pi /home/pi/scripts/RPiMS/gethostip.sh  > /dev/null 2>&1
+* * * * * root  /home/pi/scripts/RPiMS/gethostip.sh  > /dev/null 2>&1
