@@ -741,9 +741,9 @@ def main():
 
     config = config_yaml['setup']
     zabbix_agent = config_yaml['zabbix_agent']
-    hostnamectl_sh(**zabbix_agent)
     gpio = config_yaml.get("gpio")
 
+    hostnamectl_sh(**zabbix_agent)
     redis_db.delete('gpio')
     redis_db.set('gpio', json.dumps(gpio))
 
@@ -765,30 +765,33 @@ def main():
         global system_buttons_list
         system_buttons_list = {}
         for item in gpio:
-            if (gpio[item]['type'] == 'ShutdownButton') :
+            if (gpio[item]['type'] == 'ShutdownButton'):
                 system_buttons_list['shutdown_button'] = Button(gpio[item]['gpio_pin'], hold_time=int(gpio[item]['hold_time']))
 
     if bool(config['use_led_indicators']) is True:
         global led_indicators_list
         led_indicators_list = {}
-        for item in config_yaml.get("led_indicators"):
-            led_indicators_list[item] = LED(config_yaml['led_indicators'][item]['gpio_pin'])
+        for item in gpio:
+            if (gpio[item]['type'] == 'door_led'):
+                led_indicators_list['door_led'] = LED(gpio[item]['gpio_pin'])
+            if (gpio[item]['type'] == 'motion_led'):
+                led_indicators_list['motion_led'] = LED(gpio[item]['gpio_pin'])
 
     if bool(config['verbose']) is True:
         print('')
 
-    for s in config:
-        redis_db.set(s, str(config[s]))
+    for k, v in config.items():
+        redis_db.set(k, str(v))
         if bool(config['verbose']) is True:
-            print(s + ' = ' + str(config[s]))
+            print(k + ' = ' + str(v))
 
     if bool(config['verbose']) is True:
         print('')
 
-    for s in zabbix_agent:
-        redis_db.set(s, str(zabbix_agent[s]))
+    for k, v in zabbix_agent.items():
+        redis_db.set(k, str(v))
         if bool(config['verbose']) is True:
-            print(s + ' = ' + str(zabbix_agent[s]))
+            print(k + ' = ' + str(v))
 
     if bool(config['verbose']) is True:
         print('')

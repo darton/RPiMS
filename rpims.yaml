@@ -4,10 +4,10 @@ setup:
   use_zabbix_sender: false
   use_picamera: false
   use_picamera_recording: false
-  use_door_sensor: false
-  use_motion_sensor: false
+  use_door_sensor: true
+  use_motion_sensor: true
   use_system_buttons: true
-  use_led_indicators: false
+  use_led_indicators: true
   use_CPU_sensor: true
   use_BME280_sensor: false
   use_DS18B20_sensor: false
@@ -35,50 +35,11 @@ setup:
   rainfall_sensor_pin: 22
   rainfall_acquisition_time: 6
   rainfall_agregation_time: 86400
-led_indicators:
-  door_led:
-    gpio_pin: 12
-  motion_led:
-    gpio_pin: 18
-door_sensors:
-  door_sensor_1:
-    gpio_pin: 5
-    hold_time: 1
-    name: door1
-  door_sensor_2:
-    gpio_pin: 6
-    hold_time: 1
-    name: door2
-  door_sensor_3:
-    gpio_pin: 13
-    hold_time: 1
-    name: door3
-  door_sensor_4:
-    gpio_pin: 19
-    hold_time: 1
-    name: door4
-  door_sensor_5:
-    gpio_pin: 20
-    hold_time: 1
-    name: front door
-motion_sensors:
-  motion_sensor_1:
-    gpio_pin: 21
-    name: front door
-system_buttons:
-  shutdown_button:
-    gpio_pin: 16
-    hold_time: 5
-    name: Shutdown button
-reserved_gpio:
-  reserved_1:
-    gpio_pin: 26
-    name: no used
 zabbix_agent:
   zabbix_server: zabbix.example.com
   zabbix_server_active: zabbix.example.com
   location: My Home
-  hostname: rpims1.example.com
+  hostname: rpims.example.com
   chassis: embedded
   deployment: RPiMS
   TLSPSKIdentity: G8nehEBuVZ9Dp1RZ
@@ -90,21 +51,22 @@ zabbix_agent:
 gpio:
   GPIO_5:
     gpio_pin: "5"
-    type: DoorSensor
-    name: door1
-    hold_time: "1"
+    type: MotionSensor
+    name: hall
+    hold_time: ""
   GPIO_6:
     gpio_pin: "6"
     type: DoorSensor
-    name: door2
+    name: front door
     hold_time: "1"
   GPIO_12:
     gpio_pin: "12"
     type: door_led
+    name: door led
   GPIO_13:
     gpio_pin: "13"
     type: DoorSensor
-    name: door3
+    name: back door
     hold_time: "1"
   GPIO_16:
     gpio_pin: "16"
@@ -114,24 +76,25 @@ gpio:
   GPIO_18:
     gpio_pin: "18"
     type: motion_led
+    name: motion led
   GPIO_19:
     gpio_pin: "19"
     type: DoorSensor
-    name: door4
+    name: window
     hold_time: "1"
   GPIO_20:
     gpio_pin: "20"
-    type: DoorSensor
-    name: front door
-    hold_time: "1"
+    type: MotionSensor
+    name: saloon
+    hold_time: ""
   GPIO_21:
     gpio_pin: "21"
     type: MotionSensor
-    name: front door
+    name: bathroom
     hold_time: ""
   GPIO_26:
     gpio_pin: "26"
     type: Reserved
-    name: no used
+    name: not used
     hold_time: ""
 ...
