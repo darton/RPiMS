@@ -655,7 +655,7 @@ def wind_direction(**kwargs):
                 # print(r2,uin,uout)
             else:
                 print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-                print("uin = ", uin)
+                print("Uin = ", uin)
                 print("Uout = ", uout)
                 print("Check sensor connections to ADC")
                 print("Wind Direction Meter program was terminated")
@@ -741,28 +741,34 @@ def main():
     config = config_yaml['setup']
     zabbix_agent = config_yaml['zabbix_agent']
     hostnamectl_sh(**zabbix_agent)
+    gpio = config_yaml.get("gpio")
 
     if bool(config['use_door_sensor']) is True:
         global door_sensors_list
         door_sensors_list = {}
         redis_db.delete("door_sensors")
-        for item in config_yaml.get("door_sensors"):
-            door_sensors_list[item] = Button(config_yaml['door_sensors'][item]['gpio_pin'], hold_time=config_yaml['door_sensors'][item]['hold_time'])
-            redis_db.sadd("door_sensors", item)
+        for item in gpio:
+            if (gpio[item]['type'] == 'DoorSensor'):
+                door_sensors_list[item] = Button(gpio[item]['gpio_pin'], hold_time=int(gpio[item]['hold_time']))
+                redis_db.sadd("door_sensors", item)
 
     if bool(config['use_motion_sensor']) is True:
         global motion_sensors_list
         motion_sensors_list = {}
         redis_db.delete("motion_sensors")
-        for item in config_yaml.get("motion_sensors"):
-            motion_sensors_list[item] = MotionSensor(config_yaml['motion_sensors'][item]['gpio_pin'])
-            redis_db.sadd("motion_sensors", item)
+        for item in gpio:
+            if (gpio[item]['type'] == 'MotionSensor'):
+                motion_sensors_list[item] = MotionSensor(gpio[item]['gpio_pin'])
+                redis_db.sadd("motion_sensors", item)
 
     if bool(config['use_system_buttons']) is True:
         global system_buttons_list
         system_buttons_list = {}
-        for item in config_yaml.get("system_buttons"):
-            system_buttons_list[item] = Button(config_yaml['system_buttons'][item]['gpio_pin'], hold_time=config_yaml['system_buttons'][item]['hold_time'])
+        redis_db.delete("system_buttons")
+        for item in gpio:
+            if (gpio[item]['type'] == 'ShutdownButton') :
+                system_buttons_list['shutdown_button'] = Button(gpio[item]['gpio_pin'], hold_time=int(gpio[item]['hold_time']))
+                redis_db.sadd("system_buttons", item)
 
     if bool(config['use_led_indicators']) is True:
         global led_indicators_list
