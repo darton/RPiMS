@@ -141,7 +141,7 @@
 <?php if ($rpims["use_door_sensor"] == "True") {?>
 
 <div class="sensors">
-    <h3>Door sensors</h3>
+    <h2>Door sensors</h2>
     <table class="center">
     <?php foreach ($door_sensors as $key => $value) {
     echo "<tr><td>"; echo $value["name"]; echo "</td><td>: <span class='value' id='$key'></span></td></tr>";
@@ -153,7 +153,7 @@
 
 <?php if ($rpims["use_motion_sensor"] == "True") {?>
 <div class="sensors">
-    <h3>Motion sensors</h3>
+    <h2>Motion sensors</h2>
     <table class="center">
     <?php foreach ($motion_sensors as $key => $value) {
     echo "<tr><td>"; echo $value["name"]; echo "</td><td>: <span class='value' id='$key'></span></td></tr>";
