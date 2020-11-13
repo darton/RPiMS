@@ -20,9 +20,10 @@ $rpims_api["settings"]["useDS18B20Sensor"] = $rpims["use_DS18B20_sensor"];
 $rpims_api["settings"]["useWeatherStation"] = $rpims["use_weather_station"];
 $rpims_api["settings"]["useDoorSensor"] = $rpims["use_door_sensor"];
 $rpims_api["settings"]["useMotionSensor"] = $rpims["use_motion_sensor"];
-$rpims_api["settings"]["hostip"] = $rpims["hostip"];
-$rpims_api["settings"]["hostname"] = $rpims["hostname"];
-$rpims_api["settings"]["location"] = $rpims["location"];
+
+$rpims_api["system"]["hostip"] = $rpims["hostip"];
+$rpims_api["system"]["hostname"] = $rpims["hostname"];
+$rpims_api["system"]["location"] = $rpims["location"];
 
 
 if ($rpims["use_CPU_sensor"] == "True"){

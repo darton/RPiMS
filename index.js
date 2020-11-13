@@ -52,9 +52,9 @@ setInterval(function() {
 	}
     }
 
-    $("#hostip").html(data['settings']['hostip']);
-    $("#hostname").html(data['settings']['hostname']);
-    $("#location").html(data['settings']['location']);
+    $("#hostip").html(data['system']['hostip']);
+    $("#hostname").html(data['system']['hostname']);
+    $("#location").html(data['system']['location']);
 
 
 if (data['settings']['useBME280Sensor'] == "True") {
