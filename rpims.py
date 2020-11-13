@@ -732,23 +732,37 @@ def main():
 
     redis_db.flushdb()
 
-    #for key in redis_db.scan_iter("motion_sensor_*"):
-    #    redis_db.delete(key)
-    #for key in redis_db.scan_iter("door_sensor_*"):
-    #    redis_db.delete(key)
-
     config_yaml = config_load('/var/www/html/conf/rpims.yaml')
 
     config = config_yaml['setup']
     zabbix_agent = config_yaml['zabbix_agent']
     gpio = config_yaml.get("gpio")
 
-    hostnamectl_sh(**zabbix_agent)
-
     redis_db.delete('gpio')
     redis_db.set('gpio', json.dumps(gpio))
     redis_db.delete('config')
     redis_db.set('config', json.dumps(config))
+
+    if bool(config['verbose']) is True:
+        print('')
+
+    for k, v in config.items():
+        # redis_db.set(k, str(v))
+        if bool(config['verbose']) is True:
+            print(k + ' = ' + str(v))
+
+    if bool(config['verbose']) is True:
+        print('')
+
+    for k, v in zabbix_agent.items():
+        redis_db.set(k, str(v))
+        if bool(config['verbose']) is True:
+            print(k + ' = ' + str(v))
+
+    if bool(config['verbose']) is True:
+        print('')
+
+    hostnamectl_sh(**zabbix_agent)
 
     if bool(config['use_door_sensor']) is True:
         global door_sensors_list
@@ -780,25 +794,6 @@ def main():
             led_indicators_list['motion_led'] = LED(gpio[item]['gpio_pin'])
         if (gpio[item]['type'] == 'led'):
             led_indicators_list['led'] = LED(gpio[item]['gpio_pin'])
-
-    if bool(config['verbose']) is True:
-        print('')
-
-    for k, v in config.items():
-        # redis_db.set(k, str(v))
-        if bool(config['verbose']) is True:
-            print(k + ' = ' + str(v))
-
-    if bool(config['verbose']) is True:
-        print('')
-
-    for k, v in zabbix_agent.items():
-        redis_db.set(k, str(v))
-        if bool(config['verbose']) is True:
-            print(k + ' = ' + str(v))
-
-    if bool(config['verbose']) is True:
-        print('')
 
     if bool(config['use_door_sensor']) is True:
         for k, v in door_sensors_list.items():

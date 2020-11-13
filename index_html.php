@@ -28,7 +28,7 @@
     <ul style="list-style-type:none;">
     <li>Hostname: <span class="value" id="hostname"></span></li>
     <li>Location: <span class="value" id="location"></span></li>
-<?php if ($rpims["use_CPU_sensor"] == "True") {?>
+<?php if ($config["use_CPU_sensor"] == "True") {?>
     <li>CPU Temperature: <span class="value" id="CPU_Temperature"></span><span class="value">&#8451</span></li>
 <?php }?>
     </ul>
@@ -38,7 +38,7 @@
 
 
 
-<?php if ($rpims["use_BME280_sensor"] == "True") {?>
+<?php if ($config["use_BME280_sensor"] == "True") {?>
 <div class="sensors">
     <h3>BME280 Sensor</h3>
 <div style="width: 100%; display: table;">
@@ -74,7 +74,7 @@
 
 <?php }?>
 
-<?php if ($rpims["use_DHT_sensor"] == "True") {?>
+<?php if ($config["use_DHT_sensor"] == "True") {?>
 <div class="sensors">
     <h3>DHT Sensor</h3>
 <div style="width: 100%; display: table;">
@@ -102,7 +102,7 @@
 <?php }?>
 
 
-<?php if ($rpims["use_DS18B20_sensor"] == "True") {?>
+<?php if ($config["use_DS18B20_sensor"] == "True") {?>
 <!--
 <div class="sensors">
     <h3>DS18B20 Sensors</h3>
@@ -116,7 +116,7 @@
 -->
 <?php }?>
 
-<?php if ($rpims["use_DS18B20_sensor"] == "True") {?>
+<?php if ($config["use_DS18B20_sensor"] == "True") {?>
 <div class="sensors">
     <h3>DS18B20 Sensors</h3>
 <div style="width: 100%; display: table;">
@@ -138,7 +138,7 @@
 <?php }?>
 
 
-<?php if ($rpims["use_door_sensor"] == "True") {?>
+<?php if ($config["use_door_sensor"] == "True") {?>
 
 <div class="sensors">
     <h2>Door sensors</h2>
@@ -151,7 +151,7 @@
 </div>
 <?php }?>
 
-<?php if ($rpims["use_motion_sensor"] == "True") {?>
+<?php if ($config["use_motion_sensor"] == "True") {?>
 <div class="sensors">
     <h2>Motion sensors</h2>
     <table class="center">
@@ -163,7 +163,7 @@
 </div>
 <?php }?>
 
-<?php if ($rpims["use_weather_station"] == "True") {?>
+<?php if ($config["use_weather_station"] == "True") {?>
 <div class="sensors">
 
 <div style="width: 100%; display: table;">
@@ -208,7 +208,7 @@
 </div>
 <?php }?>
 
-<?php if ($rpims["use_picamera"] == "True") {?>
+<?php if ($config["use_picamera"] == "True") {?>
 <div class="sensors">
     <h3>Video Stream Url</h3>
     <ul style="list-style-type:none;">
