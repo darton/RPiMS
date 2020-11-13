@@ -13,6 +13,8 @@ foreach ($rpimskeys as $key) {
 $obj = $redis-> get('config');
 $config = json_decode($obj, true);
 
+$obj = $redis-> get('zabbix_agent');
+$zabbix_agent = json_decode($obj, true);
 
 $rpims_api["settings"]["verbose"] = $config["verbose"];
 $rpims_api["settings"]["useZabbixSender"] = $config["use_zabbix_sender"];
@@ -27,8 +29,8 @@ $rpims_api["settings"]["useDoorSensor"] = $config["use_door_sensor"];
 $rpims_api["settings"]["useMotionSensor"] = $config["use_motion_sensor"];
 
 $rpims_api["system"]["hostip"] = $rpims["hostip"];
-$rpims_api["system"]["hostname"] = $rpims["hostname"];
-$rpims_api["system"]["location"] = $rpims["location"];
+$rpims_api["system"]["hostname"] = $zabbix_agent["hostname"];
+$rpims_api["system"]["location"] = $zabbix_agent["location"];
 
 
 if ($config["use_CPU_sensor"] == true){
