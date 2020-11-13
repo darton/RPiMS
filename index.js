@@ -77,7 +77,7 @@ if (data['settings']['useDHTSensor'] == "True") {
 if (data['settings']['useDS18B20Sensor'] == "True") {
     var DS18B20 = {};
     for (var DS18B20_id in data['sensors']['DS18B20_sensors']['array']){
-    console.log(DS18B20_id)
+    //console.log(DS18B20_id)
     DS18B20[DS18B20_id] = roundPrecised(data['sensors']['DS18B20_sensors']['array'][DS18B20_id],1);
 }
 }
@@ -125,7 +125,7 @@ if (data['settings']['useDS18B20Sensor'] == "True") {
     for (var DS18B20_id in data['sensors']['DS18B20_sensors']['array']){
     var sensor_name = DS18B20_prefix + DS18B20_id;
     var sensor_value = DS18B20[DS18B20_id];
-    console.log(eval(sensor_name));
+    //console.log(eval(sensor_name));
     setGaugeValue(eval(sensor_name), sensor_value/100, 100, "°C");
 }
 }
