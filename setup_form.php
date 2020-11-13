@@ -136,16 +136,14 @@ $zabbix_agent = array(
     "Timeout" => (int)$_POST['Timeout'],
 );
 
+
 $rpims = array(
     "setup" => $setup,
-    "led_indicators" => $led_indicators,
-    "door_sensors"   => $door_sensors,
-    "motion_sensors" => $motion_sensors,
-    "system_buttons" => $system_buttons,
-    "reserved_gpio"  => $reserved_gpio,
     "zabbix_agent"   => $zabbix_agent,
     "gpio"           => $GPIO,
 );
+
+
 
 yaml_emit_file ("/var/www/html/conf/rpims.yaml", $rpims, YAML_UTF8_ENCODING, YAML_ANY_BREAK);
 exec('sudo /bin/systemctl restart rpims.service');
