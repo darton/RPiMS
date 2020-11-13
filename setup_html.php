@@ -70,14 +70,6 @@
 </tr>
 <tr>
 <td>
-<label>Use led indicators:</label>
-</td>
-<td>
-<input name="use_led_indicators" type="hidden" value="False"><input name="use_led_indicators" type="checkbox" class="w3-check" <?php if ($use_led_indicators == 'yes') echo 'checked="checked"'; ?> value="True">
-</td>
-</tr>
-<tr>
-<td>
 <label>Use CPU sensor:</label>
 </td>
 <td>
@@ -442,7 +434,7 @@
 <label for="GPIO_12">Output type:</label>
 <select id="GPIO_12" name="GPIO_12[type]" class="w3-select" style="width: 160px;">
   <option <?php if ($GPIO['GPIO_12']['type'] == 'door_led') echo 'selected="selected"'; ?> value="door_led">Door Indicator</option>
-  <option <?php if ($GPIO['GPIO_12']['type'] == 'relay') echo 'selected="selected"'; ?>value="relay">Relay</option>
+  <option <?php if ($GPIO['GPIO_12']['type'] == 'led') echo 'selected="selected"'; ?>value="led">LED</option>
 </select></td>
 <td><label>Name: <input name="GPIO_12[name]" type="text" value="<?=$GPIO['GPIO_12']['name']?>" size="30"></label></td>
 </tr>
@@ -453,7 +445,7 @@
 <label for="GPIO_18">Output type:</label>
 <select id="GPIO_18" name="GPIO_18[type]" class="w3-select" style="width: 160px;">
   <option <?php if ($GPIO['GPIO_18']['type'] == 'motion_led') echo 'selected="selected"'; ?> value="motion_led">Motion Indicator</option>
-  <option <?php if ($GPIO['GPIO_18']['type'] == 'relay') echo 'selected="selected"'; ?>value="relay">Relay</option>
+  <option <?php if ($GPIO['GPIO_18']['type'] == 'led') echo 'selected="selected"'; ?>value="led">LED</option>
 </select></td>
 <td><label>Name: <input name="GPIO_18[name]" type="text" value="<?=$GPIO['GPIO_18']['name']?>" size="30"></label></td>
 </tr>

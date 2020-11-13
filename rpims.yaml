@@ -7,20 +7,21 @@ setup:
   use_door_sensor: true
   use_motion_sensor: true
   use_system_buttons: true
-  use_led_indicators: true
+  use_door_led_indicator: false
+  use_motion_led_indicator: false
   use_CPU_sensor: true
   use_BME280_sensor: false
   use_DS18B20_sensor: false
   use_DHT_sensor: false
   use_weather_station: false
   use_serial_display: false
-  serial_display_type: oled_sh1106
-  serial_type: i2c
-  serial_display_rotate: 2
+  serial_display_type: lcd_st7735
+  serial_type: spi
+  serial_display_rotate: 0
   serial_display_refresh_rate: 10
   CPUtemp_read_interval: 1
   BME280_read_interval: 10
-  BME280_i2c_address: 119
+  BME280_i2c_address: 118
   DS18B20_read_interval: 60
   DHT_read_interval: 5
   DHT_type: DHT22
@@ -31,10 +32,59 @@ setup:
   winddirection_acquisition_time: 6
   winddirection_adc_type: AutomationPhat
   winddirection_adc_input: 1
-  reference_voltage_adc_input: 2
+  reference_voltage_adc_input: 1
   rainfall_sensor_pin: 22
   rainfall_acquisition_time: 6
   rainfall_agregation_time: 86400
+gpio:
+  GPIO_5:
+    gpio_pin: "5"
+    type: DoorSensor
+    name: hall
+    hold_time: "1"
+  GPIO_6:
+    gpio_pin: "6"
+    type: DoorSensor
+    name: front door
+    hold_time: "1"
+  GPIO_12:
+    gpio_pin: "12"
+    type: led
+    name: door led
+  GPIO_13:
+    gpio_pin: "13"
+    type: DoorSensor
+    name: back door
+    hold_time: "1"
+  GPIO_16:
+    gpio_pin: "16"
+    type: ShutdownButton
+    name: button
+    hold_time: "5"
+  GPIO_18:
+    gpio_pin: "18"
+    type: led
+    name: motion led
+  GPIO_19:
+    gpio_pin: "19"
+    type: MotionSensor
+    name: window
+    hold_time: "1"
+  GPIO_20:
+    gpio_pin: "20"
+    type: MotionSensor
+    name: saloon
+    hold_time: "1"
+  GPIO_21:
+    gpio_pin: "21"
+    type: MotionSensor
+    name: bathroom
+    hold_time: "1"
+  GPIO_26:
+    gpio_pin: "26"
+    type: MotionSensor
+    name: not used
+    hold_time: "1"
 zabbix_agent:
   zabbix_server: zabbix.example.com
   zabbix_server_active: zabbix.example.com
@@ -48,53 +98,4 @@ zabbix_agent:
   TLSPSK: 3bTOe3H17pDc6EDmq3h6m3sZJuhnZ4V2Z8pNcoud4OOeKbYSaynK3orpdqDYM
   TLSPSKFile: /var/www/html/conf/zabbix_agentd.psk
   Timeout: 3
-gpio:
-  GPIO_5:
-    gpio_pin: "5"
-    type: MotionSensor
-    name: hall
-    hold_time: ""
-  GPIO_6:
-    gpio_pin: "6"
-    type: DoorSensor
-    name: front door
-    hold_time: "1"
-  GPIO_12:
-    gpio_pin: "12"
-    type: door_led
-    name: door led
-  GPIO_13:
-    gpio_pin: "13"
-    type: DoorSensor
-    name: back door
-    hold_time: "1"
-  GPIO_16:
-    gpio_pin: "16"
-    type: ShutdownButton
-    name: Shutdown button
-    hold_time: "5"
-  GPIO_18:
-    gpio_pin: "18"
-    type: motion_led
-    name: motion led
-  GPIO_19:
-    gpio_pin: "19"
-    type: DoorSensor
-    name: window
-    hold_time: "1"
-  GPIO_20:
-    gpio_pin: "20"
-    type: MotionSensor
-    name: saloon
-    hold_time: ""
-  GPIO_21:
-    gpio_pin: "21"
-    type: MotionSensor
-    name: bathroom
-    hold_time: ""
-  GPIO_26:
-    gpio_pin: "26"
-    type: Reserved
-    name: not used
-    hold_time: ""
 ...

@@ -768,14 +768,15 @@ def main():
             if (gpio[item]['type'] == 'ShutdownButton'):
                 system_buttons_list['shutdown_button'] = Button(gpio[item]['gpio_pin'], hold_time=int(gpio[item]['hold_time']))
 
-    if bool(config['use_led_indicators']) is True:
-        global led_indicators_list
-        led_indicators_list = {}
-        for item in gpio:
-            if (gpio[item]['type'] == 'door_led'):
-                led_indicators_list['door_led'] = LED(gpio[item]['gpio_pin'])
-            if (gpio[item]['type'] == 'motion_led'):
-                led_indicators_list['motion_led'] = LED(gpio[item]['gpio_pin'])
+    global led_indicators_list
+    led_indicators_list = {}
+    for item in gpio:
+        if (gpio[item]['type'] == 'door_led'):
+            led_indicators_list['door_led'] = LED(gpio[item]['gpio_pin'])
+        if (gpio[item]['type'] == 'motion_led'):
+            led_indicators_list['motion_led'] = LED(gpio[item]['gpio_pin'])
+        if (gpio[item]['type'] == 'led'):
+            led_indicators_list['led'] = LED(gpio[item]['gpio_pin'])
 
     if bool(config['verbose']) is True:
         print('')
@@ -805,7 +806,7 @@ def main():
         for k, v in door_sensors_list.items():
             v.when_held = lambda s=k: door_action_closed(s, **config)
             v.when_released = lambda s=k: door_action_opened(s, **config)
-        if bool(config['use_led_indicators']) is True:
+        if bool(config['use_door_led_indicator']) is True:
             led_indicators_list['door_led'].source = all_values(*door_sensors_list.values())
 
     if bool(config['use_motion_sensor']) is True:
@@ -817,7 +818,7 @@ def main():
         for k, v in motion_sensors_list.items():
             v.when_motion = lambda s=k: motion_sensor_when_motion(k, **config)
             v.when_no_motion = lambda s=k: motion_sensor_when_no_motion(k, **config)
-        if bool(config['use_led_indicators']) is True:
+        if bool(config['use_motion_led_indicator']) is True:
             led_indicators_list['motion_led'].source = any_values(*motion_sensors_list.values())
 
     if bool(config['use_system_buttons']) is True:

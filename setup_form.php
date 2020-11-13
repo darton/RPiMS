@@ -6,6 +6,18 @@ if ($_POST['GPIO_16']['type'] == 'ShutdownButton') {
     $use_system_buttons = false;
 }
 
+if ($_POST['GPIO_12']['type'] == 'door_led') {
+    $use_door_led_indicator = true;
+} else {
+    $use_door_led_indicator = false;
+}
+
+if ($_POST['GPIO_18']['type'] == 'motion_led') {
+    $use_motion_led_indicator = true;
+} else {
+    $use_motion_led_indicator = false;
+}
+
 $setup = array(
     "verbose" => filter_var($_POST['verbose'], FILTER_VALIDATE_BOOLEAN),
     "use_zabbix_sender" => filter_var($_POST['use_zabbix_sender'], FILTER_VALIDATE_BOOLEAN),
@@ -14,7 +26,8 @@ $setup = array(
     "use_door_sensor" => filter_var($_POST['use_door_sensor'], FILTER_VALIDATE_BOOLEAN),
     "use_motion_sensor" => filter_var($_POST['use_motion_sensor'], FILTER_VALIDATE_BOOLEAN),
     "use_system_buttons" => filter_var($use_system_buttons, FILTER_VALIDATE_BOOLEAN),
-    "use_led_indicators" => filter_var($_POST['use_led_indicators'], FILTER_VALIDATE_BOOLEAN),
+    "use_door_led_indicator" => filter_var($use_door_led_indicator, FILTER_VALIDATE_BOOLEAN),
+    "use_motion_led_indicator" => filter_var($use_motion_led_indicator, FILTER_VALIDATE_BOOLEAN),
     "use_CPU_sensor" => filter_var($_POST['use_CPU_sensor'], FILTER_VALIDATE_BOOLEAN),
     "use_BME280_sensor" => filter_var($_POST['use_BME280_sensor'], FILTER_VALIDATE_BOOLEAN),
     "use_DS18B20_sensor" => filter_var($_POST['use_DS18B20_sensor'], FILTER_VALIDATE_BOOLEAN),
