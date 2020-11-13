@@ -52,12 +52,6 @@ $setup = array(
     "rainfall_agregation_time" => (int)$_POST['rainfall_agregation_time'],
 );
 
-$door_sensors = array();
-$system_buttons = array();
-$motion_sensors = array();
-$led_indicators = array();
-$reserved_gpio = array();
-
 $GPIO = array(
     "GPIO_5" => $_POST['GPIO_5'],
     "GPIO_6" => $_POST['GPIO_6'],
