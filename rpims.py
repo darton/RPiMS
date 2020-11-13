@@ -730,12 +730,12 @@ def main():
         print("Error connection", err)
         sys.exit(1)
 
-    # redis_db.flushdb()
+    redis_db.flushdb()
 
-    for key in redis_db.scan_iter("motion_sensor_*"):
-        redis_db.delete(key)
-    for key in redis_db.scan_iter("door_sensor_*"):
-        redis_db.delete(key)
+    #for key in redis_db.scan_iter("motion_sensor_*"):
+    #    redis_db.delete(key)
+    #for key in redis_db.scan_iter("door_sensor_*"):
+    #    redis_db.delete(key)
 
     config_yaml = config_load('/var/www/html/conf/rpims.yaml')
 
@@ -785,7 +785,7 @@ def main():
         print('')
 
     for k, v in config.items():
-        redis_db.set(k, str(v))
+        # redis_db.set(k, str(v))
         if bool(config['verbose']) is True:
             print(k + ' = ' + str(v))
 
