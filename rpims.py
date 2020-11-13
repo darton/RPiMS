@@ -132,6 +132,12 @@ def hostnamectl_sh(**kwargs):
         call(_cmd, shell=True)
 
 
+def get_hostip():
+    from subprocess import call
+    _cmd = '/home/pi/scripts/RPiMS/gethostip.sh'
+    call(_cmd, shell=True)
+
+
 def shutdown():
     from subprocess import check_call
     check_call(['sudo', 'poweroff'])
@@ -743,6 +749,8 @@ def main():
 
     if bool(config['verbose']) is True:
         print('')
+
+    get_hostip()
 
     for k, v in config.items():
         # redis_db.set(k, str(v))
