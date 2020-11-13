@@ -20,12 +20,6 @@ $rpims_api["settings"]["useDS18B20Sensor"] = $rpims["use_DS18B20_sensor"];
 $rpims_api["settings"]["useWeatherStation"] = $rpims["use_weather_station"];
 $rpims_api["settings"]["useDoorSensor"] = $rpims["use_door_sensor"];
 $rpims_api["settings"]["useMotionSensor"] = $rpims["use_motion_sensor"];
-$rpims_api["settings"]["useLedIndicators"] = $rpims["use_led_indicators"];
-//$rpims_api["settings"]["useSerialDisplay"] = $rpims["use_serial_display"];
-//$rpims_api["settings"]["serialDisplayType"] = $rpims["serial_display_type"];
-//$rpims_api["settings"]["serialDisplayRotate"] = $rpims["serial_display_rotate"];
-//$rpims_api["settings"]["serialDisplayRefreshRate"] = $rpims["serial_display_refresh_rate"];
-//$rpims_api["settings"]["serialType"] = $rpims["serial_type"];
 $rpims_api["settings"]["hostip"] = $rpims["hostip"];
 $rpims_api["settings"]["hostname"] = $rpims["hostname"];
 $rpims_api["settings"]["location"] = $rpims["location"];
@@ -69,24 +63,23 @@ if ($rpims["use_weather_station"] == "True"){
 $obj = $redis-> get('gpio');
 $gpio = json_decode($obj, true);
 
-foreach ($gpio as $key=> $value) {
-    if ($gpio[$key]["type"] == "DoorSensor" ){
-	$door_sensors[$key] = ($gpio[$key]);
-    }
-}
-foreach ($gpio as $key=> $value) {
-    if ($gpio[$key]["type"] == "MotionSensor" ){
-	$motion_sensors[$key] = ($gpio[$key]);
-    }
-}
-
 if ($rpims["use_door_sensor"] == "True"){
+    foreach ($gpio as $key=> $value) {
+	if ($gpio[$key]["type"] == "DoorSensor" ){
+	    $door_sensors[$key] = ($gpio[$key]);
+	}
+    }
     foreach ($door_sensors as $key => $value){
 	$rpims_api["sensors"]["door_sensors"]["$key"] = $rpims[$key];
     }
 }
 
 if ($rpims["use_motion_sensor"] == "True"){
+    foreach ($gpio as $key=> $value) {
+	if ($gpio[$key]["type"] == "MotionSensor" ){
+	    $motion_sensors[$key] = ($gpio[$key]);
+	}
+    }
     foreach ($motion_sensors as $key => $value){
 	$rpims_api["sensors"]["motion_sensors"]["$key"] = $rpims[$key];
     }
