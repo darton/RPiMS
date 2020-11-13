@@ -65,56 +65,6 @@ $GPIO = array(
     "GPIO_26" => $_POST['GPIO_26'],
 );
 
-$count = 1;
-foreach ($GPIO as $key => $value) {
-    if ($value['type'] == 'DoorSensor'){
-        $varname = 'door_sensor_'.$count;
-        $door_sensors[$varname]['gpio_pin'] = (int)$value['gpio_pin'];
-        $door_sensors[$varname]['hold_time'] = (int)$value['hold_time'];
-        $door_sensors[$varname]['name'] = $value['name'];
-    $count++;
-}
-}
-
-$count = 1;
-foreach ($GPIO as $key => $value) {
-    if ($value['type'] == 'Reserved'){
-        $varname = 'reserved_'.$count;
-        $reserved_gpio[$varname]['gpio_pin'] = (int)$value['gpio_pin'];
-        $reserved_gpio[$varname]['name'] = $value['name'];
-    $count++;
-}
-}
-
-$count = 1;
-foreach ($GPIO as $key => $value) {
-    if ($value['type'] == 'MotionSensor'){
-        $varname = 'motion_sensor_'.$count;
-        $motion_sensors[$varname]['gpio_pin'] = (int)$value['gpio_pin'];
-        $motion_sensors[$varname]['name'] = $value['name'];
-    $count++;
-}
-}
-
-$arrayName = 'shutdown_button';
-foreach ($GPIO as $key => $value) {
-    if ($value['type'] == 'ShutdownButton'){
-        $system_buttons[$arrayName] = [];
-        $system_buttons[$arrayName]['gpio_pin'] = (int)$value['gpio_pin'] ;
-        $system_buttons[$arrayName]['hold_time'] = (int)$value['hold_time'];
-        $system_buttons[$arrayName]['name'] = $value['name'];
-    }
-}
-
-foreach ($GPIO as $key => $value) {
-    if ($value['type'] == 'door_led'){
-        $led_indicators['door_led']['gpio_pin'] = (int)$value['gpio_pin'];
-}
-    if ($value['type'] == 'motion_led'){
-        $led_indicators['motion_led']['gpio_pin'] = (int)$value['gpio_pin'];
-}
-}
-
 $zabbix_agent = array(
     "zabbix_server" => $_POST['zabbix_server'],
     "zabbix_server_active" => $_POST['zabbix_server_active'],
@@ -130,14 +80,11 @@ $zabbix_agent = array(
     "Timeout" => (int)$_POST['Timeout'],
 );
 
-
 $rpims = array(
     "setup" => $setup,
-    "zabbix_agent"   => $zabbix_agent,
     "gpio"           => $GPIO,
+    "zabbix_agent"   => $zabbix_agent,
 );
-
-
 
 yaml_emit_file ("/var/www/html/conf/rpims.yaml", $rpims, YAML_UTF8_ENCODING, YAML_ANY_BREAK);
 exec('sudo /bin/systemctl restart rpims.service');
