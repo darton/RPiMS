@@ -100,7 +100,6 @@ $TLSConnect="TLSConnect=".$zabbix_agent["TLSConnect"]."\n";
 $TLSAccept="TLSAccept=".$zabbix_agent["TLSAccept"]."\n";
 $Timeout="Timeout=".$zabbix_agent["Timeout"]."\n";
 $TLSPSKFile="TLSPSKFile=".$zabbix_agent["TLSPSKFile"]."\n";
-
 $TLSPSK=$zabbix_agent["TLSPSK"];
 
 fwrite($zabconfile, $Server);
@@ -111,7 +110,6 @@ fwrite($zabconfile, $TLSPSKFile);
 fwrite($zabconfile, $TLSConnect);
 fwrite($zabconfile, $TLSAccept);
 fwrite($zabconfile, $Timeout);
-
 fwrite($zabpskfile, $TLSPSK);
 
 fclose($zabconfile);
