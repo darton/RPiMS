@@ -744,8 +744,11 @@ def main():
     gpio = config_yaml.get("gpio")
 
     hostnamectl_sh(**zabbix_agent)
+
     redis_db.delete('gpio')
     redis_db.set('gpio', json.dumps(gpio))
+    redis_db.delete('config')
+    redis_db.set('config', json.dumps(config))
 
     if bool(config['use_door_sensor']) is True:
         global door_sensors_list
