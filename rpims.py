@@ -738,9 +738,7 @@ def main():
     zabbix_agent = config_yaml['zabbix_agent']
     gpio = config_yaml.get("gpio")
 
-    redis_db.delete('gpio')
     redis_db.set('gpio', json.dumps(gpio))
-    redis_db.delete('config')
     redis_db.set('config', json.dumps(config))
 
     if bool(config['verbose']) is True:
