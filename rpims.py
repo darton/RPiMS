@@ -746,11 +746,13 @@ def main():
 
     redis_db.set('gpio', json.dumps(gpio))
     redis_db.set('config', json.dumps(config))
+    redis_db.set('zabbix_agent', json.dumps(zabbix_agent))
 
     if bool(config['verbose']) is True:
         print('')
 
     get_hostip()
+    hostnamectl_sh(**zabbix_agent)
 
     for k, v in config.items():
         # redis_db.set(k, str(v))
@@ -761,14 +763,12 @@ def main():
         print('')
 
     for k, v in zabbix_agent.items():
-        redis_db.set(k, str(v))
+        #redis_db.set(k, str(v))
         if bool(config['verbose']) is True:
             print(k + ' = ' + str(v))
 
     if bool(config['verbose']) is True:
         print('')
-
-    hostnamectl_sh(**zabbix_agent)
 
     if bool(config['use_door_sensor']) is True:
         global door_sensors_list
