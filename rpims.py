@@ -134,7 +134,7 @@ def hostnamectl_sh(**kwargs):
 
 def get_hostip():
     from subprocess import call
-    _cmd = '/home/pi/scripts/RPiMS/gethostip.sh'
+    _cmd = '/home/pi/scripts/RPiMS/gethostinfo.sh'
     call(_cmd, shell=True)
 
 
