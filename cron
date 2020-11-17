@@ -1,2 +1,2 @@
 # RPiMS  cron jobs
-* * * * * root  /home/pi/scripts/RPiMS/gethostinfo.sh  > /dev/null 2>&1
+* * * * * pi  /home/pi/scripts/RPiMS/gethostinfo.sh  > /dev/null 2>&1
