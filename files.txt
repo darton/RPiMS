@@ -7,6 +7,7 @@ videostreamer.sh
 videorecorder.sh
 zabbix_sender.sh
 zabbix_rpims.conf
+zabbix_rpims_userparameter.conf
 nginx-default
 index.js
 index.css
