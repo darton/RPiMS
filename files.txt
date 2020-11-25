@@ -1,5 +1,6 @@
 README.md
 rpims.py
+redis-get-data.py
 rpims.yaml
 rpims.service
 gethostinfo.sh
