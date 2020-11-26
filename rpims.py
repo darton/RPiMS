@@ -126,7 +126,9 @@ def zabbix_sender_call(message, sensor_id):
 
 def hostnamectl_sh(**kwargs):
     from subprocess import call
-    hctldict = {"hostname": "set-hostname", "location": "set-location", "chassis": "set-chassis", "deployment": "set-deployment", }
+    hctldict = {"location": "set-location", "chassis": "set-chassis", "deployment": "set-deployment", }
+    _cmd = 'sudo raspi-config nonint do_hostname' + ' "' + kwargs['hostname'] + '"'
+    call(_cmd, shell=True)
     for item in hctldict:
         _cmd = 'sudo /usr/bin/hostnamectl ' + hctldict[item] + ' "' + kwargs[item] + '"'
         call(_cmd, shell=True)
