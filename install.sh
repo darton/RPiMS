@@ -113,6 +113,7 @@ sudo apt-get -y install libgpiod2 libgpiod-dev
 sudo raspi-config nonint do_i2c 0
 sudo raspi-config nonint do_spi 0
 sudo raspi-config nonint do_onewire 0
+sudo raspi-config nonint do_camera 0
 #raspi-config nonint do_serial 1
 
 _IP=$(ip route get 1.1.1.1 | awk '{print $7}')
