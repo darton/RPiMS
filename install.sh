@@ -117,4 +117,5 @@ sudo apt-get -y install libgpiod2 libgpiod-dev
 #
 
 _IP=$(ip route get 1.1.1.1 | awk '{print $7}')
+echo ""
 echo "Open http://$_IP/setup or http://127.0.0.1 to configure RPiMS"
