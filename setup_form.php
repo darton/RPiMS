@@ -101,7 +101,6 @@ $rpims = array(
 
 yaml_emit_file ("/var/www/html/conf/rpims.yaml", $rpims, YAML_UTF8_ENCODING, YAML_ANY_BREAK);
 exec('sudo /bin/systemctl restart rpims.service');
-exec('sudo /bin/systemctl restart zabbix-agent.service');
 
 $zabconfile = fopen("/var/www/html/conf/zabbix_agentd.conf", "w") or die("Unable to open file!");
 $zabpskfile = fopen("/var/www/html/conf/zabbix_agentd.psk", "w") or die("Unable to open file!");
@@ -124,9 +123,9 @@ fwrite($zabconfile, $TLSConnect);
 fwrite($zabconfile, $TLSAccept);
 fwrite($zabconfile, $Timeout);
 fwrite($zabpskfile, $TLSPSK);
-
 fclose($zabconfile);
 fclose($zabpskfile);
+exec('sudo /bin/systemctl restart zabbix-agent.service');
 
 sleep(2);
 header("Location: /");
