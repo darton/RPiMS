@@ -119,4 +119,6 @@ sudo raspi-config nonint do_change_timezone Europe/Warsaw
 
 _IP=$(ip route get 1.1.1.1 | awk '{print $7}')
 echo ""
-echo "Open http://$_IP/setup or http://127.0.0.1 to configure RPiMS"
+echo "Run the command: sudo reboot"
+echo ""
+echo "After restarting open http://$_IP/setup or http://127.0.0.1 to configure RPiMS"
