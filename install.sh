@@ -115,3 +115,6 @@ sudo apt-get -y install libgpiod2 libgpiod-dev
 #sudo cp libgpiod_pulsein libgpiod_pulsein.bak
 #sudo cp ~/libgpiod_pulsein/src/libgpiod_pulsein ./
 #
+
+_IP=$(ip route get 1.1.1.1 | awk '{print $7}')
+echo "Open http://$_IP/setup or http://127.0.0.1 to configure RPiMS"
