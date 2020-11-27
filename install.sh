@@ -9,6 +9,13 @@ else
     exit
 fi
 
+sudo raspi-config nonint do_i2c 0
+sudo raspi-config nonint do_spi 0
+sudo raspi-config nonint do_onewire 0
+sudo raspi-config nonint do_camera 0
+#raspi-config nonint do_serial 1
+sudo raspi-config nonint do_change_timezone Europe/Warsaw
+
 sudo apt-get update && sudo apt-get upgrade -y
 
 installdir=/home/pi/scripts/RPiMS
@@ -109,13 +116,6 @@ sudo apt-get -y install libgpiod2 libgpiod-dev
 #sudo cp libgpiod_pulsein libgpiod_pulsein.bak
 #sudo cp ~/libgpiod_pulsein/src/libgpiod_pulsein ./
 #
-
-sudo raspi-config nonint do_i2c 0
-sudo raspi-config nonint do_spi 0
-sudo raspi-config nonint do_onewire 0
-sudo raspi-config nonint do_camera 0
-#raspi-config nonint do_serial 1
-sudo raspi-config nonint do_change_timezone Europe/Warsaw
 
 _IP=$(ip route get 1.1.1.1 | awk '{print $7}')
 echo ""
