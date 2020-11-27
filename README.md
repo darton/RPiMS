@@ -125,7 +125,7 @@ RPi  [VCC 3V3 - Pin 1] -- [LV] - LEVEL SHIFTER
 RPi      [GND - Pin 9] ---[GND] - LEVEL SHIFTER -------------- [GND]    DHT22
 ```
 
- - ### OLED Display
+ - ### OLED i2C Display
 ```
 RPi  [VCC 3V3 pin 1] ----------------------------- [VCC]  OLED
 RPi   [GPIO.2 pin 3] ----------------------------- [SDA]  OLED
