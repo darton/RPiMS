@@ -119,6 +119,23 @@ sudo raspi-config nonint do_change_timezone Europe/Warsaw
 
 _IP=$(ip route get 1.1.1.1 | awk '{print $7}')
 echo ""
-echo "Run the command: sudo reboot"
+echo "-------------------------------------"
+echo "Installation successfully completed !"
+echo "-------------------------------------"
 echo ""
 echo "After restarting open http://$_IP/setup or http://127.0.0.1 to configure RPiMS"
+echo ""
+echo "Do you want to reboot RPiMS now ?"
+echo ""
+
+read -r -p "$1 [y/N] " response < /dev/tty
+
+if [[ $response =~ ^(yes|y|Y)$ ]]; then
+    sudo reboot
+else
+    echo ""
+    echo "Run this command manually: sudo reboot"
+    echo ""
+    echo "After restarting open http://$_IP/setup or http://127.0.0.1 to configure RPiMS"
+    exit
+fi
