@@ -18,7 +18,15 @@ setInterval(function() {
     }
 
     if (data['settings']['useCpuSensor'] == true) {
-	$("#CPU_Temperature").html(roundPrecised(data['sensors']['CPU']['temperature'],1));
+        var CPUTEMP = data['sensors']['CPU']['temperature'];
+	if (!!CPUTEMP){
+	    $("#CPU_Temperature").html(roundPrecised(CPUTEMP,1));
+	    $("#CPU_Temperature_unit").html("°C");
+        }
+	else {
+	    $("#CPU_Temperature").html('NaN');
+	    $("#CPU_Temperature_unit").html('');
+	}
     }
 
     if (data['settings']['useBME280Sensor'] == true) {
@@ -104,9 +112,16 @@ const g11 = document.querySelector("#g11");
 const g12 = document.querySelector("#g12");
 
 if (data['settings']['useBME280Sensor'] == true) {
+    if (!!BME280Temperature) {
     setGaugeValue(g1, BME280Temperature/100, 100, "°C");
     setGaugeValue(g2, BME280Humidity/100, 100, "%");
     setGaugeValue(g3, BME280Pressure/1100, 1100, "hPa");
+}
+else {
+    setGaugeValue(g1, "NULL", "", "");
+    setGaugeValue(g2, "NULL", "", "");
+    setGaugeValue(g3, "NULL", "", "");
+}
 }
 
 if (data['settings']['useWeatherStation'] == true) {
@@ -126,8 +141,13 @@ if (data['settings']['useDS18B20Sensor'] == true) {
     var sensor_name = DS18B20_prefix + DS18B20_id;
     var sensor_value = DS18B20[DS18B20_id];
     //console.log(eval(sensor_name));
+    if (!!sensor_value) {
     setGaugeValue(eval(sensor_name), sensor_value/100, 100, "°C");
-}
+    }
+    else {
+    setGaugeValue(eval(sensor_name), "NULL", "", "");
+    }
+    }
 }
 });
 }, 500);

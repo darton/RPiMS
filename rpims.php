@@ -41,9 +41,9 @@ if ($config["use_CPU_sensor"] == true){
 if ($config["use_BME280_sensor"] == true){
     $rpims_api["sensors"]["BME280"]["i2cAddress"] = $config["BME280_i2c_address"];
     $rpims_api["sensors"]["BME280"]["readInterval"] = $config["BME280_read_interval"];
-    $rpims_api["sensors"]["BME280"]["temperature"] = round($rpims["BME280_Temperature"],2);
-    $rpims_api["sensors"]["BME280"]["humidity"] = round($rpims["BME280_Humidity"],2);
-    $rpims_api["sensors"]["BME280"]["pressure"] = round($rpims["BME280_Pressure"],1);
+    $rpims_api["sensors"]["BME280"]["temperature"] = $rpims["BME280_Temperature"];
+    $rpims_api["sensors"]["BME280"]["humidity"] = $rpims["BME280_Humidity"];
+    $rpims_api["sensors"]["BME280"]["pressure"] = $rpims["BME280_Pressure"];
 }
 
 if ($config["use_DHT_sensor"] == true){
@@ -97,7 +97,7 @@ if ($config["use_DS18B20_sensor"] == true){
     $rpims_api["sensors"]["DS18B20_sensors"]["readInterval"] = $config["DS18B20_read_interval"];
     $DS18B20_sensors = $redis->smembers('DS18B20_sensors');
     foreach ($DS18B20_sensors as $key => $value){
-	$rpims_api["sensors"]["DS18B20_sensors"]["array"]["$value"] = round($rpims[$value],2);
+	$rpims_api["sensors"]["DS18B20_sensors"]["array"]["$value"] = $rpims[$value];
 	}
     }
 
