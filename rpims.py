@@ -154,6 +154,7 @@ def get_cputemp_data(**kwargs):
         while True:
             data = CPUTemperature()
             redis_db.set('CPU_Temperature', data.temperature)
+            redis_db.expire('CPU_Temperature', read_interval*2)
             if bool(verbose) is True:
                 print('CPU temperature: {0:0.1f}'.format(data.temperature), chr(176)+'C', sep='')
                 print("")
@@ -176,6 +177,9 @@ def get_bme280_data(**kwargs):
             calibration_params = bme280.load_calibration_params(bus, address)
             data = bme280.sample(bus, address, calibration_params)
             redis_db.mset({'BME280_Humidity': data.humidity, 'BME280_Temperature': data.temperature, 'BME280_Pressure': data.pressure})
+            redis_db.expire('BME280_Temperature', read_interval*2)
+            redis_db.expire('BME280_Humidity', read_interval*2)
+            redis_db.expire('BME280_Pressure', read_interval*2)
             if bool(verbose) is True:
                 print('')
                 print('BME280 Humidity: {0:0.0f}%'.format(data.humidity))
@@ -203,7 +207,7 @@ def get_ds18b20_data(**kwargs):
                 if bool(verbose) is True:
                     print("Sensor %s temperature %.2f" % (sensor.id, sensor.get_temperature()), "\xb0C")
                     print("")
-            redis_db.expire('DS18B20_sensors', read_interval*3)
+            redis_db.expire('DS18B20_sensors', read_interval*2)
             sleep(read_interval)
     except Exception as err:
         print('Problem with ' + str(err))
@@ -228,6 +232,8 @@ def get_dht_data(**kwargs):
             temperature = dht_device.temperature
             humidity = dht_device.humidity
             redis_db.mset({'DHT_Humidity': humidity, 'DHT_Temperature': temperature, })
+            redis_db.expire('DHT_Humidity', read_interval*2)
+            redis_db.expire('DHT_Temperature', read_interval*2)
             if bool(verbose) is True:
                 print(dht_type + " Temperature: {:.1f}°C ".format(temperature))
                 print(dht_type + " Humidity: {}% ".format(humidity))
