@@ -98,7 +98,7 @@ RPi  [GPIO.4 - Pin 7] ----------------------------- [DATA]   DS18B20
 RPi     [GND - Pin 9] ----------------------------- [GND]    DS18B20
 ```
 
- - ### Temperature and Humidity Sensor DHT11/DHT22/AM2302 (NOT RECOMMENDED, POOR QUALITY, UNSTABLE MEASUREMENTS)
+ - ### Temperature and Humidity Sensor DHT11/DHT22/AM2302 (NOT RECOMMENDED, UNSTABLE MEASUREMENTS)
 ```
 RPi  [VCC 3V3 - Pin 1] -----------------------------  [VCC]    DHT22
                                                |
