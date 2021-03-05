@@ -34,7 +34,7 @@ curl -sS https://www.w3schools.com/w3css/4/w3.css > $installdir/w3.css
 curl -ss https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js > $installdir/jquery.min.js
 chmod u+x $installdir/*.py $installdir/*.sh
 
-sudo apt-get -y install git python3-gpiozero python3-pip build-essential python3-dev python3-numpy python3-picamera python3-w1thermsensor python3-automationhat
+sudo apt-get -y install git python3-gpiozero python3-pip build-essential python3-dev python3-numpy python3-picamera python3-w1thermsensor python3-automationhat python3-systemd
 sudo apt-get -y install libfreetype6-dev libopenjp2-7 libtiff5 libjpeg-dev vlc ffmpeg gpac fbi
 
 sudo python3 -m pip install --upgrade pip setuptools wheel
