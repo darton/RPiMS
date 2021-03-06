@@ -19,7 +19,7 @@ def door_action_closed(door_id, **kwargs):
     lconfig = dict(kwargs)
     redis_db.set(str(door_id), 'close')
     if bool(kwargs['verbose']) is True:
-        print("The " + str(door_id) + " has been closed!")
+        print(f'The {door_id} has been closed!')
     if bool(kwargs['use_zabbix_sender']) is True:
         zabbix_sender_call('info_when_door_has_been_closed', door_id)
     if bool(kwargs['use_picamera']) is True:
@@ -30,7 +30,7 @@ def door_action_closed(door_id, **kwargs):
 def door_action_opened(door_id, **kwargs):
     redis_db.set(str(door_id), 'open')
     if bool(kwargs['verbose']) is True:
-        print("The " + str(door_id) + " has been opened!")
+        print(f'The {door_id} has been opened!')
     if bool(kwargs['use_zabbix_sender']) is True:
         zabbix_sender_call('info_when_door_has_been_opened', door_id)
     if bool(kwargs['use_picamera']) is True:
@@ -43,7 +43,7 @@ def door_action_opened(door_id, **kwargs):
 def door_status_open(door_id, **kwargs):
     redis_db.set(str(door_id), 'open')
     if bool(kwargs['verbose']) is True:
-        print("The " + str(door_id) + " is opened!")
+        print(f'The {door_id} is opened!')
     if bool(kwargs['use_zabbix_sender']) is True:
         zabbix_sender_call('info_when_door_is_opened', door_id)
     if bool(kwargs['use_picamera']) is True:
@@ -54,7 +54,7 @@ def door_status_close(door_id, **kwargs):
     lconfig = dict(kwargs)
     redis_db.set(str(door_id), 'close')
     if bool(kwargs['verbose']) is True:
-        print("The " + str(door_id) + " is closed!")
+        print(f'The {door_id} is closed!')
     if bool(kwargs['use_zabbix_sender']) is True:
         zabbix_sender_call('info_when_door_is_closed', door_id)
     if bool(kwargs['use_picamera']) is True:
@@ -65,7 +65,7 @@ def door_status_close(door_id, **kwargs):
 def motion_sensor_when_motion(ms_id, **kwargs):
     redis_db.set(str(ms_id), 'motion')
     if bool(kwargs['verbose']) is True:
-        print("The " + str(ms_id) + ": motion was detected")
+        print(f'The {ms_id} : motion was detected!')
     if bool(kwargs['use_zabbix_sender']) is True:
         zabbix_sender_call('info_when_motion', ms_id)
     if bool(kwargs['use_picamera']) is True:
@@ -76,7 +76,7 @@ def motion_sensor_when_no_motion(ms_id, **kwargs):
     lconfig = dict(kwargs)
     redis_db.set(str(ms_id), 'nomotion')
     if bool(kwargs['verbose']) is True:
-        print("The " + str(ms_id) + ": no motion")
+        print(f'The {ms_id} : no motion')
     if bool(kwargs['use_picamera']) is True:
         if detect_no_alarms(**lconfig):
             av_stream('stop')
@@ -157,10 +157,10 @@ def get_cputemp_data(**kwargs):
             redis_db.expire('CPU_Temperature', read_interval*2)
             if bool(verbose) is True:
                 print('CPU temperature: {0:0.1f}'.format(data.temperature), chr(176)+'C', sep='')
-                print("")
+                print('')
             sleep(read_interval)
     except Exception as err:
-        print('Problem with ' + str(err))
+        print(f'Problem with {err}')
 
 
 def get_bme280_data(**kwargs):
@@ -185,10 +185,10 @@ def get_bme280_data(**kwargs):
                 print('BME280 Humidity: {0:0.0f}%'.format(data.humidity))
                 print('BME280 Temperature: {0:0.1f}\xb0C'.format(data.temperature))
                 print('BME280 Pressure: {0:0.0f}hPa'.format(data.pressure))
-                print("")
+                print('')
             sleep(read_interval)
     except Exception as err:
-        print('Problem with ' + str(err))
+        print(f'Problem with {err}')
 
 
 def get_ds18b20_data(**kwargs):
@@ -206,11 +206,11 @@ def get_ds18b20_data(**kwargs):
                 redis_db.expire(sensor.id, read_interval*2)
                 if bool(verbose) is True:
                     print("Sensor %s temperature %.2f" % (sensor.id, sensor.get_temperature()), "\xb0C")
-                    print("")
+                    print('')
             redis_db.expire('DS18B20_sensors', read_interval*2)
             sleep(read_interval)
     except Exception as err:
-        print('Problem with ' + str(err))
+        print(f'Problem with {err}')
 
 
 def get_dht_data(**kwargs):
@@ -237,21 +237,21 @@ def get_dht_data(**kwargs):
             if bool(verbose) is True:
                 print(dht_type + " Temperature: {:.1f}°C ".format(temperature))
                 print(dht_type + " Humidity: {}% ".format(humidity))
-                print("")
+                print('')
             delay -= 1
             if delay < 0:
                 delay = 0
         except OverflowError as error:
             if debug is 'yes':
-                print("DHT - " + str(error))
+                print(f'DHT - {error}')
             delay += 1
         except  RuntimeError as error:
             if debug is 'yes':
-                print("DHT - " + str(error))
+                print(f'DHT - {error}')
             delay += 1
         finally:
             if debug is 'yes':
-                print("DHT delay: " + str(delay))
+                print(f'DHT delay: {delay}')
             redis_db.set('DHT_delay', delay)
             sleep(read_interval+delay)
 
@@ -444,7 +444,7 @@ def rainfall(**kwargs):
             rainfalls.append(calculate_rainfall())
         daily_rainfall = round(math.fsum(rainfalls), 1)
         if bool(kwargs['verbose']) is True:
-            print("Rainfall: " + str(rainfall) + " mm ", "Daily rainfall: " + str(daily_rainfall) + " mm")
+            print(f'Rainfall: {rainfall}mm, Daily rainfall: {daily_rainfall}mm')
         redis_db.mset({'daily_rainfall': daily_rainfall, 'rainfall': rainfall})
 
 
@@ -500,7 +500,7 @@ def wind_speed(**kwargs):
         daily_average_wind_speed = round(statistics.mean(average_wind_speeds), 1)
 
         if bool(kwargs['verbose']) is True:
-            print("Wind speed " + str(wind_speed) + " km/h", " Wind gust: " + str(wind_gust) + "km/h", "Daily wind gust: " + str(daily_wind_gust) + "km/h", " Average wind speed: " + str(average_wind_speed) + " km/h", "Daily average wind speed: " + str(daily_average_wind_speed) + " km/h")
+            print(f'Wind speed:{wind_speed}km/h, Wind gust:{wind_gust}km/h, Daily wind gust:{daily_wind_gust}km/h, Average wind speed:{average_wind_speed}km/h, Daily average wind speed:{daily_average_wind_speed}km/h')
         redis_db.mset({'wind_speed': wind_speed, 'wind_gust': wind_gust, 'daily_wind_gust': daily_wind_gust, 'average_wind_speed': average_wind_speed, 'daily_average_wind_speed': daily_average_wind_speed})
 
 
@@ -668,12 +668,12 @@ def wind_direction(**kwargs):
                 r2 = int(r1/(1 - uout/uin))
                 # print(r2,uin,uout)
             else:
-                print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-                print("Uin = ", uin)
-                print("Uout = ", uout)
-                print("Check sensor connections to ADC")
-                print("Wind Direction Meter program was terminated")
-                print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+                print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+                print(f'Uin = {uin}')
+                print(f'Uout = {uout}')
+                print('Check sensor connections to ADC')
+                print('Wind Direction Meter program was terminated')
+                print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
                 quit()
             for item in direction_mapr:
                 if (r2 <= direction_mapr.get(item) * 1.005) and (r2 >= direction_mapr.get(item) * 0.995):
@@ -681,7 +681,7 @@ def wind_direction(**kwargs):
         if len(angles) != 0:
             average_wind_direction = int(round(get_average(angles), 0))
             if bool(kwargs['verbose']) is True:
-                print("Average Wind Direction: " + str(average_wind_direction))
+                print(f'Average Wind Direction: {average_wind_direction}')
             redis_db.mset({'average_wind_direction': average_wind_direction, 'wind_direction': item})
 
 
@@ -699,26 +699,33 @@ def multiprocessing_function(function_name, **kwargs):
 
 
 def db_connect(dbhost, dbnum):
+    import redis
+    import sys
+    global redis_db
+    from systemd import journal
+
     try:
-        import redis
-        import sys
-        global redis_db
         redis_db = redis.StrictRedis(host=dbhost, port=6379, db=str(dbnum), charset="utf-8", decode_responses=True)
-    except Exception as err:
-        print('Problem with connection to database', err)
-        sys.exit(1)
+        redis_db.ping()
+    except:
+        error = f"Can't connect to RedisDB host: {dbhost}"
+        journal.send(error)
+        sys.exit(error)
 
 
 def config_load(path_to_config):
     import sys
+    from systemd import journal
+
     try:
         import yaml
         with open(path_to_config, mode='r') as file:
             config_yaml = yaml.full_load(file)
         return config_yaml
-    except Exception as err:
-        print('Problem with ' + str(err))
-        sys.exit(1)
+    except:
+        error = f"Can't load RPiMS config file: {path_to_config}"
+        journal.send(error)
+        sys.exit(error)
 
 
 def use_logger():
@@ -737,45 +744,30 @@ def main():
     import json
     import sys
 
+    print('')
     print('# RPiMS is running #')
-    try:
-        db_connect('localhost', 0)
-    except Exception as err:
-        print("Error connection", err)
-        sys.exit(1)
+    print('')
 
-    redis_db.flushdb()
+    db_connect('localhost', 0)
 
     config_yaml = config_load('/var/www/html/conf/rpims.yaml')
-
     config = config_yaml['setup']
     zabbix_agent = config_yaml['zabbix_agent']
     gpio = config_yaml.get("gpio")
 
+    redis_db.flushdb()
     redis_db.set('gpio', json.dumps(gpio))
     redis_db.set('config', json.dumps(config))
     redis_db.set('zabbix_agent', json.dumps(zabbix_agent))
 
-    if bool(config['verbose']) is True:
-        print('')
-
     get_hostip()
     hostnamectl_sh(**zabbix_agent)
 
-    for k, v in config.items():
-        # redis_db.set(k, str(v))
-        if bool(config['verbose']) is True:
-            print(k + ' = ' + str(v))
-
     if bool(config['verbose']) is True:
-        print('')
-
-    for k, v in zabbix_agent.items():
-        #redis_db.set(k, str(v))
-        if bool(config['verbose']) is True:
-            print(k + ' = ' + str(v))
-
-    if bool(config['verbose']) is True:
+        for k, v in config.items():
+            print(f'{k} = {v}')
+        for k, v in zabbix_agent.items():
+            print(f'{k} = {v}')
         print('')
 
     if bool(config['use_door_sensor']) is True:
@@ -864,4 +856,8 @@ def main():
 
 # --- Main program ---
 if __name__ == '__main__':
-    main()
+    try:
+        main()
+    except KeyboardInterrupt:
+        print('')
+        print('# RPiMS is stopped #')
