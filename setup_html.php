@@ -24,9 +24,9 @@
 </head>
 
 <body>
-<div class="w3-responsive">
+<div>
 
-<form action="setup_form.php" method="post" class="w3-container">
+<form action="setup_form.php" method="post">
 
 <fieldset>
 <legend>System configuration</legend>

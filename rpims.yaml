@@ -7,8 +7,8 @@ setup:
   use_door_sensor: true
   use_motion_sensor: true
   use_system_buttons: true
-  use_door_led_indicator: false
-  use_motion_led_indicator: false
+  use_door_led_indicator: true
+  use_motion_led_indicator: true
   use_CPU_sensor: true
   use_BME280_sensor: false
   use_DS18B20_sensor: false
@@ -32,7 +32,7 @@ setup:
   winddirection_acquisition_time: 6
   winddirection_adc_type: AutomationPhat
   winddirection_adc_input: 1
-  reference_voltage_adc_input: 1
+  reference_voltage_adc_input: 2
   rainfall_sensor_pin: 22
   rainfall_acquisition_time: 6
   rainfall_agregation_time: 86400
@@ -40,50 +40,50 @@ gpio:
   GPIO_5:
     gpio_pin: "5"
     type: DoorSensor
-    name: hall
+    name: GPIO 5
     hold_time: "1"
   GPIO_6:
     gpio_pin: "6"
     type: DoorSensor
-    name: front door
+    name: GPIO 6
     hold_time: "1"
   GPIO_12:
     gpio_pin: "12"
-    type: led
+    type: door_led
     name: door led
   GPIO_13:
     gpio_pin: "13"
     type: DoorSensor
-    name: back door
+    name: GPIO 13
     hold_time: "1"
   GPIO_16:
     gpio_pin: "16"
     type: ShutdownButton
-    name: button
+    name: GPIO 16
     hold_time: "5"
   GPIO_18:
     gpio_pin: "18"
-    type: led
+    type: motion_led
     name: motion led
   GPIO_19:
     gpio_pin: "19"
     type: MotionSensor
-    name: window
+    name: GPIO 19
     hold_time: "1"
   GPIO_20:
     gpio_pin: "20"
     type: MotionSensor
-    name: saloon
+    name: GPIO 20
     hold_time: "1"
   GPIO_21:
     gpio_pin: "21"
     type: MotionSensor
-    name: bathroom
+    name: GPIO 21
     hold_time: "1"
   GPIO_26:
     gpio_pin: "26"
-    type: MotionSensor
-    name: not used
+    type: Reserved
+    name: GPIO 26
     hold_time: "1"
 zabbix_agent:
   zabbix_server: zabbix.example.com
@@ -92,10 +92,10 @@ zabbix_agent:
   hostname: rpims.example.com
   chassis: embedded
   deployment: RPiMS
-  TLSPSKIdentity: 4c645d397b56b9
+  TLSPSKIdentity: 1729d9cf8cf7e411
   TLSConnect: psk
   TLSAccept: psk
-  TLSPSK: 7361e125d274304b12bb6f32c55c5073fef379489b48527993666721dd
+  TLSPSK: 239e8d24f586b2bce5601cbff611ecc40c27154e9f2b1b19c283e582614
   TLSPSKFile: /var/www/html/conf/zabbix_agentd.psk
   Timeout: 3
 ...
