@@ -592,7 +592,9 @@
 </fieldset>
 
 <fieldset>
+<div>
 <input type="submit" value="Save" class="w3-bar">
+</div>
 </fieldset>
 
 </form>
