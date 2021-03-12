@@ -856,8 +856,12 @@ def main():
 
 # --- Main program ---
 if __name__ == '__main__':
+    from pid import PidFile
     try:
-        main()
+        with PidFile(piddir='/home/pi/scripts/RPiMS/'):
+            main()
     except KeyboardInterrupt:
         print('')
         print('# RPiMS is stopped #')
+    except :
+        print('Another instance of RPiMS is already running. Application will now close.')
