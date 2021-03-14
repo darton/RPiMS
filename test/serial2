@@ -13,4 +13,4 @@ def serial_data(port, baudrate):
 
 
 for line in serial_data('/dev/ttyACM0', 38400):
-    print(line)
+    print(line.decode('utf-8'))
