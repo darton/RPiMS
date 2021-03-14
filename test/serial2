@@ -1,0 +1,16 @@
+#!/usr/bin/env python3
+
+import time
+import serial
+
+def serial_data(port, baudrate):
+    ser = serial.Serial(port, baudrate)
+
+    while True:
+        yield ser.readline()
+
+    ser.close()
+
+
+for line in serial_data('/dev/ttyACM0', 38400):
+    print(line)
