@@ -13,4 +13,8 @@ def serial_data(port, baudrate):
 
 
 for line in serial_data('/dev/ttyACM0', 38400):
-    print(line.decode('utf-8'))
+    msg = line.decode('utf-8').split()
+    print(f'Temperature: {msg[0]} °C, Humidity: {msg[1]} %, Pressure: {msg[2]} hPa')
+#    msg = line.decode('utf-8')
+#    print(f'Temperature: {msg.split()[0]} °C, Humidity: {msg.split()[1]} %, Pressure: {msg.split()[2]} hPa')
+#    print(msg)
