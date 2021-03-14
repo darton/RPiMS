@@ -14,5 +14,5 @@ ser = serial.Serial(
 counter = 0
 while counter < 10:
     x=ser.readline()
-    print(x)
+    print(x.decode('utf-8'))
     counter += 1
