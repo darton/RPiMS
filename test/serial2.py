@@ -5,14 +5,14 @@ import serial
 import redis
 from rpims import db_connect
 
+
 redis_db = db_connect('localhost', 0)
+
 
 def serial_data(port, baudrate):
     ser = serial.Serial(port, baudrate)
-
     while True:
         yield ser.readline()
-
     ser.close()
 
 
