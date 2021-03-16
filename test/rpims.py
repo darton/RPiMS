@@ -713,7 +713,6 @@ def db_connect(dbhost, dbnum):
     from systemd import journal
 
     try:
-        #global redis_db
         redis_db = redis.StrictRedis(host=dbhost, port=6379, db=str(dbnum), charset="utf-8", decode_responses=True)
         redis_db.ping()
         return redis_db
@@ -761,9 +760,10 @@ def main():
     redis_db = db_connect('localhost', 0)
 
     config_yaml = config_load('/var/www/html/conf/rpims.yaml')
+
+    gpio = config_yaml.get("gpio")
     config = config_yaml['setup']
     zabbix_agent = config_yaml['zabbix_agent']
-    gpio = config_yaml.get("gpio")
 
     redis_db.flushdb()
     redis_db.set('gpio', json.dumps(gpio))
@@ -866,8 +866,13 @@ def main():
 
 # --- Main program ---
 if __name__ == '__main__':
+    from pid import PidFile
     try:
-        main()
+        with PidFile(piddir='/home/pi/scripts/RPiMS/'):
+            main()
     except KeyboardInterrupt:
         print('')
         print('# RPiMS is stopped #')
+    except Ecsception as err:
+        print('Another instance of RPiMS is already running. RPiMS will now close.')
+        print(err)

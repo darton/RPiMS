@@ -49,4 +49,24 @@ $('.gpioinputs').change(function(){
             }
         });
 
+$('#BME280_interface').change(function(){
+            var selectedInterfacetype = $(this).children("option:selected").val();
+            if (selectedInterfacetype == 'i2c') {
+                $("#BME280_i2c_address").show();
+            }
+            else {
+                $("#BME280_i2c_address").hide();
+            }
+        });
+
+
+$('#BME280_interface').each(function(){
+            var selectedInterfacetype = $(this).children("option:selected").val();
+            if (selectedInterfacetype == 'i2c') {
+                $("#BME280_i2c_address").show();
+            }
+            else {
+                $("#BME280_i2c_address").hide();
+            }
+        });
 });

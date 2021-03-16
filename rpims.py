@@ -160,36 +160,55 @@ def get_cputemp_data(**kwargs):
                 print('')
             sleep(read_interval)
     except Exception as err:
-        print(f'Problem with {err}')
+        print(f'Problem with CPU sensor: {err}')
 
 
 def get_bme280_data(**kwargs):
+    from time import sleep
     verbose = kwargs['verbose']
     read_interval = kwargs['BME280_read_interval']
-    try:
-        import smbus2
-        import bme280
-        from time import sleep
-        port = 1
-        address = kwargs['BME280_i2c_address']
-        bus = smbus2.SMBus(port)
-        while True:
-            calibration_params = bme280.load_calibration_params(bus, address)
-            data = bme280.sample(bus, address, calibration_params)
-            redis_db.mset({'BME280_Humidity': data.humidity, 'BME280_Temperature': data.temperature, 'BME280_Pressure': data.pressure})
+    interface_type = kwargs['BME280_interface']
+
+    if interface_type == 'i2c':
+        try:
+            import smbus2
+            import bme280
+            port = 1
+            address = kwargs['BME280_i2c_address']
+            bus = smbus2.SMBus(port)
+            while True:
+                calibration_params = bme280.load_calibration_params(bus, address)
+                data = bme280.sample(bus, address, calibration_params)
+                redis_db.mset({'BME280_Humidity': data.humidity, 'BME280_Temperature': data.temperature, 'BME280_Pressure': data.pressure})
+                redis_db.expire('BME280_Temperature', read_interval*2)
+                redis_db.expire('BME280_Humidity', read_interval*2)
+                redis_db.expire('BME280_Pressure', read_interval*2)
+                if bool(verbose) is True:
+                    print('')
+                    print('BME280 Temperature: {0:0.1f}\xb0C'.format(data.temperature))
+                    print('BME280 Humidity: {0:0.0f}%'.format(data.humidity))
+                    print('BME280 Pressure: {0:0.0f}hPa'.format(data.pressure))
+                    print('')
+                sleep(read_interval)
+        except Exception as err:
+            print(f'Problem with sensor BME280: {err}')
+
+    if interface_type == 'serial':
+        def serial_data(port, baudrate):
+            import serial
+            ser = serial.Serial(port, baudrate)
+            while True:
+                yield ser.readline()
+
+        for line in serial_data('/dev/ttyACM0', 38400):
+            msg = line.decode('utf-8').split()
+            redis_db.mset({'BME280_Temperature': msg[0], 'BME280_Humidity': msg[1], 'BME280_Pressure': msg[2]})
             redis_db.expire('BME280_Temperature', read_interval*2)
             redis_db.expire('BME280_Humidity', read_interval*2)
             redis_db.expire('BME280_Pressure', read_interval*2)
             if bool(verbose) is True:
-                print('')
-                print('BME280 Humidity: {0:0.0f}%'.format(data.humidity))
-                print('BME280 Temperature: {0:0.1f}\xb0C'.format(data.temperature))
-                print('BME280 Pressure: {0:0.0f}hPa'.format(data.pressure))
-                print('')
+                print(f'BME280 on serial: Temperature: {msg[0]} °C, Humidity: {msg[1]} %, Pressure: {msg[2]} hPa')
             sleep(read_interval)
-    except Exception as err:
-        print(f'Problem with {err}')
-
 
 def get_ds18b20_data(**kwargs):
     verbose = kwargs['verbose']
@@ -210,7 +229,7 @@ def get_ds18b20_data(**kwargs):
             redis_db.expire('DS18B20_sensors', read_interval*2)
             sleep(read_interval)
     except Exception as err:
-        print(f'Problem with {err}')
+        print(f'Problem with sensor DS18B20: {err}')
 
 
 def get_dht_data(**kwargs):
@@ -243,11 +262,11 @@ def get_dht_data(**kwargs):
                 delay = 0
         except OverflowError as error:
             if debug is 'yes':
-                print(f'DHT - {error}')
+                print(f'Problem with DHT sensor: {error}')
             delay += 1
         except  RuntimeError as error:
             if debug is 'yes':
-                print(f'DHT - {error}')
+                print(f'Problem with DHT sensor - {error}')
             delay += 1
         finally:
             if debug is 'yes':
@@ -701,12 +720,12 @@ def multiprocessing_function(function_name, **kwargs):
 def db_connect(dbhost, dbnum):
     import redis
     import sys
-    global redis_db
     from systemd import journal
 
     try:
         redis_db = redis.StrictRedis(host=dbhost, port=6379, db=str(dbnum), charset="utf-8", decode_responses=True)
         redis_db.ping()
+        return redis_db
     except:
         error = f"Can't connect to RedisDB host: {dbhost}"
         journal.send(error)
@@ -748,7 +767,8 @@ def main():
     print('# RPiMS is running #')
     print('')
 
-    db_connect('localhost', 0)
+    global redis_db
+    redis_db = db_connect('localhost', 0)
 
     config_yaml = config_load('/var/www/html/conf/rpims.yaml')
     config = config_yaml['setup']
@@ -858,10 +878,10 @@ def main():
 if __name__ == '__main__':
     from pid import PidFile
     try:
-        with PidFile(piddir='/home/pi/scripts/RPiMS/'):
+        with PidFile('/home/pi/scripts/RPiMS/rpims.pid'):
             main()
     except KeyboardInterrupt:
         print('')
         print('# RPiMS is stopped #')
-    except :
-        print('Another instance of RPiMS is already running. Application will now close.')
+    except Exception as err :
+        print(f'Another instance of RPiMS is already running. RPiMS will now close. {err}')

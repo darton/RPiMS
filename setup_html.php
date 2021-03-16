@@ -214,11 +214,19 @@
 <input name="BME280_read_interval" class="w3-input" id="BME280_read_interval" type="number" min="1" max="3600" value="<?= $BME280_read_interval ?>" >
 </td>
 <td>
-<label for="BME280_i2c_address">I2c address:</label>
-<select name="BME280_i2c_address" class="w3-input" id="BME280_i2c_address">
+<label for="BME280_interface">Interface type:</label>
+<select name="BME280_interface" class="w3-input" id="BME280_interface">
+<option <?php if ($BME280_interface == 'i2c') echo 'selected="selected"'; ?> value = "i2c" >i2c</option>
+<option <?php if ($BME280_interface == 'serial') echo 'selected="selected"'; ?> value = "serial" >serial</option>
+</select>
+</td>
+<td>
+<label id="BME280_i2c_address">I2c address:
+<select name="BME280_i2c_address" class="w3-input" >
 <option <?php if ($BME280_i2c_address == '118') echo 'selected="selected"'; ?> value = "118" >0x76</option>
 <option <?php if ($BME280_i2c_address == '119') echo 'selected="selected"'; ?> value = "119" >0x77</option>
 </select>
+</label>
 </td>
 </tr>
 

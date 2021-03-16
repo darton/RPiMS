@@ -31,8 +31,9 @@ $serial_display_rotate = $rpims['setup']['serial_display_rotate'];
 
 $CPUtemp_read_interval = $rpims['setup']['CPUtemp_read_interval'];
 
-$BME280_i2c_address = $rpims['setup']['BME280_i2c_address'];
+$BME280_interface = $rpims['setup']['BME280_interface'];
 $BME280_read_interval = $rpims['setup']['BME280_read_interval'];
+$BME280_i2c_address = $rpims['setup']['BME280_i2c_address'];
 
 $DS18B20_read_interval = $rpims['setup']['DS18B20_read_interval'];
 
