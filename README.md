@@ -224,7 +224,8 @@ Optional
 * [RPi - Setting up a wireless LAN via the command line](https://www.raspberrypi.org/documentation/configuration/wireless/wireless-cli.md)
 
 * [Moduł 8-Channel 12-Bit ADC, Seeed Studio](https://pl.rs-online.com/web/p/products/1887099/)
-
+ 
+* [Setup Camera with V4L2, FFMPEG, and PiCamera](https://www.codeinsideout.com/posts/raspberrypi/setup_camera/)
 ## Configure if you have RTC (DS3231 I2C)
 
 1. I2C interface should be enabled. 
