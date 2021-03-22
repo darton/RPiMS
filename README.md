@@ -226,6 +226,10 @@ Optional
 * [Moduł 8-Channel 12-Bit ADC, Seeed Studio](https://pl.rs-online.com/web/p/products/1887099/)
  
 * [Setup Camera with V4L2, FFMPEG, and PiCamera](https://www.codeinsideout.com/posts/raspberrypi/setup_camera/)
+
+* [A Raspberry Pi Streaming Camera using MPEG-DASH, HLS or RTSP](https://codecalamity.com/a-raspberry-pi-streaming-camera-using-mpeg-dash-hls-or-rtsp/)
+
+
 ## Configure if you have RTC (DS3231 I2C)
 
 1. I2C interface should be enabled. 
