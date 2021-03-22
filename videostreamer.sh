@@ -18,7 +18,9 @@ function stream_on {
     vlc_pid=$(pidof vlc)
 
     if ([ ! -n "$raspivid_pid" ] && [ ! -n "$vlc_pid" ]) then
-        raspivid -o - -t 0 -n -a 8 -rot 270 -a "$location %Y-%m-%d %X" -fps 30 | cvlc --rtsp-timeout 10 -vvv stream:///dev/stdin --sout '#rtp{sdp=rtsp://:8554}' :demux=h264 --h264-fps=30 &
+        #raspivid -o - -t 0 -n -a 8 -rot 270 -a "$location %Y-%m-%d %X" -fps 30 | cvlc --rtsp-timeout 10 -vvv stream:///dev/stdin --sout '#rtp{sdp=rtsp://:8554}' :demux=h264 --h264-fps=30 &
+        raspivid -o - -t 0 -n -w 1280 -h 1024 -fps 30 | cvlc --rtsp-timeout 1000 -vvv stream:///dev/stdin --sout '#rtp{sdp=rtsp://:8554/}' :demux=h264 --h264-fps=30 --sout-rtsp-user rpims --sout-rtsp-pwd password &
+        #raspivid -o - -t 0 -n -w 1440 -h 1080 -fps 24 | cvlc --rtsp-timeout 1000 -vvv stream:///dev/stdin --sout '#rtp{sdp=rtsp://:8554/}' :demux=h264 --h264-fps=24 --sout-rtsp-user username --sout-rtsp-pwd password
     fi
 
 }
