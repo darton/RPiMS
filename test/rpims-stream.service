@@ -1,0 +1,11 @@
+#
+[Unit]
+Description=RPiMS Camera Streaming Service
+After=network.target rc-local.service
+[Service]
+Restart=always
+RestartSec=20s
+ExecStart=/home/pi/scripts/RPiMS/videostream.sh start
+
+[Install]
+WantedBy=multi-user.target
