@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset=utf-8 />
+    <title>HLS Live Stream</title>
+  </head>
+  <body>
+    <script src="hls.js"></script>
+    <video id="video" controls autoplay></video>
+    <script>
+      var video = document.getElementById('video');
+      var videoSrc = 'live.m3u8';
+
+      // First check for native browser HLS support
+      if (video.canPlayType('application/vnd.apple.mpegurl')) {
+        video.src = videoSrc;
+      }
+
+      // If no native HLS support, check if hls.js is supported
+      else if (Hls.isSupported()) {
+        var config = Hls.DefaultConfig;
+        config.liveSyncDurationCount = 1;
+        config.startFragPrefetch = true;
+        console.log(config);
+        var hls = new Hls(config);
+        hls.loadSource(videoSrc);
+        hls.attachMedia(video);
+      }
+    </script>
+  </body>
+</html>
