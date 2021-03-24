@@ -24,6 +24,7 @@ wwwdir=/var/www/html
 [[ -d $wwwdir ]] || sudo mkdir -p $wwwdir
 [[ -d $wwwdir/conf ]] || sudo mkdir -p $wwwdir/conf
 [[ -d $wwwdir/setup ]] || sudo mkdir -p $wwwdir/setup
+[[ -d $wwwdir/stream ]] || sudo mkdir -p $wwwdir/stream
 [[ -d $installdir ]] || mkdir -p $installdir
 [[ -d /home/pi/Videos ]] || mkdir -p /home/pi/Videos
 
@@ -70,9 +71,13 @@ for item in .htpasswd rpims.yaml zabbix_rpims_userparameter.conf
 done
 
 for item in setup.php setup_html.php setup_form.php setup.js w3.css
-   do sudo mv $installdir/$item $wwwdir/setup
+   do sudo mv $installdir/$item $wwwdir/setup/
 done
 sudo ln -s $wwwdir/setup/setup.php $wwwdir/setup/index.php
+
+for item in $(ls $installdir/stream)
+   do sudo mv $installdir/$item $wwwdir/stream/
+done
 
 sudo mv /etc/nginx/sites-available/default /etc/nginx/sites-available/default.org
 sudo mv $installdir/nginx-default /etc/nginx/sites-available/default
@@ -99,8 +104,10 @@ sudo chown root.root /etc/cron.d/rpims
 rm $installdir/cron
 
 sudo mv $installdir/rpims.service /lib/systemd/system/rpims.service
+sudo mv $installdir/rpims-stream.service /lib/systemd/system/rpims-stream.service
 sudo systemctl daemon-reload
 sudo systemctl enable rpims.service
+sudo systemctl enable rpims-stream.service
 
 #for DHT22 sensor
 sudo -H pip3 install --upgrade Adafruit_DHT adafruit-circuitpython-dht

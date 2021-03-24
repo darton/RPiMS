@@ -71,7 +71,6 @@
 </div>
 </div>
 </div>
-
 <?php }?>
 
 <?php if ($config["use_DHT_sensor"] == "True") {?>
@@ -139,7 +138,6 @@
 
 
 <?php if ($config["use_door_sensor"] == "True") {?>
-
 <div class="sensors">
     <h2>Door sensors</h2>
     <table class="center">
@@ -210,10 +208,14 @@
 
 <?php if ($config["use_picamera"] == "True") {?>
 <div class="sensors">
-    <h3>Video Stream Url</h3>
-    <ul style="list-style-type:none;">
-    <li>rtsp://<span id="hostip"></span><span>:8554/</span></li>
-    </ul>
+    <div>
+         <a href="http://192.168.253.56/streaming/">Camera Stream Url</a>
+    </div>
+    <div>
+         <iframe width="655" height="500"
+            src="http://192.168.253.56/streaming/">
+         </iframe>
+    </div>
 </div>
 <?php }?>
 
