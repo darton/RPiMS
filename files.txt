@@ -20,6 +20,7 @@ setup.php
 setup_html.php
 setup_form.php
 stream.html
+rpims-stream.service
 .htpasswd
 motd
 cron
