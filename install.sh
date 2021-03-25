@@ -77,15 +77,10 @@ for item in setup.php setup_html.php setup_form.php setup.js w3.css
 done
 sudo ln -s $wwwdir/setup/setup.php $wwwdir/setup/index.php
 
-for item in $(ls $installdir/stream)
-   do sudo mv $installdir/$item $wwwdir/stream/
-done
-
 curl -sS https://cdn.jsdelivr.net/npm/hls.js@latest/dist/hls.min.js.map -o $installdir/hls.min.js.map
 curl -sS https://cdn.jsdelivr.net/npm/hls.js@latest/dist/hls.min.js -o $installdir/hls.min.js
 curl -sS https://cdn.jsdelivr.net/npm/hls.js@latest -o $installdir/hls.js
-
-for item in hls.js hls.min.js hls.min.js.map
+for item in hls.js hls.min.js hls.min.js.map stream.html
    do sudo mv $installdir/$item $wwwdir/stream/
 done
 
