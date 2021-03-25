@@ -111,7 +111,7 @@ sudo mv $installdir/rpims.service /lib/systemd/system/rpims.service
 sudo mv $installdir/rpims-stream.service /lib/systemd/system/rpims-stream.service
 sudo systemctl daemon-reload
 sudo systemctl enable rpims.service
-sudo systemctl enable rpims-stream.service
+#sudo systemctl enable rpims-stream.service
 
 #for DHT22 sensor
 sudo -H pip3 install --upgrade Adafruit_DHT adafruit-circuitpython-dht
