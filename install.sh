@@ -32,11 +32,6 @@ for file in $(curl -sS https://raw.githubusercontent.com/darton/RPiMS/master/fil
    curl -sS https://raw.githubusercontent.com/darton/RPiMS/master/$file > $installdir/$file
 done
 
-curl -sS https://www.w3schools.com/w3css/4/w3.css > $installdir/w3.css
-curl -ss https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js > $installdir/jquery.min.js
-curl -sS https://cdn.jsdelivr.net/npm/hls.js@latest/dist/hls.min.js.map
-curl -sS https://cdn.jsdelivr.net/npm/hls.js@latest/dist/hls.min.js
-curl -sS https://cdn.jsdelivr.net/npm/hls.js@latest
 chmod u+x $installdir/*.py $installdir/*.sh
 
 sudo apt-get -y install git python3-gpiozero python3-pip build-essential python3-dev python3-numpy python3-picamera python3-w1thermsensor python3-automationhat python3-systemd
@@ -66,6 +61,9 @@ sudo systemctl enable $PHPFPMSERVICE
 
 sudo rm $wwwdir/index.nginx-debian.html
 
+curl -sS https://www.w3schools.com/w3css/4/w3.css > $installdir/w3.css
+curl -sS https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js > $installdir/jquery.min.js
+
 for item in index.php index_html.php index.js index.css jquery.min.js rpims.php
    do sudo mv $installdir/$item $wwwdir/
 done
@@ -80,6 +78,14 @@ done
 sudo ln -s $wwwdir/setup/setup.php $wwwdir/setup/index.php
 
 for item in $(ls $installdir/stream)
+   do sudo mv $installdir/$item $wwwdir/stream/
+done
+
+curl -sS https://cdn.jsdelivr.net/npm/hls.js@latest/dist/hls.min.js.map
+curl -sS https://cdn.jsdelivr.net/npm/hls.js@latest/dist/hls.min.js
+curl -sS https://cdn.jsdelivr.net/npm/hls.js@latest
+
+for item in hls.js hls.min.js hls.min.js.map
    do sudo mv $installdir/$item $wwwdir/stream/
 done
 
