@@ -31,8 +31,12 @@ wwwdir=/var/www/html
 for file in $(curl -sS https://raw.githubusercontent.com/darton/RPiMS/master/files.txt); do
    curl -sS https://raw.githubusercontent.com/darton/RPiMS/master/$file > $installdir/$file
 done
+
 curl -sS https://www.w3schools.com/w3css/4/w3.css > $installdir/w3.css
 curl -ss https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js > $installdir/jquery.min.js
+curl -sS https://cdn.jsdelivr.net/npm/hls.js@latest/dist/hls.min.js.map
+curl -sS https://cdn.jsdelivr.net/npm/hls.js@latest/dist/hls.min.js
+curl -sS https://cdn.jsdelivr.net/npm/hls.js@latest
 chmod u+x $installdir/*.py $installdir/*.sh
 
 sudo apt-get -y install git python3-gpiozero python3-pip build-essential python3-dev python3-numpy python3-picamera python3-w1thermsensor python3-automationhat python3-systemd
@@ -50,7 +54,7 @@ echo 'net.core.somaxconn=512' | sudo tee -a /etc/sysctl.conf
 echo 'maxmemory 100mb' | sudo tee -a /etc/redis/redis.conf
 sudo systemctl start redis-server.service
 
-sudo apt -y install nginx php php-fpm php-redis php-yaml apache2-utils
+sudo apt-get -y install nginx php php-fpm php-redis php-yaml apache2-utils
 PHPFPMINI=$(sudo find /etc/ \(  -name "php.ini" \) |grep fpm)
 sudo sed -i 's/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/g' $PHPFPMINI
 WWWCONF=$(sudo find /etc/ \(  -name "www.conf" \))
