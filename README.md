@@ -83,13 +83,6 @@ RPi   [GPIO.2 Pin 3] ----------------------------- [SDA]  BME280
 RPi   [GPIO.3 Pin 5] ----------------------------- [SDC]  BME280
 RPi    [GND - Pin 9] ----------------------------- [GND]  BME280
 ```
- - ### Temperature, Humidity, Pressure Sensor BME280 - i2C on RPi Pico (RPi Pico [USB] ->  RPi [USB])
-```
-RPi Pico  [3V3  Pin 36]------------------------------ [VCC]  BME280
-RPi Pico  [GP16 Pin 21] ----------------------------- [SDA]  BME280
-RPi Pico  [GP17 Pin 22] ----------------------------- [SDC]  BME280
-RPi Pico  [GND  Pin 23] ----------------------------- [GND]  BME280
-```
 
 - ### DS18B20 Temperature sensor
 ```
