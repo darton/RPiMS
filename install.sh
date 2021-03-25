@@ -61,8 +61,8 @@ sudo systemctl enable $PHPFPMSERVICE
 
 sudo rm $wwwdir/index.nginx-debian.html
 
-curl -sS https://www.w3schools.com/w3css/4/w3.css > $installdir/w3.css
-curl -sS https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js > $installdir/jquery.min.js
+curl -sS https://www.w3schools.com/w3css/4/w3.css -o $installdir/w3.css
+curl -sS https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js -o $installdir/jquery.min.js
 
 for item in index.php index_html.php index.js index.css jquery.min.js rpims.php
    do sudo mv $installdir/$item $wwwdir/
@@ -81,9 +81,9 @@ for item in $(ls $installdir/stream)
    do sudo mv $installdir/$item $wwwdir/stream/
 done
 
-curl -sS https://cdn.jsdelivr.net/npm/hls.js@latest/dist/hls.min.js.map
-curl -sS https://cdn.jsdelivr.net/npm/hls.js@latest/dist/hls.min.js
-curl -sS https://cdn.jsdelivr.net/npm/hls.js@latest
+curl -sS https://cdn.jsdelivr.net/npm/hls.js@latest/dist/hls.min.js.map -o $installdir/hls.min.js.map
+curl -sS https://cdn.jsdelivr.net/npm/hls.js@latest/dist/hls.min.js -o $installdir/hls.min.js
+curl -sS https://cdn.jsdelivr.net/npm/hls.js@latest -o $installdir/hls.js
 
 for item in hls.js hls.min.js hls.min.js.map
    do sudo mv $installdir/$item $wwwdir/stream/
