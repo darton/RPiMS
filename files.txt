@@ -19,6 +19,7 @@ setup.js
 setup.php
 setup_html.php
 setup_form.php
+stream.html
 .htpasswd
 motd
 cron
