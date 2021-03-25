@@ -24,8 +24,8 @@ function stream_on {
 	if [ ! -e /var/www/html/streaming ]; then
 	    ln -s  /dev/shm/streaming /var/www/html/streaming
 	fi
-	if [ ! -e /var/www/html/streaming/index.html ]; then
-	    cp /var/www/html/stream/index.html /var/www/html/streaming/
+	if [ ! -e /var/www/html/streaming/stream.html ]; then
+	    cp /var/www/html/stream/stream.html /var/www/html/streaming/
 	fi
 	if [ ! -e /var/www/html/streaming/hls.min.js ]; then
 	    cp /var/www/html/stream/hls.min.js /var/www/html/streaming/
