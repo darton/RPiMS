@@ -6,7 +6,7 @@ After=network.target rc-local.service
 [Service]
 Restart=always
 RestartSec=20s
-ExecStart=/home/pi/scripts/RPiMS/videostream.sh start
+ExecStart=/home/pi/scripts/RPiMS/videostreamer.sh start
 
 [Install]
 WantedBy=multi-user.target
