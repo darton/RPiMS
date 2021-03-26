@@ -209,11 +209,11 @@
 <?php if ($config["use_picamera"] == "True") {?>
 <div class="sensors">
     <div>
-         <a href="http://192.168.253.56/streaming/stream.html">Camera Stream Url</a>
+         <a href="/streaming/stream.html">Camera Stream Url</a>
     </div>
     <div>
          <iframe width="655" height="500"
-            src="http://192.168.253.56/streaming/stream.html">
+            src="/streaming/stream.html">
          </iframe>
     </div>
 </div>
