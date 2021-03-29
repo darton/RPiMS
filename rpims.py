@@ -194,23 +194,27 @@ def get_bme280_data(**kwargs):
             print(f'Problem with sensor BME280: {err}')
 
     if interface_type == 'serial':
-        def serial_data(port, baudrate, timeout):
-            import serial
-            ser = serial.Serial(port, baudrate, timeout)
-            while True:
-                yield ser.readline()
+        try:
+            def serial_data(port, baudrate, timeout):
+                import serial
+                ser = serial.Serial(port, baudrate, timeout)
+                while True:
+                    yield ser.readline()
 
-        for line in serial_data('/dev/ttyACM0', 115200, 5):
-            msg = line.decode('utf-8').split()
-            if len(msg)< 3:
-                continue
-            redis_db.mset({'BME280_Temperature': msg[0], 'BME280_Humidity': msg[1], 'BME280_Pressure': msg[2]})
-            redis_db.expire('BME280_Temperature', read_interval*2)
-            redis_db.expire('BME280_Humidity', read_interval*2)
-            redis_db.expire('BME280_Pressure', read_interval*2)
-            if bool(verbose) is True:
-                print(f'BME280 on serial: Temperature: {msg[0]} °C, Humidity: {msg[1]} %, Pressure: {msg[2]} hPa')
-            sleep(read_interval)
+            for line in serial_data('/dev/ttyACM0', 115200, 5):
+                msg = line.decode('utf-8').split()
+                if len(msg)< 3:
+                    continue
+                redis_db.mset({'BME280_Temperature': msg[0], 'BME280_Humidity': msg[1], 'BME280_Pressure': msg[2]})
+                redis_db.expire('BME280_Temperature', read_interval*2)
+                redis_db.expire('BME280_Humidity', read_interval*2)
+                redis_db.expire('BME280_Pressure', read_interval*2)
+                if bool(verbose) is True:
+                    print(f'BME280 on serial: Temperature: {msg[0]} °C, Humidity: {msg[1]} %, Pressure: {msg[2]} hPa')
+                sleep(read_interval)
+        except Exception as err:
+            ser.close()
+            print(f'Problem with sensor BME280: {err}')
 
 
 def get_ds18b20_data(**kwargs):
