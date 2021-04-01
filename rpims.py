@@ -194,27 +194,27 @@ def get_bme280_data(**kwargs):
             print(f'Problem with sensor BME280: {err}')
 
     if interface_type == 'serial':
-        try:
-            def serial_data(port, baudrate, timeout):
-                import serial
-                ser = serial.Serial(port, baudrate, timeout)
-                while True:
-                    yield ser.readline()
+        def serial_data(port, baudrate, timeout):
+            import serial
+            ser = serial.Serial(port, baudrate, timeout)
+            while True:
+                yield ser.readline()
 
-            for line in serial_data('/dev/ttyACM0', 115200, 5):
-                msg = line.decode('utf-8').split()
-                if len(msg)< 3:
-                    continue
-                redis_db.mset({'BME280_Temperature': msg[0], 'BME280_Humidity': msg[1], 'BME280_Pressure': msg[2]})
+        for line in serial_data('/dev/ttyACM0', 115200, 5):
+            msg = line.decode('utf-8').split()
+            if len(msg)< 3:
+                continue
+            if msg[0].isnumeric() and msg[1].isnumeric() and msg[2].isnumeric():
+                temperature = int(msg[0])/1000
+                humidity = int(msg[1])/1000
+                pressure = int(msg[2])/1000
+                redis_db.mset({'BME280_Temperature': temperature, 'BME280_Humidity': humidity, 'BME280_Pressure': pressure})
                 redis_db.expire('BME280_Temperature', read_interval*2)
                 redis_db.expire('BME280_Humidity', read_interval*2)
                 redis_db.expire('BME280_Pressure', read_interval*2)
                 if bool(verbose) is True:
-                    print(f'BME280 on serial: Temperature: {msg[0]} °C, Humidity: {msg[1]} %, Pressure: {msg[2]} hPa')
-                sleep(read_interval)
-        except Exception as err:
-            ser.close()
-            print(f'Problem with sensor BME280: {err}')
+                    print(f'BME280 on serial: Temperature: {temperature}°C, Humidity: {humidity}%, Pressure: {pressure}hPa')
+            sleep(read_interval)
 
 
 def get_ds18b20_data(**kwargs):
