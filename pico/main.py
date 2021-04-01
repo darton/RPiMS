@@ -17,7 +17,7 @@ while True:
      temp = int(float(bme.values[0])*1000)
      pres = int(float(bme.values[1])*1000)
      hum = int(float(bme.values[2])*1000)
-     #print(temp,hum,pres)
-     print(m_uid,temp,hum,pres)
+     print(temp,hum,pres)
+     #print(m_uid,temp,hum,pres)
      sleep(2)
     
