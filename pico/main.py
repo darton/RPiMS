@@ -7,7 +7,7 @@ SCL_PIN = machine.Pin(17)
 SCL_FREQ = 100000
 i2c = machine.I2C(0,sda=SDA_PIN, scl=SCL_PIN, freq=SCL_FREQ)
 
-BME280_I2CADDR = 0x76
+BME280_I2CADDR = 0x77
 bme = bme280.BME280(i2c=i2c, address=BME280_I2CADDR)
 
 m_id = machine.unique_id()
