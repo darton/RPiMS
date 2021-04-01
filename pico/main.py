@@ -13,4 +13,4 @@ while True:
     hum = int(float(bme.humidity)*1000)
     pres = int(float(bme.pressure)*1000)
     print(temp,hum,pres)
-    sleep(1)
+    sleep(2)
