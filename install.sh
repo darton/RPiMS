@@ -28,9 +28,11 @@ wwwdir=/var/www/html
 [[ -d $installdir ]] || mkdir -p $installdir
 [[ -d /home/pi/Videos ]] || mkdir -p /home/pi/Videos
 
-for file in $(curl -sS https://raw.githubusercontent.com/darton/RPiMS/master/files.txt); do
-   curl -sS https://raw.githubusercontent.com/darton/RPiMS/master/$file > $installdir/$file
-done
+#for file in $(curl -sS https://raw.githubusercontent.com/darton/RPiMS/master/files.txt); do
+#   curl -sS https://raw.githubusercontent.com/darton/RPiMS/master/$file > $installdir/$file
+#done
+
+git clone https://github.com/darton/RPiMS.git
 
 chmod u+x $installdir/*.py $installdir/*.sh
 
@@ -76,6 +78,8 @@ for item in setup.php setup_html.php setup_form.php setup.js w3.css
    do sudo mv $installdir/$item $wwwdir/setup/
 done
 sudo ln -s $wwwdir/setup/setup.php $wwwdir/setup/index.php
+
+mv $installdir/ap /var/www/html
 
 curl -sS https://cdn.jsdelivr.net/npm/hls.js@latest/dist/hls.min.js.map -o $installdir/hls.min.js.map
 curl -sS https://cdn.jsdelivr.net/npm/hls.js@latest/dist/hls.min.js -o $installdir/hls.min.js

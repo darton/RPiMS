@@ -1,50 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<title>RPiMS API</title>
 <meta charset="utf-8"/>
+<title>RPiMS API</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="../setup/w3.css">
-</head>
+<style>
+</style>
+<script src=""></script>
 <body>
 
 <div class="w3-container">
-    <div class="row">
-	<div class="col">
-	    <div class="w3-container w3-teal">
-		<h2 id="rpims-api"> RPiMS API</h2>
-	    </div>
-
-	    <p>To download current data in JSON format, use the following address:</p>
-	    <div class="w3-panel w3-leftbar w3-border-blue w3-pale-blue">
-		<a href="/api/data">http://ipaddress/api/data</a>
-	    </div>
-
-	    <p>In order to obtain data only for a selected sensor or a group of sensors, 
-	    the address should be filled in with a parameter, e.g .:</p>
-
-	    <p>RPiMS Setting</p>
-    	    <div class="w3-panel w3-leftbar w3-border-blue w3-pale-blue">
-		<a href="/api/data/settings">http://ipaddress/api/data/settings</a>
-	    </div>
-
-	    <p>RPiMS Sensors</p>
-	    <div class="w3-panel w3-leftbar w3-border-blue w3-pale-blue">
-		<a href="/api/data/sensors">http://ipaddress/api/data/sensors</a>
-	    </div>
-
-	    <p>BME280 sensor</p>
-	    <div class="w3-panel w3-leftbar w3-border-blue w3-pale-blue">
-		<a href="/api/data/sensors/bme280">http://ipaddress/api/data/sensors/bme280</a>
-	    </div>
-
-	    <p>Weather Station sensors</p>
-	    <div class="w3-panel w3-leftbar w3-border-blue w3-pale-blue">
-		<a href="/api/data/weather_station">http://ipaddress/api/data/weather_station</a>
-	    </div>
+    <div class="w3-panel w3-teal w3-round">
+	<h2 id="rpims-api"> RPiMS API</h2>
+    </div>
+    <div class="w3-panel">
+	<p>To download all current data in JSON format, use the following address:</p>
+    </div>
+    <div class="w3-container w3-light-grey w3-round">
+	<p><a href="/api/data"><code class="w3-codespan">http://ipaddress/api/data</code></a></p>
+    </div>
+    <div class="w3-container">
+        <p>In order to obtain data only for a selected sensor or a group of sensors, 
+        the address should be filled in with a parameter, e.g .:</p>
 	</div>
+        <div class="w3-container">
+    	    <p>Sensors</p>
+	</div>
+	<div class="w3-container w3-light-grey w3-round">
+	    <p><a href="/api/data/sensors"><code class="w3-codespan">http://ipaddress/api/data/sensors</code></a></p>
+	</div>
+	<div class="w3-container">
+	    <p>BME280 sensor</p>
+	</div>
+	<div class="w3-container w3-light-grey w3-round">
+	    <p><a href="/api/data/sensors/bme280"><code class="w3-codespan">http://ipaddress/api/data/sensors/bme280</a></code></p>
+	</div>
+	<div class="w3-container">
+	    <p>Weather Station sensors</p>
+	</div>
+	<div class="w3-container w3-light-grey w3-round">
+	    <p><a href="/api/data/weather_station"><code class="w3-codespan">http://ipaddress/api/data/weather_station</a></code></p>
+	</div>
+	<br>
     </div>
 </div>
-<body>
 
+<body>
 </html>
