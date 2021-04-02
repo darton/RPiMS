@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>RPiMS API</title>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="../setup/w3.css">
+</head>
+<body>
+
+<div class="w3-container">
+    <div class="row">
+	<div class="col">
+	    <div class="w3-container w3-teal">
+		<h2 id="rpims-api"> RPiMS API</h2>
+	    </div>
+
+	    <p>To download current data in JSON format, use the following address:</p>
+	    <div class="w3-panel w3-leftbar w3-border-blue w3-pale-blue">
+		<a href="/api/data">http://ipaddress/api/data</a>
+	    </div>
+
+	    <p>In order to obtain data only for a selected sensor or a group of sensors, 
+	    the address should be filled in with a parameter, e.g .:</p>
+
+	    <p>RPiMS Setting</p>
+    	    <div class="w3-panel w3-leftbar w3-border-blue w3-pale-blue">
+		<a href="/api/data/settings">http://ipaddress/api/data/settings</a>
+	    </div>
+
+	    <p>RPiMS Sensors</p>
+	    <div class="w3-panel w3-leftbar w3-border-blue w3-pale-blue">
+		<a href="/api/data/sensors">http://ipaddress/api/data/sensors</a>
+	    </div>
+
+	    <p>BME280 sensor</p>
+	    <div class="w3-panel w3-leftbar w3-border-blue w3-pale-blue">
+		<a href="/api/data/sensors/bme280">http://ipaddress/api/data/sensors/bme280</a>
+	    </div>
+
+	    <p>Weather Station sensors</p>
+	    <div class="w3-panel w3-leftbar w3-border-blue w3-pale-blue">
+		<a href="/api/data/weather_station">http://ipaddress/api/data/weather_station</a>
+	    </div>
+	</div>
+    </div>
+</div>
+<body>
+
+</html>

@@ -89,15 +89,20 @@ gpio:
 sensors:
   BME280:
     id_01:
-      name: Serwerownia Z1
+      name: Z1
       read_interval: 10
       interface: serial
-      serial_dev: ACM01
+      serial_dev: ACM0
     id_02:
-      name: IT Z1
+      name: Z2
       read_interval: 10
       interface: serial
-      serial_dev: ACM02
+      serial_dev: ACM1
+    id_03:
+      name: Z3
+      read_interval: 10
+      interface: serial
+      serial_dev: ACM2
 zabbix_agent:
   zabbix_server: zabbix.example.com
   zabbix_server_active: zabbix.example.com

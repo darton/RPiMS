@@ -165,35 +165,39 @@ def get_cputemp_data(**kwargs):
 
 def get_bme280_data(**kwargs):
     from time import sleep
+
     verbose = kwargs['verbose']
-    read_interval = kwargs['BME280_read_interval']
-    interface_type = kwargs['BME280_interface']
+    read_interval = kwargs['read_interval']
+    interface_type = kwargs['interface']
+    sid = kwargs['id']
 
     if interface_type == 'i2c':
         try:
             import smbus2
             import bme280
             port = 1
-            address = kwargs['BME280_i2c_address']
+            address = kwargs['i2c_address']
             bus = smbus2.SMBus(port)
             while True:
                 calibration_params = bme280.load_calibration_params(bus, address)
                 data = bme280.sample(bus, address, calibration_params)
-                redis_db.mset({'BME280_Humidity': data.humidity, 'BME280_Temperature': data.temperature, 'BME280_Pressure': data.pressure})
-                redis_db.expire('BME280_Temperature', read_interval*2)
-                redis_db.expire('BME280_Humidity', read_interval*2)
-                redis_db.expire('BME280_Pressure', read_interval*2)
+                redis_db.mset({f'{sid}_BME280_Humidity': data.humidity, f'{sid}_BME280_Temperature': data.temperature, f'{sid}_BME280_Pressure': data.pressure})
+                redis_db.expire(f'{sid}_BME280_Temperature', read_interval*2)
+                redis_db.expire(f'{sid}_BME280_Humidity', read_interval*2)
+                redis_db.expire(f'{sid}_BME280_Pressure', read_interval*2)
                 if bool(verbose) is True:
                     print('')
-                    print('BME280 Temperature: {0:0.1f}\xb0C'.format(data.temperature))
-                    print('BME280 Humidity: {0:0.0f}%'.format(data.humidity))
-                    print('BME280 Pressure: {0:0.0f}hPa'.format(data.pressure))
+                    print(f'{sid}_BME280 Temperature: {0:0.1f}\xb0C'.format(data.temperature))
+                    print(f'{sid}_BME280 Humidity: {0:0.0f}%'.format(data.humidity))
+                    print(f'{sid}_BME280 Pressure: {0:0.0f}hPa'.format(data.pressure))
                     print('')
                 sleep(read_interval)
         except Exception as err:
             print(f'Problem with sensor BME280: {err}')
 
     if interface_type == 'serial':
+        serial_port = kwargs['serial_port']
+        serial_speed = kwargs['serial_speed']
         try:
             def serial_data(port, baudrate, timeout):
                 import serial
@@ -201,16 +205,16 @@ def get_bme280_data(**kwargs):
                 while True:
                     yield ser.readline()
 
-            for line in serial_data('/dev/ttyACM0', 115200, 5):
+            for line in serial_data(serial_port, serial_speed, 5):
                 msg = line.decode('utf-8').split()
                 if len(msg)< 3:
                     continue
-                redis_db.mset({'BME280_Temperature': msg[0], 'BME280_Humidity': msg[1], 'BME280_Pressure': msg[2]})
-                redis_db.expire('BME280_Temperature', read_interval*2)
-                redis_db.expire('BME280_Humidity', read_interval*2)
-                redis_db.expire('BME280_Pressure', read_interval*2)
+                redis_db.mset({f'{sid}_BME280_Temperature': msg[0], f'{sid}_BME280_Humidity': msg[1], f'{sid}_BME280_Pressure': msg[2]})
+                redis_db.expire(f'{sid}_BME280_Temperature', read_interval*2)
+                redis_db.expire(f'{sid}_BME280_Humidity', read_interval*2)
+                redis_db.expire(f'{sid}_BME280_Pressure', read_interval*2)
                 if bool(verbose) is True:
-                    print(f'BME280 on serial: Temperature: {msg[0]} °C, Humidity: {msg[1]} %, Pressure: {msg[2]} hPa')
+                    print(f'{sid}_BME280 on serial: Temperature: {msg[0]} °C, Humidity: {msg[1]} %, Pressure: {msg[2]} hPa')
                 sleep(read_interval)
         except Exception as err:
             ser.close()
@@ -783,14 +787,14 @@ def main():
     gpio = config_yaml.get("gpio")
     sensors = config_yaml.get("sensors")
     bme280 = sensors['BME280']
+    #print(bme280)
+#    for item in bme280:
+#        if (bme280[item]['interface'] == 'serial'):
+#            print(bme280[item])
 
-    for item in bme280:
-        if (bme280[item]['interface'] == 'serial'):
-            print(bme280[item])
-
-    for item in bme280:
-        if (bme280[item]['interface'] == 'i2c'):
-            print(bme280[item])
+#    for item in bme280:
+#        if (bme280[item]['interface'] == 'i2c'):
+#            print(bme280[item])
 
     redis_db.flushdb()
     redis_db.set('gpio', json.dumps(gpio))
@@ -869,7 +873,9 @@ def main():
         threading_function(get_cputemp_data, **config)
 
     if bool(config['use_BME280_sensor']) is True:
-        threading_function(get_bme280_data, **config)
+        for item in bme280:
+            bme280_config = bme280[item]
+            threading_function(get_bme280_data, **bme280_config)
 
     if bool(config['use_DS18B20_sensor']) is True:
         threading_function(get_ds18b20_data, **config)

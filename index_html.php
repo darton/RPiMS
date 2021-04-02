@@ -20,7 +20,7 @@
   <button onclick="myFunction()" class="dropbtn">Config</button>
   <div id="myDropdown" class="dropdown-content">
     <a href="/setup/">Setup</a>
-    <a href="/rpims.php">API</a>
+    <a href="/api">API</a>
   </div>
 </div>
 
