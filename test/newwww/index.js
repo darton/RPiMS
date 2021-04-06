@@ -18,6 +18,7 @@ setInterval(function() {
     }
 
     if (data['settings']['use_cpu_sensor'] == true) {
+	$("#CPU_Temperature_name").show();
         var CPUTEMP = data['sensors']['cpu']['temperature'];
 	if (!!CPUTEMP){
 	    $("#CPU_Temperature").html(roundPrecised(CPUTEMP,1));
@@ -33,10 +34,15 @@ setInterval(function() {
     }
 
     if (data['settings']['use_bme280_sensor'] == true) {
+	$("#BME280_name").show();
 	$("#BME280_Temperature").html(data['sensors']['bme280']['temperature']);
 	$("#BME280_Humidity").html(data['sensors']['bme280']['humidity']);
 	$("#BME280_Pressure").html(data['sensors']['bme280']['pressure']);
     }
+    else {
+	$("#BME280_name").hide();
+    }
+
 
     if (data['settings']['use_dht_sensor'] == true) {
 	$("#DHT_Temperature").html(data['sensors']['dht']['temperature']);

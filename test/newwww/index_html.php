@@ -32,8 +32,8 @@
 
 </div>
 
-<?php if ($config["use_BME280_sensor"] == "True") {?>
-<div class="sensors">
+
+<div id="BME280_name" class="sensors">
     <h3>BME280 Sensor</h3>
 <div style="width: 100%; display: table;">
 <div style="display: table-row">
@@ -65,7 +65,7 @@
 </div>
 </div>
 </div>
-<?php }?>
+
 
 <?php if ($config["use_DHT_sensor"] == "True") {?>
 <div class="sensors">
