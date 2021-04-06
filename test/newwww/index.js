@@ -28,6 +28,9 @@ setInterval(function() {
 	    $("#CPU_Temperature_unit").html('');
 	}
     }
+    else {
+	$("#CPU_Temperature_name").hide();
+    }
 
     if (data['settings']['use_bme280_sensor'] == true) {
 	$("#BME280_Temperature").html(data['sensors']['bme280']['temperature']);
