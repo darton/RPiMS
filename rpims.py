@@ -179,7 +179,7 @@ def get_bme280_data(**kwargs):
             while True:
                 calibration_params = bme280.load_calibration_params(bus, address)
                 data = bme280.sample(bus, address, calibration_params)
-                redis_db.mset({'BME280_Humidity': data.humidity, 'BME280_Temperature': data.temperature, 'BME280_Pressure': data.pressure})
+                redis_db.mset({'BME280_Humidity': round(data.humidity,3), 'BME280_Temperature': round(data.temperature,3), 'BME280_Pressure': round(data.pressure,3)})
                 redis_db.expire('BME280_Temperature', read_interval*2)
                 redis_db.expire('BME280_Humidity', read_interval*2)
                 redis_db.expire('BME280_Pressure', read_interval*2)
@@ -194,6 +194,8 @@ def get_bme280_data(**kwargs):
             print(f'Problem with sensor BME280: {err}')
 
     if interface_type == 'serial':
+        lecounter = 0
+        necounter = 0
         def serial_data(port, baudrate, timeout):
             import serial
             ser = serial.Serial(port, baudrate, timeout)
@@ -203,6 +205,8 @@ def get_bme280_data(**kwargs):
         for line in serial_data('/dev/ttyACM0', 115200, 5):
             msg = line.decode('utf-8').split()
             if len(msg)< 3:
+                lecounter += lecounter
+                redis_db.mset('LECOUNTER', lecounter)
                 continue
             if msg[0].isnumeric() and msg[1].isnumeric() and msg[2].isnumeric():
                 temperature = int(msg[0])/1000
@@ -214,6 +218,9 @@ def get_bme280_data(**kwargs):
                 redis_db.expire('BME280_Pressure', read_interval*2)
                 if bool(verbose) is True:
                     print(f'BME280 on serial: Temperature: {temperature}°C, Humidity: {humidity}%, Pressure: {pressure}hPa')
+            else:
+                necounter += necounter
+                redis_db.mset('NECOUNTER', necounter)
             sleep(read_interval)
 
 
@@ -326,22 +333,40 @@ def serial_displays(**kwargs):
             while True:
                 with canvas(device) as draw:
                     # get data from redis db
-                    values = redis_db.mget('BME280_Temperature', 'BME280_Humidity', 'BME280_Pressure', 'door_sensor_1', 'door_sensor_2', 'CPU_Temperature', 'hostip')
-                    temperature = round(float(values[0]), 1)
-                    humidity = int(round(float(values[1]), 1))
-                    pressure = int(round(float(values[2]), 1))
-                    door_sensor_1 = values[3]
-                    door_sensor_2 = values[4]
-                    cputemp = round(float(values[5]), 1)
+                    values = redis_db.mget('BME280_Temperature', 'BME280_Humidity', 'BME280_Pressure', 'GPIO_5', 'GPIO_6', 'CPU_Temperature', 'hostip')
+
+                    t,h,p = values[0], values[1], values[2]
+                    if t == None or h == None or p == None:
+                        temperature = '--.--'
+                        humidity = '--.--'
+                        pressure = '--.--'
+                    elif t.replace('.','',1).isdigit() and h.replace('.','',1).isdigit() and p.replace('.','',1).isdigit():
+                        temperature = round(float(t), 1)
+                        humidity = int(round(float(h), 1))
+                        pressure = int(round(float(p), 1))
+
+                    door_sensor_1, door_sensor_2  = values[3], values[4]
+                    if door_sensor_1 == None or door_sensor_2 == None:
+                        door_sensor_1 = '-----'
+                        door_sensor_2 = '-----'
+
+                    cputemp = values[5]
+                    if cputemp == None:
+                        cputemp = '-----'
+                    else:
+                        cputemp = round(float(cputemp), 1)
                     hostip = values[6]
+                    if hostip == None:
+                        hostip = '---.---.---.---'
+
                     # draw on oled
                     draw.text((x, top),       'IP:' + str(hostip), font=font, fill=255)
-                    draw.text((x, top+9),     'Temperature..' + str(temperature) + '*C', font=font, fill=255)
-                    draw.text((x, top+18),    'Humidity.....' + str(humidity) + '%',  font=font, fill=255)
-                    draw.text((x, top+27),    'Pressure.....' + str(pressure) + 'hPa',  font=font, fill=255)
-                    draw.text((x, top+36),    'Door 1.......' + str(door_sensor_1),  font=font, fill=255)
-                    draw.text((x, top+45),    'Door 2.......' + str(door_sensor_2),  font=font, fill=255)
-                    draw.text((x, top+54),    'CpuTemp......' + str(cputemp) + '*C', font=font, fill=255)
+                    draw.text((x, top+9),     f'Temperature..{temperature}°C', font=font, fill=255)
+                    draw.text((x, top+18),    f'Humidity.....{humidity}%',  font=font, fill=255)
+                    draw.text((x, top+27),    f'Pressure.....{pressure}hPa',  font=font, fill=255)
+                    draw.text((x, top+36),    f'Door 1.......{door_sensor_1}',  font=font, fill=255)
+                    draw.text((x, top+45),    f'Door 2.......{door_sensor_2}',  font=font, fill=255)
+                    draw.text((x, top+54),    f'CpuTemp......{cputemp}°C', font=font, fill=255)
                 sleep(1/kwargs['serial_display_refresh_rate'])
         except Exception as err:
             logger.error(err)
@@ -384,14 +409,33 @@ def serial_displays(**kwargs):
 
             while True:
                 # get data from redis db
-                values = redis_db.mget('BME280_Temperature', 'BME280_Humidity', 'BME280_Pressure', 'door_sensor_1', 'door_sensor_2', 'CPU_Temperature', 'hostip')
-                temperature = round(float(values[0]), 1)
-                humidity = int(round(float(values[1]), 1))
-                pressure = int(round(float(values[2]), 1))
-                door_sensor_1 = values[3]
-                door_sensor_2 = values[4]
-                cputemp = round(float(values[5]), 1)
+                values = redis_db.mget('BME280_Temperature', 'BME280_Humidity', 'BME280_Pressure', 'GPIO_5', 'GPIO_6', 'CPU_Temperature', 'hostip')
+
+                t,h,p = values[0], values[1], values[2]
+                if t == None or h == None or p == None:
+                    temperature = '--.--'
+                    humidity = '--.--'
+                    pressure = '--.--'
+                elif t.replace('.','',1).isdigit() and h.replace('.','',1).isdigit() and p.replace('.','',1).isdigit():
+                    temperature = round(float(t), 1)
+                    humidity = int(round(float(h), 1))
+                    pressure = int(round(float(p), 1))
+
+                door_sensor_1, door_sensor_2  = values[3], values[4]
+                if door_sensor_1 == None or door_sensor_2 == None:
+                    door_sensor_1 = '-----'
+                    door_sensor_2 = '-----'
+
+                cputemp = values[5]
+                if cputemp == None:
+                    cputemp = '-----'
+                else:
+                    cputemp = round(float(cputemp), 1)
+
                 hostip = values[6]
+                if hostip == None:
+                    hostip = '---.---.---.---'
+
                 now = datetime.datetime.now()
                 # Draw
                 with canvas(device) as draw:
