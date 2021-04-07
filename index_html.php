@@ -23,8 +23,11 @@
     <a href="/rpims.php">API</a>
   </div>
 </div>
+</div>
 
-<div>
+
+<?php if ($config["show_sys_info"] == "True") {?>
+<div class="sensors">
     <ul style="list-style-type:none;">
     <li>Hostname: <span class="value" id="hostname"></span></li>
     <li>Location: <span class="value" id="location"></span></li>
@@ -33,8 +36,7 @@
 <?php }?>
     </ul>
 </div>
-
-</div>
+<?php }?>
 
 
 

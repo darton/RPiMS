@@ -1,6 +1,7 @@
 ---
 setup:
   verbose: true
+  show_sys_info: false
   use_zabbix_sender: false
   use_picamera: false
   use_picamera_recording: false
