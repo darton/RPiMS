@@ -17,6 +17,7 @@ $obj = $redis-> get('zabbix_agent');
 $zabbix_agent = json_decode($obj, true);
 
 $rpims_api["settings"]["verbose"] = $config["verbose"];
+$rpims_api["settings"]["show_sys_info"] = $config["show_sys_info"];
 $rpims_api["settings"]["use_zabbix_sender"] = $config["use_zabbix_sender"];
 $rpims_api["settings"]["use_picamera"] = $config["use_picamera"];
 $rpims_api["settings"]["use_picamera_recording"] = $config["use_picamera_recording"];

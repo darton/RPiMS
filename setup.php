@@ -10,6 +10,7 @@ $TLSPSK = $rpims['zabbix_agent']['TLSPSK'];
 $Timeout = $rpims['zabbix_agent']['Timeout'];
 
 $verbose = filter_var($rpims['setup']['verbose'], FILTER_VALIDATE_BOOLEAN);
+$show_sys_info = filter_var($rpims['setup']['show_sys_info'], FILTER_VALIDATE_BOOLEAN);
 $use_zabbix_sender = filter_var($rpims['setup']['use_zabbix_sender'], FILTER_VALIDATE_BOOLEAN);
 $use_picamera = filter_var($rpims['setup']['use_picamera'], FILTER_VALIDATE_BOOLEAN);
 $use_picamera_recording = filter_var($rpims['setup']['use_picamera_recording'], FILTER_VALIDATE_BOOLEAN);

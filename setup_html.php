@@ -45,6 +45,15 @@
 
 <tr>
 <td>
+<label>Show system info:</label>
+</td>
+<td>
+<input name="show_sys_info" type="hidden" value="False"><input name="show_sys_info" type="checkbox" class="w3-check" <?php if ($show_sys_info == 'yes') echo 'checked="checked"'; ?> value="True">
+</td>
+</tr>
+
+<tr>
+<td>
 <label>Use zabbix sender:</label>
 </td>
 <td>
