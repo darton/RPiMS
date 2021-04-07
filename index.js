@@ -87,7 +87,7 @@ if (data['settings']['use_ds18b20_sensor'] == true)
     var DS18B20 = {};
     for (var DS18B20_id in data['sensors']['one_wire']['ds18b20'])
     {
-    console.log(DS18B20_id)
+    //console.log(DS18B20_id)
     DS18B20[DS18B20_id] = roundPrecised(data['sensors']['one_wire']['ds18b20'][DS18B20_id],1);
     }
 }
