@@ -1,0 +1,78 @@
+<?php
+
+$rpims = yaml_parse_file ("/var/www/html/conf/rpims.yaml");
+$location = $rpims['zabbix_agent']['location'];
+$hostname = $rpims['zabbix_agent']['hostname'];
+$zabbix_server = $rpims['zabbix_agent']['zabbix_server'];
+$zabbix_server_active = $rpims['zabbix_agent']['zabbix_server_active'];
+$TLSPSKIdentity = $rpims['zabbix_agent']['TLSPSKIdentity'];
+$TLSPSK = $rpims['zabbix_agent']['TLSPSK'];
+$Timeout = $rpims['zabbix_agent']['Timeout'];
+
+$verbose = filter_var($rpims['setup']['verbose'], FILTER_VALIDATE_BOOLEAN);
+$show_sys_info = filter_var($rpims['setup']['show_sys_info'], FILTER_VALIDATE_BOOLEAN);
+$use_zabbix_sender = filter_var($rpims['setup']['use_zabbix_sender'], FILTER_VALIDATE_BOOLEAN);
+$use_picamera = filter_var($rpims['setup']['use_picamera'], FILTER_VALIDATE_BOOLEAN);
+$use_picamera_recording = filter_var($rpims['setup']['use_picamera_recording'], FILTER_VALIDATE_BOOLEAN);
+$use_door_sensor = filter_var($rpims['setup']['use_door_sensor'], FILTER_VALIDATE_BOOLEAN);
+$use_motion_sensor = filter_var($rpims['setup']['use_motion_sensor'], FILTER_VALIDATE_BOOLEAN);
+//$use_system_buttons = filter_var($rpims['setup']['use_system_buttons'], FILTER_VALIDATE_BOOLEAN);
+//$use_led_indicators = filter_var($rpims['setup']['use_led_indicators'], FILTER_VALIDATE_BOOLEAN);
+$use_serial_display = filter_var($rpims['setup']['use_serial_display'], FILTER_VALIDATE_BOOLEAN);
+$use_CPU_sensor = filter_var($rpims['setup']['use_CPU_sensor'], FILTER_VALIDATE_BOOLEAN);
+$use_BME280_sensor = filter_var($rpims['setup']['use_BME280_sensor'], FILTER_VALIDATE_BOOLEAN);
+$use_DS18B20_sensor = filter_var($rpims['setup']['use_DS18B20_sensor'], FILTER_VALIDATE_BOOLEAN);
+$use_DHT_sensor = filter_var($rpims['setup']['use_DHT_sensor'], FILTER_VALIDATE_BOOLEAN);
+$use_weather_station = filter_var($rpims['setup']['use_weather_station'], FILTER_VALIDATE_BOOLEAN);
+
+$serial_display_refresh_rate = $rpims['setup']['serial_display_refresh_rate'];
+$serial_display_type = $rpims['setup']['serial_display_type'];
+$serial_type = $rpims['setup']['serial_type'];
+$serial_display_rotate = $rpims['setup']['serial_display_rotate'];
+
+$CPUtemp_read_interval = $rpims['setup']['CPUtemp_read_interval'];
+
+//$BME280_use = $rpims['setup']['BME280_use'];
+//$BME280_interface = $rpims['setup']['BME280_interface'];
+//$BME280_read_interval = $rpims['setup']['BME280_read_interval'];
+//$BME280_i2c_address = $rpims['setup']['BME280_i2c_address'];
+
+$id1_BME280_use = $rpims['sensors']['BME280']['id1']['use'];
+$id1_BME280_read_interval = $rpims['sensors']['BME280']['id1']['read_interval'];
+$id1_BME280_interface = $rpims['sensors']['BME280']['id1']['interface'];
+$id1_BME280_i2c_address = $rpims['sensors']['BME280']['id1']['i2c_address'];
+
+
+$id2_BME280_use = $rpims['sensors']['BME280']['id2']['use'];
+$id2_BME280_read_interval = $rpims['sensors']['BME280']['id2']['read_interval'];
+$id2_BME280_interface = $rpims['sensors']['BME280']['id2']['interface'];
+$id2_BME280_serial_port = $rpims['sensors']['BME280']['id2']['serial_port'];
+
+$id3_BME280_use = $rpims['sensors']['BME280']['id3']['use'];
+$id3_BME280_read_interval = $rpims['sensors']['BME280']['id3']['read_interval'];
+$id3_BME280_interface = $rpims['sensors']['BME280']['id3']['interface'];
+$id3_BME280_serial_port = $rpims['sensors']['BME280']['id3']['serial_port'];
+
+$DS18B20_read_interval = $rpims['setup']['DS18B20_read_interval'];
+
+$DHT_read_interval = $rpims['setup']['DHT_read_interval'];
+$DHT_type = $rpims['setup']['DHT_type'];
+$DHT_pin = $rpims['setup']['DHT_pin'];
+
+$windspeed_sensor_pin = $rpims['setup']['windspeed_sensor_pin'];
+$windspeed_acquisition_time = $rpims['setup']['windspeed_acquisition_time'];
+$windspeed_agregation_time = $rpims['setup']['windspeed_agregation_time'];
+
+$winddirection_acquisition_time = $rpims['setup']['winddirection_acquisition_time'];
+$winddirection_adc_type = $rpims['setup']['winddirection_adc_type'];
+$winddirection_adc_input = $rpims['setup']['winddirection_adc_input'];
+$reference_voltage_adc_input = $rpims['setup']['reference_voltage_adc_input'];
+
+$rainfall_sensor_pin = $rpims['setup']['rainfall_sensor_pin'];
+$rainfall_acquisition_time = $rpims['setup']['rainfall_acquisition_time'];
+$rainfall_agregation_time = $rpims['setup']['rainfall_agregation_time'];
+
+$GPIO = $rpims['gpio'];
+
+include 'setup_html.php';
+?>
