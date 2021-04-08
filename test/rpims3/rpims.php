@@ -16,8 +16,12 @@ $config = json_decode($obj, true);
 $obj = $redis-> get('zabbix_agent');
 $zabbix_agent = json_decode($obj, true);
 
+
+$obj = $redis-> get('sensors');
+$sensors = json_decode($obj, true);
+//$sensors = $redis-> get('sensors');
+
 $rpims_api["settings"]["verbose"] = $config["verbose"];
-$rpims_api["settings"]["show_sys_info"] = $config["show_sys_info"];
 $rpims_api["settings"]["use_zabbix_sender"] = $config["use_zabbix_sender"];
 $rpims_api["settings"]["use_picamera"] = $config["use_picamera"];
 $rpims_api["settings"]["use_picamera_recording"] = $config["use_picamera_recording"];
@@ -28,6 +32,7 @@ $rpims_api["settings"]["use_ds18b20_sensor"] = $config["use_DS18B20_sensor"];
 $rpims_api["settings"]["use_weather_station"] = $config["use_weather_station"];
 $rpims_api["settings"]["use_door_sensor"] = $config["use_door_sensor"];
 $rpims_api["settings"]["use_motion_sensor"] = $config["use_motion_sensor"];
+$rpims_api["settings"]["sensors"] = $sensors;
 
 $rpims_api["system"]["hostip"] = $rpims["hostip"];
 $rpims_api["system"]["hostname"] = $zabbix_agent["hostname"];
@@ -39,22 +44,32 @@ if ($config["use_CPU_sensor"] == true){
     $rpims_api["sensors"]["cpu"]["temperature"] = $rpims["CPU_Temperature"];
 }
 
-if ($config["use_BME280_sensor"] == true and $config["BME280_use"] == true){
 
-    if ($config["BME280_interface"] == 'i2c')
+if ($config["use_BME280_sensor"] == true){
+
+    foreach ($sensors['BME280'] as $key => $value)
     {
-	$rpims_api["sensors"]["bme280"]["interface"] = $config["BME280_interface"];
-	$rpims_api["sensors"]["bme280"]["i2c_address"] = $config["BME280_i2c_address"];
+	$id = $sensors['BME280'][$key]["id"];
+	$t = $id."_BME280_Temperature";
+	$h = $id."_BME280_Humidity";
+	$p = $id."_BME280_Pressure";
+        if ($sensors["BME280"][$id]["use"] == true)
+	{
+	    $rpims_api["sensors"]["bme280"][$id]["temperature"] = $rpims[$t] ;
+	    $rpims_api["sensors"]["bme280"][$id]["humidity"] = $rpims[$h] ;
+	    $rpims_api["sensors"]["bme280"][$id]["pressure"] = $rpims[$p] ;
+	}
     }
-    else
-    {
-	$rpims_api["sensors"]["bme280"]["interface"] = $config["BME280_interface"];
-    }
-    $rpims_api["sensors"]["bme280"]["read_interval"] = $config["BME280_read_interval"];
-    $rpims_api["sensors"]["bme280"]["temperature"] = $rpims["BME280_Temperature"];
-    $rpims_api["sensors"]["bme280"]["humidity"] = $rpims["BME280_Humidity"];
-    $rpims_api["sensors"]["bme280"]["pressure"] = $rpims["BME280_Pressure"];
 }
+
+if ($config["use_DS18B20_sensor"] == true){
+    $rpims_api["sensors"]["one_wire"]["read_interval"] = $config["DS18B20_read_interval"];
+    $DS18B20_sensors = $redis->smembers('DS18B20_sensors');
+    foreach ($DS18B20_sensors as $key => $value){
+        $rpims_api["sensors"]["one_wire"]["ds18b20"]["$value"] = $rpims[$value];
+        }
+    }
+
 
 if ($config["use_DHT_sensor"] == true){
     $rpims_api["sensors"]["dht"]["read_interval"] = $config["DHT_read_interval"];
@@ -63,6 +78,7 @@ if ($config["use_DHT_sensor"] == true){
     $rpims_api["sensors"]["dht"]["temperature"] = $rpims["DHT_Temperature"];
     $rpims_api["sensors"]["dht"]["humidity"] = $rpims["DHT_Humidity"];
 }
+
 
 if ($config["use_weather_station"] == true){
     $rpims_api["weather_station"]["wind_speed_acquisition_time"] = $config["windspeed_acquisition_time"];
@@ -77,6 +93,8 @@ if ($config["use_weather_station"] == true){
     $rpims_api["weather_station"]["rainfall_agregation_time"] = $config["rainfall_agregation_time"];
     $rpims_api["weather_station"]["daily_rainfall"] = $rpims["daily_rainfall"];
 }
+
+
 
 $obj = $redis-> get('gpio');
 $gpio = json_decode($obj, true);
@@ -103,13 +121,6 @@ if ($config["use_motion_sensor"] == true){
     }
 }
 
-if ($config["use_DS18B20_sensor"] == true){
-    $rpims_api["sensors"]["one_wire"]["read_interval"] = $config["DS18B20_read_interval"];
-    $DS18B20_sensors = $redis->smembers('DS18B20_sensors');
-    foreach ($DS18B20_sensors as $key => $value){
-	$rpims_api["sensors"]["one_wire"]["ds18b20"]["$value"] = $rpims[$value];
-	}
-    }
 
 Header("Content-type: application/json");
 echo json_encode($rpims_api);
