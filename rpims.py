@@ -205,8 +205,8 @@ def get_bme280_data(**kwargs):
         for line in serial_data('/dev/ttyACM0', 115200, 5):
             msg = line.decode('utf-8').split()
             if len(msg)< 3:
-                lecounter += lecounter
-                redis_db.mset('LECOUNTER', lecounter)
+                lecounter += 1
+                redis_db.set('LECOUNTER', lecounter)
                 continue
             if msg[0].isnumeric() and msg[1].isnumeric() and msg[2].isnumeric():
                 temperature = int(msg[0])/1000
@@ -219,9 +219,9 @@ def get_bme280_data(**kwargs):
                 if bool(verbose) is True:
                     print(f'BME280 on serial: Temperature: {temperature}°C, Humidity: {humidity}%, Pressure: {pressure}hPa')
             else:
-                necounter += necounter
-                redis_db.mset('NECOUNTER', necounter)
-            sleep(read_interval)
+                necounter += 1
+                redis_db.set('NECOUNTER', necounter)
+            sleep(0.1)
 
 
 def get_ds18b20_data(**kwargs):
