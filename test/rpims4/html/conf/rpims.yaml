@@ -39,21 +39,21 @@ sensors:
   BME280:
     id1:
       id: id1
-      name: Serwerownia Z1
+      name: "Serwerownia Z1"
       use: true
       read_interval: 2
       interface: i2c
       i2c_address: 118
     id2:
       id: id2
-      name: 'Biuro IT - 1 drzwi '
+      name: "Biuro IT - 1 drzwi"
       use: true
       read_interval: 4
       interface: serial
       serial_port: USB3
     id3:
       id: id3
-      name: Biuro IT - 2 drzwi
+      name: "Biuro IT - 2 drzwi"
       use: true
       read_interval: 6
       interface: serial

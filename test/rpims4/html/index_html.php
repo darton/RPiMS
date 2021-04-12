@@ -40,42 +40,6 @@
 <?php }?>
 
 
-
-<?php if ($config["use_BME280_sensor"] == "True") {?>
-<div class="sensors">
-    <h3>Internal BME280 Sensor</h3>
-<div style="width: 100%; display: table;">
-<div style="display: table-row">
-
-<div class="gauge" id="g1"  style="width: 33%;  display: table-cell";>
-  <div class="gauge__body">
-    <div class="gauge__fill"></div>
-    <div class="gauge__cover"></div>
-  </div>
-<div class="sensors">Temp</div>
-</div>
-
-<div class="gauge" id="g2"  style="width: 33%; display: table-cell";>
- <div class="gauge__body">
-    <div class="gauge__fill"></div>
-    <div class="gauge__cover"></div>
-  </div>
-<div class="sensors">Hum</div>
-</div>
-
-<div class="gauge" id="g3"  style="width: 33%; display: table-cell";>
-  <div class="gauge__body">
-    <div class="gauge__fill"></div>
-    <div class="gauge__cover"></div>
-  </div>
-<div class="sensors">Pres</div>
-</div>
-
-</div>
-</div>
-</div>
-<?php }?>
-
 <?php if ($config["use_DHT_sensor"] == "True") {?>
 <div class="sensors">
     <h3>DHT Sensor</h3>
@@ -101,6 +65,54 @@
 </div>
 </div>
 </div>
+<?php }?>
+<?php if ($config["use_BME280_sensor"] == "True") {?>
+<?php
+    foreach ($sensors['BME280'] as $key => $value)
+    {
+	if ($value['use'] == "true")
+	{
+	    $t = $key."_BME280_Temperature";
+	    $h = $key."_BME280_Humidity";
+	    $p = $key."_BME280_Pressure";
+            $n = $key."_BME280_name";
+
+echo "<div class='sensors'>";
+	    echo "<h3 id='$n'></h3>";
+	    echo "<div style='width: 100%; display: table;'>";
+	    echo "<div style='display: table-row';>";
+
+	    echo " <div class='gauge' id='$t' style='width: 33%;  display: table-cell';>";
+	    echo "    <div class='gauge__body'>";
+	    echo "        <div class='gauge__fill'></div>";
+	    echo "        <div class='gauge__cover'></div>";
+	    echo "    </div>";
+	    echo "    <div class='sensors'>Temp</div>";
+	    echo " </div>";
+
+	    echo " <div class='gauge' id='$h' style='width: 33%;  display: table-cell';>";
+	    echo "    <div class='gauge__body'>";
+	    echo "        <div class='gauge__fill'></div>";
+	    echo "        <div class='gauge__cover'></div>";
+	    echo "    </div>";
+	    echo "    <div class='sensors'>Hum</div>";
+	    echo " </div>";
+
+	    echo " <div class='gauge' id='$p' style='width: 33%;  display: table-cell';>";
+	    echo "    <div class='gauge__body'>";
+	    echo "        <div class='gauge__fill'></div>";
+	    echo "        <div class='gauge__cover'></div>";
+	    echo "    </div>";
+	    echo "    <div class='sensors'>Pres</div>";
+	    echo " </div>";
+	    echo "</div>";
+	    echo "</div>";
+echo "</div>";
+	}
+    }
+?>
+
+
 <?php }?>
 
 
@@ -136,56 +148,6 @@
 ?>
 </div>
 </div>
-</div>
-<?php }?>
-
-
-<?php if ($config["use_BME280_sensor"] == "True") {?>
-<div class="sensors">
-    <h3>BME280</h3>
-
-<?php
-    foreach ($sensors['BME280'] as $key => $value)
-    {
-	if ($value['use'] == "true")
-	{
-	    $t = $key."_BME280_Temperature";
-	    $h = $key."_BME280_Humidity";
-	    $p = $key."_BME280_Pressure";
-            $n = $key."_BME280_name";
-	    echo "<div style='width: 100%; display: table;'>";
-	    echo "<div style='display: table-row';>";
-
-	    echo " <div class='gauge' id='$t' style='width: 33%;  display: table-cell';>";
-	    echo "    <div class='gauge__body'>";
-	    echo "        <div class='gauge__fill'></div>";
-	    echo "        <div class='gauge__cover'></div>";
-	    echo "    </div>";
-	    echo "    <div class='sensors'>Temp</div>";
-	    echo " </div>";
-
-	    echo " <div class='gauge' id='$h' style='width: 33%;  display: table-cell';>";
-	    echo "    <div class='gauge__body'>";
-	    echo "        <div class='gauge__fill'></div>";
-	    echo "        <div class='gauge__cover'></div>";
-	    echo "    </div>";
-	    echo "    <div class='sensors'>Hum</div>";
-	    echo " </div>";
-
-	    echo " <div class='gauge' id='$p' style='width: 33%;  display: table-cell';>";
-	    echo "    <div class='gauge__body'>";
-	    echo "        <div class='gauge__fill'></div>";
-	    echo "        <div class='gauge__cover'></div>";
-	    echo "    </div>";
-	    echo "    <div class='sensors'>Pres</div>";
-	    echo " </div>";
-	    echo "</div>";
-	    echo "</div>";
-	    echo "<h3 id='$n'></h3>";
-	}
-    }
-?>
-
 </div>
 <?php }?>
 
