@@ -225,17 +225,18 @@ def get_bme280_data(**kwargs):
                 redis_db.set('LECOUNTER', lecounter)
                 continue
             t,h,p,sn = msg[0], msg[1], msg[2], msg[3]
+
             if t.isnumeric() and h.isnumeric() and p.isnumeric():
                 temperature = int(t)/1000
                 humidity = int(h)/1000
                 pressure = int(p)/1000
-                redis_db.mset({f'{sn}_Temperature': temperature, f'{sn}_Humidity': humidity, f'{sn}_Pressure': pressure})
-                redis_db.expire(f'{sn}_Temperature', read_interval*2)
-                redis_db.expire(f'{sn}_Humidity', read_interval*2)
-                redis_db.expire(f'{sn}_Pressure', read_interval*2)
+                redis_db.mset({f'{sid}_BME280_Temperature': temperature, f'{sid}_BME280_Humidity': humidity, f'{sid}_BME280_Pressure': pressure})
+                redis_db.expire(f'{sid}_BME280_Temperature', read_interval*2)
+                redis_db.expire(f'{sid}_BME280_Humidity', read_interval*2)
+                redis_db.expire(f'{sid}_BME280_Pressure', read_interval*2)
                 if bool(verbose) is True:
                     print('')
-                    print(f'{sn}: Temperature: {temperature}°C, Humidity: {humidity}%, Pressure: {pressure}hPa')
+                    print(f'{sid}: Temperature: {temperature}°C, Humidity: {humidity}%, Pressure: {pressure}hPa')
             else:
                 necounter += 1
                 redis_db.set('NECOUNTER', necounter)
