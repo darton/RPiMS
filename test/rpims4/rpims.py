@@ -180,8 +180,6 @@ def get_bme280_data(**kwargs):
             bus = smbus2.SMBus(port)
             calibration_params = bme280.load_calibration_params(bus, address)
 
-            redis_db.sadd('BME280_sensors', sid)
-
             while True:
                 data = bme280.sample(bus, address, calibration_params)
                 temperature = round(data.temperature,3)
