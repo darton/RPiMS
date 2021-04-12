@@ -211,6 +211,7 @@ def get_bme280_data(**kwargs):
 
         lecounter = 0
         necounter = 0
+        redis_db.sadd('BME280_sensors', sid)
 
         def serial_data(port, baudrate, timeout):
             import serial
@@ -236,7 +237,7 @@ def get_bme280_data(**kwargs):
                 redis_db.expire(f'{sid}_BME280_Pressure', read_interval*2)
                 if bool(verbose) is True:
                     print('')
-                    print(f'{sid}: Temperature: {temperature}°C, Humidity: {humidity}%, Pressure: {pressure}hPa')
+                    print(f'{sid}_BME280: Temperature: {temperature}°C, Humidity: {humidity}%, Pressure: {pressure}hPa')
             else:
                 necounter += 1
                 redis_db.set('NECOUNTER', necounter)
