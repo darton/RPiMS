@@ -10,14 +10,9 @@ i2c = machine.I2C(0,sda=SDA_PIN, scl=SCL_PIN, freq=SCL_FREQ)
 BME280_I2CADDR = 0x77
 bme = bme280.BME280(i2c=i2c, address=BME280_I2CADDR)
 
-m_id = machine.unique_id()
-m_uid = '{:02x}{:02x}{:02x}{:02x}'.format(m_id[0], m_id[1], m_id[2], m_id[3])
-
 while True:
-     temp = int(float(bme.values[0])*1000)
-     pres = int(float(bme.values[1])*1000)
-     hum = int(float(bme.values[2])*1000)
+     val = bme.values
+     temp,hum,pres = int(float(val[0])*1000), int(float(val[2])*1000),int(float(val[1])*1000)
      print(temp,hum,pres)
-     #print(m_uid,temp,hum,pres)
      sleep(2)
     
