@@ -28,11 +28,9 @@ wwwdir=/var/www/html
 [[ -d $installdir ]] || mkdir -p $installdir
 [[ -d /home/pi/Videos ]] || mkdir -p /home/pi/Videos
 
-#for file in $(curl -sS https://raw.githubusercontent.com/darton/RPiMS/master/files.txt); do
-#   curl -sS https://raw.githubusercontent.com/darton/RPiMS/master/$file > $installdir/$file
-#done
-
-git clone https://github.com/darton/RPiMS.git
+for file in $(curl -sS https://raw.githubusercontent.com/darton/RPiMS/master/files.txt); do
+   curl -sS https://raw.githubusercontent.com/darton/RPiMS/master/$file > $installdir/$file
+done
 
 chmod u+x $installdir/*.py $installdir/*.sh
 
