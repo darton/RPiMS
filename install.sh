@@ -29,7 +29,7 @@ wwwdir=/var/www/html
 [[ -d /home/pi/Videos ]] || mkdir -p /home/pi/Videos
 
 for file in $(curl -sS https://raw.githubusercontent.com/darton/RPiMS/legacy/files.txt); do
-   curl -sS https://raw.githubusercontent.com/darton/RPiMS/master/$file > $installdir/$file
+   curl -sS https://raw.githubusercontent.com/darton/RPiMS/legacy/$file > $installdir/$file
 done
 
 chmod u+x $installdir/*.py $installdir/*.sh
