@@ -28,11 +28,9 @@ wwwdir=/var/www/html
 [[ -d $installdir ]] || mkdir -p $installdir
 [[ -d /home/pi/Videos ]] || mkdir -p /home/pi/Videos
 
-#for file in $(curl -sS https://raw.githubusercontent.com/darton/RPiMS/master/files.txt); do
-#   curl -sS https://raw.githubusercontent.com/darton/RPiMS/master/$file > $installdir/$file
-#done
-
-git clone https://github.com/darton/RPiMS.git
+for file in $(curl -sS https://raw.githubusercontent.com/darton/RPiMS/master/files.txt); do
+   curl -sS https://raw.githubusercontent.com/darton/RPiMS/master/$file > $installdir/$file
+done
 
 chmod u+x $installdir/*.py $installdir/*.sh
 
@@ -40,7 +38,7 @@ sudo apt-get -y install git python3-gpiozero python3-pip build-essential python3
 sudo apt-get -y install libfreetype6-dev libopenjp2-7 libtiff5 libjpeg-dev vlc ffmpeg gpac fbi
 
 sudo python3 -m pip install --upgrade pip setuptools wheel
-sudo -H pip3 install --upgrade RPi.bme280 redis pid PyYAML luma.oled luma.lcd adafruit-circuitpython-ads1x15
+sudo -H pip3 install --upgrade RPi.bme280 redis pid PyYAML luma.oled luma.lcd adafruit-circuitpython-ads1x15 rshell
 
 sudo apt-get -y install redis-server
 sudo systemctl enable redis-server.service
