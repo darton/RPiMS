@@ -176,8 +176,8 @@ def get_bme280_data(**kwargs):
             port = 1
             address = kwargs['BME280_i2c_address']
             bus = smbus2.SMBus(port)
+            calibration_params = bme280.load_calibration_params(bus, address)
             while True:
-                calibration_params = bme280.load_calibration_params(bus, address)
                 data = bme280.sample(bus, address, calibration_params)
                 redis_db.mset({'BME280_Humidity': round(data.humidity,3), 'BME280_Temperature': round(data.temperature,3), 'BME280_Pressure': round(data.pressure,3)})
                 redis_db.expire('BME280_Temperature', read_interval*2)
