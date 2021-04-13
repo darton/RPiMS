@@ -724,9 +724,10 @@
 
 <fieldset>
 <div>
-<input type="submit" value="Save" class="w3-bar">
+<button name="save" type="submit"  value="Save" class="w3-bar">Save</button>
 </div>
 </fieldset>
+
 
 </form>
 

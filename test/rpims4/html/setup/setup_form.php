@@ -163,6 +163,6 @@ fclose($zabconfile);
 fclose($zabpskfile);
 exec('sudo /bin/systemctl restart zabbix-agent.service');
 
-sleep(2);
+//sleep(2);
 header("Location: /");
 ?>
