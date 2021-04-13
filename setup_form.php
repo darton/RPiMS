@@ -43,9 +43,10 @@ $setup = array(
 
     "CPUtemp_read_interval" => (int)$_POST['CPUtemp_read_interval'],
 
-    "BME280_read_interval" => (int)$_POST['BME280_read_interval'],
-    "BME280_interface" => $_POST['BME280_interface'],
-    "BME280_i2c_address" => (int)$_POST['BME280_i2c_address'],
+    //"BME280_use" => filter_var($_POST['BME280_use'], FILTER_VALIDATE_BOOLEAN),
+    //"BME280_read_interval" => (int)$_POST['BME280_read_interval'],
+    //"BME280_interface" => $_POST['BME280_interface'],
+    //"BME280_i2c_address" => (int)$_POST['BME280_i2c_address'],
 
     "DS18B20_read_interval" => (int)$_POST['DS18B20_read_interval'],
 
@@ -65,6 +66,38 @@ $setup = array(
     "rainfall_sensor_pin" => (int)$_POST['rainfall_sensor_pin'],
     "rainfall_acquisition_time" => (int)$_POST['rainfall_acquisition_time'],
     "rainfall_agregation_time" => (int)$_POST['rainfall_agregation_time'],
+);
+
+$BME280["id1"] = array(
+    "id" => 'id1',
+    "name" => $_POST['id1_BME280_name'],
+    "use" => filter_var($_POST['id1_BME280_use'], FILTER_VALIDATE_BOOLEAN),
+    "read_interval" => (int)$_POST['id1_BME280_read_interval'],
+    "interface" => $_POST['id1_BME280_interface'],
+    "i2c_address" => (int)$_POST['id1_BME280_i2c_address'],
+);
+
+
+$BME280["id2"] = array(
+    "id" => 'id2',
+    "name" => $_POST['id2_BME280_name'],
+    "use" => filter_var($_POST['id2_BME280_use'], FILTER_VALIDATE_BOOLEAN),
+    "read_interval" => (int)$_POST['id2_BME280_read_interval'],
+    "interface" => $_POST['id2_BME280_interface'],
+    "serial_port" => $_POST['id2_BME280_serial_port'],
+);
+
+$BME280["id3"] = array(
+    "id" => 'id3',
+    "name" => $_POST['id3_BME280_name'],
+    "use" => filter_var($_POST['id3_BME280_use'], FILTER_VALIDATE_BOOLEAN),
+    "read_interval" => (int)$_POST['id3_BME280_read_interval'],
+    "interface" => $_POST['id3_BME280_interface'],
+    "serial_port" => $_POST['id3_BME280_serial_port'],
+);
+
+$sensors = array(
+    "BME280" => $BME280,
 );
 
 $GPIO = array(
@@ -96,7 +129,8 @@ $zabbix_agent = array(
 );
 
 $rpims = array(
-    "setup" => $setup,
+    "setup"          => $setup,
+    "sensors"        => $sensors,
     "gpio"           => $GPIO,
     "zabbix_agent"   => $zabbix_agent,
 );
@@ -129,6 +163,6 @@ fclose($zabconfile);
 fclose($zabpskfile);
 exec('sudo /bin/systemctl restart zabbix-agent.service');
 
-sleep(2);
+//sleep(2);
 header("Location: /");
 ?>

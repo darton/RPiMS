@@ -1,19 +1,35 @@
 from machine import Pin, I2C, reset
 import bme280_float as bme280
-from time import sleep
+from utime import sleep_ms
+import sys
 
-uid = 'BME280SN001'
+sleep_ms(1000)
 
 SDA_PIN = machine.Pin(16)
 SCL_PIN = machine.Pin(17)
-SCL_FREQ = 100000
+SCL_FREQ = 400000
 i2c = machine.I2C(0,sda=SDA_PIN, scl=SCL_PIN, freq=SCL_FREQ)
 
-BME280_I2CADDR = 0x77
-bme = bme280.BME280(i2c=i2c, address=BME280_I2CADDR)
+try:
+    BME280_I2CADDR = 0x76
+    bme = bme280.BME280(i2c=i2c, address=BME280_I2CADDR)
+except:
+    try:
+        BME280_I2CADDR = 0x77
+        bme = bme280.BME280(i2c=i2c, address=BME280_I2CADDR)
+    except Exception as e:
+        sleep_ms(5000)
+        machine.reset()
 
 while True:
-     val = bme.values
-     temp,hum,pres = int(float(val[0])*1000), int(float(val[2])*1000),int(float(val[1])*1000)
-     print(temp,hum,pres,uid)
-     sleep(2)
+    try:
+        val = bme.values
+    except:
+        sleep_ms(1000)
+        try:
+            val = bme.values
+        except:
+            macine.reset()
+    temp,hum,pres = int(float(val[0])*1000),int(float(val[2])*1000),int(float(val[1])*1000)
+    print(temp,hum,pres,uid)
+    sleep_ms (2000)

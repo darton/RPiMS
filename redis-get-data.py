@@ -20,15 +20,18 @@ import sys
 redis_db = redis.StrictRedis(host="localhost", port=6379, db=0, charset="utf-8", decode_responses=True)
 
 config = json.loads(redis_db.get('config'))
+sensors = json.loads(redis_db.get('sensors'))
 
 if len(sys.argv) > 1:
     if sys.argv[1] == 'BME280':
         if config['use_BME280_sensor'] is True:
-            if redis_db.exists('BME280_Temperature') and redis_db.exists('BME280_Humidity') and redis_db.exists('BME280_Pressure'):
-                temperature = redis_db.get('BME280_Temperature')
-                humidity = redis_db.get('BME280_Humidity')
-                pressure = redis_db.get('BME280_Pressure')
-                print('Temperature={0:0.2f};Humidity={1:0.2f};Pressure={2:0.2f};'.format(float(temperature),float(humidity),float(pressure)))
+            bme_id = sys.argv[2]
+            if bme_id.isnumeric() :
+                if redis_db.exists(f'id{bme_id}_BME280_Temperature') and redis_db.exists(f'id{bme_id}_BME280_Humidity') and redis_db.exists(f'id{bme_id}_BME280_Pressure'):
+                    temperature = redis_db.get(f'id{bme_id}_BME280_Temperature')
+                    humidity = redis_db.get(f'id{bme_id}_BME280_Humidity')
+                    pressure = redis_db.get(f'id{bme_id}_BME280_Pressure')
+                    print('Temperature={0:0.2f};Humidity={1:0.2f};Pressure={2:0.2f};'.format(float(temperature),float(humidity),float(pressure)))
 
     elif sys.argv[1] == 'DS18B20':
         if config['use_DS18B20_sensor'] is True:

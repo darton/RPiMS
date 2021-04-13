@@ -6,7 +6,6 @@ function roundPrecised(number, precision) {
 
 setInterval(function() {
     $.getJSON("rpims.php", function(data) {
-
     if (data['settings']['use_weather_station'] == true) {
 	$("#average_wind_direction").html(data['weather_station']['average_wind_direction']);
 	$("#daily_average_wind_speed").html(data['weather_station']['daily_average_wind_speed']);
@@ -29,11 +28,52 @@ setInterval(function() {
 	}
     }
 
-    if (data['settings']['use_bme280_sensor'] == true) {
-	$("#BME280_Temperature").html(data['sensors']['bme280']['temperature']);
-	$("#BME280_Humidity").html(data['sensors']['bme280']['humidity']);
-	$("#BME280_Pressure").html(data['sensors']['bme280']['pressure']);
+    if (data['settings']['use_bme280_sensor'] == true) 
+    {
+	var BME280 = {};
+	var BME280_T = '_BME280_Temperature';
+	var BME280_H = '_BME280_Humidity';
+	var BME280_P = '_BME280_Pressure';
+
+	for (var BME280_id in data['sensors']['bme280'])
+	{
+	    var BME280t = roundPrecised(data['sensors']['bme280'][BME280_id]['temperature'],1);
+	    var BME280h = Math.round(data['sensors']['bme280'][BME280_id]['humidity']);
+	    var BME280p = Math.round(data['sensors']['bme280'][BME280_id]['pressure']);
+            var BME280n = data['settings']['sensors']['BME280'][BME280_id]['name'];
+	    //BME280[BME280_id] = BME280t;
+	    //BME280[BME280_id] = BME280h;
+	    //BME280[BME280_id] = BME280p;
+	    //console.log(BME280[BME280_id], BME280t,BME280h,BME280p);
+	    //$("#" + BME280_id + "_BME280_T_val").html(BME280t);
+	    //$("#" + BME280_id + "_BME280_H_val").html(BME280h);
+	    //$("#" + BME280_id + "_BME280_P_val").html(BME280p);
+            var BME280_name = BME280_id + '_BME280_name';
+	    $("#" + BME280_name).html(BME280n);
+
+	    var t_sensor_name = BME280_id + BME280_T;
+	    var t_sensor_value = BME280t;
+	    var h_sensor_name = BME280_id + BME280_H;
+	    var h_sensor_value = BME280h;
+	    var p_sensor_name = BME280_id + BME280_P;
+	    var p_sensor_value = BME280p;
+
+	    //console.log(eval(sensor_name));
+	    if (!!t_sensor_value || h_sensor_value || p_sensor_value  )
+	    {
+		setGaugeValue(eval(t_sensor_name), t_sensor_value/100, 100, "°C");
+		setGaugeValue(eval(h_sensor_name), h_sensor_value/100, 100, "%");
+		setGaugeValue(eval(p_sensor_name), p_sensor_value/1100, 1100, "hPa");
+	    }
+	    else
+	    {
+		setGaugeValue(eval(t_sensor_name), "NULL", "", "");
+		setGaugeValue(eval(h_sensor_name), "NULL", "", "");
+		setGaugeValue(eval(p_sensor_name), "NULL", "", "");
+	    }
+	}
     }
+
 
     if (data['settings']['use_dht_sensor'] == true) {
 	$("#DHT_Temperature").html(data['sensors']['dht']['temperature']);
@@ -113,7 +153,7 @@ const g6 = document.querySelector("#g6");
 const g11 = document.querySelector("#g11");
 const g12 = document.querySelector("#g12");
 
-if (data['settings']['use_bme280_sensor'] == true) {
+if (data['settings']['use_bme280_sensor'] == false) {
     if (!!BME280Temperature) {
     setGaugeValue(g1, BME280Temperature/100, 100, "°C");
     setGaugeValue(g2, BME280Humidity/100, 100, "%");
@@ -137,20 +177,26 @@ if (data['settings']['use_dht_sensor'] == true) {
     setGaugeValue(g12, DHTHumidity/100, 100, "%");
 }
 
-if (data['settings']['use_ds18b20_sensor'] == true) {
+if (data['settings']['use_ds18b20_sensor'] == true)
+{
     var DS18B20_prefix = 'DS18B20_';
-    for (var DS18B20_id in data['sensors']['one_wire']['ds18b20']){
-    var sensor_name = DS18B20_prefix + DS18B20_id;
-    var sensor_value = DS18B20[DS18B20_id];
-    //console.log(eval(sensor_name));
-    if (!!sensor_value) {
-    setGaugeValue(eval(sensor_name), sensor_value/100, 100, "°C");
-    }
-    else {
-    setGaugeValue(eval(sensor_name), "NULL", "", "");
-    }
+    for (var DS18B20_id in data['sensors']['one_wire']['ds18b20'])
+    {
+	var sensor_name = DS18B20_prefix + DS18B20_id;
+	var sensor_value = DS18B20[DS18B20_id];
+	//console.log(eval(sensor_name));
+	if (!!sensor_value)
+	{
+	    setGaugeValue(eval(sensor_name), sensor_value/100, 100, "°C");
+	}
+	else
+	{
+	    setGaugeValue(eval(sensor_name), "NULL", "", "");
+	}
     }
 }
+
+
 });
 }, 500);
 

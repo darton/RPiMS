@@ -32,9 +32,31 @@ $serial_display_rotate = $rpims['setup']['serial_display_rotate'];
 
 $CPUtemp_read_interval = $rpims['setup']['CPUtemp_read_interval'];
 
-$BME280_interface = $rpims['setup']['BME280_interface'];
-$BME280_read_interval = $rpims['setup']['BME280_read_interval'];
-$BME280_i2c_address = $rpims['setup']['BME280_i2c_address'];
+//$BME280_use = $rpims['setup']['BME280_use'];
+//$BME280_interface = $rpims['setup']['BME280_interface'];
+//$BME280_read_interval = $rpims['setup']['BME280_read_interval'];
+//$BME280_i2c_address = $rpims['setup']['BME280_i2c_address'];
+
+//var_dump($rpims['sensors']['BME280']['id2']['name']);
+
+$id1_BME280_use = $rpims['sensors']['BME280']['id1']['use'];
+$id1_BME280_name = $rpims['sensors']['BME280']['id1']['name'];
+$id1_BME280_read_interval = $rpims['sensors']['BME280']['id1']['read_interval'];
+$id1_BME280_interface = $rpims['sensors']['BME280']['id1']['interface'];
+$id1_BME280_i2c_address = $rpims['sensors']['BME280']['id1']['i2c_address'];
+
+
+$id2_BME280_use = $rpims['sensors']['BME280']['id2']['use'];
+$id2_BME280_name = $rpims['sensors']['BME280']['id2']['name'];
+$id2_BME280_read_interval = $rpims['sensors']['BME280']['id2']['read_interval'];
+$id2_BME280_interface = $rpims['sensors']['BME280']['id2']['interface'];
+$id2_BME280_serial_port = $rpims['sensors']['BME280']['id2']['serial_port'];
+
+$id3_BME280_use = $rpims['sensors']['BME280']['id3']['use'];
+$id3_BME280_name = $rpims['sensors']['BME280']['id3']['name'];
+$id3_BME280_read_interval = $rpims['sensors']['BME280']['id3']['read_interval'];
+$id3_BME280_interface = $rpims['sensors']['BME280']['id3']['interface'];
+$id3_BME280_serial_port = $rpims['sensors']['BME280']['id3']['serial_port'];
 
 $DS18B20_read_interval = $rpims['setup']['DS18B20_read_interval'];
 

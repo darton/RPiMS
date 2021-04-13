@@ -9,9 +9,12 @@ $config = json_decode($obj, true);
 $obj = $redis-> get('gpio');
 $gpio = json_decode($obj, true);
 
+$obj = $redis-> get('sensors');
+$sensors = json_decode($obj, true);
+
 if ($config["use_door_sensor"] == "True")
 {
-    foreach ($gpio as $key=> $value) 
+    foreach ($gpio as $key=> $value)
     {
 	if ($gpio[$key]["type"] == "DoorSensor" )
 	{
@@ -22,7 +25,7 @@ if ($config["use_door_sensor"] == "True")
 
 if ($config["use_door_sensor"] == "True")
 {
-    foreach ($gpio as $key=> $value) 
+    foreach ($gpio as $key=> $value)
     {
 	if ($gpio[$key]["type"] == "MotionSensor" )
 	{

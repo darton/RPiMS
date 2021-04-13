@@ -5,14 +5,14 @@ setup:
   use_zabbix_sender: false
   use_picamera: false
   use_picamera_recording: false
-  use_door_sensor: true
-  use_motion_sensor: true
-  use_system_buttons: true
+  use_door_sensor: false
+  use_motion_sensor: false
+  use_system_buttons: false
   use_door_led_indicator: true
   use_motion_led_indicator: true
-  use_CPU_sensor: true
-  use_BME280_sensor: false
-  use_DS18B20_sensor: false
+  use_CPU_sensor: false
+  use_BME280_sensor: true
+  use_DS18B20_sensor: true
   use_DHT_sensor: false
   use_weather_station: false
   use_serial_display: false
@@ -21,9 +21,7 @@ setup:
   serial_display_rotate: 0
   serial_display_refresh_rate: 10
   CPUtemp_read_interval: 1
-  BME280_read_interval: 10
-  BME280_i2c_address: 118
-  DS18B20_read_interval: 60
+  DS18B20_read_interval: 20
   DHT_read_interval: 5
   DHT_type: DHT22
   DHT_pin: 17
@@ -37,6 +35,29 @@ setup:
   rainfall_sensor_pin: 22
   rainfall_acquisition_time: 6
   rainfall_agregation_time: 86400
+sensors:
+  BME280:
+    id1:
+      id: id1
+      name: "Room 1"
+      use: true
+      read_interval: 2
+      interface: i2c
+      i2c_address: 118
+    id2:
+      id: id2
+      name: "Room 2"
+      use: true
+      read_interval: 4
+      interface: serial
+      serial_port: USB3
+    id3:
+      id: id3
+      name: "Room 3"
+      use: true
+      read_interval: 6
+      interface: serial
+      serial_port: USB4
 gpio:
   GPIO_5:
     gpio_pin: "5"
@@ -59,9 +80,9 @@ gpio:
     hold_time: "1"
   GPIO_16:
     gpio_pin: "16"
-    type: ShutdownButton
+    type: MotionSensor
     name: GPIO 16
-    hold_time: "5"
+    hold_time: "1"
   GPIO_18:
     gpio_pin: "18"
     type: motion_led
@@ -78,14 +99,14 @@ gpio:
     hold_time: "1"
   GPIO_21:
     gpio_pin: "21"
-    type: MotionSensor
+    type: Reserved
     name: GPIO 21
     hold_time: "1"
   GPIO_26:
     gpio_pin: "26"
     type: Reserved
     name: GPIO 26
-    hold_time: "1"
+    hold_time: "2"
 zabbix_agent:
   zabbix_server: zabbix.example.com
   zabbix_server_active: zabbix.example.com
@@ -93,10 +114,10 @@ zabbix_agent:
   hostname: rpims.example.com
   chassis: embedded
   deployment: RPiMS
-  TLSPSKIdentity: 1729d9cf8cf7e411
+  TLSPSKIdentity: 610e655e89ce433e
   TLSConnect: psk
   TLSAccept: psk
-  TLSPSK: 239e8d24f586b2bce5601cbff611ecc40c27154e9f2b1b19c283e582614
+  TLSPSK: 8d49cd81b1fcb06fe4b218743122ce3f3cd595b044cc942e53d161369
   TLSPSKFile: /var/www/html/conf/zabbix_agentd.psk
   Timeout: 3
 ...

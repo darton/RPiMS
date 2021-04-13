@@ -36,7 +36,7 @@
 
 <tr>
 <td>
-<label>Verbose:</label>
+<label>Verbose mode:</label>
 </td>
 <td>
 <input name="verbose" type="hidden" value="no"><input name="verbose" type="checkbox" class="w3-check" <?php if ($verbose) echo 'checked="checked"'; ?> value="True">
@@ -213,9 +213,11 @@
 </td>
 </tr>
 
+<!--
 <tr>
 <td>
-<label>BME280</label>
+<label>Use #1 BME280:</label>
+<input name="BME280_use" type="hidden" value="no"><input name="BME280_use" type="checkbox" class="w3-check" <?php if ($BME280_use) echo 'checked="checked"'; ?> value="True">
 </td>
 </tr>
 <tr>
@@ -239,7 +241,120 @@
 </label>
 </td>
 </tr>
+-->
 
+<tr>
+<td>
+<label>Use #1 BME280:</label>
+<input name="id1_BME280_use" type="hidden" value="no"><input name="id1_BME280_use" type="checkbox" class="w3-check" <?php if ($id1_BME280_use) echo 'checked="checked"'; ?> value="True">
+</td>
+</tr>
+
+<tr>
+<td>
+<label>name:</label>
+<input name="id1_BME280_name" class="w3-input" type="text" value="<?=$id1_BME280_name?>" >
+</td>
+</tr>
+
+
+<tr>
+<td>
+<label for="id1_BME280_read_interval">Read interval:</label>
+<input name="id1_BME280_read_interval" class="w3-input" id="id1_BME280_read_interval" type="number" min="1" max="3600" value="<?= $id1_BME280_read_interval ?>" >
+</td>
+<td>
+<label for="id1_BME280_interface">Interface type:</label>
+<select name="id1_BME280_interface" class="w3-input" id="id1_BME280_interface">
+<option <?php if ($id1_BME280_2_interface == 'i2c') echo 'selected="selected"'; ?> value = "i2c" >i2c</option>
+</select>
+</td>
+<td>
+<label id="id1_BME280_i2c_address">Serial port:
+<select name="id1_BME280_i2c_address" class="w3-input" >
+<option <?php if ($id1_BME280_i2c_address == '118') echo 'selected="selected"'; ?> value = "118" >0x76</option>
+<option <?php if ($id1_BME280_i2c_address == '119') echo 'selected="selected"'; ?> value = "119" >0x77</option>
+</select>
+</label>
+</td>
+</tr>
+
+<tr>
+<td>
+<label>Use #2 BME280:</label>
+<input name="id2_BME280_use" type="hidden" value="no"><input name="id2_BME280_use" type="checkbox" class="w3-check" <?php if ($id2_BME280_use) echo 'checked="checked"'; ?> value="True">
+</td>
+</tr>
+
+<tr>
+<td>
+<label>name:</label>
+<input name="id2_BME280_name" class="w3-input" type="text" value="<?=$id2_BME280_name?>" >
+</td>
+</tr>
+
+
+
+<tr>
+<td>
+<label for="id2_BME280_read_interval">Read interval:</label>
+<input name="id2_BME280_read_interval" class="w3-input" id="id2_BME280_read_interval" type="number" min="1" max="3600" value="<?= $id2_BME280_read_interval ?>" >
+</td>
+<td>
+<label for="id2_BME280_interface">Interface type:</label>
+<select name="id2_BME280_interface" class="w3-input" id="id2_BME280_interface">
+<option <?php if ($id2_BME280_interface == 'serial') echo 'selected="selected"'; ?> value = "serial" >serial</option>
+</select>
+</td>
+<td>
+<label id="id2_BME280_serial_port">Serial port:
+<select name="id2_BME280_serial_port" class="w3-input" >
+<option <?php if ($id2_BME280_serial_port == 'USB1') echo 'selected="selected"'; ?> value = "USB1" >USB1</option>
+<option <?php if ($id2_BME280_serial_port == 'USB2') echo 'selected="selected"'; ?> value = "USB2" >USB2</option>
+<option <?php if ($id2_BME280_serial_port == 'USB3') echo 'selected="selected"'; ?> value = "USB3" >USB3</option>
+<option <?php if ($id2_BME280_serial_port == 'USB4') echo 'selected="selected"'; ?> value = "USB4" >USB4</option>
+</select>
+</label>
+</td>
+</tr>
+
+<tr>
+<td>
+<label>Use #3 BME280:</label>
+<input name="id3_BME280_use" type="hidden" value="no"><input name="id3_BME280_use" type="checkbox" class="w3-check" <?php if ($id3_BME280_use) echo 'checked="checked"'; ?> value="True">
+</td>
+</tr>
+
+<tr>
+<td>
+<label>name:</label>
+<input name="id3_BME280_name" class="w3-input" type="text" value="<?=$id3_BME280_name?>" >
+</td>
+</tr>
+
+
+<tr>
+<td>
+<label for="id3_BME280_read_interval">Read interval:</label>
+<input name="id3_BME280_read_interval" class="w3-input" id="id3_BME280_read_interval" type="number" min="1" max="3600" value="<?= $id3_BME280_read_interval ?>" >
+</td>
+<td>
+<label for="id3_BME280_interface">Interface type:</label>
+<select name="id3_BME280_interface" class="w3-input" id="id3_BME280_interface">
+<option <?php if ($id3_BME280_interface == 'serial') echo 'selected="selected"'; ?> value = "serial" >serial</option>
+</select>
+</td>
+<td>
+<label id="id3_BME280_serial_port">Serial port:
+<select name="id3_BME280_serial_port" class="w3-input" >
+<option <?php if ($id3_BME280_serial_port == 'USB1') echo 'selected="selected"'; ?> value = "USB1" >USB1</option>
+<option <?php if ($id3_BME280_serial_port == 'USB2') echo 'selected="selected"'; ?> value = "USB2" >USB2</option>
+<option <?php if ($id3_BME280_serial_port == 'USB3') echo 'selected="selected"'; ?> value = "USB3" >USB3</option>
+<option <?php if ($id3_BME280_serial_port == 'USB4') echo 'selected="selected"'; ?> value = "USB4" >USB4</option>
+</select>
+</label>
+</td>
+</tr>
 
 <tr>
 <td>
@@ -251,7 +366,6 @@
 <label for="DHT_read_interval">Read interval:</label>
 <input name="DHT_read_interval" class="w3-input" id="DHT_read_interval" type="number" min="1" max="3600" value="<?= $DHT_read_interval ?>" >
 </td>
-
 <td>
 <label for="DHT_type">Type:</label>
   <select name="DHT_type" class="w3-input" id="DHT_type">
@@ -260,7 +374,6 @@
   <option value="AM2302" <?php if ($DHT_type == 'AM2302') echo 'selected="selected"'; ?> >AM2302</option>
 </select>
 </td>
-
 <td>
 <label for="DHT_pin">Pin:</label>
 <select name="DHT_pin" class="w3-input" id="DHT_pin">
@@ -611,9 +724,10 @@
 
 <fieldset>
 <div>
-<input type="submit" value="Save" class="w3-bar">
+<button name="save" type="submit"  value="Save" class="w3-bar">Save</button>
 </div>
 </fieldset>
+
 
 </form>
 
