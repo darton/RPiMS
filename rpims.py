@@ -234,6 +234,20 @@ def get_bme280_data(**kwargs):
             while True:
                 yield ser.readline()
 
+        '''
+        def serial_data(port,baudrate):
+            ser = serial.Serial(port, baudrate)
+            ser.flushInput()
+            ser.write( b'\x03' ) # Sent CTRL-C -- interrupt a running program
+            ser.write( b'\x04' ) # Sent CTRL-D -- on a blank line, do a soft reset of the board
+            ser.timeout=None
+            while True:
+                #response = ser.readline()
+                #print(response)
+                yield ser.readline()
+                #print(response)
+         '''
+
         for line in serial_data(serial_port, 115200, 5):
             msg = line.decode('utf-8').split()
             if len(msg)< 4:
