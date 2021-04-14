@@ -117,8 +117,10 @@ span.value {
 {
   padding: 1px;
   margin: 0px;
+  font-family: "Roboto", sans-serif;
+  font-size: 3vw;
+  color: white;
 }
-
 .rpims {
  #background-color: #6159DB;
   background-color: darkslateblue;
@@ -136,7 +138,6 @@ span.value {
   font-size: 4vw;
   text-align: center;
 }
-
 .table {
   background-color: darkslategray;
   color: white;
@@ -145,7 +146,6 @@ span.value {
   font-size: 4vw;
   text-align: left;
 }
-
 .center {
   margin-left: auto;
   margin-right: auto;
