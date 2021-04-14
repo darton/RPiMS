@@ -210,7 +210,6 @@ def get_bme280_data(**kwargs):
                                        }
         except:
             if bool(set1.remove('4')) is False:
-                print('----------------------------')
                 serial_ports_by_path = {'USB1':'/dev/serial/by-path/platform-fd500000.pcie-pci-0000:01:00.0-usb-0:1.1:1.0',
                                         'USB2':'/dev/serial/by-path/platform-fd500000.pcie-pci-0000:01:00.0-usb-0:1.2:1.0',
                                         'USB3':'/dev/serial/by-path/platform-fd500000.pcie-pci-0000:01:00.0-usb-0:1.3:1.0',
@@ -369,7 +368,7 @@ def serial_displays(**kwargs):
             while True:
                 with canvas(device) as draw:
                     # get data from redis db
-                    values = redis_db.mget('BME280_Temperature', 'BME280_Humidity', 'BME280_Pressure', 'GPIO_5', 'GPIO_6', 'CPU_Temperature', 'hostip')
+                    values = redis_db.mget('id1_BME280_Temperature', 'id1_BME280_Humidity', 'id1_BME280_Pressure', 'GPIO_5', 'GPIO_6', 'CPU_Temperature', 'hostip')
 
                     t,h,p = values[0], values[1], values[2]
                     if t == None or h == None or p == None:
@@ -445,7 +444,7 @@ def serial_displays(**kwargs):
 
             while True:
                 # get data from redis db
-                values = redis_db.mget('BME280_Temperature', 'BME280_Humidity', 'BME280_Pressure', 'GPIO_5', 'GPIO_6', 'CPU_Temperature', 'hostip')
+                values = redis_db.mget('id1_BME280_Temperature', 'id1_BME280_Humidity', 'id1_BME280_Pressure', 'GPIO_5', 'GPIO_6', 'CPU_Temperature', 'hostip')
 
                 t,h,p = values[0], values[1], values[2]
                 if t == None or h == None or p == None:
