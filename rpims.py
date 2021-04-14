@@ -108,7 +108,8 @@ def detect_no_alarms(**kwargs):
 
 def av_stream(state):
     from subprocess import call
-    _cmd = '/home/pi/scripts/RPiMS/videostreamer.sh' + " " + state
+    #_cmd = '/home/pi/scripts/RPiMS/videostreamer.sh' + " " + state
+    _cmd = 'sudo systemctl' + " " + state + " " + 'rpims-stream.service'
     call(_cmd, shell=True)
 
 
@@ -198,11 +199,20 @@ def get_bme280_data(**kwargs):
             print(f'Problem with sensor BME280: {err}')
 
     if interface_type == 'serial':
-        serial_ports_by_path = {'USB1':'/dev/serial/by-path/platform-fd500000.pcie-pci-0000:01:00.0-usb-0:1.1:1.0',
-                                'USB2':'/dev/serial/by-path/platform-fd500000.pcie-pci-0000:01:00.0-usb-0:1.2:1.0',
-                                'USB3':'/dev/serial/by-path/platform-fd500000.pcie-pci-0000:01:00.0-usb-0:1.3:1.0',
-                                'USB4':'/dev/serial/by-path/platform-fd500000.pcie-pci-0000:01:00.0-usb-0:1.4:1.0'
-                               }
+        from subprocess import check_output
+        set1 = set(check_output(["cat /sys/firmware/devicetree/base/model"], shell=True).decode('UTF-8').split(' '))
+        if bool(set1.remove("3")) is False:
+            serial_ports_by_path = {'USB1':'/dev/serial/by-path/platform-3f980000.usb-usb-0:1.1.1:1.0',
+                                    'USB2':'/dev/serial/by-path/platform-3f980000.usb-usb-0:1.1.2:1.0',
+                                    'USB3':'/dev/serial/by-path/platform-3f980000.usb-usb-0:1.1.3:1.0',
+                                    'USB4':'/dev/serial/by-path/platform-3f980000.usb-usb-0:1.1.4:1.0',
+                                   }
+        elif bool(set1.remove("4")) is False:
+            serial_ports_by_path = {'USB1':'/dev/serial/by-path/platform-fd500000.pcie-pci-0000:01:00.0-usb-0:1.1:1.0',
+                                    'USB2':'/dev/serial/by-path/platform-fd500000.pcie-pci-0000:01:00.0-usb-0:1.2:1.0',
+                                    'USB3':'/dev/serial/by-path/platform-fd500000.pcie-pci-0000:01:00.0-usb-0:1.3:1.0',
+                                    'USB4':'/dev/serial/by-path/platform-fd500000.pcie-pci-0000:01:00.0-usb-0:1.4:1.0',
+                                   }
         if kwargs['serial_port'] == 'USB1':
             serial_port = serial_ports_by_path['USB1']
         elif kwargs['serial_port'] == 'USB2':
