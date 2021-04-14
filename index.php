@@ -23,7 +23,7 @@ if ($config["use_door_sensor"] == "True")
     }
 }
 
-if ($config["use_door_sensor"] == "True")
+if ($config["use_motion_sensor"] == "True")
 {
     foreach ($gpio as $key=> $value)
     {
