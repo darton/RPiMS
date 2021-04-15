@@ -160,7 +160,7 @@ RPi   [GPIO.3 pin 5] ----------------------------- [SDC]  DS3231
 
 ## B.o.M - Bill of Materials
 
-* BME280 - 1 pcs
+* BME280 - 1-3 pcs
 * DS18B20 - 1 pcs or more (or DS18S20) 
 * Resistor 4k7 (for DS18B20 sensor) - 1 psc
 * DHT11/DHT22/AM2302 - 1 pcs 
@@ -171,6 +171,8 @@ RPi   [GPIO.3 pin 5] ----------------------------- [SDC]  DS3231
 * Power Adapter (5V/2.5A or 5V1/3A for RPi4) - 1 pcs
 * Rapsberry Pi - 1 pcs
 * Raspberri Pi Case - 1 pcs
+* Raspberry Pico - 1-3 pcs
+* Sensor case for Pico and BME280 - 1-3 pcs
 * RTC DS3231 I2C - 1 pcs
 * LCD OLED 1,3" I2C SH1106 or 1.44" lcd_st7735 - 1 pcs
 * Weather Meter Kit - 1 pcs
@@ -210,9 +212,10 @@ Optional
 
 * [RPi Case](https://www.tme.eu/pl/en/details/it-25.0610000.rp3/enclosure-for-embedded-systems/italtronic/25-0610000-rp3/)
 
-* [Sensor Case](https://www.tme.eu/pl/details/it-61.6020000/obudowy-urzadzen-alarmowych-i-czujnikow/italtronic/61-6020000/)
+* [Sensor Case](https://www.tme.eu/pl/en/details/pp73g/enclosures-for-alarms-and-sensors/supertronic/)
 
 * [Sensor Case](https://pl.farnell.com/camdenboss/cbrs01vwh/enclosure-room-sensor-vented-white/dp/2472317?gclid=EAIaIQobChMIvvLvy47-5wIVQswYCh19AA4JEAQYAiABEgKsW_D_BwE&gross_price=true&mckv=Y1xp9UYm_dc|pcrid|155087520124|&CMP=KNC-GPL-GEN-SHOPPING-ALL_PRODUCTS)
+
 * [Zabbix](https://zabbix.org/wiki/Main_Page)
 
 * [Weather Meter Kit](https://learn.sparkfun.com/tutorials/weather-meter-hookup-guide?_ga=2.69275472.1527856563.1581318845-1560292620.1572271230)
