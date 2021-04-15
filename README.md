@@ -10,23 +10,15 @@ When any of the doors opens or closed then a message will be sent to the Zabbix 
 
 When the motion sensor detects motion a message will be sent to Zabbix server.
 
-When any of the doors is opened, a 5 second video sequence will be recorded and the rtsp stream will be turned on.
+When any of the doors is opened, a video sequence will be recorded or the video stream will be turned on.
 
 When any of the motion sensors detect movement, the rtsp stream will be turned on.
 
-When all of the doors are closed for more than 3 seconds and the motion sensors do not detect movement, rtsp stream will be turned off. 
+When all of the doors are closed for more than defined hold time and the motion sensors do not detect movement, video stream will be turned off. 
 
-Sensors are polled and measured values are saved to the database periodically. 
+Video stream will be turned on automaticly when use of motion sensors and door sensors are set to disabled in setup.
 
-The default intervals: 
-
- * CPU temperature - 1 second
-
- * BME280 - 10 seconds
-
- * DS18B20 - 60 seconds
- 
- * DHT22 - 10 seconds
+Sensors are polled and measured values are saved to Redis database periodically. 
 
 
 ## Installing
