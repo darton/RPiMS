@@ -36,126 +36,110 @@
 
 <tr>
 <td>
-<label>Verbose mode:</label>
-</td>
-<td>
 <input name="verbose" type="hidden" value="no"><input name="verbose" type="checkbox" class="w3-check" <?php if ($verbose) echo 'checked="checked"'; ?> value="True">
+<label>Verbose mode</label>
 </td>
 </tr>
 
 <tr>
-<td>
-<label>Show system info:</label>
-</td>
 <td>
 <input name="show_sys_info" type="hidden" value="False"><input name="show_sys_info" type="checkbox" class="w3-check" <?php if ($show_sys_info == 'yes') echo 'checked="checked"'; ?> value="True">
+<label>Show system info</label>
 </td>
 </tr>
 
 <tr>
-<td>
-<label>Use zabbix sender:</label>
-</td>
 <td>
 <input name="use_zabbix_sender" type="hidden" value="False"><input name="use_zabbix_sender" type="checkbox" class="w3-check" <?php if ($use_zabbix_sender == 'yes') echo 'checked="checked"'; ?> value="True">
+<label>Use zabbix sender</label>
 </td>
 </tr>
 
 <tr>
-<td>
-<label>Use picamera:</label>
-</td>
 <td>
 <input name="use_picamera" type="hidden" value="False"><input name="use_picamera" type="checkbox" class="w3-check" <?php if ($use_picamera == 'yes') echo 'checked="checked"'; ?> value="True">
+<label>Use picamera</label>
 </td>
 </tr>
 
 <tr>
-<td>
-<label>Use picamera recording:</label>
-</td>
 <td>
 <input name="use_picamera_recording" type="hidden" value="False"><input name="use_picamera_recording" type="checkbox" class="w3-check"  <?php if ($use_picamera_recording == 'yes') echo 'checked="checked"'; ?> value="True">
+<label>Use picamera recording</label>
 </td>
+
 </tr>
 
 <tr>
-<td>
-<label>Use button sensors:</label>
-</td>
 <td>
 <input name="use_door_sensor" type="hidden" value="False"><input name="use_door_sensor" type="checkbox" class="w3-check" <?php if ($use_door_sensor == 'yes') echo 'checked="checked"'; ?> value="True">
+<label>Use button sensors</label>
 </td>
 </tr>
 
 <tr>
-<td>
-<label>Use motion sensors:</label>
-</td>
 <td>
 <input name="use_motion_sensor" type="hidden" value="False"><input name="use_motion_sensor" type="checkbox" class="w3-check" <?php if ($use_motion_sensor == 'yes') echo 'checked="checked"'; ?> value="True">
+<label>Use motion sensors</label>
 </td>
 </tr>
 
 <tr>
-<td>
-<label>Use CPU sensor:</label>
-</td>
 <td>
 <input name="use_CPU_sensor" type="hidden" value="False"><input name="use_CPU_sensor" type="checkbox" class="w3-check" <?php if ($use_CPU_sensor == 'yes') echo 'checked="checked"'; ?> value="True">
+<label>Use CPU sensor</label>
 </td>
 </tr>
 
 <tr>
-<td>
-<label>Use BME280 sensor:</label>
-</td>
 <td>
 <input name="use_BME280_sensor" type="hidden" value="False"><input name="use_BME280_sensor" type="checkbox" class="w3-check" <?php if ($use_BME280_sensor == 'yes') echo 'checked="checked"'; ?> value="True">
+<label>Use BME280 sensor</label>
 </td>
 </tr>
 
 <tr>
-<td>
-<label>Use DS18B20 sensor:</label>
-</td>
 <td>
 <input name="use_DS18B20_sensor" type="hidden" value="False"><input name="use_DS18B20_sensor" type="checkbox" class="w3-check" <?php if ($use_DS18B20_sensor == 'yes') echo 'checked="checked"'; ?> value="True">
+<label>Use DS18B20 sensor</label>
 </td>
 </tr>
 
 <tr>
-<td>
-<label>Use DHT sensor:</label>
-</td>
 <td>
 <input name="use_DHT_sensor" type="hidden" value="False"><input name="use_DHT_sensor" type="checkbox" class="w3-check" <?php if ($use_DHT_sensor) echo 'checked="checked"'; ?> value="True">
+<label>Use DHT sensor</label>
 </td>
 </tr>
 
 <tr>
-<td>
-<label>Use weather station:</label>
-</td>
 <td>
 <input name="use_weather_station" type="hidden" value="False"><input name="use_weather_station" type="checkbox" class="w3-check" <?php if ($use_weather_station) echo 'checked="checked"'; ?> value="True">
+<label>Use weather station</label>
 </td>
 </tr>
 
 <tr>
 <td>
-<label>Use serial display:</label>
-</td>
-<td>
 <input name="use_serial_display" type="hidden" value="False"><input name="use_serial_display" type="checkbox" class="w3-check" <?php if ($use_serial_display == 'yes') echo 'checked="checked"'; ?> value="True">
+<label>Use serial display</label>
 </td>
 </tr>
+</table>
+</div>
+</fieldset>
+
+<fieldset>
+<legend>Serial display configuration</legend>
+<div>
+<table class="w3-table">
 
 <tr>
 <td>
 <label>Serial display</label>
 </td>
 </tr>
+
 <tr>
 <td>
 <label for="serial_type">Serial type:</label>
@@ -190,7 +174,7 @@
 
 
 <fieldset>
-<legend>Sensor configuration</legend>
+<legend>CPU sensor configuration</legend>
 <div>
 <table class="w3-table">
 
@@ -200,6 +184,15 @@
 <input name="CPUtemp_read_interval" class="w3-input" id="CPUtemp_read_interval" type="number" min="1" max="3600" value="<?= $CPUtemp_read_interval ?>" >
 </td>
 </tr>
+
+</table>
+</div>
+</fieldset>
+
+<fieldset>
+<legend>DS18B20 sensor configuration</legend>
+<div>
+<table class="w3-table">
 
 <tr>
 <td>
@@ -213,35 +206,14 @@
 </td>
 </tr>
 
-<!--
-<tr>
-<td>
-<label>Use #1 BME280:</label>
-<input name="BME280_use" type="hidden" value="no"><input name="BME280_use" type="checkbox" class="w3-check" <?php if ($BME280_use) echo 'checked="checked"'; ?> value="True">
-</td>
-</tr>
-<tr>
-<td>
-<label for="BME280_read_interval">Read interval:</label>
-<input name="BME280_read_interval" class="w3-input" id="BME280_read_interval" type="number" min="1" max="3600" value="<?= $BME280_read_interval ?>" >
-</td>
-<td>
-<label for="BME280_interface">Interface type:</label>
-<select name="BME280_interface" class="w3-input" id="BME280_interface">
-<option <?php if ($BME280_interface == 'i2c') echo 'selected="selected"'; ?> value = "i2c" >i2c</option>
-<option <?php if ($BME280_interface == 'serial') echo 'selected="selected"'; ?> value = "serial" >serial</option>
-</select>
-</td>
-<td>
-<label id="BME280_i2c_address">I2c address:
-<select name="BME280_i2c_address" class="w3-input" >
-<option <?php if ($BME280_i2c_address == '118') echo 'selected="selected"'; ?> value = "118" >0x76</option>
-<option <?php if ($BME280_i2c_address == '119') echo 'selected="selected"'; ?> value = "119" >0x77</option>
-</select>
-</label>
-</td>
-</tr>
--->
+</table>
+</div>
+</fieldset>
+
+<fieldset>
+<legend>BME280 sensor configuration</legend>
+<div>
+<table class="w3-table">
 
 <tr>
 <td>
@@ -265,13 +237,13 @@
 </td>
 <td>
 <label for="id1_BME280_interface">Interface type:</label>
-<select name="id1_BME280_interface" class="w3-input" id="id1_BME280_interface">
+<select name="id1_BME280_interface" class="w3-select" id="id1_BME280_interface">
 <option <?php if ($id1_BME280_2_interface == 'i2c') echo 'selected="selected"'; ?> value = "i2c" >i2c</option>
 </select>
 </td>
 <td>
 <label id="id1_BME280_i2c_address">Serial port:
-<select name="id1_BME280_i2c_address" class="w3-input" >
+<select name="id1_BME280_i2c_address" class="w3-select" >
 <option <?php if ($id1_BME280_i2c_address == '118') echo 'selected="selected"'; ?> value = "118" >0x76</option>
 <option <?php if ($id1_BME280_i2c_address == '119') echo 'selected="selected"'; ?> value = "119" >0x77</option>
 </select>
@@ -302,13 +274,13 @@
 </td>
 <td>
 <label for="id2_BME280_interface">Interface type:</label>
-<select name="id2_BME280_interface" class="w3-input" id="id2_BME280_interface">
+<select name="id2_BME280_interface" class="w3-select" id="id2_BME280_interface">
 <option <?php if ($id2_BME280_interface == 'serial') echo 'selected="selected"'; ?> value = "serial" >serial</option>
 </select>
 </td>
 <td>
 <label id="id2_BME280_serial_port">Serial port:
-<select name="id2_BME280_serial_port" class="w3-input" >
+<select name="id2_BME280_serial_port" class="w3-select" >
 <option <?php if ($id2_BME280_serial_port == 'USB1') echo 'selected="selected"'; ?> value = "USB1" >USB1</option>
 <option <?php if ($id2_BME280_serial_port == 'USB2') echo 'selected="selected"'; ?> value = "USB2" >USB2</option>
 <option <?php if ($id2_BME280_serial_port == 'USB3') echo 'selected="selected"'; ?> value = "USB3" >USB3</option>
@@ -332,7 +304,6 @@
 </td>
 </tr>
 
-
 <tr>
 <td>
 <label for="id3_BME280_read_interval">Read interval:</label>
@@ -340,13 +311,13 @@
 </td>
 <td>
 <label for="id3_BME280_interface">Interface type:</label>
-<select name="id3_BME280_interface" class="w3-input" id="id3_BME280_interface">
+<select name="id3_BME280_interface" class="w3-select" id="id3_BME280_interface">
 <option <?php if ($id3_BME280_interface == 'serial') echo 'selected="selected"'; ?> value = "serial" >serial</option>
 </select>
 </td>
 <td>
 <label id="id3_BME280_serial_port">Serial port:
-<select name="id3_BME280_serial_port" class="w3-input" >
+<select name="id3_BME280_serial_port" class="w3-select" >
 <option <?php if ($id3_BME280_serial_port == 'USB1') echo 'selected="selected"'; ?> value = "USB1" >USB1</option>
 <option <?php if ($id3_BME280_serial_port == 'USB2') echo 'selected="selected"'; ?> value = "USB2" >USB2</option>
 <option <?php if ($id3_BME280_serial_port == 'USB3') echo 'selected="selected"'; ?> value = "USB3" >USB3</option>
@@ -356,6 +327,15 @@
 </td>
 </tr>
 
+</table>
+</div>
+</fieldset>
+
+
+<fieldset>
+<legend>DHT sensor configuration</legend>
+<div>
+    <table class="w3-table">
 <tr>
 <td>
 <label>DHT</label>
@@ -368,7 +348,7 @@
 </td>
 <td>
 <label for="DHT_type">Type:</label>
-  <select name="DHT_type" class="w3-input" id="DHT_type">
+  <select name="DHT_type" class="w3-select" id="DHT_type">
   <option value="DHT11" <?php if ($DHT_type == 'DHT11') echo 'selected="selected"'; ?> >DHT11</option>
   <option value="DHT22" <?php if ($DHT_type == 'DHT22') echo 'selected="selected"'; ?> >DHT22</option>
   <option value="AM2302" <?php if ($DHT_type == 'AM2302') echo 'selected="selected"'; ?> >AM2302</option>
@@ -376,12 +356,20 @@
 </td>
 <td>
 <label for="DHT_pin">Pin:</label>
-<select name="DHT_pin" class="w3-input" id="DHT_pin">
+<select name="DHT_pin" class="w3-select" id="DHT_pin">
   <option value = 17>17</option>
 </select>
 </td>
 </tr>
+    </table>
+</div>
+</fieldset>
 
+<fieldset>
+<legend>Weather sensor configuration</legend>
+<div>
+
+<table class="w3-table">
 <tr>
 <td>
 <label>Rainfall</label>
@@ -638,7 +626,7 @@
 <tr>
 <td>
 <label for="GPIO_12">Output type:</label>
-<select  name="GPIO_12[type]" class="w3-input" id="GPIO_12">
+<select  name="GPIO_12[type]" class="w3-select" id="GPIO_12">
   <option <?php if ($GPIO['GPIO_12']['type'] == 'door_led') echo 'selected="selected"'; ?> value="door_led">Door Indicator</option>
   <option <?php if ($GPIO['GPIO_12']['type'] == 'led') echo 'selected="selected"'; ?>value="led">LED</option>
 </select></td>
@@ -652,7 +640,7 @@
 <tr>
 <td>
 <label for="GPIO_18">Output type:</label>
-<select  name="GPIO_18[type]" class="w3-input" id="GPIO_18">
+<select  name="GPIO_18[type]" class="w3-select" id="GPIO_18">
   <option <?php if ($GPIO['GPIO_18']['type'] == 'motion_led') echo 'selected="selected"'; ?> value="motion_led">Motion Indicator</option>
   <option <?php if ($GPIO['GPIO_18']['type'] == 'led') echo 'selected="selected"'; ?>value="led">LED</option>
 </select></td>
