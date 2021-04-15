@@ -29,7 +29,7 @@ while True:
         try:
             val = bme.values
         except:
-            macine.reset()
+            machine.reset()
     temp,hum,pres = int(float(val[0])*1000),int(float(val[2])*1000),int(float(val[1])*1000)
     print(temp,hum,pres,uid)
     sleep_ms (2000)
