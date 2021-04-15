@@ -155,25 +155,29 @@ echo "</div>";
 
 <?php if ($config["use_door_sensor"] == "True") {?>
 <div class="sensors">
-    <h2>Door sensors</h2>
+    <h3>Door sensors</h3>
+ <p>
     <table class="center">
     <?php foreach ($door_sensors as $key => $value) {
     echo "<tr><td>"; echo $value["name"]; echo "</td><td>: <span class='value' id='$key'></span></td></tr>";
 }
 ?>
     </table>
+ </p>
 </div>
 <?php }?>
 
 <?php if ($config["use_motion_sensor"] == "True") {?>
 <div class="sensors">
-    <h2>Motion sensors</h2>
+    <h3>Motion sensors</h3>
+ <p>
     <table class="center">
     <?php foreach ($motion_sensors as $key => $value) {
     echo "<tr><td>"; echo $value["name"]; echo "</td><td>: <span class='value' id='$key'></span></td></tr>";
 }
 ?>
     </table>
+ </p>
 </div>
 <?php }?>
 
