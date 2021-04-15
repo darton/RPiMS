@@ -944,8 +944,8 @@ def main():
             else:
                 motion_sensor_when_motion(k, **config)
         for k, v in motion_sensors_list.items():
-            v.when_motion = lambda s=k: motion_sensor_when_motion(k, **config)
-            v.when_no_motion = lambda s=k: motion_sensor_when_no_motion(k, **config)
+            v.when_motion = lambda s=k: motion_sensor_when_motion(s, **config)
+            v.when_no_motion = lambda s=k: motion_sensor_when_no_motion(s, **config)
         if bool(config['use_motion_led_indicator']) is True:
             led_indicators_list['motion_led'].source = any_values(*motion_sensors_list.values())
 
