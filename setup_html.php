@@ -229,18 +229,19 @@
 </td>
 </tr>
 
-
 <tr>
 <td>
 <label for="id1_BME280_read_interval">Read interval:</label>
 <input name="id1_BME280_read_interval" class="w3-input" id="id1_BME280_read_interval" type="number" min="1" max="3600" value="<?= $id1_BME280_read_interval ?>" >
 </td>
+
 <td>
 <label for="id1_BME280_interface">Interface type:</label>
 <select name="id1_BME280_interface" class="w3-select" id="id1_BME280_interface">
 <option <?php if ($id1_BME280_2_interface == 'i2c') echo 'selected="selected"'; ?> value = "i2c" >i2c</option>
 </select>
 </td>
+
 <td>
 <label id="id1_BME280_i2c_address">Serial port:
 <select name="id1_BME280_i2c_address" class="w3-select" >
@@ -251,6 +252,8 @@
 </td>
 </tr>
 
+
+<tr><td></td></tr>
 <tr>
 <td>
 <label>Use #2 BME280:</label>
@@ -264,8 +267,6 @@
 <input name="id2_BME280_name" class="w3-input" type="text" value="<?=$id2_BME280_name?>" >
 </td>
 </tr>
-
-
 
 <tr>
 <td>
@@ -290,6 +291,8 @@
 </td>
 </tr>
 
+
+<tr><td></td></tr>
 <tr>
 <td>
 <label>Use #3 BME280:</label>
@@ -309,12 +312,14 @@
 <label for="id3_BME280_read_interval">Read interval:</label>
 <input name="id3_BME280_read_interval" class="w3-input" id="id3_BME280_read_interval" type="number" min="1" max="3600" value="<?= $id3_BME280_read_interval ?>" >
 </td>
+
 <td>
 <label for="id3_BME280_interface">Interface type:</label>
 <select name="id3_BME280_interface" class="w3-select" id="id3_BME280_interface">
 <option <?php if ($id3_BME280_interface == 'serial') echo 'selected="selected"'; ?> value = "serial" >serial</option>
 </select>
 </td>
+
 <td>
 <label id="id3_BME280_serial_port">Serial port:
 <select name="id3_BME280_serial_port" class="w3-select" >
@@ -378,6 +383,7 @@
 <div>
 
 <table class="w3-table">
+
 <tr>
 <td>
 <label>Rainfall</label>
@@ -409,6 +415,7 @@
 </tr>
 
 
+<tr><td></td></tr>
 <tr>
 <td>
 <label>Wind speed</label>
@@ -439,6 +446,8 @@
 </td>
 </tr>
 
+
+<tr><td></td></tr>
 <tr>
 <td>
 <label>Wind direction</label>
@@ -451,7 +460,6 @@
 <input name="winddirection_use" type="hidden" value="no"><input name="winddirection_use" type="checkbox" class="w3-check" <?php if ($winddirection_use) echo 'checked="checked"'; ?> value="True">
 </td>
 </tr>
-
 
 <tr>
 <td>
