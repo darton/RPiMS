@@ -228,27 +228,34 @@ def get_bme280_data(**kwargs):
         necounter = 0
         redis_db.sadd('BME280_sensors', sid)
 
-        def serial_data(port, baudrate, timeout):
-            import serial
-            ser = serial.Serial(port, baudrate, timeout)
-            while True:
-                yield ser.readline()
 
+        def serial_data(port, baudrate):
+            import serial
+            ser = serial.Serial(port, baudrate)
+            ser.timeout=None
+            ser.write( b'\x03' ) # Sent CTRL-C -- interrupt a running program
+            ser.write( b'\x04' ) # Sent CTRL-D -- on a blank line, do a soft reset of the board
+            while True:
+                ser.flushInput()
+                #response = ser.readline()
+                #print(response)
+                yield ser.readline()
         '''
+
         def serial_data(port,baudrate):
+            import serial
             ser = serial.Serial(port, baudrate)
             ser.flushInput()
             ser.write( b'\x03' ) # Sent CTRL-C -- interrupt a running program
             ser.write( b'\x04' ) # Sent CTRL-D -- on a blank line, do a soft reset of the board
             ser.timeout=None
             while True:
-                #response = ser.readline()
-                #print(response)
+                response = ser.readline()
+                print(response)
                 yield ser.readline()
                 #print(response)
-         '''
-
-        for line in serial_data(serial_port, 115200, 5):
+        '''
+        for line in serial_data(serial_port, 115200):
             msg = line.decode('utf-8').split()
             if len(msg)< 4:
                 lecounter += 1
@@ -261,16 +268,16 @@ def get_bme280_data(**kwargs):
                 humidity = int(h)/1000
                 pressure = int(p)/1000
                 redis_db.mset({f'{sid}_BME280_Temperature': temperature, f'{sid}_BME280_Humidity': humidity, f'{sid}_BME280_Pressure': pressure})
-                redis_db.expire(f'{sid}_BME280_Temperature', read_interval*2)
-                redis_db.expire(f'{sid}_BME280_Humidity', read_interval*2)
-                redis_db.expire(f'{sid}_BME280_Pressure', read_interval*2)
+                redis_db.expire(f'{sid}_BME280_Temperature', read_interval*4)
+                redis_db.expire(f'{sid}_BME280_Humidity', read_interval*4)
+                redis_db.expire(f'{sid}_BME280_Pressure', read_interval*4)
                 if bool(verbose) is True:
                     print('')
                     print(f'{sid}_BME280: Temperature: {temperature}°C, Humidity: {humidity}%, Pressure: {pressure}hPa')
             else:
                 necounter += 1
                 redis_db.set('NECOUNTER', necounter)
-            sleep(read_interval)
+            sleep(0.5)
 
 
 def get_ds18b20_data(**kwargs):
