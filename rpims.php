@@ -19,6 +19,7 @@ $zabbix_agent = json_decode($obj, true);
 
 $obj = $redis-> get('sensors');
 $sensors = json_decode($obj, true);
+
 //$sensors = $redis-> get('sensors');
 
 $rpims_api["settings"]["verbose"] = $config["verbose"];
@@ -32,7 +33,6 @@ $rpims_api["settings"]["use_ds18b20_sensor"] = $config["use_DS18B20_sensor"];
 $rpims_api["settings"]["use_weather_station"] = $config["use_weather_station"];
 $rpims_api["settings"]["use_door_sensor"] = $config["use_door_sensor"];
 $rpims_api["settings"]["use_motion_sensor"] = $config["use_motion_sensor"];
-$rpims_api["settings"]["sensors"] = $sensors;
 
 $rpims_api["system"]["hostip"] = $rpims["hostip"];
 $rpims_api["system"]["hostname"] = $zabbix_agent["hostname"];
@@ -51,8 +51,10 @@ if ($config["use_BME280_sensor"] == true){
 	$t = $id."_BME280_Temperature";
 	$h = $id."_BME280_Humidity";
 	$p = $id."_BME280_Pressure";
+
         if ($sensors["BME280"][$id]["use"] == true)
 	{
+	    $rpims_api["sensors"]["bme280"][$id]["name"] = $sensors["BME280"][$id]['name'] ;
 	    $rpims_api["sensors"]["bme280"][$id]["temperature"] = $rpims[$t] ;
 	    $rpims_api["sensors"]["bme280"][$id]["humidity"] = $rpims[$h] ;
 	    $rpims_api["sensors"]["bme280"][$id]["pressure"] = $rpims[$p] ;
@@ -63,7 +65,7 @@ if ($config["use_BME280_sensor"] == true){
 if ($config["use_DS18B20_sensor"] == true){
     $DS18B20_sensors = $redis->smembers('DS18B20_sensors');
     foreach ($DS18B20_sensors as $key => $value){
-        $rpims_api["sensors"]["one_wire"]["ds18b20"]["$value"] = $rpims[$value];
+        $rpims_api["sensors"]["one_wire"]["ds18b20"]["$value"]["temperature"] = $rpims[$value];
         }
     }
 

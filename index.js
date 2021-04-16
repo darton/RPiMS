@@ -40,7 +40,7 @@ setInterval(function() {
 	    var BME280t = roundPrecised(data['sensors']['bme280'][BME280_id]['temperature'],1);
 	    var BME280h = Math.round(data['sensors']['bme280'][BME280_id]['humidity']);
 	    var BME280p = Math.round(data['sensors']['bme280'][BME280_id]['pressure']);
-            var BME280n = data['settings']['sensors']['BME280'][BME280_id]['name'];
+            var BME280n = data['sensors']['bme280'][BME280_id]['name'];
 	    //BME280[BME280_id] = BME280t;
 	    //BME280[BME280_id] = BME280h;
 	    //BME280[BME280_id] = BME280p;
@@ -122,13 +122,13 @@ if (data['settings']['use_dht_sensor'] == true) {
     var DHTHumidity = Math.round(data['sensors']['dht']['humidity']);
 }
 
-if (data['settings']['use_ds18b20_sensor'] == true) 
+if (data['settings']['use_ds18b20_sensor'] == true)
 {
     var DS18B20 = {};
     for (var DS18B20_id in data['sensors']['one_wire']['ds18b20'])
     {
     //console.log(DS18B20_id)
-    DS18B20[DS18B20_id] = roundPrecised(data['sensors']['one_wire']['ds18b20'][DS18B20_id],1);
+    DS18B20[DS18B20_id] = roundPrecised(data['sensors']['one_wire']['ds18b20'][DS18B20_id]['temperature'],1);
     }
 }
 
