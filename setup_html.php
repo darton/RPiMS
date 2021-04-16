@@ -73,7 +73,7 @@
 <tr>
 <td>
 <input name="use_door_sensor" type="hidden" value="False"><input name="use_door_sensor" type="checkbox" class="w3-check" <?php if ($use_door_sensor == 'yes') echo 'checked="checked"'; ?> value="True">
-<label>Use button sensors</label>
+<label>Use door sensors</label>
 </td>
 </tr>
 
