@@ -166,7 +166,7 @@ def get_cputemp_data(**kwargs):
 
 def get_bme280_data(**kwargs):
     from time import sleep
-    verbose = True
+    verbose = kwargs['verbose']
     read_interval = kwargs['read_interval']
     interface_type = kwargs['interface']
     sid = kwargs['id']
@@ -955,15 +955,11 @@ def main():
     if bool(config['use_CPU_sensor']) is True:
         threading_function(get_cputemp_data, **config)
 
-#    if bool(config['use_BME280_sensor']) is True:
-#        threading_function(get_bme280_data, **config)
-
-
     if bool(config['use_BME280_sensor']) is True:
         for item in bme280:
             bme280_config = bme280[item]
             if bool(bme280[item]['use']) is True:
-                threading_function(get_bme280_data, **bme280_config)
+                threading_function(get_bme280_data, **bme280_config, **config)
 
     if bool(config['use_DS18B20_sensor']) is True:
         threading_function(get_ds18b20_data, **config)
