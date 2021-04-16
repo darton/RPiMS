@@ -66,6 +66,7 @@
 </div>
 </div>
 <?php }?>
+
 <?php if ($config["use_BME280_sensor"] == "True") {?>
 <?php
     foreach ($sensors['BME280'] as $key => $value)
@@ -131,24 +132,25 @@ echo "</div>";
 <?php }?>
 
 <?php if ($config["use_DS18B20_sensor"] == "True") {?>
-<div class="sensors">
-    <h3>DS18B20 Sensors</h3>
-<div style="width: 100%; display: table;">
-<div style="display: table-row">
-<?php  foreach ($DS18B20_sensors as $key => $value) {
-    $item = "DS18B20_".$value;
-    echo "<div class='gauge' id='$item'  style='width: 33%;  display: table-cell';>";
-    echo "  <div class='gauge__body'>";
-    echo "  <div class='gauge__fill'></div>";
-    echo "<div class='gauge__cover'></div>";
-    echo "</div>";
-    echo "<div class='sensors'>$value</div>";
-    echo "</div>";
-    }
-?>
-</div>
-</div>
-</div>
+    <?php  foreach ($DS18B20_sensors as $key => $value) {
+        $item = "DS18B20_".$value;
+
+	echo "<div class='sensors'>";
+	echo "<h3>$value</h3>";
+        echo "<div style='width: 100%; display: table;'>";
+        echo "  <div style='display: table-row'>";
+        echo "    <div class='gauge_ds18b20' id='$item'  style='width: 33%;  display: table-cell';>";
+        echo "      <div class='gauge__body'>";
+        echo "        <div class='gauge__fill'></div>";
+        echo "        <div class='gauge__cover'></div>";
+        echo "      </div>";
+        echo "    </div>";
+        echo "  </div>";
+        echo "</div>";
+        echo "</div>";
+
+            }
+        ?>
 <?php }?>
 
 
