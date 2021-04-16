@@ -1,18 +1,18 @@
 ---
 setup:
-  verbose: true
+  verbose: false
   show_sys_info: false
   use_zabbix_sender: false
   use_picamera: false
   use_picamera_recording: false
-  use_door_sensor: false
-  use_motion_sensor: false
+  use_door_sensor: true
+  use_motion_sensor: true
   use_system_buttons: false
   use_door_led_indicator: true
   use_motion_led_indicator: true
-  use_CPU_sensor: false
+  use_CPU_sensor: true
   use_BME280_sensor: true
-  use_DS18B20_sensor: true
+  use_DS18B20_sensor: false
   use_DHT_sensor: false
   use_weather_station: false
   use_serial_display: false
@@ -20,54 +20,68 @@ setup:
   serial_type: spi
   serial_display_rotate: 0
   serial_display_refresh_rate: 10
-  CPUtemp_read_interval: 1
-  DS18B20_read_interval: 20
-  DHT_read_interval: 5
-  DHT_type: DHT22
-  DHT_pin: 17
-  windspeed_sensor_pin: 23
-  windspeed_acquisition_time: 6
-  windspeed_agregation_time: 3600
-  winddirection_acquisition_time: 6
-  winddirection_adc_type: AutomationPhat
-  winddirection_adc_input: 1
-  reference_voltage_adc_input: 2
-  rainfall_sensor_pin: 22
-  rainfall_acquisition_time: 6
-  rainfall_agregation_time: 86400
 sensors:
+  CPU:
+    temp:
+      read_interval: 1
   BME280:
     id1:
       id: id1
-      name: "Room 1"
-      use: true
+      name: Room 1
+      use: false
       read_interval: 2
       interface: i2c
       i2c_address: 118
     id2:
       id: id2
-      name: "Room 2"
-      use: true
-      read_interval: 4
+      name: Room 2
+      use: false
+      read_interval: 2
       interface: serial
-      serial_port: USB3
+      serial_port: USB2
     id3:
       id: id3
-      name: "Room 3"
+      name: Room 3
       use: true
       read_interval: 6
       interface: serial
-      serial_port: USB4
+      serial_port: USB3
+  ONE_WIRE:
+    DS18B20:
+      read_interval: 5
+  DHT:
+    name: Outoor
+    read_interval: 60
+    type: DHT22
+    pin: "17"
+  WEATHER:
+    WIND:
+      SPEED:
+        use: false
+        sensor_pin: 23
+        acquisition_time: 6
+        agregation_time: 3600
+      DIRECTION:
+        use: false
+        acquisition_time: 6
+        adc_type: AutomationPhat
+        adc_input: 1
+        reference_voltage_adc_input: 2
+    RAINFALL:
+      use: false
+      sensor_pin: 22
+      acquisition_time: 60
+      agregation_time: 3600
 gpio:
   GPIO_5:
     gpio_pin: "5"
-    type: DoorSensor
-    name: GPIO 5
+    type: MotionSensor
+    name: motion sensor in room 1
     hold_time: "1"
   GPIO_6:
     gpio_pin: "6"
-    type: DoorSensor
-    name: GPIO 6
+    type: MotionSensor
+    name: motion sensor in room 2
     hold_time: "1"
   GPIO_12:
     gpio_pin: "12"
@@ -75,13 +89,13 @@ gpio:
     name: door led
   GPIO_13:
     gpio_pin: "13"
-    type: DoorSensor
-    name: GPIO 13
+    type: MotionSensor
+    name: motion sensor in room 3
     hold_time: "1"
   GPIO_16:
     gpio_pin: "16"
-    type: MotionSensor
-    name: GPIO 16
+    type: DoorSensor
+    name: door in room 1
     hold_time: "1"
   GPIO_18:
     gpio_pin: "18"
@@ -89,24 +103,24 @@ gpio:
     name: motion led
   GPIO_19:
     gpio_pin: "19"
-    type: MotionSensor
-    name: GPIO 19
+    type: DoorSensor
+    name: door in room 2
     hold_time: "1"
   GPIO_20:
     gpio_pin: "20"
-    type: MotionSensor
-    name: GPIO 20
+    type: DoorSensor
+    name: door in room 3
     hold_time: "1"
   GPIO_21:
     gpio_pin: "21"
     type: Reserved
-    name: GPIO 21
+    name: not used
     hold_time: "1"
   GPIO_26:
     gpio_pin: "26"
     type: Reserved
-    name: GPIO 26
-    hold_time: "2"
+    name: not used
+    hold_time: "1"
 zabbix_agent:
   zabbix_server: zabbix.example.com
   zabbix_server_active: zabbix.example.com
