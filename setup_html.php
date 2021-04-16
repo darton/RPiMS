@@ -341,6 +341,14 @@
 <label>DHT</label>
 </td>
 </tr>
+
+<tr>
+<td>
+<label>name:</label>
+<input name="DHT_name" class="w3-input" type="text" value="<?=$DHT_name?>" >
+</td>
+</tr>
+
 <tr>
 <td>
 <label for="DHT_read_interval">Read interval:</label>
@@ -375,6 +383,14 @@
 <label>Rainfall</label>
 </td>
 </tr>
+
+<tr>
+<td>
+<label>Use Rainfall:</label>
+<input name="rainfall_use" type="hidden" value="no"><input name="rainfall_use" type="checkbox" class="w3-check" <?php if ($rainfall_use) echo 'checked="checked"'; ?> value="True">
+</td>
+</tr>
+
 <tr>
 <td>
 <label for="rainfall_acquisition_time">Aquisition time:</label>
@@ -398,6 +414,14 @@
 <label>Wind speed</label>
 </td>
 </tr>
+
+<tr>
+<td>
+<label>Use Wind speed:</label>
+<input name="windspeed_use" type="hidden" value="no"><input name="windspeed_use" type="checkbox" class="w3-check" <?php if ($windspeed_use) echo 'checked="checked"'; ?> value="True">
+</td>
+</tr>
+
 <tr>
 <td>
 <label for="windspeed_acquisition_time">Acquisition time:</label>
@@ -420,6 +444,15 @@
 <label>Wind direction</label>
 </td>
 <tr>
+
+<tr>
+<td>
+<label>Use Wind direction:</label>
+<input name="winddirection_use" type="hidden" value="no"><input name="winddirection_use" type="checkbox" class="w3-check" <?php if ($winddirection_use) echo 'checked="checked"'; ?> value="True">
+</td>
+</tr>
+
+
 <tr>
 <td>
 <label for="winddirection_acquisition_time">Acquisition time:</label>

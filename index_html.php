@@ -231,11 +231,6 @@ echo "</div>";
     <div>
          <a class="sensors" href="/streaming/stream.html">Camera Stream Url</a>
     </div>
-    <!--   <div>
-         <iframe width="655" height="500"
-            src="/streaming/stream.html">
-         </iframe>
-       </div>-->
 </div>
 <?php }?>
 

@@ -40,10 +40,8 @@ $rpims_api["system"]["location"] = $zabbix_agent["location"];
 
 
 if ($config["use_CPU_sensor"] == true){
-    $rpims_api["sensors"]["cpu"]["read_interval"] = $config["CPUtemp_read_interval"];
     $rpims_api["sensors"]["cpu"]["temperature"] = $rpims["CPU_Temperature"];
 }
-
 
 if ($config["use_BME280_sensor"] == true){
 
@@ -63,38 +61,27 @@ if ($config["use_BME280_sensor"] == true){
 }
 
 if ($config["use_DS18B20_sensor"] == true){
-    $rpims_api["sensors"]["one_wire"]["read_interval"] = $config["DS18B20_read_interval"];
     $DS18B20_sensors = $redis->smembers('DS18B20_sensors');
     foreach ($DS18B20_sensors as $key => $value){
         $rpims_api["sensors"]["one_wire"]["ds18b20"]["$value"] = $rpims[$value];
         }
     }
 
-
 if ($config["use_DHT_sensor"] == true){
-    $rpims_api["sensors"]["dht"]["read_interval"] = $config["DHT_read_interval"];
-    $rpims_api["sensors"]["dht"]["gpio_pin"] = $config["DHT_pin"];
-    $rpims_api["sensors"]["dht"]["dht_type"] = $config["DHT_type"];
+
     $rpims_api["sensors"]["dht"]["temperature"] = $rpims["DHT_Temperature"];
     $rpims_api["sensors"]["dht"]["humidity"] = $rpims["DHT_Humidity"];
 }
 
-
 if ($config["use_weather_station"] == true){
-    $rpims_api["weather_station"]["wind_speed_acquisition_time"] = $config["windspeed_acquisition_time"];
-    $rpims_api["weather_station"]["wind_speed_agregation_time"] = $config["windspeed_agregation_time"];
     $rpims_api["weather_station"]["wind_speed"] = $rpims["wind_speed"];
     $rpims_api["weather_station"]["average_wind_speed"] = $rpims["average_wind_speed"];
     $rpims_api["weather_station"]["daily_average_wind_speed"] = $rpims["daily_average_wind_speed"];
     $rpims_api["weather_station"]["wind_gust"] = $rpims["wind_gust"];
     $rpims_api["weather_station"]["daily_wind_gust"] = $rpims["daily_wind_gust"];
     $rpims_api["weather_station"]["average_wind_direction"] = $rpims["average_wind_direction"];
-    $rpims_api["weather_station"]["rainfall_acquisition_time"] = $config["rainfall_acquisition_time"];
-    $rpims_api["weather_station"]["rainfall_agregation_time"] = $config["rainfall_agregation_time"];
     $rpims_api["weather_station"]["daily_rainfall"] = $rpims["daily_rainfall"];
 }
-
-
 
 $obj = $redis-> get('gpio');
 $gpio = json_decode($obj, true);
@@ -120,7 +107,6 @@ if ($config["use_motion_sensor"] == true){
 	$rpims_api["sensors"]["motion_sensors"]["$key"] = $rpims[$key];
     }
 }
-
 
 Header("Content-type: application/json");
 echo json_encode($rpims_api);

@@ -41,31 +41,8 @@ $setup = array(
     "serial_display_rotate" => (int)$_POST['serial_display_rotate'],
     "serial_display_refresh_rate" => (int)$_POST['serial_display_refresh_rate'],
 
-    "CPUtemp_read_interval" => (int)$_POST['CPUtemp_read_interval'],
 
-    //"BME280_use" => filter_var($_POST['BME280_use'], FILTER_VALIDATE_BOOLEAN),
-    //"BME280_read_interval" => (int)$_POST['BME280_read_interval'],
-    //"BME280_interface" => $_POST['BME280_interface'],
-    //"BME280_i2c_address" => (int)$_POST['BME280_i2c_address'],
 
-    "DS18B20_read_interval" => (int)$_POST['DS18B20_read_interval'],
-
-    "DHT_read_interval" => (int)$_POST['DHT_read_interval'],
-    "DHT_type" => $_POST['DHT_type'],
-    "DHT_pin" => (int)$_POST['DHT_pin'],
-
-    "windspeed_sensor_pin" => (int)$_POST['windspeed_sensor_pin'],
-    "windspeed_acquisition_time" => (int)$_POST['windspeed_acquisition_time'],
-    "windspeed_agregation_time" => (int)$_POST['windspeed_agregation_time'],
-
-    "winddirection_acquisition_time" => (int)$_POST['winddirection_acquisition_time'],
-    "winddirection_adc_type" => $_POST['winddirection_adc_type'],
-    "winddirection_adc_input" => (int)$_POST['winddirection_adc_input'],
-    "reference_voltage_adc_input" => (int)$_POST['reference_voltage_adc_input'],
-
-    "rainfall_sensor_pin" => (int)$_POST['rainfall_sensor_pin'],
-    "rainfall_acquisition_time" => (int)$_POST['rainfall_acquisition_time'],
-    "rainfall_agregation_time" => (int)$_POST['rainfall_agregation_time'],
 );
 
 $BME280["id1"] = array(
@@ -76,7 +53,6 @@ $BME280["id1"] = array(
     "interface" => $_POST['id1_BME280_interface'],
     "i2c_address" => (int)$_POST['id1_BME280_i2c_address'],
 );
-
 
 $BME280["id2"] = array(
     "id" => 'id2',
@@ -96,8 +72,49 @@ $BME280["id3"] = array(
     "serial_port" => $_POST['id3_BME280_serial_port'],
 );
 
+$DHT = array(
+    "name" => $_POST['DHT_name'],
+    "read_interval" => (int)$_POST['DHT_read_interval'],
+    "type" => $_POST['DHT_type'],
+    "pin" => $_POST['DHT_pin'],
+);
+
+$ONE_WIRE["DS18B20"] = array(
+    "read_interval" => (int)$_POST['DS18B20_read_interval'],
+);
+
+$CPU["temp"] = array(
+    "read_interval" => (int)$_POST['CPUtemp_read_interval'],
+);
+
+$WEATHER["WIND"]["SPEED"] = array(
+    "use" => filter_var($_POST['windspeed_use'], FILTER_VALIDATE_BOOLEAN),
+    "sensor_pin" => (int)$_POST['windspeed_sensor_pin'],
+    "acquisition_time" => (int)$_POST['windspeed_acquisition_time'],
+    "agregation_time" => (int)$_POST['windspeed_agregation_time'],
+);
+
+$WEATHER["WIND"]["DIRECTION"] = array(
+    "use" => filter_var($_POST['winddirection_use'], FILTER_VALIDATE_BOOLEAN),
+    "acquisition_time" => (int)$_POST['winddirection_acquisition_time'],
+    "adc_type" => $_POST['winddirection_adc_type'],
+    "adc_input" => (int)$_POST['winddirection_adc_input'],
+    "reference_voltage_adc_input" => (int)$_POST['reference_voltage_adc_input'],
+);
+
+$WEATHER["RAINFALL"] = array(
+    "use" => filter_var($_POST['rainfall_use'], FILTER_VALIDATE_BOOLEAN),
+    "sensor_pin" => (int)$_POST['rainfall_sensor_pin'],
+    "acquisition_time" => (int)$_POST['rainfall_acquisition_time'],
+    "agregation_time" => (int)$_POST['rainfall_agregation_time'],
+);
+
 $sensors = array(
+    "CPU" => $CPU,
     "BME280" => $BME280,
+    "ONE_WIRE" => $ONE_WIRE,
+    "DHT" => $DHT,
+    "WEATHER" => $WEATHER,
 );
 
 $GPIO = array(

@@ -148,7 +148,7 @@ def shutdown():
 
 def get_cputemp_data(**kwargs):
     verbose = kwargs['verbose']
-    read_interval = kwargs['CPUtemp_read_interval']
+    read_interval = kwargs['read_interval']
     try:
         from time import sleep
         from gpiozero import CPUTemperature
@@ -275,7 +275,7 @@ def get_bme280_data(**kwargs):
 
 def get_ds18b20_data(**kwargs):
     verbose = kwargs['verbose']
-    read_interval = kwargs['DS18B20_read_interval']
+    read_interval = kwargs['read_interval']
     try:
         from w1thermsensor import W1ThermSensor
         from time import sleep
@@ -297,9 +297,9 @@ def get_ds18b20_data(**kwargs):
 
 def get_dht_data(**kwargs):
     verbose = kwargs['verbose']
-    read_interval = kwargs['DHT_read_interval']
-    dht_type = kwargs['DHT_type']
-    pin = kwargs['DHT_pin']
+    read_interval = kwargs['read_interval']
+    dht_type = kwargs['type']
+    pin = kwargs['pin']
     import adafruit_dht
     from time import sleep
 
@@ -541,12 +541,12 @@ def rainfall(**kwargs):
         rainfall = round(bucket_counter * BUCKET_SIZE, 0)
         return rainfall
 
-    rain_sensor = Button(kwargs['rainfall_sensor_pin'])
+    rain_sensor = Button(kwargs['sensor_pin'])
     rain_sensor.when_pressed = bucket_tipped
 
     bucket_counter = 0
-    rainfall_acquisition_time = kwargs['rainfall_acquisition_time']
-    rainfall_agregation_time = kwargs['rainfall_agregation_time']
+    rainfall_acquisition_time = kwargs['acquisition_time']
+    rainfall_agregation_time = kwargs['agregation_time']
     rainfalls = []
 
     # global BUCKET_SIZE
@@ -586,12 +586,12 @@ def wind_speed(**kwargs):
         wind_speed_km_per_hour = round(ANEMOMETER_FACTOR * rotations * 2.4/wind_speed_acquisition_time, 1)
         return wind_speed_km_per_hour
 
-    wind_speed_sensor = Button(kwargs['windspeed_sensor_pin'])
+    wind_speed_sensor = Button(kwargs['sensor_pin'])
     wind_speed_sensor.when_pressed = anemometer_pulse_counter
 
     anemometer_pulse = 0
-    wind_speed_acquisition_time = kwargs['windspeed_acquisition_time']
-    wind_speed_agregation_time = kwargs['windspeed_agregation_time']
+    wind_speed_acquisition_time = kwargs['acquisition_time']
+    wind_speed_agregation_time = kwargs['agregation_time']
     wind_speeds = []
     average_wind_speeds = []
     daily_wind_gusts = []
@@ -750,7 +750,7 @@ def wind_direction(**kwargs):
     uout = 0
     r1 = 4690
     r2 = 0
-    wind_direction_acquisition_time = kwargs['winddirection_acquisition_time']
+    wind_direction_acquisition_time = kwargs['acquisition_time']
     angles = []
     average_wind_direction = 0
 
@@ -758,20 +758,20 @@ def wind_direction(**kwargs):
         start_time = time()
         angles.clear()
         while time() - start_time <= wind_direction_acquisition_time:
-            if kwargs['winddirection_adc_type'] == 'AutomationPhat':
+            if kwargs['adc_type'] == 'AutomationPhat':
                 adc_values = adc_automationphat()
-            if kwargs['winddirection_adc_type'] == 'STM32F030':
+            if kwargs['adc_type'] == 'STM32F030':
                 adc_values = adc_stm32f030()
-            if kwargs['winddirection_adc_type'] == 'ADS1115':
+            if kwargs['adc_type'] == 'ADS1115':
                 adc_values = adc_ads1115()
 
-            if kwargs['winddirection_adc_input'] == 1:
+            if kwargs['adc_input'] == 1:
                 uout = round(adc_values[0], 1)
-            if kwargs['winddirection_adc_input'] == 2:
+            if kwargs['adc_input'] == 2:
                 uout = round(adc_values[1], 1)
-            if kwargs['winddirection_adc_input'] == 3:
+            if kwargs['adc_input'] == 3:
                 uout = round(adc_values[2], 1)
-            if kwargs['winddirection_adc_input'] == 4:
+            if kwargs['adc_input'] == 4:
                 uout = round(adc_values[3], 1)
 
             if kwargs['reference_voltage_adc_input'] == 1:
@@ -876,7 +876,13 @@ def main():
     gpio = config_yaml.get("gpio")
 
     sensors = config_yaml.get("sensors")
-    bme280 = sensors['BME280']
+    bme280_config = sensors['BME280']
+    dht_config = sensors['DHT']
+    cputemp_config = sensors['CPU']['temp']
+    ds18b20_config = sensors['ONE_WIRE']['DS18B20']
+    rainfall_config = sensors['WEATHER']['RAINFALL']
+    windspeed_config = sensors['WEATHER']['WIND']['SPEED']
+    winddirection_config = sensors['WEATHER']['WIND']['DIRECTION']
 
     redis_db.flushdb()
     redis_db.set('gpio', json.dumps(gpio))
@@ -953,24 +959,27 @@ def main():
         system_buttons_list['shutdown_button'].when_held = shutdown
 
     if bool(config['use_CPU_sensor']) is True:
-        threading_function(get_cputemp_data, **config)
+        threading_function(get_cputemp_data, **cputemp_config, **config)
 
     if bool(config['use_BME280_sensor']) is True:
-        for item in bme280:
-            bme280_config = bme280[item]
-            if bool(bme280[item]['use']) is True:
-                threading_function(get_bme280_data, **bme280_config, **config)
+        for item in bme280_config:
+            bme280 = bme280_config[item]
+            if bool(bme280_config[item]['use']) is True:
+                threading_function(get_bme280_data, **bme280, **config)
 
     if bool(config['use_DS18B20_sensor']) is True:
-        threading_function(get_ds18b20_data, **config)
+        threading_function(get_ds18b20_data, **ds18b20_config, **config)
 
     if bool(config['use_DHT_sensor']) is True:
-        threading_function(get_dht_data, **config)
+        threading_function(get_dht_data, **dht_config, **config)
 
     if bool(config['use_weather_station']) is True:
-        threading_function(rainfall, **config)
-        threading_function(wind_speed, **config)
-        threading_function(wind_direction, **config)
+        if bool(rainfall_config['use']) is True:
+            threading_function(rainfall, **rainfall_config, **config)
+        if bool(windspeed_config['use']) is True:
+            threading_function(wind_speed, **windspeed_config, **config)
+        if bool(winddirection_config['use']) is True:
+            threading_function(wind_direction, **winddirection_config, **config)
 
     if bool(config['use_serial_display']) is True:
         threading_function(serial_displays, **config)

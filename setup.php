@@ -30,14 +30,7 @@ $serial_display_type = $rpims['setup']['serial_display_type'];
 $serial_type = $rpims['setup']['serial_type'];
 $serial_display_rotate = $rpims['setup']['serial_display_rotate'];
 
-$CPUtemp_read_interval = $rpims['setup']['CPUtemp_read_interval'];
-
-//$BME280_use = $rpims['setup']['BME280_use'];
-//$BME280_interface = $rpims['setup']['BME280_interface'];
-//$BME280_read_interval = $rpims['setup']['BME280_read_interval'];
-//$BME280_i2c_address = $rpims['setup']['BME280_i2c_address'];
-
-//var_dump($rpims['sensors']['BME280']['id2']['name']);
+$CPUtemp_read_interval = $rpims['sensors']['CPU']['temp']['read_interval'];
 
 $id1_BME280_use = $rpims['sensors']['BME280']['id1']['use'];
 $id1_BME280_name = $rpims['sensors']['BME280']['id1']['name'];
@@ -58,24 +51,28 @@ $id3_BME280_read_interval = $rpims['sensors']['BME280']['id3']['read_interval'];
 $id3_BME280_interface = $rpims['sensors']['BME280']['id3']['interface'];
 $id3_BME280_serial_port = $rpims['sensors']['BME280']['id3']['serial_port'];
 
-$DS18B20_read_interval = $rpims['setup']['DS18B20_read_interval'];
+$DS18B20_read_interval = $rpims['sensors']['ONE_WIRE']['DS18B20']['read_interval'];
 
-$DHT_read_interval = $rpims['setup']['DHT_read_interval'];
-$DHT_type = $rpims['setup']['DHT_type'];
-$DHT_pin = $rpims['setup']['DHT_pin'];
+$DHT_read_interval = $rpims['sensors']['DHT']['read_interval'];
+$DHT_type = $rpims['sensors']['DHT']['type'];
+$DHT_pin = $rpims['sensors']['DHT']['pin'];
+$DHT_name = $rpims['sensors']['DHT']['name'];
 
-$windspeed_sensor_pin = $rpims['setup']['windspeed_sensor_pin'];
-$windspeed_acquisition_time = $rpims['setup']['windspeed_acquisition_time'];
-$windspeed_agregation_time = $rpims['setup']['windspeed_agregation_time'];
+$windspeed_use = $rpims['sensors']['WEATHER']['WIND']['SPEED']['use'];
+$windspeed_sensor_pin = $rpims['sensors']['WEATHER']['WIND']['SPEED']['sensor_pin'];
+$windspeed_acquisition_time = $rpims['sensors']['WEATHER']['WIND']['SPEED']['acquisition_time'];
+$windspeed_agregation_time = $rpims['sensors']['WEATHER']['WIND']['SPEED']['agregation_time'];
 
-$winddirection_acquisition_time = $rpims['setup']['winddirection_acquisition_time'];
-$winddirection_adc_type = $rpims['setup']['winddirection_adc_type'];
-$winddirection_adc_input = $rpims['setup']['winddirection_adc_input'];
-$reference_voltage_adc_input = $rpims['setup']['reference_voltage_adc_input'];
+$winddirection_use = $rpims['sensors']['WEATHER']['WIND']['DIRECTION']['use'];
+$winddirection_acquisition_time = $rpims['sensors']['WEATHER']['WIND']['DIRECTION']['acquisition_time'];
+$winddirection_adc_type = $rpims['sensors']['WEATHER']['WIND']['DIRECTION']['adc_type'];
+$winddirection_adc_input = $rpims['sensors']['WEATHER']['WIND']['DIRECTION']['adc_input'];
+$reference_voltage_adc_input = $rpims['sensors']['WEATHER']['WIND']['DIRECTION']['reference_voltage_adc_input'];
 
-$rainfall_sensor_pin = $rpims['setup']['rainfall_sensor_pin'];
-$rainfall_acquisition_time = $rpims['setup']['rainfall_acquisition_time'];
-$rainfall_agregation_time = $rpims['setup']['rainfall_agregation_time'];
+$rainfall_use = $rpims['sensors']['WEATHER']['RAINFALL']['use'];
+$rainfall_sensor_pin = $rpims['sensors']['WEATHER']['RAINFALL']['sensor_pin'];
+$rainfall_acquisition_time = $rpims['sensors']['WEATHER']['RAINFALL']['acquisition_time'];
+$rainfall_agregation_time = $rpims['sensors']['WEATHER']['RAINFALL']['agregation_time'];
 
 $GPIO = $rpims['gpio'];
 
