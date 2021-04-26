@@ -12,7 +12,7 @@ sleep_ms(1000)
 
 SDA_PIN = machine.Pin(16)
 SCL_PIN = machine.Pin(17)
-SCL_FREQ = 400000
+SCL_FREQ = 100000
 i2c = machine.I2C(0,sda=SDA_PIN, scl=SCL_PIN, freq=SCL_FREQ)
 
 try:
