@@ -231,17 +231,38 @@ def get_bme280_data(**kwargs):
 
         def serial_data(port, baudrate):
             import serial
-            ser = serial.Serial(port, baudrate)
-            ser.timeout=None
+            ser = serial.Serial(
+                port,
+                baudrate,
+                parity=serial.PARITY_NONE,
+                stopbits=serial.STOPBITS_ONE,
+                bytesize=serial.EIGHTBITS,
+                xonxoff=False,
+                rtscts=False,
+                dsrdtr=True,
+                timeout=1)
+
+            ser.flushInput()
+            sleep(1)
             ser.write( b'\x03' ) # Sent CTRL-C -- interrupt a running program
             ser.write( b'\x04' ) # Sent CTRL-D -- on a blank line, do a soft reset of the board
-            while True:
-                ser.flushInput()
-                #response = ser.readline()
-                #print(response)
-                yield ser.readline()
-        '''
 
+            sleep(1)
+            ser.flushInput()
+            ser.timeout = 3
+            sleep(1)
+            while True:
+                while ser.inWaiting() > 0:
+                    try:
+                        response = ser.readline()
+                        ser.flushInput()
+                        print(response)
+                        yield response
+                    except (OSError, serial.serialutil.SerialException):
+                        #print("No data this time")
+                        pass
+                sleep(0.001)
+        '''
         def serial_data(port,baudrate):
             import serial
             ser = serial.Serial(port, baudrate)
@@ -255,14 +276,19 @@ def get_bme280_data(**kwargs):
                 yield ser.readline()
                 #print(response)
         '''
+        msg = []
         for line in serial_data(serial_port, 115200):
             msg = line.decode('utf-8').split()
             if len(msg)< 4:
                 lecounter += 1
                 redis_db.set('LECOUNTER', lecounter)
+                msg = []
                 continue
-            t,h,p,sn = msg[0], msg[1], msg[2], msg[3]
-
+            s = msg[0]
+            if s != "BME280":
+                msg = []
+                continue
+            t,h,p = msg[1], msg[2], msg[3]
             if t.isnumeric() and h.isnumeric() and p.isnumeric():
                 temperature = int(t)/1000
                 humidity = int(h)/1000
@@ -277,7 +303,7 @@ def get_bme280_data(**kwargs):
             else:
                 necounter += 1
                 redis_db.set('NECOUNTER', necounter)
-            sleep(0.5)
+            sleep(read_interval)
 
 
 def get_ds18b20_data(**kwargs):
@@ -972,7 +998,7 @@ def main():
         for item in bme280_config:
             bme280 = bme280_config[item]
             if bool(bme280_config[item]['use']) is True:
-                threading_function(get_bme280_data, **bme280, **config)
+                multiprocessing_function(get_bme280_data, **bme280, **config)
 
     if bool(config['use_DS18B20_sensor']) is True:
         threading_function(get_ds18b20_data, **ds18b20_config, **config)
