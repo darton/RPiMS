@@ -20,21 +20,24 @@ def reset_bme280():
     BME280VCC.value(1)
     sleep_ms(1000)
 
-try:
-    BME280_I2CADDR = 0x76
-    bme = bme280.BME280(i2c=i2c, address=BME280_I2CADDR)
-except:
+while True:
     try:
-        BME280_I2CADDR = 0x77
+        BME280_I2CADDR = 0x76
         bme = bme280.BME280(i2c=i2c, address=BME280_I2CADDR)
-    except Exception:
-        reset_bme280()
+        break
+    except:
+        try:
+            BME280_I2CADDR = 0x77
+            bme = bme280.BME280(i2c=i2c, address=BME280_I2CADDR)
+            break
+        except Exception:
+            reset_bme280()
 
 while True:
     try:
         val = bme.values
     except:
-        print(' NOSENSOR')
+        print(' NODATA')
         reset_bme280()
         continue
     
@@ -43,5 +46,5 @@ while True:
         print(sid,t,h,p)
         sleep_ms(2000)
     else:
-        print(' NODATA')
+        print(' BADREAD')
         reset_bme280()
