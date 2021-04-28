@@ -243,25 +243,23 @@ def get_bme280_data(**kwargs):
                 timeout=1)
 
             ser.flushInput()
-            sleep(1)
             ser.write( b'\x03' ) # Sent CTRL-C -- interrupt a running program
             ser.write( b'\x04' ) # Sent CTRL-D -- on a blank line, do a soft reset of the board
-
             sleep(1)
             ser.flushInput()
             ser.timeout = 3
-            sleep(1)
             while True:
-                while ser.inWaiting() > 0:
+                if ser.inWaiting() > 0:
                     try:
                         response = ser.readline()
                         ser.flushInput()
-                        print(response)
+                        #print(response)
                         yield response
                     except (OSError, serial.serialutil.SerialException):
-                        #print("No data this time")
-                        pass
-                sleep(0.001)
+                        sleep(0.1)
+                else:
+                    sleep(0.5)
+
         '''
         def serial_data(port,baudrate):
             import serial
