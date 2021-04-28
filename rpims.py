@@ -251,8 +251,9 @@ def get_bme280_data(**kwargs):
             while True:
                 if ser.inWaiting() > 0:
                     try:
-                        response = ser.readline()
                         ser.flushInput()
+                        response = ser.readline()
+                        #ser.flushInput()
                         #print(response)
                         yield response
                     except (OSError, serial.serialutil.SerialException):
