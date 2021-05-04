@@ -22,16 +22,21 @@ redis_db = redis.StrictRedis(host="localhost", port=6379, db=0, charset="utf-8",
 config = json.loads(redis_db.get('config'))
 sensors = json.loads(redis_db.get('sensors'))
 
+def print_help():
+    print('You must use one parameter from list BME280 id (where id is 1, 2 or 3), DHT, CPUTEMP, DS18B20, ds18b20 address')
+
+
 if len(sys.argv) > 1:
     if sys.argv[1] == 'BME280':
         if config['use_BME280_sensor'] is True:
-            bme_id = sys.argv[2]
-            if bme_id.isnumeric() :
+            if len(sys.argv) == 3:
+                bme_id = sys.argv[2]
                 if redis_db.exists(f'id{bme_id}_BME280_Temperature') and redis_db.exists(f'id{bme_id}_BME280_Humidity') and redis_db.exists(f'id{bme_id}_BME280_Pressure'):
                     temperature = redis_db.get(f'id{bme_id}_BME280_Temperature')
                     humidity = redis_db.get(f'id{bme_id}_BME280_Humidity')
                     pressure = redis_db.get(f'id{bme_id}_BME280_Pressure')
                     print('Temperature={0:0.2f};Humidity={1:0.2f};Pressure={2:0.2f};'.format(float(temperature),float(humidity),float(pressure)))
+            else: print_help()
 
     elif sys.argv[1] == 'DS18B20':
         if config['use_DS18B20_sensor'] is True:
@@ -45,10 +50,12 @@ if len(sys.argv) > 1:
             print('')
 
     elif sys.argv[1] == 'ds18b20':
-        onewire_addr = sys.argv[2]
         if config['use_DS18B20_sensor'] is True:
-            if redis_db.exists(onewire_addr):
-                print(redis_db.get(onewire_addr))
+            if len(sys.argv) == 3:
+                onewire_addr = sys.argv[2]
+                if redis_db.exists(onewire_addr):
+                    print(redis_db.get(onewire_addr))
+            else: print_help()
 
     elif sys.argv[1] == 'DHT':
         if config['use_DHT_sensor'] is True:
@@ -63,4 +70,5 @@ if len(sys.argv) > 1:
                 temperature = redis_db.get('CPU_Temperature')
                 print('CPUTemperature' + '={0:0.2f};'.format(float(temperature)))
 else:
-    print('You must use one parameter from list BME280, DHT, CPUTEMP, DS18B20, ds18b20 address')
+    print_help()
+
