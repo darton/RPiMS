@@ -203,10 +203,10 @@ def get_bme280_data(**kwargs):
         set1 = set(check_output(["cat /sys/firmware/devicetree/base/model"], shell=True).decode('UTF-8').split(' '))
         try:
             if bool(set1.remove('3')) is False:
-                serial_ports_by_path = {'USB1':'/dev/serial/by-path/platform-3f980000.usb-usb-0:1.1.1:1.0',
-                                        'USB2':'/dev/serial/by-path/platform-3f980000.usb-usb-0:1.1.2:1.0',
-                                        'USB3':'/dev/serial/by-path/platform-3f980000.usb-usb-0:1.1.3:1.0',
-                                        'USB4':'/dev/serial/by-path/platform-3f980000.usb-usb-0:1.1.4:1.0',
+                serial_ports_by_path = {'USB1':'/dev/serial/by-path/platform-3f980000.usb-usb-0:1.1.2:1.0',
+                                        'USB2':'/dev/serial/by-path/platform-3f980000.usb-usb-0:1.1.3:1.0',
+                                        'USB3':'/dev/serial/by-path/platform-3f980000.usb-usb-0:1.2:1.0',
+                                        'USB4':'/dev/serial/by-path/platform-3f980000.usb-usb-0:1.3:1.0',
                                        }
         except:
             if bool(set1.remove('4')) is False:
