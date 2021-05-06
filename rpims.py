@@ -201,13 +201,14 @@ def get_bme280_data(**kwargs):
     if interface_type == 'serial':
         from subprocess import check_output
         set1 = set(check_output(["cat /sys/firmware/devicetree/base/model"], shell=True).decode('UTF-8').split(' '))
+
         try:
             if bool(set1.remove('3')) is False:
                 serial_ports_by_path = {'USB1':'/dev/serial/by-path/platform-3f980000.usb-usb-0:1.1.2:1.0',
                                         'USB2':'/dev/serial/by-path/platform-3f980000.usb-usb-0:1.1.3:1.0',
                                         'USB3':'/dev/serial/by-path/platform-3f980000.usb-usb-0:1.2:1.0',
                                         'USB4':'/dev/serial/by-path/platform-3f980000.usb-usb-0:1.3:1.0',
-                                       }
+                                        }
         except:
             if bool(set1.remove('4')) is False:
                 serial_ports_by_path = {'USB1':'/dev/serial/by-path/platform-fd500000.pcie-pci-0000:01:00.0-usb-0:1.1:1.0',
@@ -215,6 +216,7 @@ def get_bme280_data(**kwargs):
                                         'USB3':'/dev/serial/by-path/platform-fd500000.pcie-pci-0000:01:00.0-usb-0:1.3:1.0',
                                         'USB4':'/dev/serial/by-path/platform-fd500000.pcie-pci-0000:01:00.0-usb-0:1.4:1.0',
                                        }
+
         if kwargs['serial_port'] == 'USB1':
             serial_port = serial_ports_by_path['USB1']
         elif kwargs['serial_port'] == 'USB2':
@@ -228,38 +230,95 @@ def get_bme280_data(**kwargs):
         necounter = 0
         redis_db.sadd('BME280_sensors', sid)
 
+        def reset_usbdevice():
+            import usb.core
+            devices = usb.core.find(find_all=True)
+            for item in devices:
+                if hex(item.idVendor) == '0x2e8a':
+                    #print(hex(item.idVendor), item.bus, item.address)
+                    item.reset()
+
+        def find_serial_device(port,baudrate):
+            while True:
+                try:
+                    import serial
+                    global ser
+                    ser = serial.Serial(
+                        port,
+                        baudrate,
+                        parity=serial.PARITY_NONE,
+                        stopbits=serial.STOPBITS_ONE,
+                        bytesize=serial.EIGHTBITS,
+                        xonxoff=False,
+                        rtscts=False,
+                        dsrdtr=True,
+                        timeout=1)
+                    print('Serial device finded')
+                    return ser
+                    break
+                except Exception as e:
+                    print('Resetting USB devices')
+                    reset_usbdevice()
+                    sleep(2)
 
         def serial_data(port, baudrate):
             import serial
-            ser = serial.Serial(
-                port,
-                baudrate,
-                parity=serial.PARITY_NONE,
-                stopbits=serial.STOPBITS_ONE,
-                bytesize=serial.EIGHTBITS,
-                xonxoff=False,
-                rtscts=False,
-                dsrdtr=True,
-                timeout=1)
+            while True:
+                try:
+                    ser = serial.Serial(
+                        port,
+                        baudrate,
+                        parity=serial.PARITY_NONE,
+                        stopbits=serial.STOPBITS_ONE,
+                        bytesize=serial.EIGHTBITS,
+                        xonxoff=False,
+                        rtscts=False,
+                        dsrdtr=True,
+                        timeout=1)
+                    print('Serial device finded')
+                    break
+                except Exception as e:
+                    print('Resetting USB devices')
+                    reset_usbdevice()
+                    sleep(1)
 
             ser.flushInput()
             ser.write( b'\x03' ) # Sent CTRL-C -- interrupt a running program
             ser.write( b'\x04' ) # Sent CTRL-D -- on a blank line, do a soft reset of the board
             sleep(1)
-            ser.flushInput()
-            ser.timeout = 3
+            #ser.flushInput()
+            #ser.timeout = 3
+            ser.close()
+            sleep(1)
+
             while True:
-                if ser.inWaiting() > 0:
-                    try:
+                try:
+                    ser = serial.Serial(
+                        port,
+                        baudrate,
+                        parity=serial.PARITY_NONE,
+                        stopbits=serial.STOPBITS_ONE,
+                        bytesize=serial.EIGHTBITS,
+                        xonxoff=False,
+                        rtscts=False,
+                        dsrdtr=True,
+                        timeout=3)
+                    sleep(3)
+                    while ser.inWaiting() > 0:
                         ser.flushInput()
                         response = ser.readline()
                         #ser.flushInput()
                         #print(response)
                         yield response
-                    except (OSError, serial.serialutil.SerialException):
-                        sleep(0.1)
-                else:
-                    sleep(0.5)
+                    else:
+                        sleep(0.5)
+                #except (OSError, serial.serialutil.SerialException):
+                except Exception as e :
+                    print('Lost connection with serial devices')
+                    find_serial_device(port,baudrate)
+                    sleep(2)
+
+
 
         '''
         def serial_data(port,baudrate):
