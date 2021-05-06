@@ -129,6 +129,7 @@ if (data['settings']['use_ds18b20_sensor'] == true)
     {
     //console.log(DS18B20_id)
     DS18B20[DS18B20_id] = roundPrecised(data['sensors']['one_wire']['ds18b20'][DS18B20_id]['temperature'],1);
+    //console.log(DS18B20[DS18B20_id])
     }
 }
 
@@ -153,7 +154,7 @@ const g6 = document.querySelector("#g6");
 const g11 = document.querySelector("#g11");
 const g12 = document.querySelector("#g12");
 
-if (data['settings']['use_bme280_sensor'] == false) {
+if (data['settings']['use_bme280_sensor'] == true) {
     if (!!BME280Temperature) {
     setGaugeValue(g1, BME280Temperature/100, 100, "°C");
     setGaugeValue(g2, BME280Humidity/100, 100, "%");
