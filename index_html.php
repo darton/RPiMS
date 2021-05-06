@@ -39,6 +39,13 @@
 </div>
 <?php }?>
 
+<?php if ($config["use_picamera"] == "True") {?>
+<div class="sensors">
+    <div>
+         <a class="sensors" href="/streaming/stream.html">Camera Stream Url</a>
+    </div>
+</div>
+<?php }?>
 
 <?php if ($config["use_DHT_sensor"] == "True") {?>
 <div class="sensors">
@@ -229,14 +236,6 @@ echo "</div>";
 <tr><td>Wind direction: </td><td><span class="value" id="average_wind_direction"></span><span class="value"> &#176 </span></td></tr>
 <tr><td>Rainfall (Past 24h): </td><td><span class="value" id="daily_rainfall"></span><span class="value"> mm</span></td></tr>
 </table>
-</div>
-<?php }?>
-
-<?php if ($config["use_picamera"] == "True") {?>
-<div class="sensors">
-    <div>
-         <a class="sensors" href="/streaming/stream.html">Camera Stream Url</a>
-    </div>
 </div>
 <?php }?>
 
