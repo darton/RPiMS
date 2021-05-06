@@ -129,9 +129,9 @@ echo "</div>";
 ?>
 </p>
 </div>
+<?php }?>
 -->
 
-<?php }?>
 
 <?php if ($config["use_DS18B20_sensor"] == "True") {?>
     <?php  foreach ($DS18B20_sensors_detected as $key => $value) {
