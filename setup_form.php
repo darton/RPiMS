@@ -40,9 +40,6 @@ $setup = array(
     "serial_type" => $_POST['serial_type'],
     "serial_display_rotate" => (int)$_POST['serial_display_rotate'],
     "serial_display_refresh_rate" => (int)$_POST['serial_display_refresh_rate'],
-
-
-
 );
 
 $BME280["id1"] = array(
@@ -81,7 +78,16 @@ $DHT = array(
 
 $ONE_WIRE["DS18B20"] = array(
     "read_interval" => (int)$_POST['DS18B20_read_interval'],
+    "addresses" => $_POST['DS18B20'],
 );
+
+
+/*foreach ($DS18B20_sensors_detected as $key => $value)
+{
+    $ONE_WIRE["DS18B20"]["addresses"] = $_POST[$value]['name'];
+    var_dump($_POST[$value]);
+}
+*/
 
 $CPU["temp"] = array(
     "read_interval" => (int)$_POST['CPUtemp_read_interval'],

@@ -54,7 +54,7 @@ if ($config["use_BME280_sensor"] == true){
 
         if ($sensors["BME280"][$id]["use"] == true)
 	{
-	    $rpims_api["sensors"]["bme280"][$id]["name"] = $sensors["BME280"][$id]['name'] ;
+	    $rpims_api["sensors"]["bme280"][$id]["name"] = $sensors["BME280"][$id]["name"] ;
 	    $rpims_api["sensors"]["bme280"][$id]["temperature"] = $rpims[$t] ;
 	    $rpims_api["sensors"]["bme280"][$id]["humidity"] = $rpims[$h] ;
 	    $rpims_api["sensors"]["bme280"][$id]["pressure"] = $rpims[$p] ;
@@ -65,7 +65,9 @@ if ($config["use_BME280_sensor"] == true){
 if ($config["use_DS18B20_sensor"] == true){
     $DS18B20_sensors = $redis->smembers('DS18B20_sensors');
     foreach ($DS18B20_sensors as $key => $value){
+	$ds18b20_name = $value."_name";
         $rpims_api["sensors"]["one_wire"]["ds18b20"]["$value"]["temperature"] = $rpims[$value];
+        $rpims_api["sensors"]["one_wire"]["ds18b20"]["$value"]["name"] = $sensors["ONE_WIRE"]["DS18B20"]["addresses"]["$value"]["name"];
         }
     }
 

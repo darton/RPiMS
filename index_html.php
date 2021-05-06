@@ -116,27 +116,31 @@ echo "</div>";
 
 <?php }?>
 
-
-<?php if ($config["use_DS18B20_sensor"] == "True") {?>
 <!--
+<?php if ($config["use_DS18B20_sensor"] == "True") {?>
+
 <div class="sensors">
     <h3>DS18B20 Sensors</h3>
-<ul style="list-style-type:none;">
-<?php foreach ($DS18B20_sensors as $key => $value) {
-    echo "<li>".$value.": <span class='value' id='$value'></span><span class='value'>&#8451</span></li></br>";
+<p>
+<?php foreach ($DS18B20_sensors_list as $key => $value) {
+    $item = $value."_name";
+    echo "<input name=$item id=$item class='w3-input' type='text' value='$DS18B20_sensors[$item]'><br>";
 }
 ?>
-</ul>
+</p>
 </div>
 -->
+
 <?php }?>
 
 <?php if ($config["use_DS18B20_sensor"] == "True") {?>
-    <?php  foreach ($DS18B20_sensors as $key => $value) {
+    <?php  foreach ($DS18B20_sensors_detected as $key => $value) {
         $item = "DS18B20_".$value;
+	$name = $value."_name";
+	$ds18b20_sensor_name = $DS18B20_sensors[$value];
 
 	echo "<div class='sensors'>";
-	echo "<h3>$value</h3>";
+	echo "<h3>$ds18b20_sensor_name</h3>";
         echo "<div style='width: 100%; display: table;'>";
         echo "  <div style='display: table-row'>";
         echo "    <div class='gauge_ds18b20' id='$item'  style='width: 33%;  display: table-cell';>";

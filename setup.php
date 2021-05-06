@@ -1,5 +1,18 @@
 <?php
 
+$redis = new Redis();
+$redis->connect('127.0.0.1', 6379);
+$DS18B20_sensors_detected = $redis->smembers('DS18B20_sensors');
+
+
+$obj = $redis-> get('sensors');
+$sensors = json_decode($obj, true);
+
+foreach ($DS18B20_sensors_detected as $key => $value)
+	{
+	    $DS18B20_sensors[$value] = $sensors['ONE_WIRE']['DS18B20']['addresses'][$value]['name'];
+	}
+
 $rpims = yaml_parse_file ("/var/www/html/conf/rpims.yaml");
 $location = $rpims['zabbix_agent']['location'];
 $hostname = $rpims['zabbix_agent']['hostname'];

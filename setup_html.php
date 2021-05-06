@@ -189,11 +189,12 @@
 </div>
 </fieldset>
 
+
 <fieldset>
 <legend>DS18B20 sensor configuration</legend>
 <div>
-<table class="w3-table">
 
+<table class="w3-table">
 <tr>
 <td>
 <label>DS18B20</label>
@@ -201,14 +202,24 @@
 </tr>
 <tr>
 <td>
-<label for="DS18B20_read_interval">read interval:</label>
+<label for="DS18B20_read_interval">Read interval:</label>
 <input name="DS18B20_read_interval" class="w3-input" id="DS18B20_read_interval" type="number" min="1" max="3600" value="<?= $DS18B20_read_interval ?>" >
 </td>
 </tr>
 
+<?php foreach ($DS18B20_sensors_detected as $key => $value)
+    {
+	$DS18B20_name = $DS18B20_sensors[$value];
+	echo "<tr><td><p>Address: $value</p>name: <input name='DS18B20[$value][name]' class='w3-input' type='text' value='$DS18B20_name'></td></tr>";
+    }
+
+?>
+
 </table>
+
 </div>
 </fieldset>
+
 
 <fieldset>
 <legend>BME280 sensor configuration</legend>
