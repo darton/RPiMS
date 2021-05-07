@@ -1,22 +1,68 @@
 <?php
 
-if ($_POST['GPIO_16']['type'] == 'ShutdownButton') {
-    $use_system_buttons = true;
-} else {
-    $use_system_buttons = false;
-}
+$GPIO = array(
+    "GPIO_5" => $_POST['GPIO_5'],
+    "GPIO_6" => $_POST['GPIO_6'],
+    "GPIO_12" => $_POST['GPIO_12'],
+    "GPIO_13" => $_POST['GPIO_13'],
+    "GPIO_16" => $_POST['GPIO_16'],
+    "GPIO_18" => $_POST['GPIO_18'],
+    "GPIO_19" => $_POST['GPIO_19'],
+    "GPIO_20" => $_POST['GPIO_20'],
+    "GPIO_21" => $_POST['GPIO_21'],
+    "GPIO_26" => $_POST['GPIO_26'],
+);
 
-if ($_POST['GPIO_12']['type'] == 'door_led') {
-    $use_door_led_indicator = true;
-} else {
-    $use_door_led_indicator = false;
+$tmp = array();
+foreach ($GPIO as $key=> $value)
+{
+    if ($value['type'] == 'ShutdownButton')
+    {
+	array_push($tmp,"true");
+    }
 }
+if (in_array("true", $tmp))
+    {
+	$use_system_buttons = true;
+    }
+else
+    {
+	$use_system_buttons = false;
+    }
 
-if ($_POST['GPIO_18']['type'] == 'motion_led') {
-    $use_motion_led_indicator = true;
-} else {
-    $use_motion_led_indicator = false;
+$tmp = array();
+foreach ($GPIO as $key=> $value)
+{
+    if ($value['type'] == 'door_led')
+    {
+	array_push($tmp,"true");
+    }
 }
+if (in_array("true", $tmp))
+    {
+	$use_door_led_indicator = true;
+    }
+else
+    {
+	$use_door_led_indicator = false;
+    }
+
+$tmp = array();
+foreach ($GPIO as $key=> $value)
+{
+    if ($value['type'] == 'motion_led')
+    {
+	array_push($tmp,"true");
+    }
+}
+if (in_array("true", $tmp))
+    {
+	$use_motion_led_indicator = true;
+    }
+else
+    {
+	$use_motion_led_indicator = false;
+    }
 
 $setup = array(
     "verbose" => filter_var($_POST['verbose'], FILTER_VALIDATE_BOOLEAN),
@@ -81,14 +127,6 @@ $ONE_WIRE["DS18B20"] = array(
     "addresses" => $_POST['DS18B20'],
 );
 
-
-/*foreach ($DS18B20_sensors_detected as $key => $value)
-{
-    $ONE_WIRE["DS18B20"]["addresses"] = $_POST[$value]['name'];
-    var_dump($_POST[$value]);
-}
-*/
-
 $CPU["temp"] = array(
     "read_interval" => (int)$_POST['CPUtemp_read_interval'],
 );
@@ -123,19 +161,6 @@ $sensors = array(
     "WEATHER" => $WEATHER,
 );
 
-$GPIO = array(
-    "GPIO_5" => $_POST['GPIO_5'],
-    "GPIO_6" => $_POST['GPIO_6'],
-    "GPIO_12" => $_POST['GPIO_12'],
-    "GPIO_13" => $_POST['GPIO_13'],
-    "GPIO_16" => $_POST['GPIO_16'],
-    "GPIO_18" => $_POST['GPIO_18'],
-    "GPIO_19" => $_POST['GPIO_19'],
-    "GPIO_20" => $_POST['GPIO_20'],
-    "GPIO_21" => $_POST['GPIO_21'],
-    "GPIO_26" => $_POST['GPIO_26'],
-);
-
 $zabbix_agent = array(
     "zabbix_server" => $_POST['zabbix_server'],
     "zabbix_server_active" => $_POST['zabbix_server_active'],
@@ -157,6 +182,7 @@ $rpims = array(
     "gpio"           => $GPIO,
     "zabbix_agent"   => $zabbix_agent,
 );
+
 
 yaml_emit_file ("/var/www/html/conf/rpims.yaml", $rpims, YAML_UTF8_ENCODING, YAML_ANY_BREAK);
 exec('sudo /bin/systemctl restart rpims.service');
@@ -185,6 +211,7 @@ fwrite($zabpskfile, $TLSPSK);
 fclose($zabconfile);
 fclose($zabpskfile);
 exec('sudo /bin/systemctl restart zabbix-agent.service');
+
 
 sleep(2);
 header("Location: /");

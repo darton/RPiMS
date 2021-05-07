@@ -535,9 +535,9 @@
 
 
 <fieldset>
-<legend>Input configuration</legend>
+<legend>GPIO configuration</legend>
 <?php
-$gpiopin = array("5", "6","13","16","19","20","21","26",);
+$gpiopin = array("5", "6","12","13","16","18","19","20","21","26",);
 
 foreach ($gpiopin as $pin) {
 
@@ -557,103 +557,99 @@ $gpio_input_holdtime_id_ds_ht = GPIO_.$pin._TYPE_DS_HT;
 
 $gpio_input_name_name = GPIO_.$pin."[name]";
 
-echo "<div><table class='w3-table'>";
+echo "<div>";
+echo "<table class='w3-table'>";
 echo "<tr><td>";
 echo "<label>GPIO $pin<input name='$gpio_input_pin' type='hidden' value='$pin'></label>";
 echo "</td></tr>";
 echo "<tr><td>";
-echo "<label for='GPIO_.$pin'>Input type:</label>";
+echo "<label for='GPIO_.$pin'>Type:</label>";
 echo "<select name='$gpio_select_name' class='gpioinputs' id='$gpio_select_id'>";
 
 if ($gpio_input_type_value == 'DoorSensor')
 {
-    echo "<option selected value='DoorSensor'>Door Sensor</option>";
-    echo "<option value='MotionSensor'>Motion Sensor</option>";
+    echo "<option selected value='DoorSensor'>INPUT - Door Sensor</option>";
+    echo "<option value='MotionSensor'>INPUT - Motion Sensor</option>";
+    echo "<option value='ShutdownButton'>INPUT - Shutdown Button</option>";
+    echo "<option value='led'>OUT - LED</option>";
+    echo "<option value='door_led'>OUT - Door Indicator</option>";
+    echo "<option value='motion_led'>OUT - Motion Indicator</option>";
     echo "<option value='Reserved'>Reserved</option>";
-    echo "<option value='ShutdownButton'>Shutdown Button</option>";
 }
 if ($gpio_input_type_value == 'MotionSensor')
 {
-    echo "<option value='DoorSensor'>Door Sensor</option>";
-    echo "<option selected value='MotionSensor'>Motion Sensor</option>";
+    echo "<option value='DoorSensor'>INPUT - Door Sensor</option>";
+    echo "<option selected value='MotionSensor'>INPUT - Motion Sensor</option>";
+    echo "<option value='ShutdownButton'>INPUT - Shutdown Button</option>";
+    echo "<option value='led'>OUT - LED</option>";
+    echo "<option value='door_led'>OUT - Door Indicator</option>";
+    echo "<option value='motion_led'>OUT - Motion Indicator</option>";
     echo "<option value='Reserved'>Reserved</option>";
-    echo "<option value='ShutdownButton'>Shutdown Button</option>";
 }
 if ($gpio_input_type_value == 'Reserved')
 {
-    echo "<option value='DoorSensor'>Door Sensor</option>";
-    echo "<option value='MotionSensor'>Motion Sensor</option>";
+    echo "<option value='DoorSensor'>INPUT - Door Sensor</option>";
+    echo "<option value='MotionSensor'>INPUT - Motion Sensor</option>";
+    echo "<option value='ShutdownButton'>INPUT - Shutdown Button</option>";
+    echo "<option value='led'>OUT - LED</option>";
+    echo "<option value='door_led'>OUT - Door Indicator</option>";
+    echo "<option value='motion_led'>OUT - Motion Indicator</option>";
     echo "<option selected value='Reserved'>Reserved</option>";
-    echo "<option value='ShutdownButton'>Shutdown Button</option>";
 }
 
 if ($gpio_input_type_value == 'ShutdownButton')
 {
-    echo "<option value='DoorSensor'>Door Sensor</option>";
-    echo "<option value='MotionSensor'>Motion Sensor</option>";
+    echo "<option value='DoorSensor'>INPUT - Door Sensor</option>";
+    echo "<option value='MotionSensor'>INPUT - Motion Sensor</option>";
+    echo "<option selected value='ShutdownButton'>INPUT - Shutdown Button</option>";
+    echo "<option value='led'>OUT - LED</option>";
+    echo "<option value='door_led'>OUT - Door Indicator</option>";
+    echo "<option value='motion_led'>OUT - Motion Indicator</option>";
     echo "<option value='Reserved'>Reserved</option>";
-    echo "<option selected value='ShutdownButton'>Shutdown Button</option>";
 }
-
+if ($gpio_input_type_value == 'led')
+{
+    echo "<option value='DoorSensor'>INPUT - Door Sensor</option>";
+    echo "<option value='MotionSensor'>INPUT - Motion Sensor</option>";
+    echo "<option value='ShutdownButton'>INPUT - Shutdown Button</option>";
+    echo "<option selected value='led'>OUT - LED</option>";
+    echo "<option value='door_led'>OUT - Door Indicator</option>";
+    echo "<option value='motion_led'>OUT - Motion Indicator</option>";
+    echo "<option value='Reserved'>Reserved</option>";
+}
+if ($gpio_input_type_value == 'door_led')
+{
+    echo "<option value='DoorSensor'>INPUT - Door Sensor</option>";
+    echo "<option value='MotionSensor'>INPUT - Motion Sensor</option>";
+    echo "<option value='ShutdownButton'>INPUT - Shutdown Button</option>";
+    echo "<option value='led'>OUT - LED</option>";
+    echo "<option selected value='door_led'>OUT - Door Indicator</option>";
+    echo "<option value='motion_led'>OUT - Motion Indicator</option>";
+    echo "<option value='Reserved'>Reserved</option>";
+}
+if ($gpio_input_type_value == 'motion_led')
+{
+    echo "<option value='DoorSensor'>INPUT - Door Sensor</option>";
+    echo "<option value='MotionSensor'>INPUT - Motion Sensor</option>";
+    echo "<option value='ShutdownButton'>INPUT - Shutdown Button</option>";
+    echo "<option value='led'>OUT - LED</option>";
+    echo "<option value='door_led'>OUT - Door Indicator</option>";
+    echo "<option selected value='motion_led'>OUT - Motion Indicator</option>";
+    echo "<option value='Reserved'>Reserved</option>";
+}
 echo "</select></td></tr>";
-echo "<tr><td><label>Name: <input name='$gpio_input_name_name' class='w3-input' type='text' value='$gpio_name_value'></label></td>";
-echo "<tr><td><label id='$gpio_input_holdtime_id_ds'>Hold time: <input id='$gpio_input_holdtime_id_ds_ht' name='$gpio_input_holdtime_name' class='w3-input' type='number' min='1' max='60' value='$gpio_hold_time_value'></label></td></tr>";
-echo "</tr></table></div>";
+echo "<tr>";
+echo "<td><label>Name: <input name='$gpio_input_name_name' class='w3-input' type='text' value='$gpio_name_value'></label></td>";
+echo "</tr><tr>";
+echo "<td><label id='$gpio_input_holdtime_id_ds'>Hold time: <input id='$gpio_input_holdtime_id_ds_ht' name='$gpio_input_holdtime_name' class='w3-input' type='number' min='1' max='60' value='$gpio_hold_time_value'></label></td>";
+echo "</tr>";
+echo "</table>";
+echo "</div>";
 echo "<br>";
 }
 ?>
 </fieldset>
 
-
-<fieldset>
-<legend>Output configuration</legend>
-
-<div>
-<table class="w3-table">
-<tr>
-<td>
-<label for="GPIO_12">GPIO 12<input name="GPIO_12[gpio_pin]" type="hidden" value="12"></label>
-</td>
-</tr>
-
-<tr>
-<td>
-<label for="GPIO_12">Output type:</label>
-<select  name="GPIO_12[type]" class="w3-select" id="GPIO_12">
-  <option <?php if ($GPIO['GPIO_12']['type'] == 'door_led') echo 'selected="selected"'; ?> value="door_led">Door Indicator</option>
-  <option <?php if ($GPIO['GPIO_12']['type'] == 'led') echo 'selected="selected"'; ?>value="led">LED</option>
-</select>
-</td>
-</tr>
-<tr>
-<td>
-<label>Name: <input name="GPIO_12[name]" class="w3-input" type="text" value="<?=$GPIO['GPIO_12']['name']?>"></label></td>
-</tr>
-</table>
-<br>
-
-<table class="w3-table">
-<tr>
-<td>
-<label for="GPIO_18">GPIO 18<input name="GPIO_18[gpio_pin]" type="hidden" value="18"></label>
-</td>
-</tr>
-<tr>
-<td>
-<label for="GPIO_18">Output type:</label>
-<select  name="GPIO_18[type]" class="w3-select" id="GPIO_18">
-  <option <?php if ($GPIO['GPIO_18']['type'] == 'motion_led') echo 'selected="selected"'; ?> value="motion_led">Motion Indicator</option>
-  <option <?php if ($GPIO['GPIO_18']['type'] == 'led') echo 'selected="selected"'; ?>value="led">LED</option>
-</select>
-</td>
-</tr>
-<tr>
-<td>
-<label>Name: <input name="GPIO_18[name]" class="w3-input" type="text" value="<?=$GPIO['GPIO_18']['name']?>"></label></td>
-</tr>
-</table>
-</div>
-</fieldset>
 
 <fieldset>
 <legend>Zabbix Agent configuration</legend>
