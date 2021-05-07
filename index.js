@@ -144,33 +144,17 @@ function setGaugeValue(gauge, value, divisor, unit ) {
   gauge.querySelector(".gauge__cover").textContent = `${ value2 } ${unit}`;
 }
 
-const g1 = document.querySelector("#g1");
-const g2 = document.querySelector("#g2");
-const g3 = document.querySelector("#g3");
-const g4 = document.querySelector("#g4");
-const g5 = document.querySelector("#g5");
-const g6 = document.querySelector("#g6");
+const g1 = document.querySelector("#g4");
+const g2 = document.querySelector("#g5");
+const g3 = document.querySelector("#g6");
 
 const g11 = document.querySelector("#g11");
 const g12 = document.querySelector("#g12");
 
-if (data['settings']['use_bme280_sensor'] == true) {
-    if (!!BME280Temperature) {
-    setGaugeValue(g1, BME280Temperature/100, 100, "°C");
-    setGaugeValue(g2, BME280Humidity/100, 100, "%");
-    setGaugeValue(g3, BME280Pressure/1100, 1100, "hPa");
-    }
-//else {
-//    setGaugeValue(g1, "NULL", "", "");
-//    setGaugeValue(g2, "NULL", "", "");
-//    setGaugeValue(g3, "NULL", "", "");
-//    }
-}
-
 if (data['settings']['use_weather_station'] == true) {
-    setGaugeValue(g4, WindSpeed/100, 100, "km/h");
-    setGaugeValue(g5, WindGust/100, 100, "km/h");
-    setGaugeValue(g6, WindGust24h/100, 100, "km/h");
+    setGaugeValue(g1, WindSpeed/100, 100, "km/h");
+    setGaugeValue(g2, WindGust/100, 100, "km/h");
+    setGaugeValue(g3, WindGust24h/100, 100, "km/h");
 }
 
 if (data['settings']['use_dht_sensor'] == true) {
