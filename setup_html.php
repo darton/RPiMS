@@ -545,21 +545,24 @@ echo "<select name='$gpio_select_name' class='gpioinputs' id='$gpio_select_id'>"
 
 if ($gpio_input_type_value == 'DoorSensor')
 {
-    echo "<option value='DoorSensor'>Door Sensor</option>";
-    echo "<option value='MotionSensor'>Motion Sensor</option>";
     echo "<option selected value='DoorSensor'>Door Sensor</option>";
+    echo "<option value='MotionSensor'>Motion Sensor</option>";
+    echo "<option value='Reserved'>Reserved</option>";
+    echo "<option value='ShutdownButton'>Shutdown Button</option>";
 }
 if ($gpio_input_type_value == 'MotionSensor')
 {
-    echo "<option value='Reserved'>Reserved</option>";
-    echo "<option value='MotionSensor'>Motion Sensor</option>";
+    echo "<option value='DoorSensor'>Door Sensor</option>";
     echo "<option selected value='MotionSensor'>Motion Sensor</option>";
+    echo "<option value='Reserved'>Reserved</option>";
+    echo "<option value='ShutdownButton'>Shutdown Button</option>";
 }
 if ($gpio_input_type_value == 'Reserved')
 {
     echo "<option value='DoorSensor'>Door Sensor</option>";
     echo "<option value='MotionSensor'>Motion Sensor</option>";
     echo "<option selected value='Reserved'>Reserved</option>";
+    echo "<option value='ShutdownButton'>Shutdown Button</option>";
 }
 
 if ($gpio_input_type_value == 'ShutdownButton')
@@ -569,6 +572,7 @@ if ($gpio_input_type_value == 'ShutdownButton')
     echo "<option value='Reserved'>Reserved</option>";
     echo "<option selected value='ShutdownButton'>Shutdown Button</option>";
 }
+
 echo "</select></td>";
 echo "<td><label>Name: <input name='$gpio_input_name_name' class='w3-input' type='text' value='$gpio_name_value'></label></td>";
 echo "<td><label id='$gpio_input_holdtime_id_ds'>Hold time: <input id='$gpio_input_holdtime_id_ds_ht' name='$gpio_input_holdtime_name' class='w3-input' type='number' min='1' max='60' value='$gpio_hold_time_value'></label></td>";
