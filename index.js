@@ -159,12 +159,12 @@ if (data['settings']['use_bme280_sensor'] == true) {
     setGaugeValue(g1, BME280Temperature/100, 100, "°C");
     setGaugeValue(g2, BME280Humidity/100, 100, "%");
     setGaugeValue(g3, BME280Pressure/1100, 1100, "hPa");
-}
-else {
-    setGaugeValue(g1, "NULL", "", "");
-    setGaugeValue(g2, "NULL", "", "");
-    setGaugeValue(g3, "NULL", "", "");
-}
+    }
+//else {
+//    setGaugeValue(g1, "NULL", "", "");
+//    setGaugeValue(g2, "NULL", "", "");
+//    setGaugeValue(g3, "NULL", "", "");
+//    }
 }
 
 if (data['settings']['use_weather_station'] == true) {
