@@ -155,6 +155,8 @@
 <option value="lcd_st7735"<?php if ($serial_display_type == 'lcd_st7735') echo 'selected="selected"'; ?> >lcd_st7735</option>
 </select>
 </td>
+</tr>
+<tr>
 <td>
 <label for="serial_display_rotate">Display rotate:</label>
 <select id="serial_display_rotate" name="serial_display_rotate" class="w3-select">
@@ -206,16 +208,17 @@
 <input name="DS18B20_read_interval" class="w3-input" id="DS18B20_read_interval" type="number" min="1" max="3600" value="<?= $DS18B20_read_interval ?>" >
 </td>
 </tr>
+</table>
+<br>
 
 <?php foreach ($DS18B20_sensors_detected as $key => $value)
     {
 	$DS18B20_name = $DS18B20_sensors[$value];
+	echo "<table class='w3-table'>";
 	echo "<tr><td><p>Address: $value</p>name: <input name='DS18B20[$value][name]' class='w3-input' type='text' value='$DS18B20_name'></td></tr>";
+	echo "</table><br>";
     }
-
 ?>
-
-</table>
 
 </div>
 </fieldset>
@@ -224,8 +227,8 @@
 <fieldset>
 <legend>BME280 sensor configuration</legend>
 <div>
-<table class="w3-table">
 
+<table class="w3-table">
 <tr>
 <td>
 <label>Use #1 BME280:</label>
@@ -238,14 +241,13 @@
 <label>name:</label>
 <input name="id1_BME280_name" class="w3-input" type="text" value="<?=$id1_BME280_name?>" >
 </td>
-</tr>
-
-<tr>
 <td>
 <label for="id1_BME280_read_interval">Read interval:</label>
 <input name="id1_BME280_read_interval" class="w3-input" id="id1_BME280_read_interval" type="number" min="1" max="3600" value="<?= $id1_BME280_read_interval ?>" >
 </td>
+</tr>
 
+<tr>
 <td>
 <label for="id1_BME280_interface">Interface type:</label>
 <select name="id1_BME280_interface" class="w3-select" id="id1_BME280_interface">
@@ -262,9 +264,10 @@
 </label>
 </td>
 </tr>
+</table>
+<br>
 
-
-<tr><td></td></tr>
+<table class="w3-table">
 <tr>
 <td>
 <label>Use #2 BME280:</label>
@@ -277,13 +280,13 @@
 <label>name:</label>
 <input name="id2_BME280_name" class="w3-input" type="text" value="<?=$id2_BME280_name?>" >
 </td>
-</tr>
-
-<tr>
 <td>
 <label for="id2_BME280_read_interval">Read interval:</label>
 <input name="id2_BME280_read_interval" class="w3-input" id="id2_BME280_read_interval" type="number" min="1" max="3600" value="<?= $id2_BME280_read_interval ?>" >
 </td>
+</tr>
+
+<tr>
 <td>
 <label for="id2_BME280_interface">Interface type:</label>
 <select name="id2_BME280_interface" class="w3-select" id="id2_BME280_interface">
@@ -301,9 +304,10 @@
 </label>
 </td>
 </tr>
+</table>
+<br>
 
-
-<tr><td></td></tr>
+<table class="w3-table">
 <tr>
 <td>
 <label>Use #3 BME280:</label>
@@ -316,14 +320,13 @@
 <label>name:</label>
 <input name="id3_BME280_name" class="w3-input" type="text" value="<?=$id3_BME280_name?>" >
 </td>
-</tr>
-
-<tr>
 <td>
 <label for="id3_BME280_read_interval">Read interval:</label>
 <input name="id3_BME280_read_interval" class="w3-input" id="id3_BME280_read_interval" type="number" min="1" max="3600" value="<?= $id3_BME280_read_interval ?>" >
 </td>
+</tr>
 
+<tr>
 <td>
 <label for="id3_BME280_interface">Interface type:</label>
 <select name="id3_BME280_interface" class="w3-select" id="id3_BME280_interface">
@@ -364,12 +367,14 @@
 <input name="DHT_name" class="w3-input" type="text" value="<?=$DHT_name?>" >
 </td>
 </tr>
-
 <tr>
 <td>
 <label for="DHT_read_interval">Read interval:</label>
 <input name="DHT_read_interval" class="w3-input" id="DHT_read_interval" type="number" min="1" max="3600" value="<?= $DHT_read_interval ?>" >
 </td>
+</tr>
+
+<tr>
 <td>
 <label for="DHT_type">Type:</label>
   <select name="DHT_type" class="w3-select" id="DHT_type">
@@ -378,6 +383,8 @@
   <option value="AM2302" <?php if ($DHT_type == 'AM2302') echo 'selected="selected"'; ?> >AM2302</option>
 </select>
 </td>
+</tr>
+<tr>
 <td>
 <label for="DHT_pin">Pin:</label>
 <select name="DHT_pin" class="w3-select" id="DHT_pin">
@@ -394,7 +401,6 @@
 <div>
 
 <table class="w3-table">
-
 <tr>
 <td>
 <label>Rainfall</label>
@@ -413,10 +419,14 @@
 <label for="rainfall_acquisition_time">Aquisition time:</label>
 <input name="rainfall_acquisition_time" class="w3-input" id="rainfall_acquisition_time" type="number" min="1" max="3600" value="<?= $rainfall_acquisition_time ?>" >
 </td>
+</tr>
+<tr>
 <td>
 <label for="rainfall_agregation_time">Agregation time:</label>
 <input name="rainfall_agregation_time" class="w3-input" id="rainfall_agregation_time" type="number" min="1" max="86400" value="<?= $rainfall_agregation_time ?>" >
 </td>
+</tr>
+<tr>
 <td>
 <label for="rainfall_sensor_pin">Sensor pin:</label>
 <select  name="rainfall_sensor_pin" class="w3-select" id="rainfall_sensor_pin">
@@ -424,9 +434,11 @@
 </select>
 </td>
 </tr>
+</table>
+<br>
 
 
-<tr><td></td></tr>
+<table class="w3-table">
 <tr>
 <td>
 <label>Wind speed</label>
@@ -445,10 +457,14 @@
 <label for="windspeed_acquisition_time">Acquisition time:</label>
 <input name="windspeed_acquisition_time" class="w3-input" id="windspeed_acquisition_time" type="number" min="1" max="3600" value="<?= $windspeed_acquisition_time ?>" >
 </td>
+</tr>
+<tr>
 <td>
 <label for="windspeed_agregation_time">Agregation time:</label>
 <input name="windspeed_agregation_time" class="w3-input" id="windspeed_agregation_time" type="number" min="1" max="3600" value="<?= $windspeed_agregation_time ?>" >
 </td>
+</tr>
+<tr>
 <td>
 <label for="windspeed_sensor_pin">Sensor pin:</label>
 <select name="windspeed_sensor_pin" class="w3-select" id="windspeed_sensor_pin">
@@ -456,9 +472,11 @@
 </select>
 </td>
 </tr>
+</table>
+<br>
 
 
-<tr><td></td></tr>
+<table class="w3-table">
 <tr>
 <td>
 <label>Wind direction</label>
@@ -487,6 +505,8 @@
  <option value="ADS1115" <?php if ($winddirection_adc_type == 'ADS1115') echo 'selected="selected"'; ?> >ADS1115</option>
 </select>
 </td>
+</tr>
+<tr>
 <td>
 <label for="winddirection_adc_input">Sensor input:</label>
 <select name="winddirection_adc_input" class="w3-select" id="winddirection_adc_input">
@@ -496,6 +516,8 @@
  <option value="4" <?php if ($winddirection_adc_input == '4') echo 'selected="selected"'; ?> >4</option>
 </select>
 </td>
+</tr>
+<tr>
 <td>
 <label for="_adc_input">Reference input:</label>
 <select name="reference_voltage_adc_input" class="w3-select" id="reference_voltage_adc_input">
@@ -506,8 +528,8 @@
 </select>
 </td>
 </tr>
-
 </table>
+
 </div>
 </fieldset>
 
@@ -518,7 +540,6 @@
 $gpiopin = array("5", "6","13","16","19","20","21","26",);
 
 foreach ($gpiopin as $pin) {
-
 
 $_name = 'GPIO_'.$pin;
 $gpio_name_value = $GPIO[$_name]['name'];
@@ -538,9 +559,10 @@ $gpio_input_name_name = GPIO_.$pin."[name]";
 
 echo "<div><table class='w3-table'>";
 echo "<tr><td>";
-echo "<label>GPIO $pin<input name='$gpio_input_pin' type='hidden' value='$pin'></label></td></tr><tr><td>";
+echo "<label>GPIO $pin<input name='$gpio_input_pin' type='hidden' value='$pin'></label>";
+echo "</td></tr>";
+echo "<tr><td>";
 echo "<label for='GPIO_.$pin'>Input type:</label>";
-
 echo "<select name='$gpio_select_name' class='gpioinputs' id='$gpio_select_id'>";
 
 if ($gpio_input_type_value == 'DoorSensor')
@@ -573,9 +595,9 @@ if ($gpio_input_type_value == 'ShutdownButton')
     echo "<option selected value='ShutdownButton'>Shutdown Button</option>";
 }
 
-echo "</select></td>";
-echo "<td><label>Name: <input name='$gpio_input_name_name' class='w3-input' type='text' value='$gpio_name_value'></label></td>";
-echo "<td><label id='$gpio_input_holdtime_id_ds'>Hold time: <input id='$gpio_input_holdtime_id_ds_ht' name='$gpio_input_holdtime_name' class='w3-input' type='number' min='1' max='60' value='$gpio_hold_time_value'></label></td>";
+echo "</select></td></tr>";
+echo "<tr><td><label>Name: <input name='$gpio_input_name_name' class='w3-input' type='text' value='$gpio_name_value'></label></td>";
+echo "<tr><td><label id='$gpio_input_holdtime_id_ds'>Hold time: <input id='$gpio_input_holdtime_id_ds_ht' name='$gpio_input_holdtime_name' class='w3-input' type='number' min='1' max='60' value='$gpio_hold_time_value'></label></td></tr>";
 echo "</tr></table></div>";
 echo "<br>";
 }
@@ -585,6 +607,7 @@ echo "<br>";
 
 <fieldset>
 <legend>Output configuration</legend>
+
 <div>
 <table class="w3-table">
 <tr>
@@ -599,9 +622,17 @@ echo "<br>";
 <select  name="GPIO_12[type]" class="w3-select" id="GPIO_12">
   <option <?php if ($GPIO['GPIO_12']['type'] == 'door_led') echo 'selected="selected"'; ?> value="door_led">Door Indicator</option>
   <option <?php if ($GPIO['GPIO_12']['type'] == 'led') echo 'selected="selected"'; ?>value="led">LED</option>
-</select></td>
-<td><label>Name: <input name="GPIO_12[name]" class="w3-input" type="text" value="<?=$GPIO['GPIO_12']['name']?>"></label></td>
+</select>
+</td>
 </tr>
+<tr>
+<td>
+<label>Name: <input name="GPIO_12[name]" class="w3-input" type="text" value="<?=$GPIO['GPIO_12']['name']?>"></label></td>
+</tr>
+</table>
+<br>
+
+<table class="w3-table">
 <tr>
 <td>
 <label for="GPIO_18">GPIO 18<input name="GPIO_18[gpio_pin]" type="hidden" value="18"></label>
@@ -613,8 +644,12 @@ echo "<br>";
 <select  name="GPIO_18[type]" class="w3-select" id="GPIO_18">
   <option <?php if ($GPIO['GPIO_18']['type'] == 'motion_led') echo 'selected="selected"'; ?> value="motion_led">Motion Indicator</option>
   <option <?php if ($GPIO['GPIO_18']['type'] == 'led') echo 'selected="selected"'; ?>value="led">LED</option>
-</select></td>
-<td><label>Name: <input name="GPIO_18[name]" class="w3-input" type="text" value="<?=$GPIO['GPIO_18']['name']?>"></label></td>
+</select>
+</td>
+</tr>
+<tr>
+<td>
+<label>Name: <input name="GPIO_18[name]" class="w3-input" type="text" value="<?=$GPIO['GPIO_18']['name']?>"></label></td>
 </tr>
 </table>
 </div>
