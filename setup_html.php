@@ -42,6 +42,9 @@
 
 <fieldset>
 <legend>System configuration</legend>
+<div class="w3-row-padding w3-green">
+    <p><label>Settings</label></p>
+</div>
 <div class="w3-row-padding w3-yellow">
 <div class="w3-row w3-yellow">
     <input name="verbose" type="hidden" value="no"><input name="verbose" type="checkbox" class="w3-check" <?php if ($verbose) echo 'checked="checked"'; ?> value="True">
@@ -101,6 +104,9 @@
 
 <fieldset>
 <legend>Serial display configuration</legend>
+<div class="w3-row-padding w3-green">
+    <p><label>Display</label></p>
+</div>
 <div class="w3-row-padding w3-yellow">
     <div class="w3-quarter w3-container w3-yellow">
 	<br>
@@ -127,10 +133,10 @@
 	</select>
     </div>
     <div class="w3-quarter w3-container w3-yellow">
-	<br>
+	<p>
 	<label>Refresh rate:</label>
 	<input name="serial_display_refresh_rate" class="w3-input" type="number" min="1" max="50" value="<?= $serial_display_refresh_rate ?>" >
-	<br>
+	</p>
     </div>
 </div>
 </fieldset>
@@ -138,12 +144,14 @@
 
 <fieldset>
 <legend>CPU sensor configuration</legend>
+<div class="w3-row-padding w3-green">
+    <p><label>CPU Sensor</label></p>
+</div>
 <div class="w3-row-padding w3-yellow">
-    <div class="w3 w3-container w3-yellow">
-	<label for="CPUtemp_read_interval">CPUtemp read interval:</label>
-	<input name="CPUtemp_read_interval" class="w3-input" id="CPUtemp_read_interval" type="number" min="1" max="3600" value="<?= $CPUtemp_read_interval ?>" >
-    </div>
-<br>
+    <br>
+    <label for="CPUtemp_read_interval">CPUtemp read interval:</label>
+    <input name="CPUtemp_read_interval" class="w3-input" id="CPUtemp_read_interval" type="number" min="1" max="3600" value="<?= $CPUtemp_read_interval ?>" >
+    <br>
 </div>
 </fieldset>
 
@@ -151,12 +159,9 @@
 <fieldset>
 <legend>DS18B20 sensor configuration</legend>
 <div>
-
-<div class="w3-row">
-    <div class="w3 w3-container w3-green">
-	<p><label>DS18B20</label></p>
-    </div>
-<div>
+<div class="w3-row-padding w3-green">
+    <p><label>DS18B20</label></p>
+</div>
 <div class="w3-row w3-yellow">
     <br>
     <div class="w3 w3-container w3-yellow">
@@ -164,7 +169,6 @@
 	<input name="DS18B20_read_interval" class="w3-input" id="DS18B20_read_interval" type="number" min="1" max="3600" value="<?= $DS18B20_read_interval ?>" >
     </div>
     <br>
-
 
 <?php
 
@@ -193,14 +197,14 @@
 
 <fieldset>
 <legend>BME280 sensor configuration</legend>
-<div class="w3-row w3-yellow">
+
 <div class="w3-row-padding w3-green">
     <p>
     <input name="id1_BME280_use" type="hidden" value="no"><input name="id1_BME280_use" type="checkbox" class="w3-check" <?php if ($id1_BME280_use) echo 'checked="checked"'; ?> value="True">
     <label>Use #1 BME280:</label>
     </p>
 </div>
-
+<div class="w3-row w3-yellow">
 <div class="w3-row w3-yellow">
     <div class="w3-quarter w3-container w3-yellow">
 	<br>
@@ -233,13 +237,13 @@
 </div>
 <br>
 
-<div class="w3-row w3-yellow">
 <div class="w3-row-padding w3-green">
     <p>
     <input name="id2_BME280_use" type="hidden" value="no"><input name="id2_BME280_use" type="checkbox" class="w3-check" <?php if ($id2_BME280_use) echo 'checked="checked"'; ?> value="True">
     <label>Use #2 BME280:</label>
     </p>
 </div>
+<div class="w3-row w3-yellow">
 <div class="w3-row w3-yellow">
     <div class="w3-quarter w3-container w3-yellow">
 	<br>
@@ -274,13 +278,13 @@
 </div>
 <br>
 
-<div class="w3-row w3-yellow">
 <div class="w3-row-padding w3-green">
     <p>
     <input name="id3_BME280_use" type="hidden" value="no"><input name="id3_BME280_use" type="checkbox" class="w3-check" <?php if ($id3_BME280_use) echo 'checked="checked"'; ?> value="True">
     <label>Use #3 BME280:</label>
     </p>
 </div>
+<div class="w3-row w3-yellow">
 <div class="w3-row w3-yellow">
     <div class="w3-quarter w3-container w3-yellow">
 	<br>
@@ -364,6 +368,7 @@
     </div>
 <div class="w3-row w3-yelow">
     <div class="w3-quarter w3-container w3-yellow">
+	<br>
 	<input name="rainfall_use" type="hidden" value="no"><input name="rainfall_use" type="checkbox" class="w3-check" <?php if ($rainfall_use) echo 'checked="checked"'; ?> value="True">
 	<label>Use Rainfall:</label>
     </div>
@@ -395,6 +400,7 @@
     </div>
 <div class="w3-row w3-yelow">
     <div class="w3-quarter w3-container w3-yellow">
+	<br>
 	<input name="windspeed_use" type="hidden" value="no"><input name="windspeed_use" type="checkbox" class="w3-check" <?php if ($windspeed_use) echo 'checked="checked"'; ?> value="True">
 	<label>Use Wind speed:</label>
     </div>
@@ -425,6 +431,7 @@
 	<p><label>Wind direction</label></p>
     </div>
 <div class="w3-row-padding w3-yellow">
+	<br>
 	<input name="winddirection_use" type="hidden" value="no"><input name="winddirection_use" type="checkbox" class="w3-check" <?php if ($winddirection_use) echo 'checked="checked"'; ?> value="True">
 	<label>Use Wind direction:</label>
     </div>
@@ -594,7 +601,9 @@ echo "<br>";
 <fieldset>
 <legend>Zabbix Agent configuration</legend>
 <div>
-
+<div class="w3-row-padding w3-green">
+    <p><label>Zabbix</label></p>
+</div>
 <div class="w3-row w3-yellow">
     <p>
     <div class="w3-third w3-container w3-yellow">
@@ -642,8 +651,6 @@ echo "<br>";
 	    <br>
     </div>
 </div>
-
-
 </div>
 </fieldset>
 
@@ -653,9 +660,7 @@ echo "<br>";
 </div>
 </fieldset>
 
-
 </form>
-
 </div>
 </body>
 </html>
