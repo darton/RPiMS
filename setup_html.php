@@ -357,7 +357,6 @@
 </div>
 <br>
 </div>
-<br>
 </fieldset>
 
 <fieldset>
@@ -502,10 +501,9 @@ $gpio_input_name_name = GPIO_.$pin."[name]";
 echo "<div class='w3-row-padding w3-green'>";
 echo "<p><label>GPIO $pin<input name='$gpio_input_pin' type='hidden' value='$pin'></label></p>";
 echo "</div>";
-
 echo "<div class='w3-row w3-yellow'>";
-echo "<br>";
 echo "<div class='w3-third w3-container w3-yellow'>";
+echo "<p>";
 echo "<label for='GPIO_.$pin'>Type:</label>";
 echo "<select name='$gpio_select_name' class='gpioinputs' id='$gpio_select_id'>";
 
@@ -592,7 +590,7 @@ echo "</div>";
 	echo "<br>";
     echo "</div>";
 echo "</div>";
-echo "<br>";
+echo "</p>";
 }
 ?>
 </fieldset>
