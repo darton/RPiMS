@@ -498,15 +498,17 @@ $gpio_input_holdtime_id_ds_ht = GPIO_.$pin._TYPE_DS_HT;
 
 $gpio_input_name_name = GPIO_.$pin."[name]";
 
+
 echo "<div class='w3-row-padding w3-green'>";
 echo "<p><label>GPIO $pin<input name='$gpio_input_pin' type='hidden' value='$pin'></label></p>";
 echo "</div>";
+
 echo "<div class='w3-row w3-yellow'>";
+echo "<br>";
 echo "<div class='w3-third w3-container w3-yellow'>";
-echo "<p>";
+
 echo "<label for='GPIO_.$pin'>Type:</label>";
 echo "<select name='$gpio_select_name' class='gpioinputs' id='$gpio_select_id'>";
-
 if ($gpio_input_type_value == 'DoorSensor')
 {
     echo "<option selected value='DoorSensor'>INPUT - Door Sensor</option>";
@@ -581,16 +583,21 @@ if ($gpio_input_type_value == 'motion_led')
 echo "</select>";
 echo "<br>";
 echo "</div>";
-    echo "<div class='w3-third w3-container w3-yellow'>";
-	echo "<label>Name: <input name='$gpio_input_name_name' class='w3-input' type='text' value='$gpio_name_value'></label></td>";
-	echo "<br>";
-    echo "</div>";
-    echo "<div class='w3-third w3-container w3-yellow'>";
-	echo "<label id='$gpio_input_holdtime_id_ds'>Hold time: <input id='$gpio_input_holdtime_id_ds_ht' name='$gpio_input_holdtime_name' class='w3-input' type='number' min='1' max='60' value='$gpio_hold_time_value'></label></td>";
-	echo "<br>";
-    echo "</div>";
+
+echo "<div class='w3-third w3-container w3-yellow'>";
+
+    echo "<label>Name: <input name='$gpio_input_name_name' class='w3-input' type='text' value='$gpio_name_value'></label>";
+    echo "<br>";
 echo "</div>";
-echo "</p>";
+
+echo "<div class='w3-third w3-container w3-yellow'>";
+
+    echo "<label id='$gpio_input_holdtime_id_ds'>Hold time: <input id='$gpio_input_holdtime_id_ds_ht' name='$gpio_input_holdtime_name' class='w3-input' type='number' min='1' max='60' value='$gpio_hold_time_value'></label>";
+    echo "<br>";
+echo "</div>";
+echo "</div>";
+echo "<p></p>";
+
 }
 ?>
 </fieldset>
