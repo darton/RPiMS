@@ -22,15 +22,12 @@
 
 <body>
 <div>
-
 <form action="setup_form.php" method="post">
 
 <fieldset>
 <legend>System configuration</legend>
-<div class="w3-row-padding w3-green">
-    <p><label>Settings</label></p>
-</div>
 <div class="w3-row-padding w3-yellow">
+<p>
 <div class="w3-row w3-yellow">
     <input name="verbose" type="hidden" value="no"><input name="verbose" type="checkbox" class="w3-check" <?php if ($verbose) echo 'checked="checked"'; ?> value="True">
     <label>Verbose mode</label>
@@ -38,10 +35,6 @@
 <div class="w3-row w3-yellow">
     <input name="show_sys_info" type="hidden" value="False"><input name="show_sys_info" type="checkbox" class="w3-check" <?php if ($show_sys_info == 'yes') echo 'checked="checked"'; ?> value="True">
     <label>Show system info</label>
-</div>
-<div class="w3-row w3-yellow">
-    <input name="use_zabbix_sender" type="hidden" value="False"><input name="use_zabbix_sender" type="checkbox" class="w3-check" <?php if ($use_zabbix_sender == 'yes') echo 'checked="checked"'; ?> value="True">
-    <label>Use zabbix sender</label>
 </div>
 <div class="w3-row w3-yellow">
     <input name="use_picamera" type="hidden" value="False"><input name="use_picamera" type="checkbox" class="w3-check" <?php if ($use_picamera == 'yes') echo 'checked="checked"'; ?> value="True">
@@ -59,38 +52,17 @@
     <input name="use_motion_sensor" type="hidden" value="False"><input name="use_motion_sensor" type="checkbox" class="w3-check" <?php if ($use_motion_sensor == 'yes') echo 'checked="checked"'; ?> value="True">
     <label>Use motion sensors</label>
 </div>
-<div class="w3-row w3-yellow">
-    <input name="use_CPU_sensor" type="hidden" value="False"><input name="use_CPU_sensor" type="checkbox" class="w3-check" <?php if ($use_CPU_sensor == 'yes') echo 'checked="checked"'; ?> value="True">
-    <label>Use CPU sensor</label>
-</div>
-<div class="w3-row w3-yellow">
-    <input name="use_BME280_sensor" type="hidden" value="False"><input name="use_BME280_sensor" type="checkbox" class="w3-check" <?php if ($use_BME280_sensor == 'yes') echo 'checked="checked"'; ?> value="True">
-    <label>Use BME280 sensor</label>
-</div>
-<div class="w3-row w3-yellow">
-    <input name="use_DS18B20_sensor" type="hidden" value="False"><input name="use_DS18B20_sensor" type="checkbox" class="w3-check" <?php if ($use_DS18B20_sensor == 'yes') echo 'checked="checked"'; ?> value="True">
-    <label>Use DS18B20 sensor</label>
-</div>
-<div class="w3-row w3-yellow">
-    <input name="use_DHT_sensor" type="hidden" value="False"><input name="use_DHT_sensor" type="checkbox" class="w3-check" <?php if ($use_DHT_sensor) echo 'checked="checked"'; ?> value="True">
-    <label>Use DHT sensor</label>
-</div>
-<div class="w3-row w3-yellow">
-    <input name="use_weather_station" type="hidden" value="False"><input name="use_weather_station" type="checkbox" class="w3-check" <?php if ($use_weather_station) echo 'checked="checked"'; ?> value="True">
-    <label>Use weather station</label>
-</div>
-<div class="w3-row w3-yellow">
-    <input name="use_serial_display" type="hidden" value="False"><input name="use_serial_display" type="checkbox" class="w3-check" <?php if ($use_serial_display == 'yes') echo 'checked="checked"'; ?> value="True">
-    <label>Use serial display</label>
-</div>
-<br>
+</p>
 </div>
 </fieldset>
 
 <fieldset>
 <legend>Serial display configuration</legend>
 <div class="w3-row-padding w3-green">
-    <p><label>Display</label></p>
+    <p>
+    <input name="use_serial_display" type="hidden" value="False"><input name="use_serial_display" type="checkbox" class="w3-check" <?php if ($use_serial_display == 'yes') echo 'checked="checked"'; ?> value="True">
+    <label>Use serial display</label>
+    </p>
 </div>
 <div class="w3-row-padding w3-yellow">
     <div class="w3-quarter w3-container w3-yellow">
@@ -130,7 +102,10 @@
 <fieldset>
 <legend>CPU sensor configuration</legend>
 <div class="w3-row-padding w3-green">
-    <p><label>CPU Sensor</label></p>
+    <p>
+    <input name="use_CPU_sensor" type="hidden" value="False"><input name="use_CPU_sensor" type="checkbox" class="w3-check" <?php if ($use_CPU_sensor == 'yes') echo 'checked="checked"'; ?> value="True">
+    <label>CPU Sensor</label>
+    </p>
 </div>
 <div class="w3-row-padding w3-yellow">
     <br>
@@ -145,7 +120,10 @@
 <legend>DS18B20 sensor configuration</legend>
 <div>
 <div class="w3-row-padding w3-green">
-    <p><label>DS18B20</label></p>
+    <p>
+    <input name="use_DS18B20_sensor" type="hidden" value="False"><input name="use_DS18B20_sensor" type="checkbox" class="w3-check" <?php if ($use_DS18B20_sensor == 'yes') echo 'checked="checked"'; ?> value="True">
+    <label>Use DS18B20 sensor</label>
+    </p>
 </div>
 <div class="w3-row w3-yellow">
     <br>
@@ -183,6 +161,13 @@
 <fieldset>
 <legend>BME280 sensor configuration</legend>
 
+<div class="w3-row-padding w3-green">
+    <p>
+    <input name="use_BME280_sensor" type="hidden" value="False"><input name="use_BME280_sensor" type="checkbox" class="w3-check" <?php if ($use_BME280_sensor == 'yes') echo 'checked="checked"'; ?> value="True">
+    <label>Use BME280 sensor</label>
+    </p>
+</div>
+<br>
 <div class="w3-row-padding w3-green">
     <p>
     <input name="id1_BME280_use" type="hidden" value="no"><input name="id1_BME280_use" type="checkbox" class="w3-check" <?php if ($id1_BME280_use) echo 'checked="checked"'; ?> value="True">
@@ -309,7 +294,10 @@
 <legend>DHT sensor configuration</legend>
 <div class="w3-row w3-yellow">
 <div class="w3-row-padding w3-green">
-    <label><p>DHT</p></label>
+    <p>
+    <input name="use_DHT_sensor" type="hidden" value="False"><input name="use_DHT_sensor" type="checkbox" class="w3-check" <?php if ($use_DHT_sensor) echo 'checked="checked"'; ?> value="True">
+    <label>Use DHT sensor</label>
+    </p>
 </div>
 <div class="w3-row w3-yellow">
     <div class="w3-quarter w3-container w3-yellow">
@@ -346,27 +334,32 @@
 
 <fieldset>
 <legend>Weather sensor configuration</legend>
+<div class="w3-row-padding w3-green">
+    <p>
+    <input name="use_weather_station" type="hidden" value="False"><input name="use_weather_station" type="checkbox" class="w3-check" <?php if ($use_weather_station) echo 'checked="checked"'; ?> value="True">
+    <label>Use weather station</label>
+    </p>
+</div>
+<br>
 <div class="w3-row w3-yellow">
     <div class="w3-row-padding w3-green">
-	<p><label>Rainfall</label></p>
-    </div>
-<div class="w3-row w3-yelow">
-    <div class="w3-quarter w3-container w3-yellow">
-	<br>
+	<p>
 	<input name="rainfall_use" type="hidden" value="no"><input name="rainfall_use" type="checkbox" class="w3-check" <?php if ($rainfall_use) echo 'checked="checked"'; ?> value="True">
 	<label>Use Rainfall:</label>
+	</p>
     </div>
-    <div class="w3-quarter w3-container w3-yellow">
+<div class="w3-row w3-yelow">
+    <div class="w3-third w3-container w3-yellow">
 	<br>
 	<label for="rainfall_acquisition_time">Aquisition time:</label>
 	<input name="rainfall_acquisition_time" class="w3-input" id="rainfall_acquisition_time" type="number" min="1" max="3600" value="<?= $rainfall_acquisition_time ?>" >
     </div>
-    <div class="w3-quarter w3-container w3-yellow">
+    <div class="w3-third w3-container w3-yellow">
 	<br>
 	<label for="rainfall_agregation_time">Agregation time:</label>
 	<input name="rainfall_agregation_time" class="w3-input" id="rainfall_agregation_time" type="number" min="1" max="86400" value="<?= $rainfall_agregation_time ?>" >
     </div>
-    <div class="w3-quarter w3-container w3-yellow">
+    <div class="w3-third w3-container w3-yellow">
 	<br>
 	<label for="rainfall_sensor_pin">Sensor pin:</label>
 	<select  name="rainfall_sensor_pin" class="w3-select" id="rainfall_sensor_pin">
@@ -380,25 +373,23 @@
 
 <div class="w3-row w3-yellow">
     <div class="w3-row-padding w3-green">
-	<p><label>Wind speed</label></p>
-    </div>
-<div class="w3-row w3-yelow">
-    <div class="w3-quarter w3-container w3-yellow">
-	<br>
+	<p>
 	<input name="windspeed_use" type="hidden" value="no"><input name="windspeed_use" type="checkbox" class="w3-check" <?php if ($windspeed_use) echo 'checked="checked"'; ?> value="True">
 	<label>Use Wind speed:</label>
+	</p>
     </div>
-    <div class="w3-quarter w3-container w3-yellow">
+<div class="w3-row w3-yelow">
+    <div class="w3-third w3-container w3-yellow">
 	<br>
 	<label for="windspeed_acquisition_time">Acquisition time:</label>
 	<input name="windspeed_acquisition_time" class="w3-input" id="windspeed_acquisition_time" type="number" min="1" max="3600" value="<?= $windspeed_acquisition_time ?>" >
     </div>
-    <div class="w3-quarter w3-container w3-yellow">
+    <div class="w3-third w3-container w3-yellow">
 	<br>
 	<label for="windspeed_agregation_time">Agregation time:</label>
 	<input name="windspeed_agregation_time" class="w3-input" id="windspeed_agregation_time" type="number" min="1" max="3600" value="<?= $windspeed_agregation_time ?>" >
     </div>
-    <div class="w3-quarter w3-container w3-yellow">
+    <div class="w3-third w3-container w3-yellow">
 	<br>
 	<label for="windspeed_sensor_pin">Sensor pin:</label>
 	<select name="windspeed_sensor_pin" class="w3-select" id="windspeed_sensor_pin">
@@ -412,12 +403,10 @@
 
 <div class="w3-row w3-yellow">
     <div class="w3-row-padding w3-green">
-	<p><label>Wind direction</label></p>
-    </div>
-<div class="w3-row-padding w3-yellow">
-	<br>
+	<p>
 	<input name="winddirection_use" type="hidden" value="no"><input name="winddirection_use" type="checkbox" class="w3-check" <?php if ($winddirection_use) echo 'checked="checked"'; ?> value="True">
 	<label>Use Wind direction:</label>
+	</p>	
     </div>
 <div class="w3-row-padding w3-yellow">
     <div class="w3-quarter w3-container w3-yellow">
@@ -472,16 +461,16 @@ $gpio_name_value = $GPIO[$_name]['name'];
 $gpio_input_type_value = $GPIO[$_name]['type'];
 $gpio_hold_time_value = $GPIO[$_name]['hold_time'];
 
-$gpio_input_pin = GPIO_.$pin."[gpio_pin]";
-$gpio_input_holdtime_name = GPIO_.$pin."[hold_time]";
+$gpio_input_pin = "GPIO_".$pin."[gpio_pin]";
+$gpio_input_holdtime_name = "GPIO_".$pin."[hold_time]";
 
-$gpio_select_name = GPIO_.$pin."[type]";
-$gpio_select_id = GPIO_.$pin._TYPE;
+$gpio_select_name = "GPIO_".$pin."[type]";
+$gpio_select_id = "GPIO_".$pin."_TYPE";
 
-$gpio_input_holdtime_id_ds = GPIO_.$pin._TYPE_DS;
-$gpio_input_holdtime_id_ds_ht = GPIO_.$pin._TYPE_DS_HT;
+$gpio_input_holdtime_id_ds = "GPIO_".$pin."_TYPE_DS";
+$gpio_input_holdtime_id_ds_ht = "GPIO_".$pin."_TYPE_DS_HT";
 
-$gpio_input_name_name = GPIO_.$pin."[name]";
+$gpio_input_name_name = "GPIO_".$pin."[name]";
 
 
 echo "<div class='w3-row-padding w3-green'>";
@@ -592,7 +581,10 @@ echo "<p></p>";
 <legend>Zabbix Agent configuration</legend>
 <div>
 <div class="w3-row-padding w3-green">
-    <p><label>Zabbix</label></p>
+    <p>
+    <input name="use_zabbix_sender" type="hidden" value="False"><input name="use_zabbix_sender" type="checkbox" class="w3-check" <?php if ($use_zabbix_sender == 'yes') echo 'checked="checked"'; ?> value="True">
+    <label>Use zabbix sender</label>
+    </p>
 </div>
 <div class="w3-row w3-yellow">
     <p>
@@ -643,9 +635,9 @@ echo "<p></p>";
 </fieldset>
 
 <fieldset>
-<div>
-    <button name="save" type="submit"  value="Save" class="w3-bar">Save</button>
-</div>
+    <div>
+	<button name="save" type="submit"  value="Save" class="w3-bar">Save</button>
+    </div>
 </fieldset>
 
 </form>
