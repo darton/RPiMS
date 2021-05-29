@@ -8,10 +8,6 @@
 <link rel="stylesheet" href="w3.css">
 
 <style>
-.w3-table {
-  background-color: #f1f1c1;
-}
-
 .gpioinputs {
   padding:8px;
   display:block;
@@ -19,17 +15,6 @@
   border-bottom:1px solid #ccc;
   width:100%
 }
-
-.bmeserialport {
-  padding:8px;
-  display:block;
-  border:none;
-  border-bottom:1px solid #ccc;
-  width:100%
-}
-
-
-
 </style>
 <script src="../jquery.min.js"></script>
 <script src="setup.js" defer></script>
@@ -51,52 +36,52 @@
     <label>Verbose mode</label>
 </div>
 <div class="w3-row w3-yellow">
-<input name="show_sys_info" type="hidden" value="False"><input name="show_sys_info" type="checkbox" class="w3-check" <?php if ($show_sys_info == 'yes') echo 'checked="checked"'; ?> value="True">
-<label>Show system info</label>
+    <input name="show_sys_info" type="hidden" value="False"><input name="show_sys_info" type="checkbox" class="w3-check" <?php if ($show_sys_info == 'yes') echo 'checked="checked"'; ?> value="True">
+    <label>Show system info</label>
 </div>
 <div class="w3-row w3-yellow">
-<input name="use_zabbix_sender" type="hidden" value="False"><input name="use_zabbix_sender" type="checkbox" class="w3-check" <?php if ($use_zabbix_sender == 'yes') echo 'checked="checked"'; ?> value="True">
-<label>Use zabbix sender</label>
+    <input name="use_zabbix_sender" type="hidden" value="False"><input name="use_zabbix_sender" type="checkbox" class="w3-check" <?php if ($use_zabbix_sender == 'yes') echo 'checked="checked"'; ?> value="True">
+    <label>Use zabbix sender</label>
 </div>
 <div class="w3-row w3-yellow">
-<input name="use_picamera" type="hidden" value="False"><input name="use_picamera" type="checkbox" class="w3-check" <?php if ($use_picamera == 'yes') echo 'checked="checked"'; ?> value="True">
-<label>Use picamera</label>
+    <input name="use_picamera" type="hidden" value="False"><input name="use_picamera" type="checkbox" class="w3-check" <?php if ($use_picamera == 'yes') echo 'checked="checked"'; ?> value="True">
+    <label>Use picamera</label>
 </div>
 <div class="w3-row w3-yellow">
-<input name="use_picamera_recording" type="hidden" value="False"><input name="use_picamera_recording" type="checkbox" class="w3-check"  <?php if ($use_picamera_recording == 'yes') echo 'checked="checked"'; ?> value="True">
-<label>Use picamera recording</label>
+    <input name="use_picamera_recording" type="hidden" value="False"><input name="use_picamera_recording" type="checkbox" class="w3-check"  <?php if ($use_picamera_recording == 'yes') echo 'checked="checked"'; ?> value="True">
+    <label>Use picamera recording</label>
 </div>
 <div class="w3-row w3-yellow">
-<input name="use_door_sensor" type="hidden" value="False"><input name="use_door_sensor" type="checkbox" class="w3-check" <?php if ($use_door_sensor == 'yes') echo 'checked="checked"'; ?> value="True">
-<label>Use door sensors</label>
+    <input name="use_door_sensor" type="hidden" value="False"><input name="use_door_sensor" type="checkbox" class="w3-check" <?php if ($use_door_sensor == 'yes') echo 'checked="checked"'; ?> value="True">
+    <label>Use door sensors</label>
 </div>
 <div class="w3-row w3-yellow">
-<input name="use_motion_sensor" type="hidden" value="False"><input name="use_motion_sensor" type="checkbox" class="w3-check" <?php if ($use_motion_sensor == 'yes') echo 'checked="checked"'; ?> value="True">
-<label>Use motion sensors</label>
+    <input name="use_motion_sensor" type="hidden" value="False"><input name="use_motion_sensor" type="checkbox" class="w3-check" <?php if ($use_motion_sensor == 'yes') echo 'checked="checked"'; ?> value="True">
+    <label>Use motion sensors</label>
 </div>
 <div class="w3-row w3-yellow">
-<input name="use_CPU_sensor" type="hidden" value="False"><input name="use_CPU_sensor" type="checkbox" class="w3-check" <?php if ($use_CPU_sensor == 'yes') echo 'checked="checked"'; ?> value="True">
-<label>Use CPU sensor</label>
+    <input name="use_CPU_sensor" type="hidden" value="False"><input name="use_CPU_sensor" type="checkbox" class="w3-check" <?php if ($use_CPU_sensor == 'yes') echo 'checked="checked"'; ?> value="True">
+    <label>Use CPU sensor</label>
 </div>
 <div class="w3-row w3-yellow">
-<input name="use_BME280_sensor" type="hidden" value="False"><input name="use_BME280_sensor" type="checkbox" class="w3-check" <?php if ($use_BME280_sensor == 'yes') echo 'checked="checked"'; ?> value="True">
-<label>Use BME280 sensor</label>
+    <input name="use_BME280_sensor" type="hidden" value="False"><input name="use_BME280_sensor" type="checkbox" class="w3-check" <?php if ($use_BME280_sensor == 'yes') echo 'checked="checked"'; ?> value="True">
+    <label>Use BME280 sensor</label>
 </div>
 <div class="w3-row w3-yellow">
-<input name="use_DS18B20_sensor" type="hidden" value="False"><input name="use_DS18B20_sensor" type="checkbox" class="w3-check" <?php if ($use_DS18B20_sensor == 'yes') echo 'checked="checked"'; ?> value="True">
-<label>Use DS18B20 sensor</label>
+    <input name="use_DS18B20_sensor" type="hidden" value="False"><input name="use_DS18B20_sensor" type="checkbox" class="w3-check" <?php if ($use_DS18B20_sensor == 'yes') echo 'checked="checked"'; ?> value="True">
+    <label>Use DS18B20 sensor</label>
 </div>
 <div class="w3-row w3-yellow">
-<input name="use_DHT_sensor" type="hidden" value="False"><input name="use_DHT_sensor" type="checkbox" class="w3-check" <?php if ($use_DHT_sensor) echo 'checked="checked"'; ?> value="True">
-<label>Use DHT sensor</label>
+    <input name="use_DHT_sensor" type="hidden" value="False"><input name="use_DHT_sensor" type="checkbox" class="w3-check" <?php if ($use_DHT_sensor) echo 'checked="checked"'; ?> value="True">
+    <label>Use DHT sensor</label>
 </div>
 <div class="w3-row w3-yellow">
-<input name="use_weather_station" type="hidden" value="False"><input name="use_weather_station" type="checkbox" class="w3-check" <?php if ($use_weather_station) echo 'checked="checked"'; ?> value="True">
-<label>Use weather station</label>
+    <input name="use_weather_station" type="hidden" value="False"><input name="use_weather_station" type="checkbox" class="w3-check" <?php if ($use_weather_station) echo 'checked="checked"'; ?> value="True">
+    <label>Use weather station</label>
 </div>
 <div class="w3-row w3-yellow">
-<input name="use_serial_display" type="hidden" value="False"><input name="use_serial_display" type="checkbox" class="w3-check" <?php if ($use_serial_display == 'yes') echo 'checked="checked"'; ?> value="True">
-<label>Use serial display</label>
+    <input name="use_serial_display" type="hidden" value="False"><input name="use_serial_display" type="checkbox" class="w3-check" <?php if ($use_serial_display == 'yes') echo 'checked="checked"'; ?> value="True">
+    <label>Use serial display</label>
 </div>
 <br>
 </div>
@@ -112,31 +97,31 @@
 	<br>
 	<label for="serial_type">Serial type:</label>
 	<select id="serial_type" name="serial_type" class="w3-select">
-	<option value="i2c"<?php if ($serial_type == 'i2c') echo 'selected="selected"'; ?> >i2c</option>
-	<option value="spi"<?php if ($serial_type == 'spi') echo 'selected="selected"'; ?> >spi</option>
+	    <option value="i2c"<?php if ($serial_type == 'i2c') echo 'selected="selected"'; ?> >i2c</option>
+	    <option value="spi"<?php if ($serial_type == 'spi') echo 'selected="selected"'; ?> >spi</option>
 	</select>
     </div>
     <div class="w3-quarter w3-container w3-yellow">
 	<br>
 	<label for="serial_display_type">Display type:</label>
 	<select id="serial_display_type" name="serial_display_type" class="w3-select">
-	<option value="oled_sh1106"<?php if ($serial_display_type == 'oled_sh1106') echo 'selected="selected"'; ?> >oled_sh1106</option>
-	<option value="lcd_st7735"<?php if ($serial_display_type == 'lcd_st7735') echo 'selected="selected"'; ?> >lcd_st7735</option>
+	    <option value="oled_sh1106"<?php if ($serial_display_type == 'oled_sh1106') echo 'selected="selected"'; ?> >oled_sh1106</option>
+	    <option value="lcd_st7735"<?php if ($serial_display_type == 'lcd_st7735') echo 'selected="selected"'; ?> >lcd_st7735</option>
 	</select>
     </div>
     <div class="w3-quarter w3-container w3-yellow">
 	<br>
 	<label for="serial_display_rotate">Display rotate:</label>
 	<select id="serial_display_rotate" name="serial_display_rotate" class="w3-select">
-	<option value="0"<?php if ($serial_display_rotate == '0') echo 'selected="selected"'; ?> >0</option>
-	<option value="2"<?php if ($serial_display_rotate == '2') echo 'selected="selected"'; ?> >180</option>
+	    <option value="0"<?php if ($serial_display_rotate == '0') echo 'selected="selected"'; ?> >0</option>
+	    <option value="2"<?php if ($serial_display_rotate == '2') echo 'selected="selected"'; ?> >180</option>
 	</select>
     </div>
     <div class="w3-quarter w3-container w3-yellow">
-	<p>
+	<br>
 	<label>Refresh rate:</label>
 	<input name="serial_display_refresh_rate" class="w3-input" type="number" min="1" max="50" value="<?= $serial_display_refresh_rate ?>" >
-	</p>
+	<br>
     </div>
 </div>
 </fieldset>
@@ -259,17 +244,17 @@
 	<br>
 	<label for="id2_BME280_interface">Interface type:</label>
 	<select name="id2_BME280_interface" class="w3-select" id="id2_BME280_interface">
-	<option <?php if ($id2_BME280_interface == 'serial') echo 'selected="selected"'; ?> value = "serial" >serial</option>
+	    <option <?php if ($id2_BME280_interface == 'serial') echo 'selected="selected"'; ?> value = "serial" >serial</option>
 	</select>
     </div>
     <div class="w3-quarter w3-container w3-yellow">
 	<br>
 	<label id="id2_BME280_serial_port">Serial port:
 	<select name="id2_BME280_serial_port" class="w3-select" >
-	<option <?php if ($id2_BME280_serial_port == 'USB1') echo 'selected="selected"'; ?> value = "USB1" >USB1</option>
-	<option <?php if ($id2_BME280_serial_port == 'USB2') echo 'selected="selected"'; ?> value = "USB2" >USB2</option>
-	<option <?php if ($id2_BME280_serial_port == 'USB3') echo 'selected="selected"'; ?> value = "USB3" >USB3</option>
-	<option <?php if ($id2_BME280_serial_port == 'USB4') echo 'selected="selected"'; ?> value = "USB4" >USB4</option>
+	    <option <?php if ($id2_BME280_serial_port == 'USB1') echo 'selected="selected"'; ?> value = "USB1" >USB1</option>
+	    <option <?php if ($id2_BME280_serial_port == 'USB2') echo 'selected="selected"'; ?> value = "USB2" >USB2</option>
+	    <option <?php if ($id2_BME280_serial_port == 'USB3') echo 'selected="selected"'; ?> value = "USB3" >USB3</option>
+	    <option <?php if ($id2_BME280_serial_port == 'USB4') echo 'selected="selected"'; ?> value = "USB4" >USB4</option>
 	</select>
 	</label>
     </div>
@@ -300,41 +285,40 @@
 	<br>
 	<label for="id3_BME280_interface">Interface type:</label>
 	<select name="id3_BME280_interface" class="w3-select" id="id3_BME280_interface">
-	<option <?php if ($id3_BME280_interface == 'serial') echo 'selected="selected"'; ?> value = "serial" >serial</option>
+	    <option <?php if ($id3_BME280_interface == 'serial') echo 'selected="selected"'; ?> value = "serial" >serial</option>
 	</select>
     </div>
     <div class="w3-quarter w3-container w3-yellow">
 	<br>
 	<label id="id3_BME280_serial_port">Serial port:
 	<select name="id3_BME280_serial_port" class="w3-select" >
-	<option <?php if ($id3_BME280_serial_port == 'USB1') echo 'selected="selected"'; ?> value = "USB1" >USB1</option>
-	<option <?php if ($id3_BME280_serial_port == 'USB2') echo 'selected="selected"'; ?> value = "USB2" >USB2</option>
-	<option <?php if ($id3_BME280_serial_port == 'USB3') echo 'selected="selected"'; ?> value = "USB3" >USB3</option>
-	<option <?php if ($id3_BME280_serial_port == 'USB4') echo 'selected="selected"'; ?> value = "USB4" >USB4</option>
+	    <option <?php if ($id3_BME280_serial_port == 'USB1') echo 'selected="selected"'; ?> value = "USB1" >USB1</option>
+	    <option <?php if ($id3_BME280_serial_port == 'USB2') echo 'selected="selected"'; ?> value = "USB2" >USB2</option>
+	    <option <?php if ($id3_BME280_serial_port == 'USB3') echo 'selected="selected"'; ?> value = "USB3" >USB3</option>
+	    <option <?php if ($id3_BME280_serial_port == 'USB4') echo 'selected="selected"'; ?> value = "USB4" >USB4</option>
 	</select>
 	</label>
     </div>
 </div>
 <br>
 </div>
-
 </fieldset>
 
 
 <fieldset>
 <legend>DHT sensor configuration</legend>
 <div class="w3-row w3-yellow">
-    <div class="w3-row-padding w3-green">
-	<p><label>DHT</label></p>
-    </div>
-<div class="w3-row w3-green">
+<div class="w3-row-padding w3-green">
+    <label><p>DHT</p></label>
+</div>
+<div class="w3-row w3-yellow">
     <div class="w3-quarter w3-container w3-yellow">
 	<br>
 	<label for="DHT_type">Type:</label>
 	<select name="DHT_type" class="w3-select" id="DHT_type">
-	    <option value="DHT11" <?php if ($DHT_type == 'DHT11') echo 'selected="selected"'; ?> >DHT11</option>
-	    <option value="DHT22" <?php if ($DHT_type == 'DHT22') echo 'selected="selected"'; ?> >DHT22</option>
-	    <option value="AM2302" <?php if ($DHT_type == 'AM2302') echo 'selected="selected"'; ?> >AM2302</option>
+	    <option <?php if ($DHT_type == 'DHT11') echo 'selected="selected"'; ?> value="DHT11" >DHT11</option>
+	    <option <?php if ($DHT_type == 'DHT22') echo 'selected="selected"'; ?> value="DHT22" >DHT22</option>
+	    <option <?php if ($DHT_type == 'AM2302') echo 'selected="selected"'; ?> value="AM2302" >AM2302</option>
 	</select>
     </div>
     <div class="w3-quarter w3-container w3-yellow">
@@ -358,6 +342,7 @@
 <br>
 </div>
 </fieldset>
+
 
 <fieldset>
 <legend>Weather sensor configuration</legend>
@@ -628,7 +613,6 @@ echo "<p></p>";
     </div>
     </p>
 </div>
-
 <div class="w3-row">
     <div class="w3-half w3-container w3-yellow">
 	<label>RPiMS location:</label>
@@ -641,7 +625,6 @@ echo "<p></p>";
 	<br>
     </div>
 </div>
-
 <div class="w3-row w3-yellow">
     <div class="w3-half w3-container w3-yellow">
 	<label>PSK identity:</label>
@@ -661,7 +644,7 @@ echo "<p></p>";
 
 <fieldset>
 <div>
-<button name="save" type="submit"  value="Save" class="w3-bar">Save</button>
+    <button name="save" type="submit"  value="Save" class="w3-bar">Save</button>
 </div>
 </fieldset>
 
