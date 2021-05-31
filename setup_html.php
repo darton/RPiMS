@@ -7,15 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="w3.css">
 <link rel="stylesheet" href="w3-colors-2020.css">
-<style>
-.gpioinputs {
-  padding:8px;
-  display:block;
-  border:none;
-  border-bottom:1px solid #ccc;
-  width:100%
-}
-</style>
+
 <script src="../jquery.min.js"></script>
 <script src="setup.js" defer></script>
 </head>
@@ -438,7 +430,7 @@ echo "<div class='w3-row w3-margin-bottom w3-2020-green-sheen'>";
 echo "<div class='w3-row w3-margin-bottom'>";
 echo "<div class='w3-third w3-container w3-margin-top'>";
 echo "<label for='GPIO_.$pin'>Type:</label>";
-echo "<select name='$gpio_select_name' class='gpioinputs' id='$gpio_select_id'>";
+echo "<select name='$gpio_select_name' class='gpioinputs w3-select' id='$gpio_select_id'>";
 if ($gpio_input_type_value == 'DoorSensor')
 {
     echo "<option selected value='DoorSensor'>INPUT - Door Sensor</option>";
@@ -515,7 +507,7 @@ echo "<div class='w3-third w3-container w3-margin-top'>";
     echo "<label>Name:<input name='$gpio_input_name_name' class='w3-input'  type='text' value='$gpio_name_value'></label>";
 echo "</div>";
 echo "<div class='w3-third w3-container w3-margin-top'>";
-    echo "<label id='$gpio_input_holdtime_id_ds'>Hold time:<input id='$gpio_input_holdtime_id_ds_ht' name='$gpio_input_holdtime_name' class='w3-select' type='number' min='1' max='60' value='$gpio_hold_time_value'></label>";
+    echo "<label id='$gpio_input_holdtime_id_ds'>Hold time:<input id='$gpio_input_holdtime_id_ds_ht' name='$gpio_input_holdtime_name' class='w3-input' type='number' min='1' max='60' value='$gpio_hold_time_value'></label>";
 echo "</div>";
 echo "</div>";
 echo "</div>";
