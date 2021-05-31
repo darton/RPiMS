@@ -102,7 +102,7 @@
     <label>Use CPU Sensor</label>
     </p>
 </div>
-<div class="w3-row-padding w3-yellow">
+<div class="w3-row w3-yellow">
     <div class="w3 w3-container w3-yellow w3-margin-top w3-margin-bottom">
 	<label for="CPUtemp_read_interval">CPUtemp read interval:</label>
 	<input name="CPUtemp_read_interval" class="w3-input" id="CPUtemp_read_interval" type="number" min="1" max="3600" value="<?= $CPUtemp_read_interval ?>" >
@@ -113,7 +113,6 @@
 
 <fieldset>
 <legend>DS18B20 sensor configuration</legend>
-<div>
 <div class="w3-row-padding w3-green">
     <p>
     <input name="use_DS18B20_sensor" type="hidden" value="False"><input name="use_DS18B20_sensor" type="checkbox" class="w3-check" <?php if ($use_DS18B20_sensor == 'yes') echo 'checked="checked"'; ?> value="True">
@@ -146,7 +145,6 @@
     }
 
 ?>
-</div>
 </div>
 </fieldset>
 
