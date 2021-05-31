@@ -178,7 +178,7 @@
     <div class="w3-quarter w3-container w3-yellow w3-margin-top">
 	<label for="id1_BME280_interface">Interface type:</label>
 	<select name="id1_BME280_interface" class="w3-select" id="id1_BME280_interface">
-	<option <?php if ($id1_BME280_2_interface == 'i2c') echo 'selected="selected"'; ?> value = "i2c" >i2c</option>
+	<option <?php if ($id1_BME280_interface == 'i2c') echo 'selected="selected"'; ?> value = "i2c" >i2c</option>
 	</select>
     </div>
     <div class="w3-quarter w3-container w3-yellow w3-margin-top">
