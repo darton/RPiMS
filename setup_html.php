@@ -429,7 +429,7 @@ $gpio_input_holdtime_id_ds_ht = "GPIO_".$pin."_TYPE_DS_HT";
 $gpio_input_name_name = "GPIO_".$pin."[name]";
 
 echo "<div class='w3-row w3-2020-ultramarine-green'>";
-echo "<div class='w3-container w3-2020-ultramarine-green w3-margin-top w3-margin-bottom'>";
+echo "<div class='w3-container w3-margin-top w3-margin-bottom'>";
 echo "<label>GPIO $pin<input name='$gpio_input_pin' type='hidden' value='$pin'></label>";
 echo "</div>";
 echo "</div>";
