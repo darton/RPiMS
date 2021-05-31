@@ -49,24 +49,28 @@ $('.gpioinputs').change(function(){
             }
         });
 
-$('#BME280_interface').change(function(){
+$('#id1_BME280_interface').change(function(){
             var selectedInterfacetype = $(this).children("option:selected").val();
             if (selectedInterfacetype == 'i2c') {
-                $("#BME280_i2c_address").show();
+                $("#id1_BME280_i2c_address").show();
+                $("#id1_BME280_serial_port").hide();
             }
             else {
-                $("#BME280_i2c_address").hide();
+                $("#id1_BME280_i2c_address").hide();
+                $("#id1_BME280_serial_port").show();
             }
         });
 
 
-$('#BME280_interface').each(function(){
+$('#id1_BME280_interface').each(function(){
             var selectedInterfacetype = $(this).children("option:selected").val();
             if (selectedInterfacetype == 'i2c') {
-                $("#BME280_i2c_address").show();
+                $("#id1_BME280_i2c_address").show();
+                $("#id1_BME280_serial_port").hide();
             }
             else {
-                $("#BME280_i2c_address").hide();
+                $("#id1_BME280_i2c_address").hide();
+                $("#id1_BME280_serial_port").show();
             }
         });
 });

@@ -50,7 +50,7 @@ $id1_BME280_name = $rpims['sensors']['BME280']['id1']['name'];
 $id1_BME280_read_interval = $rpims['sensors']['BME280']['id1']['read_interval'];
 $id1_BME280_interface = $rpims['sensors']['BME280']['id1']['interface'];
 $id1_BME280_i2c_address = $rpims['sensors']['BME280']['id1']['i2c_address'];
-
+$id1_BME280_serial_port = $rpims['sensors']['BME280']['id1']['serial_port'];
 
 $id2_BME280_use = $rpims['sensors']['BME280']['id2']['use'];
 $id2_BME280_name = $rpims['sensors']['BME280']['id2']['name'];

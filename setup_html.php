@@ -178,14 +178,25 @@
     <div class="w3-quarter w3-container w3-yellow w3-margin-top">
 	<label for="id1_BME280_interface">Interface type:</label>
 	<select name="id1_BME280_interface" class="w3-select" id="id1_BME280_interface">
-	<option <?php if ($id1_BME280_interface == 'i2c') echo 'selected="selected"'; ?> value = "i2c" >i2c</option>
+	    <option <?php if ($id1_BME280_interface == 'i2c') echo 'selected="selected"'; ?> value = "i2c" >i2c</option>
+	    <option <?php if ($id1_BME280_interface == 'serial') echo 'selected="selected"'; ?> value = "serial" >serial</option>
 	</select>
     </div>
     <div class="w3-quarter w3-container w3-yellow w3-margin-top">
-	<label id="id1_BME280_i2c_address">Serial port:
+	<label id="id1_BME280_i2c_address">I2C Address:
 	<select name="id1_BME280_i2c_address" class="w3-select" >
-	<option <?php if ($id1_BME280_i2c_address == '118') echo 'selected="selected"'; ?> value = "118" >0x76</option>
-	<option <?php if ($id1_BME280_i2c_address == '119') echo 'selected="selected"'; ?> value = "119" >0x77</option>
+	    <option <?php if ($id1_BME280_i2c_address == '118') echo 'selected="selected"'; ?> value = "118" >0x76</option>
+	    <option <?php if ($id1_BME280_i2c_address == '119') echo 'selected="selected"'; ?> value = "119" >0x77</option>
+	</select>
+	</label>
+    </div>
+    <div class="w3-quarter w3-container w3-yellow">
+	<label id="id1_BME280_serial_port">Serial port:
+	<select name="id1_BME280_serial_port" class="w3-select" >
+	    <option <?php if ($id1_BME280_serial_port == 'USB1') echo 'selected="selected"'; ?> value = "USB1" >USB1</option>
+	    <option <?php if ($id1_BME280_serial_port == 'USB2') echo 'selected="selected"'; ?> value = "USB2" >USB2</option>
+	    <option <?php if ($id1_BME280_serial_port == 'USB3') echo 'selected="selected"'; ?> value = "USB3" >USB3</option>
+	    <option <?php if ($id1_BME280_serial_port == 'USB4') echo 'selected="selected"'; ?> value = "USB4" >USB4</option>
 	</select>
 	</label>
     </div>

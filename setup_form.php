@@ -95,6 +95,7 @@ $BME280["id1"] = array(
     "read_interval" => (int)$_POST['id1_BME280_read_interval'],
     "interface" => $_POST['id1_BME280_interface'],
     "i2c_address" => (int)$_POST['id1_BME280_i2c_address'],
+    "serial_port" => $_POST['id1_BME280_serial_port'],
 );
 
 $BME280["id2"] = array(
