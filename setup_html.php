@@ -52,7 +52,7 @@
     <label>Use serial display</label>
  </div>
 </div>
-<div class="w3-row-padding w3-2020-green-sheen">
+<div class="w3-row w3-2020-green-sheen">
     <div class="w3-quarter w3-container w3-margin-top">
 	<label for="serial_type">Serial type:</label>
 	<select id="serial_type" name="serial_type" class="w3-select">
@@ -91,7 +91,7 @@
  </div>
 </div>
 <div class="w3-row w3-2020-green-sheen">
-<div class="w3-container w3-margin-top w3-margin-bottom">
+<div class="w3-quarter w3-container w3-margin-top w3-margin-bottom">
     <label for="CPUtemp_read_interval">CPUtemp read interval:</label>
     <input name="CPUtemp_read_interval" class="w3-input" id="CPUtemp_read_interval" type="number" min="1" max="3600" value="<?= $CPUtemp_read_interval ?>" >
 </div>
@@ -108,23 +108,23 @@
  </div>
 </div>
 <div class="w3-row w3-2020-green-sheen">
-    <div class="w3-container w3-margin-top">
+    <div class="w3-quarter w3-container w3-margin-top w3-margin-bottom">
 	<label for="DS18B20_read_interval">Read interval:</label>
 	<input name="DS18B20_read_interval" class="w3-input" id="DS18B20_read_interval" type="number" min="1" max="3600" value="<?= $DS18B20_read_interval ?>" >
+	<br>
     </div>
-    <br>
 
 <?php
 
     foreach ($DS18B20_sensors_detected as $key => $value){
 	$DS18B20_name = $DS18B20_sensors[$value];
 	echo "<div class='w3-row w3-margin-top w3-margin-bottom'>";
-	echo "<div class='w3-third w3-container w3-margin-bottom'>";
+	echo "<div class='w3-quarter w3-container w3-margin-bottom'>";
 	echo "<label>Address:</label>";
 	echo "<input class='w3-input' type='text' value='$value'>";
 	echo "</div>";
 	
-	echo "<div class='w3-twothird w3-container w3-margin-bottom'>";
+	echo "<div class='w3-threequarter w3-container w3-margin-bottom'>";
 	echo "<label>name :</label>";
 	echo "<input name='DS18B20[$value][name]' class='w3-input' type='text' value='$DS18B20_name'>";
 	echo "</div>";
@@ -140,7 +140,7 @@
 <fieldset>
 <legend>BME280 sensor configuration</legend>
 
-<div class="w3-row-padding w3-2020-ultramarine-green">
+<div class="w3-row w3-2020-ultramarine-green">
  <div class="w3-container w3-margin-top w3-margin-bottom">
     <input name="use_BME280_sensor" type="hidden" value="False"><input name="use_BME280_sensor" type="checkbox" class="w3-check" <?php if ($use_BME280_sensor == 'yes') echo 'checked="checked"'; ?> value="True">
     <label>Use BME280 sensor</label>
@@ -369,7 +369,7 @@
 	<label>Use Wind direction:</label>
     </div>	
  </div>
-<div class="w3-row-padding w3-margin-bottom">
+<div class="w3-row w3-margin-bottom">
     <div class="w3-quarter w3-container w3-margin-top">
 	<label for="winddirection_acquisition_time">Acquisition time:</label>
 	<input name="winddirection_acquisition_time" class="w3-input" id="winddirection_acquisition_time" type="number" min="1" max="3600" value="<?= $winddirection_acquisition_time ?>" >
@@ -408,7 +408,7 @@
 <fieldset>
 <legend>GPIO configuration</legend>
 <?php
-$gpiopin = array("5", "6","12","13","16","18","19","20","21","26",);
+$gpiopin = array("5","6","12","13","16","18","19","20","21","26",);
 
 foreach ($gpiopin as $pin) {
 
@@ -435,8 +435,8 @@ echo "</div>";
 echo "</div>";
 
 echo "<div class='w3-row w3-margin-bottom w3-2020-green-sheen'>";
-echo "<br>";
-echo "<div class='w3-half w3-container w3-margin-bottom'>";
+echo "<div class='w3-row w3-margin-bottom'>";
+echo "<div class='w3-third w3-container w3-margin-top'>";
 echo "<label for='GPIO_.$pin'>Type:</label>";
 echo "<select name='$gpio_select_name' class='gpioinputs' id='$gpio_select_id'>";
 if ($gpio_input_type_value == 'DoorSensor')
@@ -511,14 +511,14 @@ if ($gpio_input_type_value == 'motion_led')
 }
 echo "</select>";
 echo "</div>";
-echo "<div class='w3-quarter w3-container w3-margin-bottom'>";
-    echo "<label>Name: <input name='$gpio_input_name_name' class='w3-input'  type='text' value='$gpio_name_value'></label>";
+echo "<div class='w3-third w3-container w3-margin-top'>";
+    echo "<label>Name:<input name='$gpio_input_name_name' class='w3-input'  type='text' value='$gpio_name_value'></label>";
 echo "</div>";
-echo "<div class='w3-quarter w3-container w3-margin-bottom'>";
-    echo "<label id='$gpio_input_holdtime_id_ds'>Hold time: <input id='$gpio_input_holdtime_id_ds_ht' name='$gpio_input_holdtime_name' class='w3-input' type='number' min='1' max='60' value='$gpio_hold_time_value'></label>";
+echo "<div class='w3-third w3-container w3-margin-top'>";
+    echo "<label id='$gpio_input_holdtime_id_ds'>Hold time:<input id='$gpio_input_holdtime_id_ds_ht' name='$gpio_input_holdtime_name' class='w3-select' type='number' min='1' max='60' value='$gpio_hold_time_value'></label>";
 echo "</div>";
 echo "</div>";
-
+echo "</div>";
 }
 ?>
 </fieldset>
@@ -527,7 +527,7 @@ echo "</div>";
 <fieldset>
 <legend>Zabbix Agent configuration</legend>
 <div>
-<div class="w3-row-padding w3-2020-ultramarine-green">
+<div class="w3-row w3-2020-ultramarine-green">
  <div class="w3-container  w3-margin-top w3-margin-bottom">
     <input name="use_zabbix_sender" type="hidden" value="False"><input name="use_zabbix_sender" type="checkbox" class="w3-check" <?php if ($use_zabbix_sender == 'yes') echo 'checked="checked"'; ?> value="True">
     <label >Use zabbix sender</label>
