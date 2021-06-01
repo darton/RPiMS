@@ -111,6 +111,12 @@ span.value {
   font-size: 100%;
   color: yellow;
 }
+
+span {
+  text-align: left;
+}
+
+
 .rpimsbg
 {
   background-color: steelblue;

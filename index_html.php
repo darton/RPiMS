@@ -30,10 +30,10 @@
 <?php if ($config["show_sys_info"] == "True") {?>
 <div class="sensors">
     <ul style="list-style-type:none;">
-    <li>Hostname: <span class="value" id="hostname"></span></li>
-    <li>Location: <span class="value" id="location"></span></li>
+    <span><li >Hostname: <span class="value" id="hostname"></span></li></span>
+    <span><li>Location: <span class="value" id="location"></span></li></span>
 <?php if ($config["use_CPU_sensor"] == "True") {?>
-    <li>CPU Temperature: <span class="value" id="CPU_Temperature"> </span><span class="value" id="CPU_Temperature_unit"></span></li>
+    <span><li>CPU Temperature: <span class="value" id="CPU_Temperature"> </span><span class="value" id="CPU_Temperature_unit"></span></li></span>
 <?php }?>
     </ul>
 </div>

@@ -19,7 +19,7 @@ setInterval(function() {
     if (data['settings']['use_cpu_sensor'] == true) {
         var CPUTEMP = data['sensors']['cpu']['temperature'];
 	if (!!CPUTEMP){
-	    $("#CPU_Temperature").html(roundPrecised(CPUTEMP,1));
+	    $("#CPU_Temperature").html(roundPrecised(CPUTEMP,0));
 	    $("#CPU_Temperature_unit").html("°C");
         }
 	else {
