@@ -19,6 +19,32 @@ function generateP(lenght) {
         }
 
 
+function showFunction(id) {
+            var x = document.getElementById(id);
+            if (x.className.indexOf("w3-show") == -1) {
+              x.className = x.className.replace(" w3-hide", "");
+              x.className += " w3-show";
+            } 
+          }
+        
+function hideFunction(id) {
+            var x = document.getElementById(id);
+            if (x.className.indexOf("w3-hide") == -1) {
+                x.className = x.className.replace(" w3-show", "");
+                x.className += " w3-hide";
+            } 
+          }  
+        
+function gpioSH(id) {
+            var x = document.getElementById(id);
+            if (x.className.indexOf("w3-show") == -1) {
+              x.className += " w3-show";
+            } 
+            else {
+              x.className = x.className.replace(" w3-show", "");
+            }
+          }
+
 document.addEventListener("DOMContentLoaded", () => {
 
 var select2 = document.body.querySelector('#id2_BME280_serial_port_select')
@@ -114,4 +140,116 @@ $('#id1_BME280_interface').each(function(){
             }
         });
 */
+
+$("#use_serial_display").change(function() {
+    if(this.checked) {
+        showFunction('serial_display')   
+    }
+    if (!(this.checked)) {
+        hideFunction('serial_display')   
+    }
+});
+
+$("#use_serial_display").each(function() {
+    if(this.checked) {
+        showFunction('serial_display')   
+    }
+    if (!(this.checked)) {
+        hideFunction('serial_display')   
+    }
+});
+
+$("#use_weather_station").change(function() {
+    if(this.checked) {
+        showFunction('weather_station')   
+    }
+    if (!(this.checked)) {
+        hideFunction('weather_station')   
+    }
+});
+
+$("#use_weather_station").each(function() {
+    if(this.checked) {
+        showFunction('weather_station')   
+    }
+    if (!(this.checked)) {
+        hideFunction('weather_station')   
+    }
+});
+
+
+$("#use_DHT_sensor").change(function() {
+    if(this.checked) {
+        showFunction('DHT_sensor')   
+    }
+    if (!(this.checked)) {
+        hideFunction('DHT_sensor')   
+    }
+});
+
+$("#use_DHT_sensor").each(function() {
+    if(this.checked) {
+        showFunction('DHT_sensor')   
+    }
+    if (!(this.checked)) {
+        hideFunction('DHT_sensor')   
+    }
+});
+
+$("#use_BME280_sensor").change(function() {
+    if(this.checked) {
+        showFunction('BME280_sensor')   
+    }
+    if (!(this.checked)) {
+        hideFunction('BME280_sensor')   
+    }
+});
+
+$("#use_BME280_sensor").each(function() {
+    if(this.checked) {
+        showFunction('BME280_sensor')   
+    }
+    if (!(this.checked)) {
+        hideFunction('BME280_sensor')   
+    }
+});
+
+$("#use_DS18B20_sensor").change(function() {
+    if(this.checked) {
+        showFunction('DS18B20_sensor')   
+    }
+    if (!(this.checked)) {
+        hideFunction('DS18B20_sensor')   
+    }
+});
+
+$("#use_DS18B20_sensor").each(function() {
+    if(this.checked) {
+        showFunction('DS18B20_sensor')   
+    }
+    if (!(this.checked)) {
+        hideFunction('DS18B20_sensor')   
+    }
+});
+
+use_CPU_sensor
+$("#use_CPU_sensor").change(function() {
+    if(this.checked) {
+        showFunction('CPU_sensor')   
+    }
+    if (!(this.checked)) {
+        hideFunction('CPU_sensor')   
+    }
+});
+
+$("#use_CPU_sensorr").each(function() {
+    if(this.checked) {
+        showFunction('CPU_sensor')   
+    }
+    if (!(this.checked)) {
+        hideFunction('CPU_sensor')   
+    }
+});
+
+
 });
