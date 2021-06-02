@@ -242,7 +242,7 @@ $("#use_CPU_sensor").change(function() {
     }
 });
 
-$("#use_CPU_sensorr").each(function() {
+$("#use_CPU_sensor").each(function() {
     if(this.checked) {
         showFunction('CPU_sensor')   
     }
