@@ -4,8 +4,8 @@
         <title>RPiMS configuration</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="w3.css">
-        <link rel="stylesheet" href="w3-colors-2020.css">
+        <link rel="stylesheet" href="/css/w3.css">
+        <link rel="stylesheet" href="/css/w3-colors-2020.css">
         <script src="../jquery.min.js"></script>
         <script src="setup.js" defer></script>
     </head>

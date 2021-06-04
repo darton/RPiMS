@@ -23,6 +23,7 @@ wwwdir=/var/www/html
 
 [[ -d $wwwdir ]] || sudo mkdir -p $wwwdir
 [[ -d $wwwdir/conf ]] || sudo mkdir -p $wwwdir/conf
+[[ -d $wwwdir/css ]] || sudo mkdir -p $wwwdir/css
 [[ -d $wwwdir/setup ]] || sudo mkdir -p $wwwdir/setup
 [[ -d $wwwdir/stream ]] || sudo mkdir -p $wwwdir/stream
 [[ -d $installdir ]] || mkdir -p $installdir
@@ -70,6 +71,10 @@ done
 
 for item in .htpasswd rpims.yaml zabbix_rpims_userparameter.conf
    do sudo mv $installdir/$item $wwwdir/conf/
+done
+
+for item in w3.css w3-colors-2020.css
+   do sudo mv $installdir/$item $wwwdir/css/
 done
 
 for item in setup.php setup_html.php setup_form.php setup.js w3.css

@@ -45,6 +45,7 @@ function gpioSH(id) {
             }
           }
 
+
 document.addEventListener("DOMContentLoaded", () => {
 
 var select2 = document.body.querySelector('#id2_BME280_serial_port_select')
@@ -62,12 +63,10 @@ for ( var i=0; i<select3.length; i++ ) {
 	select3.remove(i);
     }
 
-
 var id2_selectedport = $('#id2_BME280_serial_port_select').children("option:selected").val();
 //var id2_selectedid = $('#id2_BME280_serial_port_select').attr('id');
 var id3_selectedport = $('#id3_BME280_serial_port_select').children("option:selected").val();
 //var id3_selectedid = $('#id3_BME280_serial_port_select').attr('id');
-
 
 $('.serial-port').change(function(){
     var selectedport = $(this).children("option:selected").val();
@@ -176,7 +175,6 @@ $("#use_weather_station").each(function() {
         hideFunction('weather_station')   
     }
 });
-
 
 $("#use_DHT_sensor").change(function() {
     if(this.checked) {

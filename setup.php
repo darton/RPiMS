@@ -8,8 +8,7 @@ $DS18B20_sensors_detected = $redis->smembers('DS18B20_sensors');
 $obj = $redis-> get('sensors');
 $sensors = json_decode($obj, true);
 
-foreach ($DS18B20_sensors_detected as $key => $value)
-	{
+foreach ($DS18B20_sensors_detected as $key => $value){
 	    $DS18B20_sensors[$value] = $sensors['ONE_WIRE']['DS18B20']['addresses'][$value]['name'];
 	}
 
