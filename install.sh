@@ -65,7 +65,7 @@ sudo rm $wwwdir/index.nginx-debian.html
 curl -sS https://www.w3schools.com/w3css/4/w3.css -o $installdir/w3.css
 curl -sS https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js -o $installdir/jquery.min.js
 
-for item in index.php index_html.php index.js index.css jquery.min.js rpims.php
+for item in index.php index_html.php index.js jquery.min.js rpims.php
    do sudo mv $installdir/$item $wwwdir/
 done
 
@@ -73,11 +73,11 @@ for item in .htpasswd rpims.yaml zabbix_rpims_userparameter.conf
    do sudo mv $installdir/$item $wwwdir/conf/
 done
 
-for item in w3.css w3-colors-2020.css
+for item in index.css w3.css w3-colors-2020.css
    do sudo mv $installdir/$item $wwwdir/css/
 done
 
-for item in setup.php setup_html.php setup_form.php setup.js w3.css
+for item in setup.php setup_html.php setup_form.php setup.js
    do sudo mv $installdir/$item $wwwdir/setup/
 done
 sudo ln -s $wwwdir/setup/setup.php $wwwdir/setup/index.php
