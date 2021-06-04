@@ -61,6 +61,7 @@ for ( var i=0; i<select2.length; i++ ) {
 var select2si = document.body.querySelector('#id2_BME280_serial_port_select').selectedIndex
 for ( var i=0; i<select3.length; i++ ) {
     if (select3.options[i].value == select2.options[select2si].value) {
+	    select3.remove(i);
     }
 }
 
@@ -69,17 +70,17 @@ var id2_selectedport = $('#id2_BME280_serial_port_select').children("option:sele
 var id3_selectedport = $('#id3_BME280_serial_port_select').children("option:selected").val();
 //var id3_selectedid = $('#id3_BME280_serial_port_select').attr('id');
 
-$('.serial-port').change(function(){
+$('.serial-port').change(function() {
     var selectedport = $(this).children("option:selected").val();
     var selectedid = $(this).attr('id');
-    if (selectedid == 'id2_BME280_serial_port_select'){
+    if (selectedid == 'id2_BME280_serial_port_select') {
         $('#id3_BME280_serial_port_select').find('option[value='+ selectedport +']').remove();
         $('#id3_BME280_serial_port_select').append($("<option></option>").attr("value", id2_selectedport).text(id2_selectedport));
         id2_selectedport = $('#id2_BME280_serial_port_select').children("option:selected").val();
         //console.log(selectedport,selectedid);
     }
 
-    if (selectedid == 'id3_BME280_serial_port_select'){
+    if (selectedid == 'id3_BME280_serial_port_select') {
         $('#id2_BME280_serial_port_select').find('option[value='+ selectedport +']').remove();
         $('#id2_BME280_serial_port_select').append($("<option></option>").attr("value", id3_selectedport).text(id3_selectedport));
         id3_selectedport = $('#id3_BME280_serial_port_select').children("option:selected").val();
@@ -89,7 +90,7 @@ $('.serial-port').change(function(){
 
 /* When the page is loaded it shows the input Hold Time for the GPIO Button input type.
 Hides the field for another GPIO input type value.  */
-$('.gpioinputs').each(function(){
+$('.gpioinputs').each(function() {
             var selectedGPIOtype = $(this).children("option:selected").val();
             var z = $(this).attr('id') + "_" + 'DS'
             if (selectedGPIOtype == 'DoorSensor' || selectedGPIOtype == 'ShutdownButton' ) {
