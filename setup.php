@@ -44,6 +44,11 @@ $serial_display_rotate = $rpims['setup']['serial_display_rotate'];
 
 $CPUtemp_read_interval = $rpims['sensors']['CPU']['temp']['read_interval'];
 
+$picamera_rotation = $rpims['sensors']['PICAMERA']['rotation'];
+$picamera_mode = $rpims['sensors']['PICAMERA']['mode'];
+$picamera_bitrate = $rpims['sensors']['PICAMERA']['bitrate'];
+$picamera_fps = $rpims['sensors']['PICAMERA']['fps'];
+
 $id1_BME280_use = $rpims['sensors']['BME280']['id1']['use'];
 $id1_BME280_name = $rpims['sensors']['BME280']['id1']['name'];
 $id1_BME280_read_interval = $rpims['sensors']['BME280']['id1']['read_interval'];

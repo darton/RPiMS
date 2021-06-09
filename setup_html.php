@@ -20,8 +20,6 @@
                             <label>Verbose mode</label></p>
                             <p><input name="show_sys_info" type="hidden" value="False"><input name="show_sys_info" type="checkbox" class="w3-check" <?php if ($show_sys_info == 'yes') echo 'checked="checked"'; ?> value="True">
                             <label>Show system info</label></p>
-                            <p><input name="use_picamera" type="hidden" value="False"><input name="use_picamera" type="checkbox" class="w3-check" <?php if ($use_picamera == 'yes') echo 'checked="checked"'; ?> value="True">
-                            <label>Use picamera</label></p>
                             <p><input name="use_picamera_recording" type="hidden" value="False"><input name="use_picamera_recording" type="checkbox" class="w3-check"  <?php if ($use_picamera_recording == 'yes') echo 'checked="checked"'; ?> value="True">
                             <label>Use picamera recording</label></p>
                             <p><input name="use_door_sensor" type="hidden" value="False"><input name="use_door_sensor" type="checkbox" class="w3-check" <?php if ($use_door_sensor == 'yes') echo 'checked="checked"'; ?> value="True">
@@ -64,6 +62,42 @@
                         <div class="w3-quarter w3-container w3-margin-top w3-margin-bottom">
                             <label >Refresh rate:</label>
                             <input name="serial_display_refresh_rate" class="w3-input" type="number" min="1" max="50" value="<?= $serial_display_refresh_rate ?>" >
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <legend>Pi Camera configuration</legend>
+                    <div class="w3-row w3-2020-ultramarine-green">
+                        <div class="w3-container w3-margin-top w3-margin-bottom">
+                            <input name="use_picamera" type="hidden" value="False"><input name="use_picamera" type="checkbox" class="w3-check" id="use_picamera"<?php if ($use_picamera == 'yes') echo 'checked="checked"'; ?> value="True">
+                            <label>Use Picamera</label>
+                        </div>
+                    </div>
+                    <div id="picamera" class="w3-row w3-2020-green-sheen">
+                        <div class="w3-quarter w3-container w3-margin-top">
+                            <label for="picamera_rotation">Rotation:</label>
+                            <select id="picamera_rotation" name="picamera_rotation" class="w3-select">
+                                <option value="0"<?php if ($picamera_rotation == '0') echo 'selected="selected"'; ?> >0</option>
+                                <option value="90"<?php if ($picamera_rotation == '90') echo 'selected="selected"'; ?> >90</option>
+                                <option value="180"<?php if ($picamera_rotation == '180') echo 'selected="selected"'; ?> >180</option>
+                                <option value="270"<?php if ($picamera_rotation == '270') echo 'selected="selected"'; ?> >270</option>
+                            </select>
+                        </div>
+                        <div class="w3-quarter w3-container w3-margin-top">
+                            <label for="picamera_mode">Mode:</label>
+                            <select id="picamera_mode" name="picamera_mode" class="w3-select">
+                                <option value="1"<?php if ($picamera_mode == '1') echo 'selected="selected"'; ?> >1920x1080</option>
+                                <option value="6"<?php if ($picamera_mode == '6') echo 'selected="selected"'; ?> >1280x720</option>
+                                <option value="7"<?php if ($picamera_mode == '7') echo 'selected="selected"'; ?> >640x480</option>
+                            </select>
+                        </div>
+                        <div class="w3-quarter w3-container w3-margin-top w3-margin-bottom">
+                            <label >FPS:</label>
+                            <input name="picamera_fps" class="w3-input" type="number" min="1" max="60" value="<?= $picamera_fps ?>" >
+                        </div>
+                        <div class="w3-quarter w3-container w3-margin-top w3-margin-bottom">
+                            <label >BITRATE:</label>
+                            <input name="picamera_bitrate" class="w3-input" type="number" min="0" max="25000000" value="<?= $picamera_bitrate ?>" >
                         </div>
                     </div>
                 </fieldset>

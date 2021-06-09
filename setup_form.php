@@ -88,6 +88,13 @@ $setup = array(
     "serial_display_refresh_rate" => (int)$_POST['serial_display_refresh_rate'],
 );
 
+$PICAMERA = array(
+    "bitrate" => (int)$_POST['picamera_bitrate'],
+    "rotation" => (int)$_POST['picamera_rotation'],
+    "mode" => (int)$_POST['picamera_mode'],
+    "fps" => (int)$_POST['picamera_fps'],
+);
+
 $BME280["id1"] = array(
     "id" => 'id1',
     "name" => $_POST['id1_BME280_name'],
@@ -155,6 +162,7 @@ $WEATHER["RAINFALL"] = array(
 
 $sensors = array(
     "CPU" => $CPU,
+    "PICAMERA" => $PICAMERA,
     "BME280" => $BME280,
     "ONE_WIRE" => $ONE_WIRE,
     "DHT" => $DHT,
@@ -186,6 +194,31 @@ $rpims = array(
 
 yaml_emit_file ("/var/www/html/conf/rpims.yaml", $rpims, YAML_UTF8_ENCODING, YAML_ANY_BREAK);
 exec('sudo /bin/systemctl restart rpims.service');
+
+$streamconfile = fopen("/var/www/html/conf/rpims-stream.conf", "w") or die("Unable to open file!");
+$picamera_rotation="ROT=".(int)$_POST['picamera_rotation']."\n";
+$picamera_fps="FPS=".(int)$_POST['picamera_fps']."\n";
+$picamera_bitrate="BITRATE=".(int)$_POST['picamera_bitrate']."\n";
+if ($_POST['picamera_mode'] == 7) {
+    $picamera_dispx="DISPX=640\n";
+    $picamera_dispy="DISPY=480\n";
+}
+if ($_POST['picamera_mode'] == 6) {
+    $picamera_dispx="DISPX=1280\n";
+    $picamera_dispy="DISPY=720\n";
+}
+if ($_POST['picamera_mode'] == 1) {
+    $picamera_dispx="DISPX=1920\n";
+    $picamera_dispy="DISPY=1080\n";
+}
+
+fwrite($streamconfile, $picamera_rotation);
+fwrite($streamconfile, $picamera_bitrate);
+fwrite($streamconfile, $picamera_fps);
+fwrite($streamconfile, $picamera_dispx);
+fwrite($streamconfile, $picamera_dispy);
+
+exec('sudo /bin/systemctl restart rpims-stream.service');
 
 $zabconfile = fopen("/var/www/html/conf/zabbix_agentd.conf", "w") or die("Unable to open file!");
 $zabpskfile = fopen("/var/www/html/conf/zabbix_agentd.psk", "w") or die("Unable to open file!");

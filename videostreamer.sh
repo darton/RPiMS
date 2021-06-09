@@ -13,6 +13,8 @@
 # https://cdn.jsdelivr.net/npm/hls.js@latest/dist/hls.min.js.map
 # https://cdn.jsdelivr.net/npm/hls.js@latest/dist/hls.min.js
 
+source /var/www/html/conf/rpims-stream.conf
+
 function stream_on {
     ffmpeg_pid=$(pidof ffmpeg)
     raspivid_pid=$(pidof raspivid)
@@ -47,7 +49,8 @@ function stream_on {
 
             #/usr/bin/raspivid -n -o - -t 0 -rot 0 -w 640 -h 480 -fps 25 -b 6000000 | /usr/bin/ffmpeg -y -hide_banner -use_wallclock_as_timestamps 1 -f h264 -i - -c:v copy -f hls -hls_time 6 -hls_list_size 30 -hls_flags delete_segments /dev/shm/streaming/live.m3u8
 
-            /usr/bin/raspivid -n -o - -t 0 -rot 0 -w 640 -h 480 -fps 25 -b 3000000| /usr/bin/ffmpeg -y -hide_banner -use_wallclock_as_timestamps 1 -f h264 -i - -c:v copy -f hls -hls_time 2 -hls_list_size 5 -hls_flags delete_segments /dev/shm/streaming/live.m3u8
+            /usr/bin/raspivid -n -o - -t 0 -rot $ROT -fps $FPS -w $DISPX -h $DISPY -b $BITRATE| \
+	    /usr/bin/ffmpeg -y -hide_banner -use_wallclock_as_timestamps 1 -f h264 -i - -c:v copy -f hls -hls_time 2 -hls_list_size 5 -hls_flags delete_segments /dev/shm/streaming/live.m3u8
 
     else
 	    echo "ffmpeg or raspivid is already running !"
@@ -64,6 +67,8 @@ function stream_off {
 case "$1" in
 
     'start')
+    pkill ffmpeg
+    pkill raspivid
     stream_on
     ;;
     'stop')
