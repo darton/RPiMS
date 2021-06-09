@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>RPiMS</title>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="/css/index.css">
@@ -9,6 +8,7 @@
     <link rel="stylesheet" href="/css/w3-colors-2020.css">
     <script src="jquery.min.js"></script>
     <script src="index.js" defer></script>
+    <title>RPiMS</title>
   </head>
   <body>
     <div class="rpimsbg">
