@@ -96,7 +96,7 @@
                             <input name="picamera_fps" class="w3-input" type="number" min="1" max="60" value="<?= $picamera_fps ?>" >
                         </div>
                         <div class="w3-quarter w3-container w3-margin-top w3-margin-bottom">
-                            <label >BITRATE:</label>
+                            <label >Bitrate:</label>
                             <input name="picamera_bitrate" class="w3-input" type="number" min="0" max="25000000" value="<?= $picamera_bitrate ?>" >
                         </div>
                     </div>
