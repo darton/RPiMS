@@ -2,6 +2,9 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
+    <meta name="description" content="RPiMS - Raspberry Pi Monitoring System">
+    <meta name="keywords" content="Raspberry Pi, Monitoring System, Sensors">
+    <meta name="author" content="Dariusz Kowalczyk">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="/css/index.css">
     <link rel="stylesheet" href="/css/w3.css">
@@ -12,10 +15,7 @@
   </head>
   <body>
     <div class="rpimsbg">
-
-      <div class="header">
-      </div>
-
+      <div class="header"></div>
       <div class="rpims">
         <div class="dropdown">
           <button onclick="myFunction()" class="dropbtn">Config</button>
