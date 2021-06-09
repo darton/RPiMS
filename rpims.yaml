@@ -24,6 +24,11 @@ sensors:
   CPU:
     temp:
       read_interval: 1
+  PICAMERA:
+    bitrate: 3000000
+    rotation: 0
+    mode: 6
+    fps: 25
   BME280:
     id1:
       id: id1
