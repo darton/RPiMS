@@ -24,22 +24,22 @@ function showFunction(id) {
             if (x.className.indexOf("w3-show") == -1) {
                 x.className = x.className.replace(" w3-hide", "");
                 x.className += " w3-show";
-            } 
+            }
           }
-        
+
 function hideFunction(id) {
             var x = document.getElementById(id);
             if (x.className.indexOf("w3-hide") == -1) {
                 x.className = x.className.replace(" w3-show", "");
                 x.className += " w3-hide";
-            } 
-          }  
-        
+            }
+          }
+
 function gpioSH(id) {
             var x = document.getElementById(id);
             if (x.className.indexOf("w3-show") == -1) {
                 x.className += " w3-show";
-            } 
+            }
             else {
                 x.className = x.className.replace(" w3-show", "");
             }
@@ -229,6 +229,60 @@ $("#use_BME280_sensor").each(function() {
     }
     if (!(this.checked)) {
         hideFunction('BME280_sensor')
+    }
+});
+
+$("#id1_BME280_use").change(function() {
+    if(this.checked) {
+        showFunction('id1_BME280')
+    }
+    if (!(this.checked)) {
+        hideFunction('id1_BME280')
+    }
+});
+
+$("#id1_BME280_use").each(function() {
+    if(this.checked) {
+        showFunction('id1_BME280')
+    }
+    if (!(this.checked)) {
+        hideFunction('id1_BME280')
+    }
+});
+
+$("#id2_BME280_use").change(function() {
+    if(this.checked) {
+        showFunction('id2_BME280')
+    }
+    if (!(this.checked)) {
+        hideFunction('id2_BME280')
+    }
+});
+
+$("#id2_BME280_use").each(function() {
+    if(this.checked) {
+        showFunction('id2_BME280')
+    }
+    if (!(this.checked)) {
+        hideFunction('id2_BME280')
+    }
+});
+
+$("#id3_BME280_use").change(function() {
+    if(this.checked) {
+        showFunction('id3_BME280')
+    }
+    if (!(this.checked)) {
+        hideFunction('id3_BME280')
+    }
+});
+
+$("#id3_BME280_use").each(function() {
+    if(this.checked) {
+        showFunction('id3_BME280')
+    }
+    if (!(this.checked)) {
+        hideFunction('id3_BME280')
     }
 });
 

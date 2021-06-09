@@ -158,11 +158,11 @@
                     <div id="BME280_sensor" class="w3-row">
                         <div class="w3-row w3-2020-ultramarine-green w3-margin-top">
                             <div class="w3-container w3-margin-top w3-margin-bottom">
-                                <input name="id1_BME280_use" type="hidden" value="no"><input name="id1_BME280_use" type="checkbox" class="w3-check" <?php if ($id1_BME280_use) echo 'checked="checked"'; ?> value="True">
+                                <input name="id1_BME280_use" type="hidden" value="no"><input name="id1_BME280_use" type="checkbox" class="w3-check" id="id1_BME280_use" <?php if ($id1_BME280_use) echo 'checked="checked"'; ?> value="True">
                                 <label>Use #1 BME280:</label>
                             </div>
                         </div>
-                        <div class="w3-row w3-2020-green-sheen">
+                        <div id="id1_BME280" class="w3-row w3-2020-green-sheen">
                             <div class="w3-row w3-margin-bottom">
                                 <div class="w3-quarter w3-container w3-margin-top">
                                     <label>name:</label>
@@ -191,11 +191,11 @@
 
                         <div class="w3-row w3-2020-ultramarine-green w3-margin-top">
                             <div class="w3-container w3-margin-top w3-margin-bottom">
-                                <input name="id2_BME280_use" type="hidden" value="no"><input name="id2_BME280_use" type="checkbox" class="w3-check" <?php if ($id2_BME280_use) echo 'checked="checked"'; ?> value="True">
+                                <input name="id2_BME280_use" type="hidden" value="no"><input name="id2_BME280_use" type="checkbox" class="w3-check" id="id2_BME280_use" <?php if ($id2_BME280_use) echo 'checked="checked"'; ?> value="True">
                                 <label>Use #2 BME280:</label>
                             </div>
                         </div>
-                        <div class="w3-row w3-2020-green-sheen">
+                        <div id="id2_BME280" class="w3-row w3-2020-green-sheen">
                             <div class="w3-row w3-margin-bottom">
                                 <div class="w3-quarter w3-container w3-margin-top">
                                     <label>name:</label>
@@ -226,11 +226,11 @@
 
                         <div class="w3-row w3-2020-ultramarine-green w3-margin-top">
                             <div class="w3-container w3-margin-top w3-margin-bottom">
-                                <input name="id3_BME280_use" type="hidden" value="no"><input name="id3_BME280_use" type="checkbox" class="w3-check" <?php if ($id3_BME280_use) echo 'checked="checked"'; ?> value="True">
+                                <input name="id3_BME280_use" type="hidden" value="no"><input name="id3_BME280_use" type="checkbox" class="w3-check" id="id3_BME280_use" <?php if ($id3_BME280_use) echo 'checked="checked"'; ?> value="True">
                                 <label>Use #3 BME280:</label>
                             </div>
                         </div>
-                        <div class="w3-row w3-2020-green-sheen">
+                        <div id="id3_BME280" class="w3-row w3-2020-green-sheen">
                             <div class="w3-row w3-margin-bottom">
                                 <div class="w3-quarter w3-container w3-margin-top">
                                     <label>name:</label>
