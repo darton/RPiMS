@@ -37,7 +37,7 @@ server {
             auth_basic_user_file /var/www/html/conf/.htpasswd;
         }
         location ~* \.(js|css|png|jpg|jpeg|gif|svg|ico)$ {
-            expires 30d;
+            #expires 30d;
             add_header Cache-Control "public,,max-age=31536000,immutable";
 }
 
