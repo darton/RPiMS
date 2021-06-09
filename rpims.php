@@ -108,6 +108,6 @@ if ($config["use_motion_sensor"] == true){
 }
 
 header("content-type: application/json");
-header("Cache-Control: no-cache, must-revalidate");
+header("Cache-Control: no-cache");
 echo json_encode($rpims_api);
 ?>
