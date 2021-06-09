@@ -9,6 +9,7 @@ server {
 
         server_name _;
         server_tokens off;
+        charset UTF-8;
 
         location / {
                 # First attempt to serve request as file, then
