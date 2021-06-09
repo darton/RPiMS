@@ -1,5 +1,4 @@
 <?php
-
 $redis = new Redis();
 $redis->connect('127.0.0.1', 6379);
 
@@ -108,6 +107,7 @@ if ($config["use_motion_sensor"] == true){
     }
 }
 
-Header("Content-type: application/json");
+header("content-type: application/json");
+header("Cache-Control: no-cache, must-revalidate");
 echo json_encode($rpims_api);
 ?>
