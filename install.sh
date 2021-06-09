@@ -69,7 +69,7 @@ for item in index.php index_html.php index.js jquery.min.js rpims.php
    do sudo mv $installdir/$item $wwwdir/
 done
 
-for item in .htpasswd rpims.yaml zabbix_rpims_userparameter.conf
+for item in .htpasswd rpims.yaml zabbix_rpims_userparameter.conf rpims-stream.conf
    do sudo mv $installdir/$item $wwwdir/conf/
 done
 
