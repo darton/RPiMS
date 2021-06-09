@@ -1,5 +1,15 @@
 # Default server configuration
 #
+
+
+map $sent_http_content_type $expires {
+    default                    off;
+    text/html                  epoch;
+    text/css                   max;
+    application/javascript     max;
+    ~image/                    max;
+}
+
 server {
         listen 80 default_server;
         listen [::]:80 default_server;
@@ -9,22 +19,25 @@ server {
 
         server_name _;
         server_tokens off;
+
         charset UTF-8;
         charset_types *;
         source_charset utf-8;
         override_charset on;
+
+        expires $expires;
 
         location / {
                 # First attempt to serve request as file, then
                 # as directory, then fall back to displaying a 404.
                 try_files $uri $uri/ =404;
         add_header X-Content-Type-Options nosniff;
-        add_header Last-Modified $date_gmt;
+        #add_header Last-Modified $date_gmt;
         #add_header Cache-Control 'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0';
         #add_header Cache-Control 'no-cache, proxy-revalidate, max-age=0';
-        if_modified_since off;
-        expires off;
-        etag off;
+        #if_modified_since off;
+        #expires off;
+        #etag off;
         }
         location ~ \.php$ {
                 include snippets/fastcgi-php.conf;
@@ -39,7 +52,7 @@ server {
         }
         location ~* \.(js|css|png|jpg|jpeg|gif|svg|ico)$ {
             #expires 30d;
-            add_header Cache-Control "public,,max-age=31536000,immutable";
+            add_header Cache-Control "public,max-age=31536000,immutable";
             add_header X-Content-Type-Options nosniff;
         }
 
