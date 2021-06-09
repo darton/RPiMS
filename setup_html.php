@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>RPiMS configuration</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="/css/w3.css">
         <link rel="stylesheet" href="/css/w3-colors-2020.css">
         <script src="../jquery.min.js"></script>
         <script src="setup.js" defer></script>
+        <title>RPiMS configuration</title>
     </head>
     <body>
         <div class="w3-2020-brilliant-white">
