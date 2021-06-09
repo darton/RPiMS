@@ -10,6 +10,9 @@ server {
         server_name _;
         server_tokens off;
         charset UTF-8;
+        charset_types *;
+        source_charset utf-8;
+        override_charset on;
 
         location / {
                 # First attempt to serve request as file, then
