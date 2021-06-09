@@ -144,110 +144,128 @@ $('#id1_BME280_interface').each(function(){
 
 $("#use_serial_display").change(function() {
     if(this.checked) {
-        showFunction('serial_display')   
+        showFunction('serial_display')
     }
     if (!(this.checked)) {
-        hideFunction('serial_display')   
+        hideFunction('serial_display')
     }
 });
 
 $("#use_serial_display").each(function() {
     if(this.checked) {
-        showFunction('serial_display')   
+        showFunction('serial_display') 
     }
     if (!(this.checked)) {
-        hideFunction('serial_display')   
+        hideFunction('serial_display')
+    }
+});
+
+$("#use_picamera").change(function() {
+    if(this.checked) {
+        showFunction('picamera')
+    }
+    if (!(this.checked)) {
+        hideFunction('picamera')
+    }
+});
+
+$("#use_picamera").each(function() {
+    if(this.checked) {
+        showFunction('picamera')
+    }
+    if (!(this.checked)) {
+        hideFunction('picamera')
     }
 });
 
 $("#use_weather_station").change(function() {
     if(this.checked) {
-        showFunction('weather_station')   
+        showFunction('weather_station')
     }
     if (!(this.checked)) {
-        hideFunction('weather_station')   
+        hideFunction('weather_station')
     }
 });
 
 $("#use_weather_station").each(function() {
     if(this.checked) {
-        showFunction('weather_station')   
+        showFunction('weather_station')
     }
     if (!(this.checked)) {
-        hideFunction('weather_station')   
+        hideFunction('weather_station')
     }
 });
 
 $("#use_DHT_sensor").change(function() {
     if(this.checked) {
-        showFunction('DHT_sensor')   
+        showFunction('DHT_sensor')
     }
     if (!(this.checked)) {
-        hideFunction('DHT_sensor')   
+        hideFunction('DHT_sensor')
     }
 });
 
 $("#use_DHT_sensor").each(function() {
     if(this.checked) {
-        showFunction('DHT_sensor')   
+        showFunction('DHT_sensor')
     }
     if (!(this.checked)) {
-        hideFunction('DHT_sensor')   
+        hideFunction('DHT_sensor')
     }
 });
 
 $("#use_BME280_sensor").change(function() {
     if(this.checked) {
-        showFunction('BME280_sensor')   
+        showFunction('BME280_sensor')
     }
     if (!(this.checked)) {
-        hideFunction('BME280_sensor')   
+        hideFunction('BME280_sensor')
     }
 });
 
 $("#use_BME280_sensor").each(function() {
     if(this.checked) {
-        showFunction('BME280_sensor')   
+        showFunction('BME280_sensor')
     }
     if (!(this.checked)) {
-        hideFunction('BME280_sensor')   
+        hideFunction('BME280_sensor')
     }
 });
 
 $("#use_DS18B20_sensor").change(function() {
     if(this.checked) {
-        showFunction('DS18B20_sensor')   
+        showFunction('DS18B20_sensor')
     }
     if (!(this.checked)) {
-        hideFunction('DS18B20_sensor')   
+        hideFunction('DS18B20_sensor')
     }
 });
 
 $("#use_DS18B20_sensor").each(function() {
     if(this.checked) {
-        showFunction('DS18B20_sensor')   
+        showFunction('DS18B20_sensor')
     }
     if (!(this.checked)) {
-        hideFunction('DS18B20_sensor')   
+        hideFunction('DS18B20_sensor')
     }
 });
 
 use_CPU_sensor
 $("#use_CPU_sensor").change(function() {
     if(this.checked) {
-        showFunction('CPU_sensor')   
+        showFunction('CPU_sensor')
     }
     if (!(this.checked)) {
-        hideFunction('CPU_sensor')   
+        hideFunction('CPU_sensor')
     }
 });
 
 $("#use_CPU_sensor").each(function() {
     if(this.checked) {
-        showFunction('CPU_sensor')   
+        showFunction('CPU_sensor')
     }
     if (!(this.checked)) {
-        hideFunction('CPU_sensor')   
+        hideFunction('CPU_sensor')
     }
 });
 
