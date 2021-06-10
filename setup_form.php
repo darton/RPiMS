@@ -245,8 +245,10 @@ fwrite($zabconfile, $Timeout);
 fwrite($zabpskfile, $TLSPSK);
 fclose($zabconfile);
 fclose($zabpskfile);
-exec('sudo /bin/systemctl restart zabbix-agent.service');
 
+if (filter_var($_POST['use_zabbix_sender'], FILTER_VALIDATE_BOOLEAN) == true ) {
+    exec('sudo /bin/systemctl restart zabbix-agent.service');
+}
 
 sleep(2);
 header("Location: /");
