@@ -21,17 +21,17 @@ function stream_on {
 
     if ([ ! -n "$ffmpeg_pid" ] && [ ! -n "$raspivid_pid" ]  ) then
 
-	[[ -d /dev/shm/streaming ]] || mkdir -p /dev/shm/streaming
+        [[ -d /dev/shm/streaming ]] || mkdir -p /dev/shm/streaming
 
-	if [ ! -e /var/www/html/streaming ]; then
-	    ln -s  /dev/shm/streaming /var/www/html/streaming
-	fi
-	if [ ! -e /var/www/html/streaming/stream.html ]; then
-	    cp /var/www/html/stream/stream.html /var/www/html/streaming/
-	fi
-	if [ ! -e /var/www/html/streaming/hls.min.js ]; then
-	    cp /var/www/html/stream/hls.min.js /var/www/html/streaming/
-	fi
+        if [ ! -e /var/www/html/streaming ]; then
+            ln -s  /dev/shm/streaming /var/www/html/streaming
+        fi
+        if [ ! -e /var/www/html/streaming/stream.html ]; then
+            cp /var/www/html/stream/stream.html /var/www/html/streaming/
+        fi
+        if [ ! -e /var/www/html/streaming/hls.min.js ]; then
+            cp /var/www/html/stream/hls.min.js /var/www/html/streaming/
+        fi
         if [ ! -e /var/www/html/streaming/hls.min.js.map ]; then
             cp /var/www/html/stream/hls.min.js.map /var/www/html/streaming/
         fi
@@ -49,11 +49,25 @@ function stream_on {
 
             #/usr/bin/raspivid -n -o - -t 0 -rot 0 -w 640 -h 480 -fps 25 -b 6000000 | /usr/bin/ffmpeg -y -hide_banner -use_wallclock_as_timestamps 1 -f h264 -i - -c:v copy -f hls -hls_time 6 -hls_list_size 30 -hls_flags delete_segments /dev/shm/streaming/live.m3u8
 
-            /usr/bin/raspivid -n -o - -t 0 -rot $ROT -fps $FPS -w $DISPX -h $DISPY -b $BITRATE| \
-	    /usr/bin/ffmpeg -y -hide_banner -use_wallclock_as_timestamps 1 -f h264 -i - -c:v copy -f hls -hls_time 2 -hls_list_size 5 -hls_flags delete_segments /dev/shm/streaming/live.m3u8
-
+            /usr/bin/raspivid -n \
+			      -o - \
+			      -t 0 \
+			      -rot $ROT \
+			      -fps $FPS \
+			      -w $DISPX \
+			      -h $DISPY \
+			      -b $BITRATE| \
+            /usr/bin/ffmpeg -i - \
+                            -y \
+                            -hide_banner \
+                            -use_wallclock_as_timestamps 1 \
+                            -c:v copy \
+                            -f hls \
+                            -hls_time 2 \
+                            -hls_list_size 5 \
+                            -hls_flags delete_segments /dev/shm/streaming/live.m3u8
     else
-	    echo "ffmpeg or raspivid is already running !"
+            echo "ffmpeg or raspivid is already running !"
     fi
 
 }
