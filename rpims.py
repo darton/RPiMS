@@ -648,7 +648,7 @@ def rainfall(**kwargs):
         while time() - start_time <= rainfall_acquisition_time:
             reset_bucket_counter()
             sleep(rainfall_acquisition_time)
-            # rainfall = calculate_rainfall()
+            rainfall = calculate_rainfall()
             if len(rainfalls) == (rainfall_agregation_time/rainfall_acquisition_time):
                 rainfalls.clear()
             rainfalls.append(calculate_rainfall())
