@@ -693,7 +693,7 @@ def wind_speed(**kwargs):
         while time() - start_time <= wind_speed_acquisition_time:
             reset_anemometer_pulse_counter()
             sleep(wind_speed_acquisition_time)
-            # wind_speed = calculate_speed(wind_speed_acquisition_time)
+            wind_speed = calculate_speed(wind_speed_acquisition_time)
             if len(wind_speeds) == (wind_speed_agregation_time/wind_speed_acquisition_time):
                 del wind_speeds[0]
             wind_speeds.append(calculate_speed(wind_speed_acquisition_time))
