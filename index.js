@@ -144,7 +144,7 @@ if (data['settings']['use_dht_sensor'] == true) {
     var DHTHumidity = Math.round(data['sensors']['dht']['humidity']);
 }
 
-if (data['settings']['use_ds18b20_sensor'] == true) {
+if (data['settings']['use_ds18b20_sensor'] == true & typeof(data['sensors']['one_wire']) !== 'undefined' ) {
     var DS18B20 = {};
     for (var DS18B20_id in data['sensors']['one_wire']['ds18b20']) {
 		//console.log(DS18B20_id)
@@ -171,7 +171,7 @@ if (data['settings']['use_dht_sensor'] == true) {
     setGaugeValue(g12, DHTHumidity/100, 100, "%");
 }
 
-if (data['settings']['use_ds18b20_sensor'] == true) {
+if (data['settings']['use_ds18b20_sensor'] == true  & typeof(data['sensors']['one_wire']) !== 'undefined') {
     var DS18B20_prefix = 'DS18B20_';
     for (var DS18B20_id in data['sensors']['one_wire']['ds18b20']) {
 		var sensor_name = DS18B20_prefix + DS18B20_id;
