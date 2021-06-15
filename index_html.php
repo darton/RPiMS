@@ -36,9 +36,9 @@
                 <?php }?>
               </ul>
         </div>
-        <?php }?>
+      <?php }?>
 
-        <?php if ($config["use_picamera"] == "True") {?>
+      <?php if ($config["use_picamera"] == "True") {?>
         <div class="sensors">
           <div>
             <a class="sensors" href="/streaming/stream.html">Camera Stream Url</a>
