@@ -49,6 +49,12 @@ password: admin
 http://rpiipaddress/setup
 ```
 
+to change password type from CLI
+
+```
+ htpasswd -b  /var/www/html/conf/.htpasswd admin newpassword
+```
+
 Start/Stop RPIMS
 ```
 sudo systemctl start rpims.service
