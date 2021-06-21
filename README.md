@@ -52,7 +52,7 @@ http://rpiipaddress/setup
 to change password type from CLI
 
 ```
- htpasswd -b  /var/www/html/conf/.htpasswd admin newpassword
+htpasswd -b  /var/www/html/conf/.htpasswd admin newpassword
 ```
 
 Start/Stop RPIMS
