@@ -100,6 +100,12 @@ sudo systemctl enable nginx
 
 sudo apt-get -y install zabbix-agent
 echo 'zabbix ALL=(ALL) NOPASSWD: /home/pi/scripts/RPiMS/redis-get-data.py' | sudo EDITOR='tee -a' visudo
+echo "Generating a unique TLSPSKIdentity"
+TLSPSKIdentity=$(openssl rand -hex 8)
+sed "s/ TLSPSKIdentity: .*/\ \TLSPSKIdentity: ${TLSPSKIdentity}/g" $wwwdir/conf/rpims.yaml
+echo "Generating a unique TLSPSK"
+TLSPSK=$(openssl rand -hex 32)
+sed "s/ TLSPSK: .*/\ \TLSPSK: ${TLSPSK}/g" $wwwdir/conf/rpims.yaml
 #cat $installdir/zabbix-rpims.conf | sed s/TLSPSKIdentity=/TLSPSKIdentity=$(openssl rand -hex 8)/ |sudo tee /etc/zabbix/zabbix_agentd.conf.d/zabbix-rpims.conf
 #rm $installdir/zabbix-rpims.conf
 #openssl rand -hex 32 | sudo tee /etc/zabbix/zabbix_agentd.conf.d/zabbix_agentd.psk
