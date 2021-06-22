@@ -1,5 +1,9 @@
 #!/bin/bash
 
+repourl=https://raw.githubusercontent.com/darton/RPiMS/RPiMSv2
+installdir=/home/pi/scripts/RPiMS
+wwwdir=/var/www/html
+
 echo "Do you want to install the RPiMS software?"
 read -r -p "$1 [y/N] " response < /dev/tty
 if [[ $response =~ ^(yes|y|Y)$ ]]; then
@@ -16,9 +20,6 @@ sudo raspi-config nonint do_camera 0
 #raspi-config nonint do_serial 1
 sudo raspi-config nonint do_change_timezone Europe/Warsaw
 
-installdir=/home/pi/scripts/RPiMS
-wwwdir=/var/www/html
-
 [[ -d $wwwdir ]] || sudo mkdir -p $wwwdir
 [[ -d $wwwdir/conf ]] || sudo mkdir -p $wwwdir/conf
 [[ -d $wwwdir/css ]] || sudo mkdir -p $wwwdir/css
@@ -27,8 +28,8 @@ wwwdir=/var/www/html
 [[ -d $installdir ]] || mkdir -p $installdir
 [[ -d /home/pi/Videos ]] || mkdir -p /home/pi/Videos
 
-for file in $(curl -sS https://raw.githubusercontent.com/darton/RPiMS/RPiMSv2/files.txt); do
-   curl -sS https://raw.githubusercontent.com/darton/RPiMS/RPiMSv2/$file -o $installdir/$file
+for file in $(curl -sS $repourl/files.txt); do
+   curl -sS $repourl/$file -o $installdir/$file
 done
 
 curl -sS https://www.w3schools.com/w3css/4/w3.css -o $installdir/w3.css
@@ -41,7 +42,7 @@ curl -sS https://cdn.jsdelivr.net/npm/hls.js@latest -o $installdir/hls.js
 chmod u+x $installdir/*.py $installdir/*.sh
 
 sudo apt-get update && sudo apt-get upgrade -y
-sudo apt-get autoremove
+sudo apt-get -y autoremove
 sudo apt-get -y install python3-gpiozero python3-pip build-essential python3-dev python3-numpy python3-picamera python3-w1thermsensor python3-automationhat python3-systemd
 sudo apt-get -y install git libfreetype6-dev libopenjp2-7 libtiff5 libjpeg-dev vlc ffmpeg gpac fbi
 
