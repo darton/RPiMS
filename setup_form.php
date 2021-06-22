@@ -222,6 +222,10 @@ if (filter_var($_POST['use_picamera'], FILTER_VALIDATE_BOOLEAN) == true ) {
     exec('sudo /bin/systemctl restart rpims-stream.service');
 }
 
+if (filter_var($_POST['use_picamera'], FILTER_VALIDATE_BOOLEAN) == false ) {
+    exec('sudo /bin/systemctl stop rpims-stream.service');
+}
+
 $zabconfile = fopen("/var/www/html/conf/zabbix_agentd.conf", "w") or die("Unable to open file!");
 $zabpskfile = fopen("/var/www/html/conf/zabbix_agentd.psk", "w") or die("Unable to open file!");
 $Hostname="Hostname=".$zabbix_agent["hostname"]."\n";
