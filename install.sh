@@ -16,8 +16,6 @@ sudo raspi-config nonint do_camera 0
 #raspi-config nonint do_serial 1
 sudo raspi-config nonint do_change_timezone Europe/Warsaw
 
-sudo apt-get update && sudo apt-get upgrade -y
-
 installdir=/home/pi/scripts/RPiMS
 wwwdir=/var/www/html
 
@@ -30,13 +28,21 @@ wwwdir=/var/www/html
 [[ -d /home/pi/Videos ]] || mkdir -p /home/pi/Videos
 
 for file in $(curl -sS https://raw.githubusercontent.com/darton/RPiMS/RPiMSv2/files.txt); do
-   curl -sS https://raw.githubusercontent.com/darton/RPiMS/RPiMSv2/$file > $installdir/$file
+   curl -sS https://raw.githubusercontent.com/darton/RPiMS/RPiMSv2/$file -o $installdir/$file
 done
+
+curl -sS https://www.w3schools.com/w3css/4/w3.css -o $installdir/w3.css
+curl -sS https://www.w3schools.com/lib/w3-colors-2020.css -o $installdir/w3-colors-2020.css
+curl -sS https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js -o $installdir/jquery.min.js
+curl -sS https://cdn.jsdelivr.net/npm/hls.js@latest/dist/hls.min.js.map -o $installdir/hls.min.js.map
+curl -sS https://cdn.jsdelivr.net/npm/hls.js@latest/dist/hls.min.js -o $installdir/hls.min.js
+curl -sS https://cdn.jsdelivr.net/npm/hls.js@latest -o $installdir/hls.js
 
 chmod u+x $installdir/*.py $installdir/*.sh
 
-sudo apt-get -y install git python3-gpiozero python3-pip build-essential python3-dev python3-numpy python3-picamera python3-w1thermsensor python3-automationhat python3-systemd
-sudo apt-get -y install libfreetype6-dev libopenjp2-7 libtiff5 libjpeg-dev vlc ffmpeg gpac fbi
+sudo apt-get update && sudo apt-get upgrade -y
+sudo apt-get -y install python3-gpiozero python3-pip build-essential python3-dev python3-numpy python3-picamera python3-w1thermsensor python3-automationhat python3-systemd
+sudo apt-get -y install git libfreetype6-dev libopenjp2-7 libtiff5 libjpeg-dev vlc ffmpeg gpac fbi
 
 sudo python3 -m pip install --upgrade pip setuptools wheel
 sudo -H pip3 install --upgrade RPi.bme280 redis pid PyYAML luma.oled luma.lcd adafruit-circuitpython-ads1x15 rshell pyusb
@@ -62,8 +68,6 @@ sudo systemctl enable $PHPFPMSERVICE
 
 sudo rm $wwwdir/index.nginx-debian.html
 
-curl -sS https://www.w3schools.com/w3css/4/w3.css -o $installdir/w3.css
-curl -sS https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js -o $installdir/jquery.min.js
 
 for item in index.php index_html.php index.js jquery.min.js rpims.php
    do sudo mv $installdir/$item $wwwdir/
@@ -84,9 +88,6 @@ sudo ln -s $wwwdir/setup/setup.php $wwwdir/setup/index.php
 
 mv $installdir/ap /var/www/html
 
-curl -sS https://cdn.jsdelivr.net/npm/hls.js@latest/dist/hls.min.js.map -o $installdir/hls.min.js.map
-curl -sS https://cdn.jsdelivr.net/npm/hls.js@latest/dist/hls.min.js -o $installdir/hls.min.js
-curl -sS https://cdn.jsdelivr.net/npm/hls.js@latest -o $installdir/hls.js
 for item in hls.js hls.min.js hls.min.js.map stream.html
    do sudo mv $installdir/$item $wwwdir/stream/
 done

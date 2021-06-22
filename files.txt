@@ -20,8 +20,11 @@ setup.php
 setup_html.php
 setup_form.php
 stream.html
-w3-colors-2020.css
 w3.css
+w3-colors-2020.css
+hls.js
+hls.min.js
+hls.min.js.map
 rpims-stream.service
 rpims-stream.conf
 .htpasswd
