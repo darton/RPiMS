@@ -9,6 +9,8 @@ videorecorder.sh
 zabbix_sender.sh
 zabbix_rpims.conf
 zabbix_rpims_userparameter.conf
+zabbix_agentd.conf
+zabbix_agentd.psk
 nginx-default
 index.js
 index.css

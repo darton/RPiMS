@@ -41,6 +41,7 @@ curl -sS https://cdn.jsdelivr.net/npm/hls.js@latest -o $installdir/hls.js
 chmod u+x $installdir/*.py $installdir/*.sh
 
 sudo apt-get update && sudo apt-get upgrade -y
+sudo apt-get autoremove
 sudo apt-get -y install python3-gpiozero python3-pip build-essential python3-dev python3-numpy python3-picamera python3-w1thermsensor python3-automationhat python3-systemd
 sudo apt-get -y install git libfreetype6-dev libopenjp2-7 libtiff5 libjpeg-dev vlc ffmpeg gpac fbi
 
@@ -100,17 +101,21 @@ sudo systemctl enable nginx
 
 sudo apt-get -y install zabbix-agent
 echo 'zabbix ALL=(ALL) NOPASSWD: /home/pi/scripts/RPiMS/redis-get-data.py' | sudo EDITOR='tee -a' visudo
+
+for item in zabbix_rpims_userparameter.conf zabbix_rpims.conf zabbix_agentd.conf zabbix_agentd.psk
+    do sudo mv $installdir/$item $wwwdir/conf/
+done
+
 echo "Generating a unique TLSPSKIdentity"
 TLSPSKIdentity=$(openssl rand -hex 8)
 sed -i "s/ TLSPSKIdentity: .*/\ \TLSPSKIdentity: ${TLSPSKIdentity}/g" $wwwdir/conf/rpims.yaml
+sed -i "s/TLSPSKIdentity=.*/TLSPSKIdentity=${TLSPSKIdentity}/g" $wwwdir/conf/zabbix_agentd.conf
+
 echo "Generating a unique TLSPSK"
 TLSPSK=$(openssl rand -hex 32)
 sed -i "s/ TLSPSK: .*/\ \TLSPSK: ${TLSPSK}/g" $wwwdir/conf/rpims.yaml
-#cat $installdir/zabbix-rpims.conf | sed s/TLSPSKIdentity=/TLSPSKIdentity=$(openssl rand -hex 8)/ |sudo tee /etc/zabbix/zabbix_agentd.conf.d/zabbix-rpims.conf
-#rm $installdir/zabbix-rpims.conf
-#openssl rand -hex 32 | sudo tee /etc/zabbix/zabbix_agentd.conf.d/zabbix_agentd.psk
-sudo mv $installdir/zabbix_rpims_userparameter.conf $wwwdir/conf/
-sudo mv $installdir/zabbix_rpims.conf /etc/zabbix/zabbix_agentd.conf.d/
+echo $TLSPSK | sudo tee $wwwdir/conf/zabbix_agentd.psk
+
 sudo systemctl restart zabbix-agent.service
 sudo systemctl enable zabbix-agent.service
 
@@ -162,6 +167,6 @@ else
     echo ""
     echo "Run this command manually: sudo reboot"
     echo ""
-    echo "After restarting open http://$_IP/setup or http://127.0.0.1 to configure RPiMS"
+    echo "After restarting open http://$_IP/setup or http://127.0.0.1/setup to configure RPiMS"
     exit
 fi
