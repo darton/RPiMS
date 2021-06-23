@@ -1,5 +1,7 @@
 <?php
 
+$server_ip = $_SERVER['SERVER_ADDR'];
+
 $redis = new Redis();
 $redis->connect('127.0.0.1', 6379);
 
