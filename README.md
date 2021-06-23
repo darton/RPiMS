@@ -10,16 +10,11 @@ When any of the doors sensors opens or closed then a message will be sent to the
 
 When the motion sensor detects motion a message will be sent to Zabbix server.
 
-When any of the doors senors is opened, a video sequence will be recorded or the video stream will be turned on.
+When any of the doors senors is opened, a video sequence will be recorded.
 
-When any of the motion sensors detect movement, the rtsp stream will be turned on.
-
-When all of the doors sensors are closed for more than defined hold time and the motion sensors do not detect movement, video stream will be turned off. 
-
-Video stream will be turned on automaticly when use of motion sensors and door sensors are set to disabled in setup.
+Video stream will be turned on automaticly when use picamera sensor are set to enable in setup.
 
 Sensors are polled and measured values are saved to Redis database periodically. 
-
 
 ## Installing
 
