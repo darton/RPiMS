@@ -42,7 +42,7 @@
       <?php if ($config["use_picamera"] == "True") {
         echo '<div class="sensors">';
         echo '<div><a class="sensors" href="http://'.$server_ip.':8080/stream/video.mjpeg">Video Stream URL</a></div>';
-        echo '<div><iframe src="http://'.$server_ip.':8080/stream/video.mjpeg" width="640" height="480" style="border:none;" title="Video Stream"></iframe></
+        echo '<div><iframe src="http://'.$server_ip.':8080/stream/video.mjpeg" width="640" height="480" style="border:none;" title="Video Stream"></iframe>;
         echo '</div>';
        }
       ?>
