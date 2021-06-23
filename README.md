@@ -2,7 +2,14 @@
 
 RPiMS is Raspberry Pi based Monitoring System 
 
-Door/window sensors, motion, water, vibration, smoke, light sensors, temperature, humidity, preassure sensors, video streamer/recorder from picamera, wind speed meter, wind direction meter, rainfall meter
+Supports sensor like door/window sensor, motion sensor, water sensor, smoke sensor, light sensors.
+
+Suppports i2c temperature, humidity, and preassure BME280 sensors, and 1-wire DS18B20 temperature sensors.
+
+Supports video streaming and video recording from picamera.
+
+Supports wind speed meter, wind direction meter, rainfall meter.
+
 
 ## Description
 
@@ -17,6 +24,7 @@ When any of the doors senors is opened, a video sequence will be recorded.
 Video stream will be turned on automaticly when use picamera sensor are set to enable in setup.
 
 Sensors are polled and measured values are saved to Redis database periodically. 
+
 
 ## Installing
 
