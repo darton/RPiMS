@@ -74,7 +74,7 @@
                         </div>
                     </div>
                     <div id="picamera" class="w3-row w3-2020-green-sheen">
-                        <div class="w3-quarter w3-container w3-margin-top">
+                        <div class="w3-third w3-container w3-margin-top">
                             <label for="picamera_rotation">Rotation:</label>
                             <select id="picamera_rotation" name="picamera_rotation" class="w3-select">
                                 <option value="0"<?php if ($picamera_rotation == '0') echo 'selected="selected"'; ?> >0</option>
@@ -83,7 +83,7 @@
                                 <option value="270"<?php if ($picamera_rotation == '270') echo 'selected="selected"'; ?> >270</option>
                             </select>
                         </div>
-                        <div class="w3-quarter w3-container w3-margin-top">
+                        <div class="w3-third w3-container w3-margin-top">
                             <label for="picamera_mode">Mode:</label>
                             <select id="picamera_mode" name="picamera_mode" class="w3-select">
                                 <option value="1"<?php if ($picamera_mode == '1') echo 'selected="selected"'; ?> >1920x1080</option>
@@ -91,13 +91,9 @@
                                 <option value="7"<?php if ($picamera_mode == '7') echo 'selected="selected"'; ?> >640x480</option>
                             </select>
                         </div>
-                        <div class="w3-quarter w3-container w3-margin-top w3-margin-bottom">
+                        <div class="w3-third w3-container w3-margin-top w3-margin-bottom">
                             <label >FPS:</label>
                             <input name="picamera_fps" class="w3-input" type="number" min="1" max="60" value="<?= $picamera_fps ?>" >
-                        </div>
-                        <div class="w3-quarter w3-container w3-margin-top w3-margin-bottom">
-                            <label >Bitrate:</label>
-                            <input name="picamera_bitrate" class="w3-input" type="number" min="0" max="25000000" value="<?= $picamera_bitrate ?>" >
                         </div>
                     </div>
                 </fieldset>
