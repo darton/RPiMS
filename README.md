@@ -207,6 +207,8 @@ Optional
 
 * [GPIOZERO Docs](https://gpiozero.readthedocs.io/en/stable/)
 
+* [UV4L Tutorials](https://www.linux-projects.org/uv4l/tutorials/)
+
 * [HWclock tutorial](https://thepihut.com/blogs/raspberry-pi-tutorials/17209332-adding-a-real-time-clock-to-your-raspberry-pi)
 
 * [BME280 Tutorial](https://pypi.org/project/RPi.bme280/)
