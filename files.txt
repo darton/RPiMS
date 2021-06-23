@@ -4,7 +4,6 @@ rpims.py
 rpims.yaml
 rpims.service
 gethostinfo.sh
-videostreamer.sh
 videorecorder.sh
 zabbix_sender.sh
 zabbix_rpims.conf
@@ -21,14 +20,9 @@ setup.js
 setup.php
 setup_html.php
 setup_form.php
-stream.html
 w3.css
 w3-colors-2020.css
-hls.js
-hls.min.js
-hls.min.js.map
-rpims-stream.service
-rpims-stream.conf
+uv4l-raspicam.conf
 .htpasswd
 motd
 cron

@@ -219,11 +219,11 @@ fwrite($streamconfile, $picamera_dispx);
 fwrite($streamconfile, $picamera_dispy);
 
 if (filter_var($_POST['use_picamera'], FILTER_VALIDATE_BOOLEAN) == true ) {
-    exec('sudo /bin/systemctl restart rpims-stream.service');
+    exec('sudo /bin/systemctl restart uv4l_raspicam');
 }
 
-if (filter_var($_POST['use_picamera'], FILTER_VALIDATE_BOOLEAN) == false ) {
-    exec('sudo /bin/systemctl stop rpims-stream.service');
+else {
+    exec('sudo /bin/systemctl stop uv4l_raspicam');
 }
 
 $zabconfile = fopen("/var/www/html/conf/zabbix_agentd.conf", "w") or die("Unable to open file!");

@@ -24,7 +24,6 @@ sudo raspi-config nonint do_change_timezone Europe/Warsaw
 [[ -d $wwwdir/conf ]] || sudo mkdir -p $wwwdir/conf
 [[ -d $wwwdir/css ]] || sudo mkdir -p $wwwdir/css
 [[ -d $wwwdir/setup ]] || sudo mkdir -p $wwwdir/setup
-[[ -d $wwwdir/stream ]] || sudo mkdir -p $wwwdir/stream
 [[ -d $installdir ]] || mkdir -p $installdir
 [[ -d /home/pi/Videos ]] || mkdir -p /home/pi/Videos
 
@@ -32,19 +31,23 @@ for file in $(curl -sS $repourl/files.txt); do
    curl -sS $repourl/$file -o $installdir/$file
 done
 
+chmod u+x $installdir/*.py $installdir/*.sh
+
 curl -sS https://www.w3schools.com/w3css/4/w3.css -o $installdir/w3.css
 curl -sS https://www.w3schools.com/lib/w3-colors-2020.css -o $installdir/w3-colors-2020.css
 curl -sS https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js -o $installdir/jquery.min.js
-curl -sS https://cdn.jsdelivr.net/npm/hls.js@latest/dist/hls.min.js.map -o $installdir/hls.min.js.map
-curl -sS https://cdn.jsdelivr.net/npm/hls.js@latest/dist/hls.min.js -o $installdir/hls.min.js
-curl -sS https://cdn.jsdelivr.net/npm/hls.js@latest -o $installdir/hls.js
-
-chmod u+x $installdir/*.py $installdir/*.sh
 
 sudo apt-get update && sudo apt-get upgrade -y
 sudo apt-get -y autoremove
 sudo apt-get -y install python3-gpiozero python3-pip build-essential python3-dev python3-numpy python3-picamera python3-w1thermsensor python3-automationhat python3-systemd
 sudo apt-get -y install git libfreetype6-dev libopenjp2-7 libtiff5 libjpeg-dev vlc ffmpeg gpac fbi
+
+curl https://www.linux-projects.org/listing/uv4l_repo/lpkey.asc | sudo apt-key add -
+echo "deb https://www.linux-projects.org/listing/uv4l_repo/raspbian/stretch stretch main" | sudo tee -a /etc/apt/sources.list
+sudo apt-get -y install uv4l uv4l-raspicam uv4l-server
+sudo apt-get -y install uv4l-raspicam-extras
+#sudo apt-get install uv4l-webrtc
+#sudo apt-get install uv4l-webrtc-armv6
 
 sudo python3 -m pip install --upgrade pip setuptools wheel
 sudo -H pip3 install --upgrade RPi.bme280 redis pid PyYAML luma.oled luma.lcd adafruit-circuitpython-ads1x15 rshell pyusb
@@ -70,12 +73,11 @@ sudo systemctl enable $PHPFPMSERVICE
 
 sudo rm $wwwdir/index.nginx-debian.html
 
-
 for item in index.php index_html.php index.js jquery.min.js rpims.php
    do sudo mv $installdir/$item $wwwdir/
 done
 
-for item in .htpasswd rpims.yaml zabbix_rpims_userparameter.conf rpims-stream.conf
+for item in .htpasswd rpims.yaml zabbix_rpims_userparameter.conf
    do sudo mv $installdir/$item $wwwdir/conf/
 done
 
@@ -87,12 +89,6 @@ for item in setup.php setup_html.php setup_form.php setup.js
    do sudo mv $installdir/$item $wwwdir/setup/
 done
 sudo ln -s $wwwdir/setup/setup.php $wwwdir/setup/index.php
-
-mv $installdir/ap /var/www/html
-
-for item in hls.js hls.min.js hls.min.js.map stream.html
-   do sudo mv $installdir/$item $wwwdir/stream/
-done
 
 sudo mv /etc/nginx/sites-available/default /etc/nginx/sites-available/default.org
 sudo mv $installdir/nginx-default /etc/nginx/sites-available/default
@@ -129,10 +125,11 @@ sudo chown root.root /etc/cron.d/rpims
 rm $installdir/cron
 
 sudo mv $installdir/rpims.service /lib/systemd/system/rpims.service
-sudo mv $installdir/rpims-stream.service /lib/systemd/system/rpims-stream.service
 sudo systemctl daemon-reload
 sudo systemctl enable rpims.service
-#sudo systemctl enable rpims-stream.service
+
+sudo mv /etc/uv4l/uv4l-raspicam.conf uv4l-raspicam.conf.org
+sudo mv $installdir/uv4l-raspicam.conf /etc/uv4l/
 
 #for DHT22 sensor
 sudo -H pip3 install --upgrade Adafruit_DHT adafruit-circuitpython-dht

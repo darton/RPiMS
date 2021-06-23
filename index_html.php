@@ -41,7 +41,7 @@
       <?php if ($config["use_picamera"] == "True") {?>
         <div class="sensors">
           <div>
-            <a class="sensors" href="/streaming/stream.html">Camera Stream Url</a>
+            <a class="sensors" href="http://192.168.252.3:8080/stream/video.mjpeg">Video Stream</a>
           </div>
         </div>
       <?php }?>
@@ -63,7 +63,7 @@
                   <div class="gauge__fill"></div>
                   <div class="gauge__cover"></div>
                 </div>
-                <div class="sensors">Hum</div>
+                <div class="sensors">Hum</div>	
               </div>
             </div>
           </div>
