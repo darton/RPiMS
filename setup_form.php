@@ -89,7 +89,6 @@ $setup = array(
 );
 
 $PICAMERA = array(
-    "bitrate" => (int)$_POST['picamera_bitrate'],
     "rotation" => (int)$_POST['picamera_rotation'],
     "mode" => (int)$_POST['picamera_mode'],
     "fps" => (int)$_POST['picamera_fps'],
