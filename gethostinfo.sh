@@ -15,4 +15,4 @@ _FSUSED=$(df -h| awk '/root/ {print $5}')
 _MEMUSED=$(free -m |awk '/Mem/ {print $3}')
 /usr/bin/redis-cli set memused "$_MEMUSED" 2>&1 > /dev/null
 
-exit
+exit 0
