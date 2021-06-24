@@ -16,6 +16,7 @@ index.css
 index.php
 index_html.php
 rpims.php
+.htpasswd
 setup.js
 setup.php
 setup_html.php
@@ -23,6 +24,5 @@ setup_form.php
 w3.css
 w3-colors-2020.css
 uv4l-raspicam.conf
-.htpasswd
 motd
 cron
