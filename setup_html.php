@@ -20,8 +20,6 @@
                             <label>Verbose mode</label></p>
                             <p><input name="show_sys_info" type="hidden" value="False"><input name="show_sys_info" type="checkbox" class="w3-check" <?php if ($show_sys_info == 'yes') echo 'checked="checked"'; ?> value="True">
                             <label>Show system info</label></p>
-                            <p><input name="use_picamera_recording" type="hidden" value="False"><input name="use_picamera_recording" type="checkbox" class="w3-check"  <?php if ($use_picamera_recording == 'yes') echo 'checked="checked"'; ?> value="True">
-                            <label>Use picamera recording</label></p>
                             <p><input name="use_door_sensor" type="hidden" value="False"><input name="use_door_sensor" type="checkbox" class="w3-check" <?php if ($use_door_sensor == 'yes') echo 'checked="checked"'; ?> value="True">
                             <label>Use door sensors</label></p>
                             <p><input name="use_motion_sensor" type="hidden" value="False"><input name="use_motion_sensor" type="checkbox" class="w3-check" <?php if ($use_motion_sensor == 'yes') echo 'checked="checked"'; ?> value="True">
@@ -68,9 +66,14 @@
                 <fieldset>
                     <legend>Pi Camera configuration</legend>
                     <div class="w3-row w3-2020-ultramarine-green">
-                        <div class="w3-container w3-margin-top w3-margin-bottom">
+                        <div class="w3-half w3-container w3-margin-top w3-margin-bottom">
                             <input name="use_picamera" type="hidden" value="False"><input name="use_picamera" type="checkbox" class="w3-check" id="use_picamera"<?php if ($use_picamera == 'yes') echo 'checked="checked"'; ?> value="True">
                             <label>Use Picamera</label>
+                        </div>
+                        <div class="w3-half w3-container w3-margin-top w3-margin-bottom">
+                            <input name="use_picamera_recording" type="hidden" value="False"><input name="use_picamera_recording" type="checkbox" class="w3-check"  <?php if ($use_picamera_recording == 'yes') echo 'checked="checked"'; ?> value="True">
+                            <label>Use picamera recording</label>
+
                         </div>
                     </div>
                     <div id="picamera" class="w3-row w3-2020-green-sheen">
