@@ -1,4 +1,4 @@
-# RPiMSv2-UV4L
+# RPiMSv2
 
 RPiMS is Raspberry Pi based Monitoring System 
 
