@@ -25,7 +25,7 @@ server {
         source_charset utf-8;
         override_charset on;
 
-        expires $expires;
+        #expires $expires;
 
         location / {
                 # First attempt to serve request as file, then

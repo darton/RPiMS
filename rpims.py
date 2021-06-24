@@ -22,9 +22,9 @@ def door_action_closed(door_id, **kwargs):
         print(f'The {door_id} has been closed!')
     if bool(kwargs['use_zabbix_sender']) is True:
         zabbix_sender_call('info_when_door_has_been_closed', door_id)
-    if bool(kwargs['use_picamera']) is True:
-        if detect_no_alarms(**lconfig):
-            av_stream('stop')
+    #if bool(kwargs['use_picamera']) is True:
+    #    if detect_no_alarms(**lconfig):
+    #        av_stream('stop')
 
 
 def door_action_opened(door_id, **kwargs):
@@ -37,7 +37,7 @@ def door_action_opened(door_id, **kwargs):
         if bool(kwargs['use_picamera_recording']) is True:
             av_stream('stop')
             av_recording()
-        av_stream('start')
+            av_stream('start')
 
 
 def door_status_open(door_id, **kwargs):
@@ -46,8 +46,8 @@ def door_status_open(door_id, **kwargs):
         print(f'The {door_id} is opened!')
     if bool(kwargs['use_zabbix_sender']) is True:
         zabbix_sender_call('info_when_door_is_opened', door_id)
-    if bool(kwargs['use_picamera']) is True:
-        av_stream('start')
+    #if bool(kwargs['use_picamera']) is True:
+    #    av_stream('start')
 
 
 def door_status_close(door_id, **kwargs):
@@ -57,9 +57,9 @@ def door_status_close(door_id, **kwargs):
         print(f'The {door_id} is closed!')
     if bool(kwargs['use_zabbix_sender']) is True:
         zabbix_sender_call('info_when_door_is_closed', door_id)
-    if bool(kwargs['use_picamera']) is True:
-        if detect_no_alarms(**lconfig):
-            av_stream('stop')
+    #if bool(kwargs['use_picamera']) is True:
+    #    if detect_no_alarms(**lconfig):
+    #        av_stream('stop')
 
 
 def motion_sensor_when_motion(ms_id, **kwargs):
@@ -68,8 +68,8 @@ def motion_sensor_when_motion(ms_id, **kwargs):
         print(f'The {ms_id} : motion was detected!')
     if bool(kwargs['use_zabbix_sender']) is True:
         zabbix_sender_call('info_when_motion', ms_id)
-    if bool(kwargs['use_picamera']) is True:
-        av_stream('start')
+    #if bool(kwargs['use_picamera']) is True:
+    #    av_stream('start')
 
 
 def motion_sensor_when_no_motion(ms_id, **kwargs):
@@ -77,9 +77,9 @@ def motion_sensor_when_no_motion(ms_id, **kwargs):
     redis_db.set(str(ms_id), 'nomotion')
     if bool(kwargs['verbose']) is True:
         print(f'The {ms_id} : no motion')
-    if bool(kwargs['use_picamera']) is True:
-        if detect_no_alarms(**lconfig):
-            av_stream('stop')
+    #if bool(kwargs['use_picamera']) is True:
+    #    if detect_no_alarms(**lconfig):
+    #        av_stream('stop')
 
 
 def detect_no_alarms(**kwargs):
@@ -109,7 +109,8 @@ def detect_no_alarms(**kwargs):
 def av_stream(state):
     from subprocess import call
     #_cmd = '/home/pi/scripts/RPiMS/videostreamer.sh' + " " + state
-    _cmd = f'sudo systemctl {state} rpims-stream.service'
+    #_cmd = f'sudo systemctl {state} rpims-stream.service'
+    _cmd = f'sudo systemctl {state} uv4l_raspicam.service'
     call(_cmd, shell=True)
 
 
@@ -1075,8 +1076,13 @@ def main():
     if bool(config['use_serial_display']) is True:
         threading_function(serial_displays, **config)
 
-    if bool(config['use_picamera']) is True and bool(config['use_picamera_recording']) is False and bool(config['use_door_sensor']) is False and bool(config['use_motion_sensor']) is False:
-        av_stream('start')
+    #if bool(config['use_picamera']) is True and bool(config['use_picamera_recording']) is False and bool(config['use_door_sensor']) is False and bool(config['use_motion_sensor']) is False:
+    #    av_stream('restart')
+
+    if bool(config['use_picamera']) is True:
+        av_stream('restart')
+    else:
+        av_stream('stop')
 
     pause()
 

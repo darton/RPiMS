@@ -42,6 +42,12 @@ if ($config["use_CPU_sensor"] == true) {
     $rpims_api["sensors"]["cpu"]["temperature"] = $rpims["CPU_Temperature"];
 }
 
+if ($config["use_picamera"] == true) {
+    $rpims_api["sensors"]["picamera"]["rotation"] = $sensors["PICAMERA"]["rotation"];
+    $rpims_api["sensors"]["picamera"]["mode"] = $sensors["PICAMERA"]["mode"];
+    $rpims_api["sensors"]["picamera"]["fps"] = $sensors["PICAMERA"]["fps"];
+}
+
 if ($config["use_BME280_sensor"] == true) {
     foreach ($sensors['BME280'] as $key => $value) {
         $id = $sensors['BME280'][$key]["id"];

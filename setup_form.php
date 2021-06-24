@@ -89,7 +89,6 @@ $setup = array(
 );
 
 $PICAMERA = array(
-    "bitrate" => (int)$_POST['picamera_bitrate'],
     "rotation" => (int)$_POST['picamera_rotation'],
     "mode" => (int)$_POST['picamera_mode'],
     "fps" => (int)$_POST['picamera_fps'],
@@ -195,36 +194,43 @@ $rpims = array(
 yaml_emit_file ("/var/www/html/conf/rpims.yaml", $rpims, YAML_UTF8_ENCODING, YAML_ANY_BREAK);
 exec('sudo /bin/systemctl restart rpims.service');
 
-$streamconfile = fopen("/var/www/html/conf/rpims-stream.conf", "w") or die("Unable to open file!");
-$picamera_rotation="ROT=".(int)$_POST['picamera_rotation']."\n";
-$picamera_fps="FPS=".(int)$_POST['picamera_fps']."\n";
-$picamera_bitrate="BITRATE=".(int)$_POST['picamera_bitrate']."\n";
+$streamconfile = fopen("/var/www/html/conf/uv4l-raspicam.conf", "w") or die("Unable to open file!");
+$picamera_rotation="rotation = ".(int)$_POST['picamera_rotation']."\n";
+$picamera_fps="framerate = ".(int)$_POST['picamera_fps']."\n";
+
 if ($_POST['picamera_mode'] == 7) {
-    $picamera_dispx="DISPX=640\n";
-    $picamera_dispy="DISPY=480\n";
+    $picamera_dispx="width = 640\n";
+    $picamera_dispy="height = 480\n";
 }
 if ($_POST['picamera_mode'] == 6) {
-    $picamera_dispx="DISPX=1280\n";
-    $picamera_dispy="DISPY=720\n";
+    $picamera_dispx="width = 1280\n";
+    $picamera_dispy="height = 720\n";
 }
 if ($_POST['picamera_mode'] == 1) {
-    $picamera_dispx="DISPX=1920\n";
-    $picamera_dispy="DISPY=1080\n";
+    $picamera_dispx="width = 1920\n";
+    $picamera_dispy="height = 1080\n";
 }
 
-fwrite($streamconfile, $picamera_rotation);
-fwrite($streamconfile, $picamera_bitrate);
+fwrite($streamconfile, "# uv4l core options\n");
+fwrite($streamconfile, "\n");
+fwrite($streamconfile, "driver = raspicam\n");
+fwrite($streamconfile, "auto-video_nr = yes\n");
+fwrite($streamconfile, "frame-buffers = 4\n");
+fwrite($streamconfile, "encoding = mjpeg\n");
 fwrite($streamconfile, $picamera_fps);
 fwrite($streamconfile, $picamera_dispx);
 fwrite($streamconfile, $picamera_dispy);
-
-if (filter_var($_POST['use_picamera'], FILTER_VALIDATE_BOOLEAN) == true ) {
-    exec('sudo /bin/systemctl restart rpims-stream.service');
-}
-
-if (filter_var($_POST['use_picamera'], FILTER_VALIDATE_BOOLEAN) == false ) {
-    exec('sudo /bin/systemctl stop rpims-stream.service');
-}
+fwrite($streamconfile, $picamera_rotation);
+fwrite($streamconfile, "video-denoise = no\n");
+fwrite($streamconfile, "\n");
+fwrite($streamconfile, "nopreview = yes\n");
+fwrite($streamconfile, "fullscreen = no\n");
+fwrite($streamconfile, "preview = 480\n");
+fwrite($streamconfile, "preview = 240\n");
+fwrite($streamconfile, "preview = 320\n");
+fwrite($streamconfile, "preview = 240\n");
+fwrite($streamconfile, "\n");
+fwrite($streamconfile, "server-option = --www-webrtc-signaling-path=/webrtc\n");
 
 $zabconfile = fopen("/var/www/html/conf/zabbix_agentd.conf", "w") or die("Unable to open file!");
 $zabpskfile = fopen("/var/www/html/conf/zabbix_agentd.psk", "w") or die("Unable to open file!");

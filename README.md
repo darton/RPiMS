@@ -1,6 +1,15 @@
-# RPiMSv2
+# RPiMSv2-UV4L
 
-RPiMS is Raspberry Pi based Monitoring System (door/window sensors, motion, water, vibration, smoke, light sensors, temperature, humidity, preassure sensors, video streamer/recorder from picamera, wind speed meter, wind direction meter, rainfall meter)
+RPiMS is Raspberry Pi based Monitoring System 
+
+Supports sensor like door/window sensor, motion sensor, water sensor, smoke sensor, light sensors.
+
+Suppports I2C temperature, humidity, and preassure BME280 sensors, and 1-wire DS18B20 temperature sensors.
+
+Supports UV4L Video Streaming Server and video recording from picamera.
+
+Supports wind speed meter, wind direction meter, rainfall meter.
+
 
 ## Description
 
@@ -10,13 +19,9 @@ When any of the doors sensors opens or closed then a message will be sent to the
 
 When the motion sensor detects motion a message will be sent to Zabbix server.
 
-When any of the doors senors is opened, a video sequence will be recorded or the video stream will be turned on.
+When any of the doors senors is opened, a video sequence will be recorded.
 
-When any of the motion sensors detect movement, the rtsp stream will be turned on.
-
-When all of the doors sensors are closed for more than defined hold time and the motion sensors do not detect movement, video stream will be turned off. 
-
-Video stream will be turned on automaticly when use of motion sensors and door sensors are set to disabled in setup.
+Video stream will be turned on automaticly when use picamera sensor are set to enable in setup.
 
 Sensors are polled and measured values are saved to Redis database periodically. 
 
@@ -35,7 +40,7 @@ If you're not using Etcher, you'll need to unzip .zip downloads to get the image
 
 Running the following command will download and run the script.
 ```
-sudo curl -sS https://raw.githubusercontent.com/darton/RPiMS/RPiMSv2/install.sh | bash
+sudo curl -sS https://raw.githubusercontent.com/darton/RPiMS/RPiMSv2-UV4L/install.sh | bash
 
 ```
 
@@ -201,6 +206,8 @@ Optional
 * [Pinout](https://www.raspberrypi.org/documentation/usage/gpio/)
 
 * [GPIOZERO Docs](https://gpiozero.readthedocs.io/en/stable/)
+
+* [UV4L Tutorials](https://www.linux-projects.org/uv4l/tutorials/)
 
 * [HWclock tutorial](https://thepihut.com/blogs/raspberry-pi-tutorials/17209332-adding-a-real-time-clock-to-your-raspberry-pi)
 

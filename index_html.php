@@ -38,13 +38,14 @@
         </div>
       <?php }?>
 
-      <?php if ($config["use_picamera"] == "True") {?>
-        <div class="sensors">
-          <div>
-            <a class="sensors" href="/streaming/stream.html">Camera Stream Url</a>
-          </div>
-        </div>
-      <?php }?>
+
+      <?php if ($config["use_picamera"] == "True") {
+        echo '<div class="sensors">';
+        echo '<div><a class="sensors" href="http://'.$server_ip.':8080/stream/video.mjpeg">Video Stream URL</a></div>';
+        echo '<div><iframe src="http://'.$server_ip.':8080/stream/video.mjpeg" width="100%" height="'.$picamera_height.'" style="border:none;" title="Video Stream"></iframe></div>';
+        echo '</div>';
+       }
+      ?>
 
       <?php if ($config["use_DHT_sensor"] == "True") {?>
         <div class="sensors">
@@ -63,7 +64,7 @@
                   <div class="gauge__fill"></div>
                   <div class="gauge__cover"></div>
                 </div>
-                <div class="sensors">Hum</div>
+                <div class="sensors">Hum</div>	
               </div>
             </div>
           </div>
