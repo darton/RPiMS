@@ -14,6 +14,21 @@ $gpio = json_decode($obj, true);
 $obj = $redis-> get('sensors');
 $sensors = json_decode($obj, true);
 
+if ($config["use_picamera"] == "True") {
+    $picamera_mode=$sensors['PICAMERA']['mode'];
+    if ($picamera_mode == "1") {
+    $picamera_height = 1080;
+    }
+
+    if ($picamera_mode == "6") {
+    $picamera_height = 720;
+    }
+
+    if ($picamera_mode == "7") {
+    $picamera_height = 480;
+    }
+}
+
 if ($config["use_door_sensor"] == "True")
 {
     foreach ($gpio as $key=> $value)
