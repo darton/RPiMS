@@ -1,6 +1,6 @@
 #!/bin/bash
 
-repourl=https://raw.githubusercontent.com/darton/RPiMS/RPiMSv2
+repourl=https://raw.githubusercontent.com/darton/RPiMS/master
 installdir=/home/pi/scripts/RPiMS
 wwwdir=/var/www/html
 
