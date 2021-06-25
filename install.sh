@@ -1,8 +1,8 @@
 #!/bin/bash
 
-repourl=https://github.com/darton/RPiMS/archive/refs/heads/master.zip
+repourl=https://github.com/darton/RPiMS/archive/refs/heads/devel.zip
 downloaddir=/tmp
-unpackdir=/tmp/RPiMS-master
+unpackdir=/tmp/RPiMS-devel
 installdir=/home/pi/scripts/RPiMS
 wwwdir=/var/www/html
 
