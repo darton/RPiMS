@@ -28,7 +28,7 @@ sudo raspi-config nonint do_change_timezone Europe/Warsaw
 
 curl -sS $repourl -L -o $downloaddir/RPiMS.zip
 unzip  $downloaddir/RPiMS.zip -d $downloaddir
-sudo cp -R $unpackdir/* $wwwdit
+sudo cp -R $unpackdir/www/* $wwwdir
 sudo cp $unpackdir/RPiMS/* $installdir
 
 chmod u+x $installdir/*.py $installdir/*.sh
@@ -122,7 +122,7 @@ sudo apt-get -y install libgpiod2 libgpiod-dev
 #
 
 rm $downloaddir/RPiMS.zip
-rmdir $unpackdir
+#rmdir $unpackdir
 
 _IP=$(ip route get 1.1.1.1 | awk '{print $7}')
 echo ""
