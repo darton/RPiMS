@@ -1,18 +1,18 @@
 ---
 setup:
   verbose: false
-  show_sys_info: false
+  show_sys_info: true
   use_zabbix_sender: false
   use_picamera: false
   use_picamera_recording: false
-  use_door_sensor: true
-  use_motion_sensor: true
+  use_door_sensor: false
+  use_motion_sensor: false
   use_system_buttons: false
   use_door_led_indicator: true
   use_motion_led_indicator: true
   use_CPU_sensor: true
   use_BME280_sensor: true
-  use_DS18B20_sensor: false
+  use_DS18B20_sensor: true
   use_DHT_sensor: false
   use_weather_station: false
   use_serial_display: false
@@ -25,7 +25,6 @@ sensors:
     temp:
       read_interval: 1
   PICAMERA:
-    bitrate: 3000000
     rotation: 0
     mode: 6
     fps: 25
@@ -33,27 +32,32 @@ sensors:
     id1:
       id: id1
       name: Room 1
-      use: false
+      use: true
       read_interval: 2
       interface: i2c
       i2c_address: 118
     id2:
       id: id2
       name: Room 2
-      use: false
+      use: true
       read_interval: 2
       interface: serial
-      serial_port: USB2
+      serial_port: USB1
     id3:
       id: id3
       name: Room 3
       use: true
       read_interval: 6
       interface: serial
-      serial_port: USB3
+      serial_port: USB2
   ONE_WIRE:
     DS18B20:
       read_interval: 5
+      addresses:
+        3c01d075ef79:
+          name: ""
+        3c01d607fcdc:
+          name: ""
   DHT:
     name: Outoor
     read_interval: 60
@@ -92,6 +96,7 @@ gpio:
     gpio_pin: "12"
     type: door_led
     name: door led
+    hold_time: ""
   GPIO_13:
     gpio_pin: "13"
     type: MotionSensor
@@ -106,6 +111,7 @@ gpio:
     gpio_pin: "18"
     type: motion_led
     name: motion led
+    hold_time: ""
   GPIO_19:
     gpio_pin: "19"
     type: DoorSensor

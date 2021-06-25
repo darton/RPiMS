@@ -1,6 +1,8 @@
 #!/bin/bash
 
-repourl=https://raw.githubusercontent.com/darton/RPiMS/master
+repourl=https://github.com/darton/RPiMS/archive/refs/heads/master.zip
+downloaddir=/tmp
+unpackdir=/tmp/RPiMS-master
 installdir=/home/pi/scripts/RPiMS
 wwwdir=/var/www/html
 
@@ -21,21 +23,15 @@ sudo raspi-config nonint do_camera 0
 sudo raspi-config nonint do_change_timezone Europe/Warsaw
 
 [[ -d $wwwdir ]] || sudo mkdir -p $wwwdir
-[[ -d $wwwdir/conf ]] || sudo mkdir -p $wwwdir/conf
-[[ -d $wwwdir/css ]] || sudo mkdir -p $wwwdir/css
-[[ -d $wwwdir/setup ]] || sudo mkdir -p $wwwdir/setup
 [[ -d $installdir ]] || mkdir -p $installdir
 [[ -d /home/pi/Videos ]] || mkdir -p /home/pi/Videos
 
-for file in $(curl -sS $repourl/files.txt); do
-   curl -sS $repourl/$file -o $installdir/$file
-done
+curl -sS $repourl -L -o $downloaddir/RPiMS.zip
+unzip  $downloaddir/RPiMS.zip -d $downloaddir
+sudo cp -R $unpackdir/* $wwwdit
+sudo cp $unpackdir/RPiMS/* $installdir
 
 chmod u+x $installdir/*.py $installdir/*.sh
-
-curl -sS https://www.w3schools.com/w3css/4/w3.css -o $installdir/w3.css
-curl -sS https://www.w3schools.com/lib/w3-colors-2020.css -o $installdir/w3-colors-2020.css
-curl -sS https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js -o $installdir/jquery.min.js
 
 sudo apt-get update && sudo apt-get upgrade -y
 sudo apt-get -y autoremove
@@ -73,35 +69,14 @@ sudo systemctl enable $PHPFPMSERVICE
 
 sudo rm $wwwdir/index.nginx-debian.html
 
-for item in index.php index_html.php index.js jquery.min.js rpims.php
-   do sudo mv $installdir/$item $wwwdir/
-done
-
-for item in .htpasswd rpims.yaml zabbix_rpims_userparameter.conf
-   do sudo mv $installdir/$item $wwwdir/conf/
-done
-
-for item in index.css w3.css w3-colors-2020.css
-   do sudo mv $installdir/$item $wwwdir/css/
-done
-
-for item in setup.php setup_html.php setup_form.php setup.js
-   do sudo mv $installdir/$item $wwwdir/setup/
-done
-sudo ln -s $wwwdir/setup/setup.php $wwwdir/setup/index.php
-
 sudo mv /etc/nginx/sites-available/default /etc/nginx/sites-available/default.org
-sudo mv $installdir/nginx-default /etc/nginx/sites-available/default
+sudo mv $unpackdir/etc/nginx-default /etc/nginx/sites-available/default
 sudo chown -R pi.pi $wwwdir
 sudo systemctl restart nginx
 sudo systemctl enable nginx
 
 sudo apt-get -y install zabbix-agent
 echo 'zabbix ALL=(ALL) NOPASSWD: /home/pi/scripts/RPiMS/redis-get-data.py' | sudo EDITOR='tee -a' visudo
-
-for item in zabbix_rpims_userparameter.conf zabbix_rpims.conf zabbix_agentd.conf zabbix_agentd.psk
-    do sudo mv $installdir/$item $wwwdir/conf/
-done
 
 echo "Generating a unique TLSPSKIdentity"
 TLSPSKIdentity=$(openssl rand -hex 8)
@@ -113,23 +88,22 @@ TLSPSK=$(openssl rand -hex 32)
 sed -i "s/ TLSPSK: .*/\ \TLSPSK: ${TLSPSK}/g" $wwwdir/conf/rpims.yaml
 echo $TLSPSK | sudo tee $wwwdir/conf/zabbix_agentd.psk
 
+sudo cp $unpackdir/etc/zabbix_rpims.conf /etc/zabbix/zabbix_agentd.conf.d/
+
 sudo systemctl restart zabbix-agent.service
 sudo systemctl enable zabbix-agent.service
 
-cat $installdir/motd |sudo tee /etc/update-motd.d/20-rpims
+cat $unpackdir/etc/motd |sudo tee /etc/update-motd.d/20-rpims
 sudo chmod ugo+x  /etc/update-motd.d/20-rpims
-rm $installdir/motd
 
-cat $installdir/cron |sudo tee /etc/cron.d/rpims
+cat $unpackdir/etc/cron |sudo tee /etc/cron.d/rpims
 sudo chown root.root /etc/cron.d/rpims
-rm $installdir/cron
 
-sudo mv $installdir/rpims.service /lib/systemd/system/rpims.service
+sudo mv $unpackdir/etc/rpims.service /lib/systemd/system/rpims.service
 sudo systemctl daemon-reload
 sudo systemctl enable rpims.service
 
 sudo mv /etc/uv4l/uv4l-raspicam.conf uv4l-raspicam.conf.org
-sudo mv $installdir/uv4l-raspicam.conf $wwwdir/conf/uv4l-raspicam.conf
 sudo ln -s /var/www/html/conf/uv4l-raspicam.conf /etc/uv4l/uv4l-raspicam.conf
 
 #for DHT22 sensor
@@ -146,6 +120,9 @@ sudo apt-get -y install libgpiod2 libgpiod-dev
 #sudo cp libgpiod_pulsein libgpiod_pulsein.bak
 #sudo cp ~/libgpiod_pulsein/src/libgpiod_pulsein ./
 #
+
+rm $downloaddir/RPiMS.zip
+rmdir $unpackdir
 
 _IP=$(ip route get 1.1.1.1 | awk '{print $7}')
 echo ""

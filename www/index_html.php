@@ -9,8 +9,8 @@
     <link rel="stylesheet" href="/css/index.css">
     <link rel="stylesheet" href="/css/w3.css">
     <link rel="stylesheet" href="/css/w3-colors-2020.css">
-    <script src="jquery.min.js"></script>
-    <script src="index.js" defer></script>
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/index.js" defer></script>
     <title>RPiMS</title>
   </head>
   <body>
@@ -21,7 +21,7 @@
           <button onclick="myFunction()" class="dropbtn">Config</button>
           <div id="myDropdown" class="dropdown-content">
             <a href="/setup/">Setup</a>
-            <a href="/rpims.php">API</a>
+            <a href="/api/">API</a>
           </div>
         </div>
       </div>
