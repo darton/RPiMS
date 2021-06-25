@@ -30,8 +30,7 @@ curl -sS $repourl -L -o $downloaddir/RPiMS.zip
 unzip  $downloaddir/RPiMS.zip -d $downloaddir
 sudo cp -R $unpackdir/www/* $wwwdir
 sudo cp $unpackdir/RPiMS/* $installdir
-
-chmod u+x $installdir/*.py $installdir/*.sh
+sudo chmod u+x $installdir/*.py $installdir/*.sh
 
 sudo apt-get update && sudo apt-get upgrade -y
 sudo apt-get -y autoremove
