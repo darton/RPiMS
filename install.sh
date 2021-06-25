@@ -28,8 +28,8 @@ wwwdir=/var/www/html
 [[ -d $installdir ]] || mkdir -p $installdir
 [[ -d /home/pi/Videos ]] || mkdir -p /home/pi/Videos
 
-for file in $(curl -sS https://raw.githubusercontent.com/darton/RPiMS/legacy/files.txt); do
-   curl -sS https://raw.githubusercontent.com/darton/RPiMS/legacy/$file > $installdir/$file
+for file in $(curl -sS https://raw.githubusercontent.com/darton/RPiMS/master/files.txt); do
+   curl -sS https://raw.githubusercontent.com/darton/RPiMS/master/$file > $installdir/$file
 done
 
 chmod u+x $installdir/*.py $installdir/*.sh
