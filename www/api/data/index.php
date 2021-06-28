@@ -15,27 +15,9 @@ $config = json_decode($obj, true);
 $obj = $redis-> get('sensors');
 $sensors = json_decode($obj, true);
 
-/*
-function showSettings() {
-    global $redis;
-    $obj = $redis-> get('config');
-    return json_decode($obj, true);
-}
-
-function showSystem() {
-    global $rpims;
-    global $zabbix_agent;
-    $system["hostip"] = $rpims["hostip"];
-    $system["hostname"] = $zabbix_agent["hostname"];
-    $system["location"] = $zabbix_agent["location"];
-    return $system;
-}
-*/
-
 $rpims_api = array();
 
 if ($_GET['system'] == "show" || $_GET['all'] == "show"){
-    //$system = showSystem();
     $obj = $redis-> get('zabbix_agent');
     $zabbix_agent = json_decode($obj, true);
     $system["hostip"] = $rpims["hostip"];
@@ -45,7 +27,6 @@ if ($_GET['system'] == "show" || $_GET['all'] == "show"){
 
 }
 if ($_GET['settings'] == "show" || $_GET['all'] == "show"){
-    //$settings = showSettings();
     $obj = $redis-> get('config');
     $rpims_api["settings"] = json_decode($obj, true);
 }
