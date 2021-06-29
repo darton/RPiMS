@@ -88,15 +88,11 @@ RPi    [GND - Pin 9] ----------------------------- [GND]  BME280
 ```
 
 - ### Temperature, Humidity, Pressure Sensor BME280 - i2C on RPi Pico
-If you want to use BME280 sensor on long cable, copy two files from pico directory, to RPi Pico.
 
-Connect the BME280 sensor to the i2C RPi Pico port.
+If you want to use BME280 sensor on long cable, copy two files [main.py](https://raw.githubusercontent.com/darton/RPiMS/master/pico/main.py) and [bme280_float.py](https://raw.githubusercontent.com/darton/RPiMS/master/pico/bme280_float.py) from pico directory, to RPi Pico.
 
-Connect the RPi with the RPi Pico together with the USB cable.
+Connect the BME280 sensor to the i2C RPi Pico port:
 
-Select serial as the interface type in RPiMS configuration for the BME280 sensor.
-
- - ### Temperature, Humidity, Pressure Sensor BME280
 ```
 RPi Pico  [GP22 Pin 29]------------------------------ [VCC]  BME280
 RPi Pico  [GP16 Pin 21] ----------------------------- [SDA]  BME280
@@ -104,9 +100,14 @@ RPi Pico  [GP17 Pin 22] ----------------------------- [SDC]  BME280
 RPi Pico  [GND  Pin 23] ----------------------------- [GND]  BME280
 ```
 
+
+Connect the RPi with the RPi Pico together with the USB cable.
+
 ```
 BME280 [i2c] <------> [i2C] RPi Pico [USB] <----------------------------------->  RPi [USB]
 ```
+
+Select [USB port number](https://raw.githubusercontent.com/darton/RPiMS/master/documents/RPiMS-RPi-USB.png) in RPiMS configuration for the BME280 sensor.
 
 
 - ### DS18B20 Temperature sensor
