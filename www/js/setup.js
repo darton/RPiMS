@@ -196,7 +196,7 @@ $("#use_weather_station").each(function() {
     }
 });
 
-$("#use_DHT_sensor").change(function() {
+$("#use_dht_sensor").change(function() {
     if(this.checked) {
         showFunction('DHT_sensor')
     }
@@ -205,7 +205,7 @@ $("#use_DHT_sensor").change(function() {
     }
 });
 
-$("#use_DHT_sensor").each(function() {
+$("#use_dht_sensor").each(function() {
     if(this.checked) {
         showFunction('DHT_sensor')
     }
@@ -214,7 +214,7 @@ $("#use_DHT_sensor").each(function() {
     }
 });
 
-$("#use_BME280_sensor").change(function() {
+$("#use_bme280_sensor").change(function() {
     if(this.checked) {
         showFunction('BME280_sensor')
     }
@@ -223,7 +223,7 @@ $("#use_BME280_sensor").change(function() {
     }
 });
 
-$("#use_BME280_sensor").each(function() {
+$("#use_bme280_sensor").each(function() {
     if(this.checked) {
         showFunction('BME280_sensor')
     }
@@ -286,7 +286,7 @@ $("#id3_BME280_use").each(function() {
     }
 });
 
-$("#use_DS18B20_sensor").change(function() {
+$("#use_ds18b20_sensor").change(function() {
     if(this.checked) {
         showFunction('DS18B20_sensor')
     }
@@ -295,7 +295,7 @@ $("#use_DS18B20_sensor").change(function() {
     }
 });
 
-$("#use_DS18B20_sensor").each(function() {
+$("#use_ds18b20_sensor").each(function() {
     if(this.checked) {
         showFunction('DS18B20_sensor')
     }
@@ -304,8 +304,7 @@ $("#use_DS18B20_sensor").each(function() {
     }
 });
 
-use_CPU_sensor
-$("#use_CPU_sensor").change(function() {
+$("#use_cpu_sensor").change(function() {
     if(this.checked) {
         showFunction('CPU_sensor')
     }
@@ -314,7 +313,7 @@ $("#use_CPU_sensor").change(function() {
     }
 });
 
-$("#use_CPU_sensor").each(function() {
+$("#use_cpu_sensor").each(function() {
     if(this.checked) {
         showFunction('CPU_sensor')
     }
