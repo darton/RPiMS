@@ -31,10 +31,10 @@ $use_motion_sensor = filter_var($rpims['setup']['use_motion_sensor'], FILTER_VAL
 //$use_system_buttons = filter_var($rpims['setup']['use_system_buttons'], FILTER_VALIDATE_BOOLEAN);
 //$use_led_indicators = filter_var($rpims['setup']['use_led_indicators'], FILTER_VALIDATE_BOOLEAN);
 $use_serial_display = filter_var($rpims['setup']['use_serial_display'], FILTER_VALIDATE_BOOLEAN);
-$use_CPU_sensor = filter_var($rpims['setup']['use_CPU_sensor'], FILTER_VALIDATE_BOOLEAN);
-$use_BME280_sensor = filter_var($rpims['setup']['use_BME280_sensor'], FILTER_VALIDATE_BOOLEAN);
-$use_DS18B20_sensor = filter_var($rpims['setup']['use_DS18B20_sensor'], FILTER_VALIDATE_BOOLEAN);
-$use_DHT_sensor = filter_var($rpims['setup']['use_DHT_sensor'], FILTER_VALIDATE_BOOLEAN);
+$use_cpu_sensor = filter_var($rpims['setup']['use_cpu_sensor'], FILTER_VALIDATE_BOOLEAN);
+$use_bme280_sensor = filter_var($rpims['setup']['use_bme280_sensor'], FILTER_VALIDATE_BOOLEAN);
+$use_ds18b20_sensor = filter_var($rpims['setup']['use_ds18b20_sensor'], FILTER_VALIDATE_BOOLEAN);
+$use_dht_sensor = filter_var($rpims['setup']['use_dht_sensor'], FILTER_VALIDATE_BOOLEAN);
 $use_weather_station = filter_var($rpims['setup']['use_weather_station'], FILTER_VALIDATE_BOOLEAN);
 
 $serial_display_refresh_rate = $rpims['setup']['serial_display_refresh_rate'];

@@ -1050,19 +1050,19 @@ def main():
     if bool(config['use_system_buttons']) is True:
         system_buttons_list['shutdown_button'].when_held = shutdown
 
-    if bool(config['use_CPU_sensor']) is True:
+    if bool(config['use_cpu_sensor']) is True:
         threading_function(get_cputemp_data, **cputemp_config, **config)
 
-    if bool(config['use_BME280_sensor']) is True:
+    if bool(config['use_bme280_sensor']) is True:
         for item in bme280_config:
             bme280 = bme280_config[item]
             if bool(bme280_config[item]['use']) is True:
                 multiprocessing_function(get_bme280_data, **bme280, **config)
 
-    if bool(config['use_DS18B20_sensor']) is True:
+    if bool(config['use_ds18b20_sensor']) is True:
         threading_function(get_ds18b20_data, **ds18b20_config, **config)
 
-    if bool(config['use_DHT_sensor']) is True:
+    if bool(config['use_dht_sensor']) is True:
         threading_function(get_dht_data, **dht_config, **config)
 
     if bool(config['use_weather_station']) is True:

@@ -104,7 +104,7 @@
                     <legend>CPU sensor configuration</legend>
                     <div class="w3-row w3-2020-ultramarine-green">
                         <div class="w3-container w3-margin-top w3-margin-bottom">
-                            <input name="use_CPU_sensor" type="hidden" value="False"><input name="use_CPU_sensor" type="checkbox" class="w3-check" id="use_CPU_sensor"<?php if ($use_CPU_sensor == 'yes') echo 'checked="checked"'; ?> value="True">
+                            <input name="use_cpu_sensor" type="hidden" value="False"><input name="use_cpu_sensor" type="checkbox" class="w3-check" id="use_cpu_sensor"<?php if ($use_cpu_sensor == 'yes') echo 'checked="checked"'; ?> value="True">
                             <label>Use CPU Sensor</label>
                         </div>
                     </div>
@@ -119,7 +119,7 @@
                     <legend>DS18B20 sensor configuration</legend>
                     <div class="w3-row w3-2020-ultramarine-green">
                         <div class="w3-container w3-margin-top w3-margin-bottom">
-                            <input name="use_DS18B20_sensor" type="hidden" value="False"><input name="use_DS18B20_sensor" type="checkbox" class="w3-check" id="use_DS18B20_sensor"<?php if ($use_DS18B20_sensor == 'yes') echo 'checked="checked"'; ?> value="True">
+                            <input name="use_ds18b20_sensor" type="hidden" value="False"><input name="use_ds18b20_sensor" type="checkbox" class="w3-check" id="use_ds18b20_sensor"<?php if ($use_ds18b20_sensor == 'yes') echo 'checked="checked"'; ?> value="True">
                             <label>Use DS18B20 sensor</label>
                         </div>
                     </div>
@@ -150,7 +150,7 @@
                     <legend>BME280 sensor configuration</legend>
                     <div class="w3-row w3-2020-ultramarine-green">
                         <div class="w3-container w3-margin-top w3-margin-bottom">
-                            <input name="use_BME280_sensor" type="hidden" value="False"><input name="use_BME280_sensor" type="checkbox" class="w3-check" id="use_BME280_sensor"<?php if ($use_BME280_sensor == 'yes') echo 'checked="checked"'; ?> value="True">
+                            <input name="use_bme280_sensor" type="hidden" value="False"><input name="use_bme280_sensor" type="checkbox" class="w3-check" id="use_bme280_sensor"<?php if ($use_bme280_sensor == 'yes') echo 'checked="checked"'; ?> value="True">
                             <label>Use BME280 sensor</label>
                         </div>
                     </div>
@@ -263,7 +263,7 @@
                     <legend>DHT sensor configuration</legend>
                     <div class="w3-row w3-2020-ultramarine-green">
                         <div class="w3-container w3-margin-top w3-margin-bottom">
-                            <input name="use_DHT_sensor" type="hidden" value="False"><input name="use_DHT_sensor" type="checkbox" class="w3-check" id="use_DHT_sensor"<?php if ($use_DHT_sensor) echo 'checked="checked"'; ?> value="True">
+                            <input name="use_dht_sensor" type="hidden" value="False"><input name="use_dht_sensor" type="checkbox" class="w3-check" id="use_dht_sensor"<?php if ($use_dht_sensor) echo 'checked="checked"'; ?> value="True">
                             <label>Use DHT sensor</label>
                         </div>
                     </div>
