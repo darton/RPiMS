@@ -391,28 +391,60 @@ http://rpiipaddress:8080/stream/video.mjpeg
 ```
 
 ## Configuration testing zabbix-agent
+
 ```
 sudo apt-get  install zabbix-proxy-sqlite3
 
+```
+
+Testing Cpu temperature sensor
+```
 sudo zabbix_get -s 127.0.0.1 -k rpims.cputemp[2] --tls-connect=psk --tls-psk-identity="$(awk -F\= '/TLSPSKIdentity/ {print $2}' /var/www/html/conf/zabbix_agentd.conf)" --tls-psk-file=/var/www/html/conf/zabbix_agentd.psk
+```
 
-
+Testing DS18B20 temperature sensor
+```
 sudo zabbix_get -s 127.0.0.1 -k rpims.ds18b20[2] --tls-connect=psk --tls-psk-identity="$(awk -F\= '/TLSPSKIdentity/ {print $2}' /var/www/html/conf/zabbix_agentd.conf)" --tls-psk-file=/var/www/html/conf/zabbix_agentd.psk
 
 sudo zabbix_get -s 127.0.0.1 -k rpims.ds18b20[4] --tls-connect=psk --tls-psk-identity="$(awk -F\= '/TLSPSKIdentity/ {print $2}' /var/www/html/conf/zabbix_agentd.conf)" --tls-psk-file=/var/www/html/conf/zabbix_agentd.psk
+```
 
+Testing id1 BME280 sensor on i2c
+```
+sudo zabbix_get -s 127.0.0.1 -k rpims.id1_bme280[2] --tls-connect=psk --tls-psk-identity="$(awk -F\= '/TLSPSKIdentity/ {print $2}' /var/www/html/conf/zabbix_agentd.conf)" --tls-psk-file=/var/www/html/conf/zabbix_agentd.psk
 
-sudo zabbix_get -s 127.0.0.1 -k rpims.bme280[2] --tls-connect=psk --tls-psk-identity="$(awk -F\= '/TLSPSKIdentity/ {print $2}' /var/www/html/conf/zabbix_agentd.conf)" --tls-psk-file=/var/www/html/conf/zabbix_agentd.psk
+sudo zabbix_get -s 127.0.0.1 -k rpims.id1_bme280[4] --tls-connect=psk --tls-psk-identity="$(awk -F\= '/TLSPSKIdentity/ {print $2}' /var/www/html/conf/zabbix_agentd.conf)" --tls-psk-file=/var/www/html/conf/zabbix_agentd.psk
 
-sudo zabbix_get -s 127.0.0.1 -k rpims.bme280[4] --tls-connect=psk --tls-psk-identity="$(awk -F\= '/TLSPSKIdentity/ {print $2}' /var/www/html/conf/zabbix_agentd.conf)" --tls-psk-file=/var/www/html/conf/zabbix_agentd.psk
+sudo zabbix_get -s 127.0.0.1 -k rpims.id1_bme280[6] --tls-connect=psk --tls-psk-identity="$(awk -F\= '/TLSPSKIdentity/ {print $2}' /var/www/html/conf/zabbix_agentd.conf)" --tls-psk-file=/var/www/html/conf/zabbix_agentd.psk
+```
 
-sudo zabbix_get -s 127.0.0.1 -k rpims.bme280[6] --tls-connect=psk --tls-psk-identity="$(awk -F\= '/TLSPSKIdentity/ {print $2}' /var/www/html/conf/zabbix_agentd.conf)" --tls-psk-file=/var/www/html/conf/zabbix_agentd.psk
+Testing id2 BME280 sensor on USB port
+```
+sudo zabbix_get -s 127.0.0.1 -k rpims.id2_bme280[2] --tls-connect=psk --tls-psk-identity="$(awk -F\= '/TLSPSKIdentity/ {print $2}' /var/www/html/conf/zabbix_agentd.conf)" --tls-psk-file=/var/www/html/conf/zabbix_agentd.psk
 
+sudo zabbix_get -s 127.0.0.1 -k rpims.id2_bme280[4] --tls-connect=psk --tls-psk-identity="$(awk -F\= '/TLSPSKIdentity/ {print $2}' /var/www/html/conf/zabbix_agentd.conf)" --tls-psk-file=/var/www/html/conf/zabbix_agentd.psk
 
+sudo zabbix_get -s 127.0.0.1 -k rpims.id2_bme280[6] --tls-connect=psk --tls-psk-identity="$(awk -F\= '/TLSPSKIdentity/ {print $2}' /var/www/html/conf/zabbix_agentd.conf)" --tls-psk-file=/var/www/html/conf/zabbix_agentd.psk
+```
+
+Testing id3 BME280 sensor on USB port
+```
+sudo zabbix_get -s 127.0.0.1 -k rpims.id3_bme280[2] --tls-connect=psk --tls-psk-identity="$(awk -F\= '/TLSPSKIdentity/ {print $2}' /var/www/html/conf/zabbix_agentd.conf)" --tls-psk-file=/var/www/html/conf/zabbix_agentd.psk
+
+sudo zabbix_get -s 127.0.0.1 -k rpims.id3_bme280[4] --tls-connect=psk --tls-psk-identity="$(awk -F\= '/TLSPSKIdentity/ {print $2}' /var/www/html/conf/zabbix_agentd.conf)" --tls-psk-file=/var/www/html/conf/zabbix_agentd.psk
+
+sudo zabbix_get -s 127.0.0.1 -k rpims.id3_bme280[6] --tls-connect=psk --tls-psk-identity="$(awk -F\= '/TLSPSKIdentity/ {print $2}' /var/www/html/conf/zabbix_agentd.conf)" --tls-psk-file=/var/www/html/conf/zabbix_agentd.psk
+```
+
+Testing DHT sensors
+```
 sudo zabbix_get -s 127.0.0.1 -k rpims.dht[2] --tls-connect=psk --tls-psk-identity="$(awk -F\= '/TLSPSKIdentity/ {print $2}' /var/www/html/conf/zabbix_agentd.conf)" --tls-psk-file=/var/www/html/conf/zabbix_agentd.psk
 
 sudo zabbix_get -s 127.0.0.1 -k rpims.dht[4] --tls-connect=psk --tls-psk-identity="$(awk -F\= '/TLSPSKIdentity/ {print $2}' /var/www/html/conf/zabbix_agentd.conf)" --tls-psk-file=/var/www/html/conf/zabbix_agentd.psk
+```
 
+Testing Cpu load
 
+```
 zabbix_get -s 127.0.0.1 -k "system.cpu.load[all,avg1]" --tls-connect=psk --tls-psk-identity="$(awk -F\= '/TLSPSKIdentity/ {print $2}' /var/www/html/conf/zabbix_agentd.conf)" --tls-psk-file=/var/www/html/conf/zabbix_agentd.psk
 ```
