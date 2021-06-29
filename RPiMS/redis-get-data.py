@@ -28,7 +28,7 @@ def print_help():
 
 if len(sys.argv) > 1:
     if sys.argv[1] == 'BME280':
-        if config['use_BME280_sensor'] is True:
+        if config['use_bme280_sensor'] is True:
             if len(sys.argv) == 3:
                 bme_id = sys.argv[2]
                 if redis_db.exists(f'id{bme_id}_BME280_Temperature') and redis_db.exists(f'id{bme_id}_BME280_Humidity') and redis_db.exists(f'id{bme_id}_BME280_Pressure'):
@@ -39,7 +39,7 @@ if len(sys.argv) > 1:
             else: print_help()
 
     elif sys.argv[1] == 'DS18B20':
-        if config['use_DS18B20_sensor'] is True:
+        if config['use_ds18b20_sensor'] is True:
             ds18b20_sensors = []
             for item in redis_db.smembers('DS18B20_sensors'):
                 ds18b20_sensors.append(item)
@@ -50,7 +50,7 @@ if len(sys.argv) > 1:
             print('')
 
     elif sys.argv[1] == 'ds18b20':
-        if config['use_DS18B20_sensor'] is True:
+        if config['use_ds18b20_sensor'] is True:
             if len(sys.argv) == 3:
                 onewire_addr = sys.argv[2]
                 if redis_db.exists(onewire_addr):
@@ -58,14 +58,14 @@ if len(sys.argv) > 1:
             else: print_help()
 
     elif sys.argv[1] == 'DHT':
-        if config['use_DHT_sensor'] is True:
+        if config['use_dht_sensor'] is True:
             if redis_db.exists('DHT_Temperature') and redis_db.exists('DHT_Humidity'):
                 temperature = redis_db.get('DHT_Temperature')
                 humidity = redis_db.get('DHT_Humidity')
                 print('Temperature={0:0.2f};Humidity={1:0.2f};'.format(float(temperature),float(humidity)))
 
     elif sys.argv[1] == 'CPUTEMP':
-        if config['use_CPU_sensor'] is True:
+        if config['use_cpu_sensor'] is True:
             if redis_db.exists('CPU_Temperature'):
                 temperature = redis_db.get('CPU_Temperature')
                 print('CPUTemperature' + '={0:0.2f};'.format(float(temperature)))
