@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 	<meta charset="utf-8"/>
+        <meta name="description" content="RPiMS - Raspberry Pi Monitoring System">
+        <meta name="keywords" content="Raspberry Pi, Monitoring System, Sensors">
+        <meta name="author" content="Dariusz Kowalczyk">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>RPiMS API</title>
 	<link rel="stylesheet" href="/css/w3.css">
