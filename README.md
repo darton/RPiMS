@@ -151,12 +151,24 @@ RPi  [VCC 3V3 - Pin 1] -- [LV] - LEVEL SHIFTER
 RPi      [GND - Pin 9] ---[GND] - LEVEL SHIFTER -------------- [GND]    DHT22
 ```
 
- - ### OLED i2C Display
+ - ### Oled i2C Display
 ```
-RPi  [VCC 3V3 pin 1] ----------------------------- [VCC]  OLED
-RPi   [GPIO.2 pin 3] ----------------------------- [SDA]  OLED
-RPi   [GPIO.3 pin 5] ----------------------------- [SDC]  OLED
-RPi    [GND - pin 9] ----------------------------- [GND]  OLED
+RPi  [VCC 3V3 pin 1] ----------------------------- [VCC]  Display
+RPi   [GPIO.2 pin 3] ----------------------------- [SDA]  Display
+RPi   [GPIO.3 pin 5] ----------------------------- [SDC]  Display
+RPi    [GND - pin 9] ----------------------------- [GND]  Display
+```
+
+ - ### TFT SPI Display
+```
+RPi  [VCC 3V3 pin 1] ----------------------------- [VCC]  Display
+RPi  [P11/SCLK] ---------------------------------- [SCLK]  Display
+RPi  [P10/MOS] ----------------------------------- [SDC]  Display
+RPi  [P8/CE0] ------------------------------------ [CS]  Display
+RPi  [P25] --------------------------------------- [Data/Command control] Display
+RPi  [P27] --------------------------------------- [Reset] Display
+RPi  [P24] --------------------------------------- [Backlight] Display
+RPi  [GND - pin 9] ------------------------------- [GND] Display
 ```
 
  - ### Hardware Clock
@@ -166,8 +178,8 @@ RPi   [GPIO.2 pin 3] ----------------------------- [SDA]  DS3231
 RPi   [GPIO.3 pin 5] ----------------------------- [SDC]  DS3231
 ```
 
-- Door Sensors it is potential-free sensors like button, door/window sensors
-- Motion Sensors it is digital sensors with binary output signal (3.3V)
+- Door/Window Sensors it is potential-free sensors like button.
+- Motion Sensors it is digital sensors with binary output signal (3.3V).
 
 
 ## B.o.M - Bill of Materials
@@ -367,11 +379,15 @@ $ i2cdetect -y 1
 
 ## Configuration testing picamera
 ```
+sudo systemctl stop rpims
+
 raspivid -o test.h264
 
 raspistill -o test.jpg
 
-rtsp://rpiipaddress:8554/
+sudo systemctl start rpims
+
+http://rpiipaddress:8080/stream/video.mjpeg
 ```
 
 ## Configuration testing zabbix-agent
