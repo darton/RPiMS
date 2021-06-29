@@ -2,6 +2,9 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
+        <meta name="description" content="RPiMS - Raspberry Pi Monitoring System">
+        <meta name="keywords" content="Raspberry Pi, Monitoring System, Sensors">
+        <meta name="author" content="Dariusz Kowalczyk">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="/css/w3.css">
         <link rel="stylesheet" href="/css/w3-colors-2020.css">
