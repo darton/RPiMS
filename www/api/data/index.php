@@ -15,54 +15,38 @@ $config = json_decode($obj, true);
 $obj = $redis-> get('sensors');
 $sensors = json_decode($obj, true);
 
-/*
-function showSettings() {
-    global $redis;
-    $obj = $redis-> get('config');
-    return json_decode($obj, true);
-}
-
-function showSystem() {
-    global $rpims;
-    global $zabbix_agent;
-    $system["hostip"] = $rpims["hostip"];
-    $system["hostname"] = $zabbix_agent["hostname"];
-    $system["location"] = $zabbix_agent["location"];
-    return $system;
-}
-*/
-
 $rpims_api = array();
 
-if ($_GET['system'] == "show" || $_GET['all'] == "show"){
-    //$system = showSystem();
+if (empty($_GET) || $_GET['all'] == 'show') {
+$showAll = true;
+}
+
+if ($_GET['settings'] == "show" || $showAll == true){
+    $obj = $redis-> get('config');
+    $rpims_api["settings"] = json_decode($obj, true);
+}
+if ($_GET['system'] == "show" || $showAll == true){
     $obj = $redis-> get('zabbix_agent');
     $zabbix_agent = json_decode($obj, true);
     $system["hostip"] = $rpims["hostip"];
     $system["hostname"] = $zabbix_agent["hostname"];
     $system["location"] = $zabbix_agent["location"];
     $rpims_api["system"] = $system;
-
 }
-if ($_GET['settings'] == "show" || $_GET['all'] == "show"){
-    //$settings = showSettings();
-    $obj = $redis-> get('config');
-    $rpims_api["settings"] = json_decode($obj, true);
-}
-if ($_GET['cpu'] == "show" || $_GET['sensors'] == "show" || $_GET['all'] == "show"){
-    if ($config["use_CPU_sensor"] == true) {
+if ($_GET['cpu'] == "show" || $_GET['sensors'] == "show" || $showAll == true){
+    if ($config["use_cpu_sensor"] == true) {
         $rpims_api["sensors"]["cpu"]["temperature"] = $rpims["CPU_Temperature"];
     }
 }
-if ($_GET['picamera'] == "show" || $_GET['sensors'] == "show" || $_GET['all'] == "show"){
+if ($_GET['picamera'] == "show" || $_GET['sensors'] == "show" || $showAll == true){
     if ($config["use_picamera"] == show) {  
         $rpims_api["sensors"]["picamera"]["rotation"] = $sensors["PICAMERA"]["rotation"];
         $rpims_api["sensors"]["picamera"]["mode"] = $sensors["PICAMERA"]["mode"];
         $rpims_api["sensors"]["picamera"]["fps"] = $sensors["PICAMERA"]["fps"];
     }
 }
-if ($_GET['bme280'] == "show" || $_GET['sensors'] == "show" || $_GET['all'] == "show"){
-    if ($config["use_BME280_sensor"] == true) {
+if ($_GET['bme280'] == "show" || $_GET['sensors'] == "show" || $showAll == true){
+    if ($config["use_bme280_sensor"] == true) {
         foreach ($sensors['BME280'] as $key => $value) {
             $id = $sensors['BME280'][$key]["id"];
             $t = $id."_BME280_Temperature";
@@ -77,8 +61,8 @@ if ($_GET['bme280'] == "show" || $_GET['sensors'] == "show" || $_GET['all'] == "
         }
     }
 }
-if ($_GET['one_wire'] == "show" || $_GET['sensors'] == "show" || $_GET['all'] == "show"){
-    if ($config["use_DS18B20_sensor"] == true) {
+if ($_GET['one_wire'] == "show" || $_GET['sensors'] == "show" || $showAll == true){
+    if ($config["use_ds18b20_sensor"] == true) {
         $DS18B20_sensors = $redis->smembers('DS18B20_sensors');
         foreach ($DS18B20_sensors as $key => $value) {
             $ds18b20_name = $value."_name";
@@ -87,13 +71,13 @@ if ($_GET['one_wire'] == "show" || $_GET['sensors'] == "show" || $_GET['all'] ==
         }
     }
 }
-if ($_GET['dht'] == "show" || $_GET['sensors'] == "show" || $_GET['all'] == "show"){
-    if ($config["use_DHT_sensor"] == true) {
+if ($_GET['dht'] == "show" || $_GET['sensors'] == "show" || $showAll == true){
+    if ($config["use_dht_sensor"] == true) {
         $rpims_api["sensors"]["dht"]["temperature"] = $rpims["DHT_Temperature"];
         $rpims_api["sensors"]["dht"]["humidity"] = $rpims["DHT_Humidity"];
     }
 }
-if ($_GET['weather_station'] == "show" || $_GET['sensors'] == "show" || $_GET['all'] == "show"){
+if ($_GET['weather_station'] == "show" || $_GET['sensors'] == "show" || $showAll == true){
     if ($config["use_weather_station"] == true) {
         $rpims_api["weather_station"]["wind_speed"] = $rpims["wind_speed"];
         $rpims_api["weather_station"]["average_wind_speed"] = $rpims["average_wind_speed"];
@@ -104,7 +88,7 @@ if ($_GET['weather_station'] == "show" || $_GET['sensors'] == "show" || $_GET['a
         $rpims_api["weather_station"]["daily_rainfall"] = $rpims["daily_rainfall"];
     }
 }
-if ($_GET['gpio'] == "show" || $_GET['sensors'] == "show" || $_GET['all'] == "show"){
+if ($_GET['gpio'] == "show" || $_GET['sensors'] == "show" || $showAll == true){
     $obj = $redis-> get('gpio');
     $gpio = json_decode($obj, true);
     if ($config["use_door_sensor"] == true) {

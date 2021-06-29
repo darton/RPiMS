@@ -51,7 +51,7 @@ if ($config["use_motion_sensor"] == "True")
     }
 }
 
-if ($config["use_DS18B20_sensor"] == "True")
+if ($config["use_ds18b20_sensor"] == "True")
 {
     sleep(2);
     $DS18B20_sensors_detected = $redis->smembers('DS18B20_sensors');

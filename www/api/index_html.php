@@ -3,10 +3,11 @@
 	<meta charset="utf-8"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>RPiMS API</title>
-	<link rel="stylesheet" href="../css/w3.css">
+	<link rel="stylesheet" href="/css/w3.css">
+	<link rel="stylesheet" href="/css/w3-colors-2020.css">
 	<body>
 		<div class="w3-container">
-			<div class="w3-panel w3-teal w3-round">
+			<div class="w3-panel w3-2020-ultramarine-green w3-round">
 				<h2 id="rpims-api"> RPiMS API</h2>
 			</div>
 			<div class="w3-panel">

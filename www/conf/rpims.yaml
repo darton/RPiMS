@@ -10,10 +10,10 @@ setup:
   use_system_buttons: false
   use_door_led_indicator: true
   use_motion_led_indicator: true
-  use_CPU_sensor: true
-  use_BME280_sensor: true
-  use_DS18B20_sensor: true
-  use_DHT_sensor: false
+  use_cpu_sensor: true
+  use_bme280_sensor: true
+  use_ds18b20_sensor: true
+  use_dht_sensor: false
   use_weather_station: false
   use_serial_display: false
   serial_display_type: lcd_st7735

@@ -31,7 +31,7 @@
               <ul style="list-style-type:none;">
                 <li>Hostname: <span class="value" id="hostname"></span></li>
                 <li>Location: <span class="value" id="location"></span></li>
-                <?php if ($config["use_CPU_sensor"] == "True") {?>
+                <?php if ($config["use_cpu_sensor"] == "True") {?>
                 <li>CPU Temperature: <span class="value" id="CPU_Temperature"> </span><span class="value" id="CPU_Temperature_unit"></span></li>
                 <?php }?>
               </ul>
@@ -47,7 +47,7 @@
        }
       ?>
 
-      <?php if ($config["use_DHT_sensor"] == "True") {?>
+      <?php if ($config["use_dht_sensor"] == "True") {?>
         <div class="sensors">
           <div class="w3-container w3-margin">DHT Sensor</div>
           <div style="width: 100%; display: table;">
@@ -71,7 +71,7 @@
         </div>
       <?php }?>
 
-      <?php if ($config["use_BME280_sensor"] == "True") {?>
+      <?php if ($config["use_bme280_sensor"] == "True") {?>
         <?php
             foreach ($sensors['BME280'] as $key => $value)
             {
@@ -119,7 +119,7 @@
       <?php }?>
 
       <!--
-      <?php if ($config["use_DS18B20_sensor"] == "True") {?>
+      <?php if ($config["use_ds18b20_sensor"] == "True") {?>
         <div class="sensors">
           <h3>DS18B20 Sensors</h3>
           <p>
@@ -133,7 +133,7 @@
       <?php }?>
       -->
 
-      <?php if ($config["use_DS18B20_sensor"] == "True") {?>
+      <?php if ($config["use_ds18b20_sensor"] == "True") {?>
         <?php  foreach ($DS18B20_sensors_detected as $key => $value) {
           $item = "DS18B20_".$value;
           $name = $value."_name";

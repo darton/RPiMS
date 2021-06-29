@@ -38,7 +38,7 @@ function setGaugeValue(gauge, value, divisor, unit ) {
 
 
 setInterval(function() {
-    $.getJSON("rpims.php", function(data) {
+    $.getJSON("/api/data/index.php", function(data) {
 
     if (data['settings']['use_weather_station'] == true) {
 		$("#average_wind_direction").html(data['weather_station']['average_wind_direction']);
