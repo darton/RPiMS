@@ -32,6 +32,8 @@ sudo cp -R $unpackdir/www/* $wwwdir
 sudo cp $unpackdir/RPiMS/* $installdir
 sudo chmod u+x $installdir/*.py $installdir/*.sh
 
+sudo systemctl stop dphys-swapfile.service
+sudo systemctl disable dphys-swapfile.service
 sudo apt-get update && sudo apt-get upgrade -y
 sudo apt-get -y autoremove
 sudo apt-get -y install python3-gpiozero python3-pip build-essential python3-dev python3-numpy python3-picamera python3-w1thermsensor python3-automationhat python3-systemd
