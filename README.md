@@ -61,7 +61,7 @@ htpasswd -b  /var/www/html/conf/.htpasswd admin newpassword
 ```
 
 Start/Stop RPIMS
-```
+```bash
 sudo systemctl start rpims.service
 sudo systemclt stop rpims.service
 ```
