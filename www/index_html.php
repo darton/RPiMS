@@ -211,7 +211,7 @@
               </div>
             </div>
           </div>
-          <div class="w3-container">       
+          <div class="w3-container">
             <table class="w3-table">
               <tr><td>Wind speed: </td><td><span class="value" id="wind_speed"></span><span class="value"> km/h</span></td></tr>
               <tr><td>Average Wind speed: </td><td><span class="value" id="average_wind_speed"></span><span class="value"> km/h</span></td></tr>
