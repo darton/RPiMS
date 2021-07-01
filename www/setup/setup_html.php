@@ -13,7 +13,11 @@
         <title>RPiMS configuration</title>
     </head>
     <body>
-        <div class="w3-2020-brilliant-white">
+	<div class="w3-container w3-2020-brilliant-white" >
+	    <div class="w3-panel w3-2020-ultramarine-green">
+		    <h2 id="rpims-setup">RPiMS Setup</h2>
+	    </div>
+        <div>
             <form action="setup_form.php" method="post">
                 <fieldset>
                     <legend>System configuration</legend>
@@ -567,5 +571,6 @@
                 </fieldset>
             </form>
         </div>
+	</div>
     </body>
 </html>
