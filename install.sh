@@ -72,6 +72,8 @@ sudo rm $wwwdir/index.nginx-debian.html
 
 sudo mv /etc/nginx/sites-available/default /etc/nginx/sites-available/default.org
 sudo mv $unpackdir/etc/nginx-default /etc/nginx/sites-available/default
+sudo mv $unpackdir/etc/nginx.conf /etc/nginx
+sudo chown root.root /etc/nginx/nginx.conf
 sudo chown -R pi.pi $wwwdir
 sudo systemctl restart nginx
 sudo systemctl enable nginx
