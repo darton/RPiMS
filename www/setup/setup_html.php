@@ -9,15 +9,21 @@
         <link rel="stylesheet" href="/css/w3.css">
         <link rel="stylesheet" href="/css/w3-colors-2020.css">
         <script src="/js/jquery.min.js"></script>
+	<script src="/js/navbar.js"></script>
         <script src="/js/setup.js" defer></script>
         <title>RPiMS configuration</title>
     </head>
     <body>
-	<div class="w3-container w3-2020-brilliant-white" >
-	    <div class="w3-panel w3-2020-ultramarine-green">
-		    <h2 id="rpims-setup">RPiMS Setup</h2>
-	    </div>
-        <div>
+        <div class="w3-row w3-2020-ultramarine-green">
+            <div class="w3-dropdown-click">
+                <button onclick="navFunction()" class="w3-button w3-2020-ultramarine-green w3-xlarge">☰ Setup</button>
+                <div id="NavBar" class="w3-dropdown-content w3-bar-block w3-card-4 w3-animate-zoom">
+                    <a href="/" class="w3-bar-item w3-button w3-large">Start</a>
+                    <a href="/api/" class="w3-bar-item w3-button w3-large">API</a>
+                </div>
+            </div>
+        </div>
+        <div class="w3-2020-brilliant-white" >
             <form action="setup_form.php" method="post">
                 <fieldset>
                     <legend>System configuration</legend>
@@ -571,6 +577,5 @@
                 </fieldset>
             </form>
         </div>
-	</div>
     </body>
 </html>

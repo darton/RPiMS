@@ -8,11 +8,18 @@
 	<title>RPiMS API</title>
 	<link rel="stylesheet" href="/css/w3.css">
 	<link rel="stylesheet" href="/css/w3-colors-2020.css">
+	<script src="/js/navbar.js"></script>
 	<body>
-		<div class="w3-container w3-2020-brilliant-white">
-			<div class="w3-panel w3-2020-ultramarine-green">
-				<h2 id="rpims-api"> RPiMS API</h2>
+		<div class="w3-row w3-2020-ultramarine-green">
+			<div class="w3-dropdown-click">
+				<button onclick="navFunction()" class="w3-button w3-2020-ultramarine-green w3-xlarge">☰ API</button>
+				<div id="NavBar" class="w3-dropdown-content w3-bar-block w3-card-4 w3-animate-zoom">
+					<a href="/" class="w3-bar-item w3-button w3-large">Start</a>
+					<a href="/setup/" class="w3-bar-item w3-button w3-large">Setup</a>
+				</div>
 			</div>
+		</div>
+		<div class="w3-2020-brilliant-white">
 			<div class="w3-container">
 			<p>To download all current data in JSON format, use the following address:</p>
 			</div>

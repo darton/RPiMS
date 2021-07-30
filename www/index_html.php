@@ -10,21 +10,23 @@
     <link rel="stylesheet" href="/css/w3.css">
     <link rel="stylesheet" href="/css/w3-colors-2020.css">
     <script src="/js/jquery.min.js"></script>
+    <script src="/js/navbar.js"></script>
     <script src="/js/index.js" defer></script>
     <title>RPiMS</title>
   </head>
   <body>
-    <div class="rpimsbg">
-      <div class="header"></div>
-      <div class="rpims">
-        <div class="dropdown">
-          <button onclick="myFunction()" class="dropbtn">Config</button>
-          <div id="myDropdown" class="dropdown-content">
-            <a href="/setup/">Setup</a>
-            <a href="/api/">API</a>
-          </div>
+    <div class="w3-row w3-2020-ultramarine-green">
+      <div class="w3-dropdown-click">
+        <button onclick="navFunction()" class="w3-button w3-2020-ultramarine-green w3-xlarge">☰</button>
+        <div id="NavBar" class="w3-dropdown-content w3-bar-block w3-card-4 w3-animate-zoom">
+          <a href="/setup/" class="w3-bar-item w3-button w3-large">Setup</a>
+          <a href="/api/" class="w3-bar-item w3-button w3-large">API</a>
         </div>
       </div>
+    </div>
+
+    <div class="rpimsbg">
+      <div class="header"></div>
 
       <?php if ($config["show_sys_info"] == "True") {?>
         <div class="sensors" style="text-align: left;">
