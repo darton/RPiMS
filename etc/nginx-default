@@ -15,7 +15,7 @@ server {
         charset_types *;
         source_charset utf-8;
         override_charset on;
-	set $no_cache 0;
+        #set $no_cache 0;
 
         location / {
                 # First attempt to serve request as file, then
@@ -26,12 +26,12 @@ server {
         location ~ \.php$ {
                 include snippets/fastcgi-php.conf;
                 fastcgi_pass unix:/var/run/php/php7.3-fpm.sock;
-		fastcgi_cache phpcache; # The name of the cache key-zone to use
-		fastcgi_cache_valid 200 30m; # What to cache: 'code 200' responses, for half an hour
-		fastcgi_cache_methods GET HEAD; # What to cache: only GET and HEAD requests (ot POST)
-		add_header X-Fastcgi-Cache $upstream_cache_status; # Allow us to see if the cache was HIT, MISS, or BYPASSED inside a browser's Inspector panel
-		fastcgi_cache_bypass $no_cache; # Dont pull from the cache if true
-		fastcgi_no_cache $no_cache; # Dont save to the cache if true
+		#fastcgi_cache phpcache; # The name of the cache key-zone to use
+		#fastcgi_cache_valid 200 30m; # What to cache: 'code 200' responses, for half an hour
+		#fastcgi_cache_methods GET HEAD; # What to cache: only GET and HEAD requests (ot POST)
+		#add_header X-Fastcgi-Cache $upstream_cache_status; # Allow us to see if the cache was HIT, MISS, or BYPASSED inside a browser's Inspector panel
+		#fastcgi_cache_bypass $no_cache; # Dont pull from the cache if true
+		#fastcgi_no_cache $no_cache; # Dont save to the cache if true
         }
         location ~ /\.ht {
                 deny all;
@@ -39,12 +39,12 @@ server {
         location /setup {
             auth_basic "Members Only";
             auth_basic_user_file /var/www/html/conf/.htpasswd;
-	    set $no_cache 1;
+	    #set $no_cache 1;
         }
         location /api/data {
             #auth_basic "Members Only";
             #auth_basic_user_file /var/www/html/conf/.htpasswd;
-	    set $no_cache 1;
+	    #set $no_cache 1;
         }
         location ~* \.(js|css|png|jpg|jpeg|gif|svg|ico)$ {
             #expires 30d;
