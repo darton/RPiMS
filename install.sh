@@ -34,19 +34,22 @@ sudo chmod u+x $installdir/*.py $installdir/*.sh
 
 sudo systemctl stop dphys-swapfile.service
 sudo systemctl disable dphys-swapfile.service
-sudo apt-get update && sudo apt-get upgrade -y
-sudo apt-get -y autoremove
-sudo apt-get -y install python3-gpiozero python3-pip build-essential python3-dev python3-numpy python3-picamera python3-w1thermsensor python3-automationhat python3-systemd
-sudo apt-get -y install git libfreetype6-dev libopenjp2-7 libtiff5 libjpeg-dev vlc ffmpeg gpac fbi
 
 curl https://www.linux-projects.org/listing/uv4l_repo/lpkey.asc | sudo apt-key add -
 echo "deb https://www.linux-projects.org/listing/uv4l_repo/raspbian/stretch stretch main" | sudo tee /etc/apt/sources.list.d/uv4l.list
-sudo apt-get update
+
+sudo apt-get update && sudo apt-get upgrade -y
+sudo apt-get -y autoremove
+
 sudo apt-get -y install uv4l uv4l-raspicam
 sudo apt-get -y install uv4l-raspicam-extras
 sudo apt-get install uv4l-server uv4l-uvc uv4l-xscreen uv4l-mjpegstream uv4l-dummy uv4l-raspidisp
 #sudo apt-get install uv4l-webrtc
 #sudo apt-get install uv4l-webrtc-armv6
+
+sudo apt-get -y install python3-gpiozero python3-pip build-essential python3-dev python3-numpy python3-picamera python3-w1thermsensor python3-automationhat python3-systemd
+sudo apt-get -y install git libfreetype6-dev libopenjp2-7 libtiff5 libjpeg-dev vlc ffmpeg gpac fbi
+
 
 sudo python3 -m pip install --upgrade pip setuptools wheel
 sudo -H pip3 install --upgrade RPi.bme280 redis pid PyYAML luma.oled luma.lcd adafruit-circuitpython-ads1x15 rshell pyusb
