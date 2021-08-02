@@ -111,7 +111,7 @@ sudo mv $unpackdir/etc/rpims.service /lib/systemd/system/rpims.service
 sudo systemctl daemon-reload
 sudo systemctl enable rpims.service
 
-sudo mv /etc/uv4l/uv4l-raspicam.conf uv4l-raspicam.conf.org
+sudo mv /etc/uv4l/uv4l-raspicam.conf /etc/uv4l/uv4l-raspicam.conf.org
 sudo ln -s /var/www/html/conf/uv4l-raspicam.conf /etc/uv4l/uv4l-raspicam.conf
 
 #for DHT22 sensor
