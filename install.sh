@@ -44,6 +44,8 @@ sudo apt-get -y autoremove
 
 sudo apt-get -y install uv4l uv4l-raspicam
 sudo apt-get -y install uv4l-raspicam-extras
+sudo apt-get -y install uv4l-server
+
 #sudo apt-get install uv4l-server uv4l-uvc uv4l-xscreen uv4l-mjpegstream uv4l-dummy uv4l-raspidisp
 #sudo apt-get install uv4l-webrtc
 #sudo apt-get install uv4l-webrtc-armv6
