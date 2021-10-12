@@ -116,5 +116,3 @@ if ($_GET['gpio'] == "show" || $_GET['sensors'] == "show" || $showAll == true){
 header("content-type: application/json");
 header("Cache-Control: no-cache");
 echo json_encode($rpims_api);
-
-?>

@@ -262,4 +262,4 @@ if (filter_var($_POST['use_zabbix_sender'], FILTER_VALIDATE_BOOLEAN) == true ) {
 
 sleep(2);
 header("Location: /");
-?>
+
