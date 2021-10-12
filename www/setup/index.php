@@ -93,4 +93,3 @@ $rainfall_agregation_time = $rpims['sensors']['WEATHER']['RAINFALL']['agregation
 $GPIO = $rpims['gpio'];
 
 include 'setup_html.php';
-?>
