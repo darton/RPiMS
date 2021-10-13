@@ -1,6 +1,15 @@
 # RPiMS app configuration
 #
 
+
+map $sent_http_content_type $expires {
+    default                    off;
+    text/html                  epoch;
+    text/css                   max;
+    application/javascript     max;
+    ~image/                    max;
+}
+
 server {
         listen 80 default_server;
         listen [::]:80 default_server;
@@ -12,16 +21,19 @@ server {
         server_tokens off;
 
         charset UTF-8;
-        charset_types *;
+        #charset_types *;
         source_charset utf-8;
         override_charset on;
-        #set $no_cache 0;
+
+        #set $no_cache 1;
+        #expires $expires;
 
         location / {
                 # First attempt to serve request as file, then
                 # as directory, then fall back to displaying a 404.
                 try_files $uri $uri/ =404;
-        add_header X-Content-Type-Options nosniff;
+                add_header Cache-Control "no-cache";
+                add_header X-Content-Type-Options "nosniff" always;
         }
         location ~ \.php$ {
                 include snippets/fastcgi-php.conf;
@@ -32,24 +44,30 @@ server {
 		#add_header X-Fastcgi-Cache $upstream_cache_status; # Allow us to see if the cache was HIT, MISS, or BYPASSED inside a browser's Inspector panel
 		#fastcgi_cache_bypass $no_cache; # Dont pull from the cache if true
 		#fastcgi_no_cache $no_cache; # Dont save to the cache if true
+                add_header Cache-Control "no-cache";
+                add_header X-Content-Type-Options "nosniff" always;
         }
         location ~ /\.ht {
                 deny all;
         }
         location /setup {
+	    #set $no_cache 1;
             auth_basic "Members Only";
             auth_basic_user_file /var/www/html/conf/.htpasswd;
-	    #set $no_cache 1;
+            add_header Cache-Control "no-cache";
+            add_header X-Content-Type-Options "nosniff" always;
+        }
+        location /api {
+	    expires 1d;
+            add_header Cache-Control "no-cache";
+            add_header X-Content-Type-Options "nosniff" always;
         }
         location /api/data {
-            #auth_basic "Members Only";
-            #auth_basic_user_file /var/www/html/conf/.htpasswd;
-	    #set $no_cache 1;
+            add_header Cache-Control "no-store";
+            add_header X-Content-Type-Options "nosniff" always;
         }
         location ~* \.(js|css|png|jpg|jpeg|gif|svg|ico)$ {
-            #expires 30d;
             add_header Cache-Control "public,max-age=31536000,immutable";
-            add_header X-Content-Type-Options nosniff;
+            add_header X-Content-Type-Options "nosniff" always;
         }
-
 }

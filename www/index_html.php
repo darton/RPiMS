@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="/css/index.css">
     <link rel="stylesheet" href="/css/w3.css">
     <link rel="stylesheet" href="/css/w3-colors-2020.css">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
     <script src="/js/jquery.min.js"></script>
     <script src="/js/navbar.js"></script>
     <script src="/js/index.js" defer></script>
@@ -54,7 +55,7 @@
           <div class="w3-container w3-margin">DHT Sensor</div>
           <div style="width: 100%; display: table;">
             <div style="display: table-row">
-              <div class="gauge" id="g11"  style="width: 50%;  display: table-cell";>
+              <div class="gauge_dht" id="g11" display: table-cell";>
                 <div class="gauge__body">
                   <div class="gauge__fill"></div>
                   <div class="gauge__cover"></div>
@@ -89,7 +90,7 @@
               echo "<div style='width: 100%; display: table;'>";
               echo "<div style='display: table-row';>";
 
-              echo " <div class='gauge' id='$t' style='width: 33%;  display: table-cell';>";
+              echo " <div class='gauge_bme280' id='$t'>";
               echo "    <div class='gauge__body'>";
               echo "        <div class='gauge__fill'></div>";
               echo "        <div class='gauge__cover'></div>";
@@ -97,7 +98,7 @@
               echo "    <div class='sensors'>Temp</div>";
               echo " </div>";
 
-              echo " <div class='gauge' id='$h' style='width: 33%;  display: table-cell';>";
+              echo " <div class='gauge_bme280' id='$h'>";
               echo "    <div class='gauge__body'>";
               echo "        <div class='gauge__fill'></div>";
               echo "        <div class='gauge__cover'></div>";
@@ -105,7 +106,7 @@
               echo "    <div class='sensors'>Hum</div>";
               echo " </div>";
 
-              echo " <div class='gauge' id='$p' style='width: 33%;  display: table-cell';>";
+              echo " <div class='gauge_bme280' id='$p'>";
               echo "    <div class='gauge__body'>";
               echo "        <div class='gauge__fill'></div>";
               echo "        <div class='gauge__cover'></div>";
@@ -144,7 +145,7 @@
           echo "<div class='w3-container w3-margin'>$ds18b20_sensor_name</div>";
           echo "<div style='width: 100%; display: table;'>";
           echo "  <div style='display: table-row'>";
-          echo "    <div class='gauge_ds18b20' id='$item'  style='width: 33%;  display: table-cell';>";
+          echo "    <div class='gauge_ds18b20' id='$item'>";
           echo "      <div class='gauge__body'>";
           echo "        <div class='gauge__fill'></div>";
           echo "        <div class='gauge__cover'></div>";
