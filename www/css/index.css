@@ -2,8 +2,8 @@
 .dropbtn {
   background-color: #3498DB;
   color: white;
-  padding: 4vw;
-  font-size: 4vw;
+  padding: 0vw;
+  font-size: 1vw;
   border: none;
   cursor: pointer;
 }
@@ -35,7 +35,7 @@
   padding: 12px 16px;
   text-decoration: none;
   display: block;
-  font-size: 4vw;
+  font-size: 1vw;
 }
 
 /* Change color of dropdown links on hover */
@@ -54,15 +54,30 @@ td {
   max-width: 250px;
   font-family: "Roboto", sans-serif;
   font-size: 4vw;
-  #color: #004033;
+}
+
+.gauge_bme280 {
+  width: 100%;
+  max-width: 250px;
+  font-family: "Roboto", sans-serif;
+  font-size: 4vw;
+  width: 33%;
+  display: table-cell;
+}
+
+.gauge_dht {
+  width: 100%;
+  max-width: 250px;
+  font-family: "Roboto", sans-serif;
+  font-size: 4vw;
+  width: 50%;
 }
 
 .gauge_ds18b20 {
   width: 100%;
-  #max-width: 250px;
   font-family: "Roboto", sans-serif;
   font-size: 12vw;
-  #color: #004033;
+  display: table-cell;
 }
 
 .gauge__body {
@@ -91,7 +106,6 @@ td {
 .gauge__cover {
   width: 75%;
   height: 150%;
-  #background: #ffffff;
   background: darkslategray;
   border-radius: 50%;
   position: absolute;
@@ -120,7 +134,6 @@ span {
 .rpimsbg
 {
   background-color: steelblue;
-  #background-color: slategray;
 }
 .header
 {
@@ -134,7 +147,6 @@ span {
 }
 
 .rpims {
- #background-color: #6159DB;
   background-color: darkslateblue;
   color: white;
   padding: 8px;
@@ -143,7 +155,6 @@ span {
 }
 .sensors {
   background-color: darkslategray;
-  #background-color: white;
   color: white;
   padding: 8px;
   margin: 10px;

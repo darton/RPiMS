@@ -9,7 +9,7 @@
         <link rel="stylesheet" href="/css/w3.css">
         <link rel="stylesheet" href="/css/w3-colors-2020.css">
         <script src="/js/jquery.min.js"></script>
-	<script src="/js/navbar.js"></script>
+        <script src="/js/navbar.js"></script>
         <script src="/js/setup.js" defer></script>
         <title>RPiMS configuration</title>
     </head>
@@ -29,14 +29,14 @@
                     <legend>System configuration</legend>
                     <div class="w3-row w3-2020-green-sheen">
                         <div class="w3-container">
-                            <p><input name="verbose" type="hidden" value="no"><input name="verbose" type="checkbox" class="w3-check" <?php if ($verbose) echo 'checked="checked"'; ?> value="True">
-                            <label>Verbose mode</label></p>
-                            <p><input name="show_sys_info" type="hidden" value="False"><input name="show_sys_info" type="checkbox" class="w3-check" <?php if ($show_sys_info == 'yes') echo 'checked="checked"'; ?> value="True">
-                            <label>Show system info</label></p>
-                            <p><input name="use_door_sensor" type="hidden" value="False"><input name="use_door_sensor" type="checkbox" class="w3-check" <?php if ($use_door_sensor == 'yes') echo 'checked="checked"'; ?> value="True">
-                            <label>Use door sensors</label></p>
-                            <p><input name="use_motion_sensor" type="hidden" value="False"><input name="use_motion_sensor" type="checkbox" class="w3-check" <?php if ($use_motion_sensor == 'yes') echo 'checked="checked"'; ?> value="True">
-                            <label>Use motion sensors</label></p>
+                            <p><input id="verbose" name="verbose" type="checkbox" class="w3-check" <?php if ($verbose) echo 'checked="checked"'; ?> value="True">
+                            <label for="verbose">Verbose mode</label></p>
+                            <p><input id="show_sys_info" name="show_sys_info" type="checkbox" class="w3-check" <?php if ($show_sys_info == 'yes') echo 'checked="checked"'; ?> value="True">
+                            <label for="show_sys_info">Show system info</label></p>
+                            <p><input id="use_door_sensor" name="use_door_sensor" type="checkbox" class="w3-check" <?php if ($use_door_sensor == 'yes') echo 'checked="checked"'; ?> value="True">
+                            <label for="use_door_sensor">Use door sensors</label></p>
+                            <p><input id="use_motion_sensor" name="use_motion_sensor" type="checkbox" class="w3-check" <?php if ($use_motion_sensor == 'yes') echo 'checked="checked"'; ?> value="True">
+                            <label for= "use_motion_sensor">Use motion sensors</label></p>
                         </div>
                     </div>
                 </fieldset>
@@ -44,8 +44,8 @@
                     <legend>Serial display configuration</legend>
                     <div class="w3-row w3-2020-ultramarine-green">
                         <div class="w3-container w3-margin-top w3-margin-bottom">
-                            <input name="use_serial_display" type="hidden" value="False"><input name="use_serial_display" type="checkbox" class="w3-check" id="use_serial_display"<?php if ($use_serial_display == 'yes') echo 'checked="checked"'; ?> value="True">
-                            <label>Use serial display</label>
+                            <input id="use_serial_display" name="use_serial_display" type="checkbox" class="w3-check" id="use_serial_display"<?php if ($use_serial_display == 'yes') echo 'checked="checked"'; ?> value="True">
+                            <label for="use_serial_display">Use serial display</label>
                         </div>
                     </div>
                     <div id="serial_display" class="w3-row w3-2020-green-sheen">
@@ -71,8 +71,8 @@
                             </select>
                         </div>
                         <div class="w3-quarter w3-container w3-margin-top w3-margin-bottom">
-                            <label >Refresh rate:</label>
-                            <input name="serial_display_refresh_rate" class="w3-input" type="number" min="1" max="50" value="<?= $serial_display_refresh_rate ?>" >
+                            <label for="serial_display_refresh_rate">Refresh rate:</label>
+                            <input id="serial_display_refresh_rate" name="serial_display_refresh_rate" class="w3-input" type="number" min="1" max="50" value="<?= $serial_display_refresh_rate ?>" >
                         </div>
                     </div>
                 </fieldset>
@@ -80,12 +80,12 @@
                     <legend>Pi Camera configuration</legend>
                     <div class="w3-row w3-2020-ultramarine-green">
                         <div class="w3-half w3-container w3-margin-top w3-margin-bottom">
-                            <input name="use_picamera" type="hidden" value="False"><input name="use_picamera" type="checkbox" class="w3-check" id="use_picamera"<?php if ($use_picamera == 'yes') echo 'checked="checked"'; ?> value="True">
-                            <label>Use Picamera</label>
+                            <input id="use_picamera" name="use_picamera" type="checkbox" class="w3-check" id="use_picamera"<?php if ($use_picamera == 'yes') echo 'checked="checked"'; ?> value="True">
+                            <label for="use_picamera">Use Picamera</label>
                         </div>
                         <div class="w3-half w3-container w3-margin-top w3-margin-bottom">
-                            <input name="use_picamera_recording" type="hidden" value="False"><input name="use_picamera_recording" type="checkbox" class="w3-check"  <?php if ($use_picamera_recording == 'yes') echo 'checked="checked"'; ?> value="True">
-                            <label>Use picamera recording</label>
+                            <input id="use_picamera_recording" name="use_picamera_recording" type="checkbox" class="w3-check"  <?php if ($use_picamera_recording == 'yes') echo 'checked="checked"'; ?> value="True">
+                            <label for="use_picamera_recording">Use picamera recording</label>
 
                         </div>
                     </div>
@@ -108,8 +108,8 @@
                             </select>
                         </div>
                         <div class="w3-third w3-container w3-margin-top w3-margin-bottom">
-                            <label >FPS:</label>
-                            <input name="picamera_fps" class="w3-input" type="number" min="1" max="60" value="<?= $picamera_fps ?>" >
+                            <label for="picamera_fps">FPS:</label>
+                            <input id="picamera_fps" name="picamera_fps" class="w3-input" type="number" min="1" max="60" value="<?= $picamera_fps ?>" >
                         </div>
                     </div>
                 </fieldset>
@@ -117,8 +117,8 @@
                     <legend>CPU sensor configuration</legend>
                     <div class="w3-row w3-2020-ultramarine-green">
                         <div class="w3-container w3-margin-top w3-margin-bottom">
-                            <input name="use_cpu_sensor" type="hidden" value="False"><input name="use_cpu_sensor" type="checkbox" class="w3-check" id="use_cpu_sensor"<?php if ($use_cpu_sensor == 'yes') echo 'checked="checked"'; ?> value="True">
-                            <label>Use CPU Sensor</label>
+                            <input id="use_cpu_sensor" name="use_cpu_sensor" type="checkbox" class="w3-check" id="use_cpu_sensor"<?php if ($use_cpu_sensor == 'yes') echo 'checked="checked"'; ?> value="True">
+                            <label for="use_cpu_sensor">Use CPU Sensor</label>
                         </div>
                     </div>
                     <div id="CPU_sensor" class="w3-row w3-2020-green-sheen">
@@ -132,8 +132,8 @@
                     <legend>DS18B20 sensor configuration</legend>
                     <div class="w3-row w3-2020-ultramarine-green">
                         <div class="w3-container w3-margin-top w3-margin-bottom">
-                            <input name="use_ds18b20_sensor" type="hidden" value="False"><input name="use_ds18b20_sensor" type="checkbox" class="w3-check" id="use_ds18b20_sensor"<?php if ($use_ds18b20_sensor == 'yes') echo 'checked="checked"'; ?> value="True">
-                            <label>Use DS18B20 sensor</label>
+                            <input id="use_ds18b20_sensor" name="use_ds18b20_sensor" type="checkbox" class="w3-check" id="use_ds18b20_sensor"<?php if ($use_ds18b20_sensor == 'yes') echo 'checked="checked"'; ?> value="True">
+                            <label for="use_ds18b20_sensor">Use DS18B20 sensor</label>
                         </div>
                     </div>
                     <div id="DS18B20_sensor" class="w3-row w3-2020-green-sheen">
@@ -147,12 +147,12 @@
                             $DS18B20_name = $DS18B20_sensors[$value];
                             echo "<div class='w3-row w3-margin-top w3-margin-bottom'>";
                             echo "<div class='w3-quarter w3-container w3-margin-bottom'>";
-                            echo "<label>Address:</label>";
-                            echo "<input class='w3-input' type='text' value='$value'>";
+                            echo "<label for='$key'>Address:</label>";
+                            echo "<input id='$key' class='w3-input' type='text' value='$value'>";
                             echo "</div>";
                             echo "<div class='w3-threequarter w3-container w3-margin-bottom'>";
-                            echo "<label>name :</label>";
-                            echo "<input name='DS18B20[$value][name]' class='w3-input' type='text' value='$DS18B20_name'>";
+                            echo "<label for='$key.name'> name:</label>";
+                            echo "<input id='$key.name' name='DS18B20[$value][name]' class='w3-input' type='text' value='$DS18B20_name'>";
                             echo "</div>";
                             echo "</div>";
                             }
@@ -163,22 +163,22 @@
                     <legend>BME280 sensor configuration</legend>
                     <div class="w3-row w3-2020-ultramarine-green">
                         <div class="w3-container w3-margin-top w3-margin-bottom">
-                            <input name="use_bme280_sensor" type="hidden" value="False"><input name="use_bme280_sensor" type="checkbox" class="w3-check" id="use_bme280_sensor"<?php if ($use_bme280_sensor == 'yes') echo 'checked="checked"'; ?> value="True">
-                            <label>Use BME280 sensor</label>
+                            <input id="use_bme280_sensor" name="use_bme280_sensor" type="checkbox" class="w3-check" id="use_bme280_sensor"<?php if ($use_bme280_sensor == 'yes') echo 'checked="checked"'; ?> value="True">
+                            <label for="use_bme280_sensor">Use BME280 sensor</label>
                         </div>
                     </div>
                     <div id="BME280_sensor" class="w3-row">
                         <div class="w3-row w3-2020-ultramarine-green w3-margin-top">
                             <div class="w3-container w3-margin-top w3-margin-bottom">
-                                <input name="id1_BME280_use" type="hidden" value="no"><input name="id1_BME280_use" type="checkbox" class="w3-check" id="id1_BME280_use" <?php if ($id1_BME280_use) echo 'checked="checked"'; ?> value="True">
-                                <label>Use #1 BME280:</label>
+                                <input name="id1_BME280_use" type="checkbox" class="w3-check" id="id1_BME280_use" <?php if ($id1_BME280_use) echo 'checked="checked"'; ?> value="True">
+                                <label for="id1_BME280_use">Use #1 BME280:</label>
                             </div>
                         </div>
                         <div id="id1_BME280" class="w3-row w3-2020-green-sheen">
                             <div class="w3-row w3-margin-bottom">
                                 <div class="w3-quarter w3-container w3-margin-top">
-                                    <label>name:</label>
-                                    <input name="id1_BME280_name" class="w3-input" type="text" value="<?=$id1_BME280_name?>" >
+                                    <label for="id1_BME280_name">name:</label>
+                                    <input id="id1_BME280_name" name="id1_BME280_name" class="w3-input" type="text" value="<?=$id1_BME280_name?>" >
                                 </div>
                                 <div class="w3-quarter w3-container w3-margin-top">
                                     <label for="id1_BME280_read_interval">Read interval:</label>
@@ -203,15 +203,15 @@
 
                         <div class="w3-row w3-2020-ultramarine-green w3-margin-top">
                             <div class="w3-container w3-margin-top w3-margin-bottom">
-                                <input name="id2_BME280_use" type="hidden" value="no"><input name="id2_BME280_use" type="checkbox" class="w3-check" id="id2_BME280_use" <?php if ($id2_BME280_use) echo 'checked="checked"'; ?> value="True">
-                                <label>Use #2 BME280:</label>
+                                <input name="id2_BME280_use" type="checkbox" class="w3-check" id="id2_BME280_use" <?php if ($id2_BME280_use) echo 'checked="checked"'; ?> value="True">
+                                <label for="id2_BME280_use">Use #2 BME280:</label>
                             </div>
                         </div>
                         <div id="id2_BME280" class="w3-row w3-2020-green-sheen">
                             <div class="w3-row w3-margin-bottom">
                                 <div class="w3-quarter w3-container w3-margin-top">
-                                    <label>name:</label>
-                                    <input name="id2_BME280_name" class="w3-input" type="text" value="<?=$id2_BME280_name?>" >
+                                    <label for="id2_BME280_name">name:</label>
+                                    <input id="id2_BME280_name" name="id2_BME280_name" class="w3-input" type="text" value="<?=$id2_BME280_name?>" >
                                 </div>
                                 <div class="w3-quarter w3-container w3-margin-top">
                                     <label for="id2_BME280_read_interval">Read interval:</label>
@@ -238,15 +238,15 @@
 
                         <div class="w3-row w3-2020-ultramarine-green w3-margin-top">
                             <div class="w3-container w3-margin-top w3-margin-bottom">
-                                <input name="id3_BME280_use" type="hidden" value="no"><input name="id3_BME280_use" type="checkbox" class="w3-check" id="id3_BME280_use" <?php if ($id3_BME280_use) echo 'checked="checked"'; ?> value="True">
-                                <label>Use #3 BME280:</label>
+                                <input name="id3_BME280_use" type="checkbox" class="w3-check" id="id3_BME280_use" <?php if ($id3_BME280_use) echo 'checked="checked"'; ?> value="True">
+                                <label for="id3_BME280_use">Use #3 BME280:</label>
                             </div>
                         </div>
                         <div id="id3_BME280" class="w3-row w3-2020-green-sheen">
                             <div class="w3-row w3-margin-bottom">
                                 <div class="w3-quarter w3-container w3-margin-top">
-                                    <label>name:</label>
-                                    <input name="id3_BME280_name" class="w3-input" type="text" value="<?=$id3_BME280_name?>" >
+                                    <label for="id3_BME280_name">name:</label>
+                                    <input id="id3_BME280_name" name="id3_BME280_name" class="w3-input" type="text" value="<?=$id3_BME280_name?>" >
                                 </div>
                                 <div class="w3-quarter w3-container w3-margin-top">
                                     <label for="id3_BME280_read_interval">Read interval:</label>
@@ -276,8 +276,8 @@
                     <legend>DHT sensor configuration</legend>
                     <div class="w3-row w3-2020-ultramarine-green">
                         <div class="w3-container w3-margin-top w3-margin-bottom">
-                            <input name="use_dht_sensor" type="hidden" value="False"><input name="use_dht_sensor" type="checkbox" class="w3-check" id="use_dht_sensor"<?php if ($use_dht_sensor) echo 'checked="checked"'; ?> value="True">
-                            <label>Use DHT sensor</label>
+                            <input id="use_dht_sensor" name="use_dht_sensor" type="checkbox" class="w3-check" id="use_dht_sensor"<?php if ($use_dht_sensor) echo 'checked="checked"'; ?> value="True">
+                            <label for="use_dht_sensor">Use DHT sensor</label>
                         </div>
                     </div>
                     <div id="DHT_sensor" class="w3-row w3-2020-green-sheen">
@@ -291,8 +291,8 @@
                                 </select>
                             </div>
                             <div class="w3-quarter w3-container w3-margin-top">
-                                <label>name:</label>
-                                <input name="DHT_name" class="w3-input" type="text" value="<?=$DHT_name?>" >
+                                <label for="DHT_name">name:</label>
+                                <input id="DHT_name" name="DHT_name" class="w3-input" type="text" value="<?=$DHT_name?>" >
                             </div>
                             <div class="w3-quarter w3-container w3-margin-top">
                                 <label for="DHT_read_interval">Read interval:</label>
@@ -311,16 +311,16 @@
                     <legend>Weather sensor configuration</legend>
                     <div class="w3-row w3-2020-ultramarine-green">
                         <div class="w3-container w3-margin-top w3-margin-bottom">
-                            <input name="use_weather_station" type="hidden" value="False"><input name="use_weather_station" type="checkbox" class="w3-check" id="use_weather_station" <?php if ($use_weather_station) echo 'checked="checked"'; ?> value="True">
-                            <label>Use weather station</label>
+                            <input name="use_weather_station" type="checkbox" class="w3-check" id="use_weather_station" <?php if ($use_weather_station) echo 'checked="checked"'; ?> value="True">
+                            <label for="use_weather_station">Use weather station</label>
                         </div>
                     </div>
                     <div id="weather_station" class="w3-row">
                         <div class="w3-row w3-2020-green-sheen w3-margin-top">
                             <div class="w3-row w3-2020-ultramarine-green">
                                 <div class="w3-container w3-margin-top w3-margin-bottom">
-                                <input name="rainfall_use" type="hidden" value="no"><input name="rainfall_use" type="checkbox" class="w3-check" <?php if ($rainfall_use) echo 'checked="checked"'; ?> value="True">
-                                <label>Use Rainfall:</label>
+                                <input id="rainfall_use" name="rainfall_use" type="checkbox" class="w3-check" <?php if ($rainfall_use) echo 'checked="checked"'; ?> value="True">
+                                <label for="rainfall_use">Use Rainfall:</label>
                                 </div>
                             </div>
                             <div class="w3-row w3-margin-bottom">
@@ -334,7 +334,7 @@
                                 </div>
                                 <div class="w3-third w3-container w3-margin-top">
                                     <label for="rainfall_sensor_pin">Sensor pin:</label>
-                                    <select  name="rainfall_sensor_pin" class="w3-select" id="rainfall_sensor_pin">
+                                    <select name="rainfall_sensor_pin" class="w3-select" id="rainfall_sensor_pin">
                                         <option value = 22>22</option>
                                     </select>
                                 </div>
@@ -343,8 +343,8 @@
                         <div class="w3-row w3-2020-green-sheen w3-margin-top">
                             <div class="w3-row w3-2020-ultramarine-green">
                                 <div class="w3-container w3-margin-top w3-margin-bottom">
-                                    <input name="windspeed_use" type="hidden" value="no"><input name="windspeed_use" type="checkbox" class="w3-check" <?php if ($windspeed_use) echo 'checked="checked"'; ?> value="True">
-                                    <label>Use Wind speed:</label>
+                                    <input id="windspeed_use" name="windspeed_use" type="checkbox" class="w3-check" <?php if ($windspeed_use) echo 'checked="checked"'; ?> value="True">
+                                    <label for="windspeed_use">Use Wind speed:</label>
                                 </div>
                             </div>
                             <div class="w3-row w3-margin-bottom">
@@ -367,8 +367,8 @@
                         <div class="w3-row w3-2020-green-sheen w3-margin-top">
                             <div class="w3-row w3-2020-ultramarine-green">
                                 <div class="w3-container w3-margin-top w3-margin-bottom">
-                                    <input name="winddirection_use" type="hidden" value="no"><input name="winddirection_use" type="checkbox" class="w3-check" <?php if ($winddirection_use) echo 'checked="checked"'; ?> value="True">
-                                    <label>Use Wind direction:</label>
+                                    <input id="winddirection_use" name="winddirection_use" type="checkbox" class="w3-check" <?php if ($winddirection_use) echo 'checked="checked"'; ?> value="True">
+                                    <label for="winddirection_use">Use Wind direction:</label>
                                 </div>	
                             </div>
                             <div class="w3-row w3-margin-bottom">
@@ -394,7 +394,7 @@
                                 </select>
                             </div>
                             <div class="w3-quarter w3-container w3-margin-top">
-                                <label for="_adc_input">Reference input:</label>
+                                <label for="reference_voltage_adc_input">Reference input:</label>
                                 <select name="reference_voltage_adc_input" class="w3-select" id="reference_voltage_adc_input">
                                     <option value="1" <?php if ($reference_voltage_adc_input == '1') echo 'selected="selected"'; ?> >1</option>
                                     <option value="2" <?php if ($reference_voltage_adc_input == '2') echo 'selected="selected"'; ?> >2</option>
@@ -402,7 +402,7 @@
                                     <option value="4" <?php if ($reference_voltage_adc_input == '4') echo 'selected="selected"'; ?> >4</option>
                                 </select>
                             </div>
-                        </div>                   
+                        </div>
                     </div>
                 </fieldset>
                 <fieldset>
@@ -440,7 +440,7 @@
                                 echo "<div class='w3-row w3-margin-bottom w3-2020-green-sheen'>";
                                 echo "<div class='w3-row w3-margin-bottom'>";
                                 echo "<div class='w3-third w3-container w3-margin-top'>";
-                                echo "<label for='GPIO_.$pin'>Type:</label>";
+                                echo "<label for='$gpio_select_id'>Type:</label>";
                                 echo "<select name='$gpio_select_name' class='gpioinputs w3-select' id='$gpio_select_id'>";
                                 if ($gpio_input_type_value == 'DoorSensor'){
                                     echo "<option selected value='DoorSensor'>INPUT - Door Sensor</option>";
@@ -523,46 +523,46 @@
                     <legend>Zabbix Agent configuration</legend>
                     <div class="w3-row w3-2020-ultramarine-green">
                             <div class="w3-container  w3-margin-top w3-margin-bottom">
-                                <input name="use_zabbix_sender" type="hidden" value="False"><input name="use_zabbix_sender" type="checkbox" class="w3-check" <?php if ($use_zabbix_sender == 'yes') echo 'checked="checked"'; ?> value="True">
-                                <label >Use zabbix sender</label>
+                                <input id="use_zabbix_sender" name="use_zabbix_sender" type="checkbox" class="w3-check" <?php if ($use_zabbix_sender == 'yes') echo 'checked="checked"'; ?> value="True">
+                                <label for="use_zabbix_sender">Use zabbix sender</label>
                             </div>
-                    </div>  
+                    </div>
                     <div>
                         <div class="w3-row w3-2020-green-sheen">
                             <p>
                             <div class="w3-third w3-container w3-margin-bottom">
-                                <label>Zabbix server:</label>
-                                <input name="zabbix_server" class="w3-input" type="text" placeholder="zabbix.example.com" value="<?=$zabbix_server?>" pattern="^([a-zA-Z0-9]([a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,6}$">
+                                <label for="zabbix_server">Zabbix server:</label>
+                                <input id="zabbix_server" name="zabbix_server" class="w3-input" type="text" placeholder="zabbix.example.com" value="<?=$zabbix_server?>" pattern="^([a-zA-Z0-9]([a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,6}$">
                             </div>
                             <div class="w3-third w3-container w3-margin-bottom">
-                                <label>Zabbix server Active:</label>
-                                <input name="zabbix_server_active" class="w3-input" type="text" value="<?=$zabbix_server_active?>" placeholder="zabbix.example.com" pattern="^([a-zA-Z0-9]([a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,6}$">
+                                <label for="zabbix_server_active">Zabbix server Active:</label>
+                                <input id="zabbix_server_active" name="zabbix_server_active" class="w3-input" type="text" value="<?=$zabbix_server_active?>" placeholder="zabbix.example.com" pattern="^([a-zA-Z0-9]([a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,6}$">
                             </div>
                             <div class="w3-third w3-container w3-margin-bottom">
-                                <label>Timeout:</label>
-                                <input name="Timeout" class="w3-input" type="number" min="1" max="10" value="<?=$Timeout?>" >
+                                <label for="Timeout">Timeout:</label>
+                                <input id="Timeout" name="Timeout" class="w3-input" type="number" min="1" max="10" value="<?=$Timeout?>" >
                             </div>
                             </p>
                         </div>
                         <div class="w3-row w3-2020-green-sheen">
                             <div class="w3-half w3-container w3-margin-bottom">
-                                <label>RPiMS location:</label>
-                                <input name="location" class="w3-input" type="text" value="<?=$location?>" >
+                                <label for="location">RPiMS location:</label>
+                                <input id="location" name="location" class="w3-input" type="text" value="<?=$location?>" >
                             </div>
                             <div class="w3-half w3-container w3-margin-bottom">
-                                <label>RPiMS hostname:</label>
-                                <input name="hostname" class="w3-input" type="text" value="<?=$hostname?>" >
+                                <label for="hostname">RPiMS hostname:</label>
+                                <input id="hostname" name="hostname" class="w3-input" type="text" value="<?=$hostname?>" >
                             </div>
                         </div>
                         <div class="w3-row w3-2020-green-sheen">
                             <div class="w3-half w3-container w3-margin-bottom">
-                                <label>PSK identity:</label>
-                                <input name="TLSPSKIdentity" class="w3-input" id="TLSPSKIdentity" type="text" value="<?=$TLSPSKIdentity?>">
+                                <label for="TLSPSKIdentity">PSK identity:</label>
+                                <input id="TLSPSKIdentity" name="TLSPSKIdentity" class="w3-input" id="TLSPSKIdentity" type="text" value="<?=$TLSPSKIdentity?>">
                                 <input class="w3-input w3-2020-classic-blue" type="button" onclick="gfg_Run(16,tlspskidentityid)" value="Generate PSK Identity">
                             </div>
                             <div class="w3-half w3-container w3-margin-bottom">
-                                <label>PSK:</label>
-                                <input name="TLSPSK" class="w3-input" id="TLSPSK" type="text" value="<?=$TLSPSK?>" >
+                                <label for="TLSPSK">PSK:</label>
+                                <input id="TLSPSK" name="TLSPSK" class="w3-input" id="TLSPSK" type="text" value="<?=$TLSPSK?>" >
                                 <input class="w3-input w3-2020-classic-blue" type="button" onclick="gfg_Run(64,tlspskid)" value="Generate PSK">
                             </div>
                         </div>
