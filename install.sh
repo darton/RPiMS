@@ -59,7 +59,7 @@ sudo apt-get -y install git libfreetype6-dev libopenjp2-7 libtiff5 libjpeg-dev v
 
 
 sudo python3 -m pip install --upgrade pip setuptools wheel
-sudo -H pip3 install --upgrade RPi.bme280 redis pid PyYAML luma.oled luma.lcd adafruit-circuitpython-ads1x15 rshell pyusb
+sudo -H pip3 install --upgrade RPi.bme280 smbus2 redis hiredis pid PyYAML luma.oled luma.lcd adafruit-circuitpython-ads1x15 rshell pyusb
 
 sudo apt-get -y install redis-server
 sudo systemctl enable redis-server.service
