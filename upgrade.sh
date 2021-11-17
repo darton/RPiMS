@@ -1,0 +1,60 @@
+#!/bin/bash
+
+repourl=https://github.com/darton/RPiMS/archive/refs/heads/master.zip
+downloaddir=/tmp
+unpackdir=/tmp/RPiMS-master
+installdir=/home/pi/scripts/RPiMS
+wwwdir=/var/www/html
+_IP=$(ip route get 1.1.1.1 | awk '{print $7}')
+
+echo "Do you want to upgrade the RPiMS ?"
+read -r -p "$1 [y/N] " response < /dev/tty
+if [[ $response =~ ^(yes|y|Y)$ ]]; then
+    echo "Greats ! The upgrade process has started."
+    [[ -d $wwwdir ]] || sudo mkdir -p $wwwdir
+    [[ -d $installdir ]] || mkdir -p $installdir
+    [[ -d /home/pi/Videos ]] || mkdir -p /home/pi/Videos
+
+    #curl -sS $repourl -L -o $downloaddir/RPiMS.zip
+    #unzip  $downloaddir/RPiMS.zip -d $downloaddir
+    #sudo cp -R $unpackdir/www/* $wwwdir
+    #sudo cp $unpackdir/RPiMS/* $installdir
+    #sudo chmod u+x $installdir/*.py $installdir/*.sh
+    #rm $downloaddir/RPiMS.zip
+fi
+
+echo "Do you want to upgrade the Operating System ?"
+read -r -p "$1 [y/N] " response < /dev/tty
+if [[ $response =~ ^(yes|y|Y)$ ]]; then
+    echo "Greats ! The upgrade OS has started."
+    sudo apt-get -y update
+    sudo apt-get -y upgrade
+    sudo apt-get -y autoremove
+
+    sudo python3 -m pip install --upgrade pip setuptools wheel
+    sudo -H pip3 install --upgrade RPi.bme280 smbus2 redis hiredis pid PyYAML luma.oled luma.lcd adafruit-circuitpython-ads1x15 rshell pyusb
+
+    echo ""
+    echo "-------------------------------------"
+    echo "Upgrade successfully completed !"
+    echo "-------------------------------------"
+    echo ""
+fi
+
+
+echo ""
+echo "Do you want to reboot RPiMS now ?"
+echo ""
+echo "After restarting open http://$_IP/setup or http://127.0.0.1 to configure RPiMS"
+
+read -r -p "$1 [y/N] " response < /dev/tty
+
+if [[ $response =~ ^(yes|y|Y)$ ]]; then
+    sudo reboot
+else
+    echo ""
+    echo "Run this command manually: sudo reboot"
+    echo ""
+    echo "After restarting open http://$_IP/setup or http://127.0.0.1/setup to configure RPiMS"
+    exit
+fi
