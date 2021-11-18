@@ -52,7 +52,7 @@ fi
 
 echo "Do you want to upgrade the Operating System ?"
 read -r -p "$1 [y/N] "
-if [[ $response =~ ^(yes|y|Y)$ ]]; then
+if [[ $REPLY =~ ^(yes|y|Y)$ ]]; then
     echo "Greats ! The upgrade OS has started."
     sudo apt-get -y update
     sudo apt-get -y upgrade
