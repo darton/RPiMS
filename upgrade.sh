@@ -49,13 +49,13 @@ if [[ $response =~ ^(yes|y|Y)$ ]]; then
     echo ""
 fi
 
-echo "Do you want to upgrade the Operating System ?"
+echo "Do you want to upgrade the Python library ?"
 read -r -p "$1 [y/N] " response < /dev/tty
 if [[ $response =~ ^(yes|y|Y)$ ]]; then
     echo "Greats ! The upgrade OS has started."
-    sudo apt-get -y update
-    sudo apt-get -y upgrade
-    sudo apt-get -y autoremove
+
+    sudo python3 -m pip install --upgrade pip setuptools wheel
+    sudo -H pip3 install --upgrade RPi.bme280 smbus2 redis hiredis pid PyYAML luma.oled luma.lcd adafruit-circuitpython-ads1x15 rshell pyusb
 
     echo ""
     echo "-------------------------------------"
@@ -64,13 +64,13 @@ if [[ $response =~ ^(yes|y|Y)$ ]]; then
     echo ""
 fi
 
-echo "Do you want to upgrade the Python library ?"
+echo "Do you want to upgrade the Operating System ?"
 read -r -p "$1 [y/N] " response < /dev/tty
 if [[ $response =~ ^(yes|y|Y)$ ]]; then
     echo "Greats ! The upgrade OS has started."
-
-    sudo python3 -m pip install --upgrade pip setuptools wheel
-    sudo -H pip3 install --upgrade RPi.bme280 smbus2 redis hiredis pid PyYAML luma.oled luma.lcd adafruit-circuitpython-ads1x15 rshell pyusb
+    sudo apt-get -y update
+    sudo apt-get -y upgrade
+    sudo apt-get -y autoremove
 
     echo ""
     echo "-------------------------------------"
