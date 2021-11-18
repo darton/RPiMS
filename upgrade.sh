@@ -8,9 +8,9 @@ wwwdir=/var/www/html
 _IP=$(ip route get 1.1.1.1 | awk '{print $7}')
 
 echo "Do you want to upgrade the RPiMS ?"
-#read -r -p "$1 [y/N] " response < /dev/tty
-read -r -p "$1 [y/N] "
-if [[ $REPLY =~ ^(yes|y|Y)$ ]]; then
+read -r -p "$1 [y/N] " response < /dev/tty
+#read -r -p "$1 [y/N] "
+if [[ $response =~ ^(yes|y|Y)$ ]]; then
     echo "Greats ! The upgrade process has started."
     [[ -d $wwwdir ]] || sudo mkdir -p $wwwdir
     [[ -d $installdir ]] || mkdir -p $installdir
@@ -47,12 +47,11 @@ if [[ $REPLY =~ ^(yes|y|Y)$ ]]; then
     echo "Upgrade successfully completed !"
     echo "-------------------------------------"
     echo ""
-
 fi
 
 echo "Do you want to upgrade the Operating System ?"
-read -r -p "$1 [y/N] "
-if [[ $REPLY =~ ^(yes|y|Y)$ ]]; then
+read -r -p "$1 [y/N] " response < /dev/tty
+if [[ $response =~ ^(yes|y|Y)$ ]]; then
     echo "Greats ! The upgrade OS has started."
     sudo apt-get -y update
     sudo apt-get -y upgrade
@@ -66,8 +65,8 @@ if [[ $REPLY =~ ^(yes|y|Y)$ ]]; then
 fi
 
 echo "Do you want to upgrade the Python library ?"
-read -r -p "$1 [y/N] "
-if [[ $REPLY =~ ^(yes|y|Y)$ ]]; then
+read -r -p "$1 [y/N] " response < /dev/tty
+if [[ $response =~ ^(yes|y|Y)$ ]]; then
     echo "Greats ! The upgrade OS has started."
 
     sudo python3 -m pip install --upgrade pip setuptools wheel
@@ -80,15 +79,13 @@ if [[ $REPLY =~ ^(yes|y|Y)$ ]]; then
     echo ""
 fi
 
-
 echo ""
 echo "Do you want to reboot RPiMS now ?"
 echo ""
 echo "After restarting open http://$_IP/setup or http://127.0.0.1 to configure RPiMS"
 
-read -r -p "$1 [y/N] "
-
-if [[ $REPLY =~ ^(yes|y|Y)$ ]]; then
+read -r -p "$1 [y/N] " response < /dev/tty
+if [[ $response =~ ^(yes|y|Y)$ ]]; then
     sudo reboot
 else
     echo ""
