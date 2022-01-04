@@ -34,7 +34,7 @@ unzip  $downloaddir/RPiMS.zip -d $downloaddir
 sudo cp -R $unpackdir/www/* $wwwdir
 sudo cp $unpackdir/RPiMS/* $installdir
 sudo chmod u+x $installdir/*.py $installdir/*.sh
-
+sudo chown -R pi.pi $installdir
 sudo systemctl stop dphys-swapfile.service
 sudo systemctl disable dphys-swapfile.service
 
