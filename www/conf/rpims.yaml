@@ -11,8 +11,8 @@ setup:
   use_door_led_indicator: true
   use_motion_led_indicator: true
   use_cpu_sensor: true
-  use_bme280_sensor: true
-  use_ds18b20_sensor: true
+  use_bme280_sensor: false
+  use_ds18b20_sensor: false
   use_dht_sensor: false
   use_weather_station: false
   use_serial_display: false
