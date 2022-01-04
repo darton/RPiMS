@@ -6,6 +6,8 @@ unpackdir=/tmp/RPiMS-master
 installdir=/home/pi/scripts/RPiMS
 wwwdir=/var/www/html
 
+INSTALL_CMD="sudo apt-get -y install"
+
 echo "Do you want to install the RPiMS software?"
 read -r -p "$1 [y/N] " response < /dev/tty
 if [[ $response =~ ^(yes|y|Y)$ ]]; then
@@ -42,26 +44,40 @@ sudo apt-get -y update
 sudo apt-get -y upgrade
 sudo apt-get -y autoremove
 
-sudo apt-get -y install uv4l uv4l-raspicam
-sudo apt-get -y install uv4l-raspicam-extras
-sudo apt-get -y install uv4l-server
-
-#sudo apt-get install uv4l-server uv4l-uvc uv4l-xscreen uv4l-mjpegstream uv4l-dummy uv4l-raspidisp
-#sudo apt-get install uv4l-webrtc
-#sudo apt-get install uv4l-webrtc-armv6
+$INSTALL_CMD uv4l uv4l-raspicam
+$INSTALL_CMD uv4l-raspicam-extras
+$INSTALL_CMD uv4l-server
+#$INSTALL_CMD uv4l-server uv4l-uvc uv4l-xscreen uv4l-mjpegstream uv4l-dummy uv4l-raspidisp
+#$INSTALL_CMD uv4l-webrtc
+#$INSTALL_CMD uv4l-webrtc-armv6
 sudo mv /etc/uv4l/uv4l-raspicam.conf /etc/uv4l/uv4l-raspicam.conf.org
 sudo ln -s /var/www/html/conf/uv4l-raspicam.conf /etc/uv4l/uv4l-raspicam.conf
-
 sudo systemctl restart uv4l_raspicam
 
-sudo apt-get -y install python3-gpiozero python3-pip build-essential python3-dev python3-numpy python3-picamera python3-w1thermsensor python3-automationhat python3-systemd
-sudo apt-get -y install git libfreetype6-dev libopenjp2-7 libtiff5 libjpeg-dev vlc ffmpeg gpac fbi
+$INSTALL_CMD git
+$INSTALL_CMD libfreetype6-dev
+$INSTALL_CMD libopenjp2-7
+$INSTALL_CMD libtiff5
+$INSTALL_CMD libjpeg-dev
+$INSTALL_CMD vlc
+$INSTALL_CMD ffmpeg
+$INSTALL_CMD gpac
+$INSTALL_CMD fbi
 
+$INSTALL_CMD build-essential
+$INSTALL_CMD python3-gpiozero
+$INSTALL_CMD python3-dev
+$INSTALL_CMD python3-numpy
+$INSTALL_CMD python3-picamera
+$INSTALL_CMD python3-automationhat
+$INSTALL_CMD python3-systemd
+$INSTALL_CMD python3-pip
+$INSTALL_CMD python3-setuptools
+$INSTALL_CMD python3-wheel
 
-sudo python3 -m pip install --upgrade pip setuptools wheel
-sudo -H pip3 install --upgrade RPi.bme280 smbus2 redis hiredis pid PyYAML luma.oled luma.lcd adafruit-circuitpython-ads1x15 rshell pyusb
+sudo -H pip3 install --upgrade RPi.bme280 smbus2 w1thermsensor redis hiredis pid PyYAML luma.oled luma.lcd adafruit-circuitpython-ads1x15 rshell pyusb
 
-sudo apt-get -y install redis-server
+$INSTALL_CMD redis-server
 sudo systemctl enable redis-server.service
 sudo sysctl -w vm.overcommit_memory=1
 sudo sysctl -w net.core.somaxconn=512
@@ -70,7 +86,9 @@ echo 'net.core.somaxconn=512' | sudo tee -a /etc/sysctl.conf
 echo 'maxmemory 100mb' | sudo tee -a /etc/redis/redis.conf
 sudo systemctl start redis-server.service
 
-sudo apt-get -y install nginx php php-fpm php-redis php-yaml apache2-utils
+$INSTALL_CMD apache2-utils
+$INSTALL_CMD nginx
+$INSTALL_CMD php php-fpm php-redis php-yaml
 PHPFPMINI=$(sudo find /etc/ \(  -name "php.ini" \) |grep fpm)
 sudo sed -i 's/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/g' $PHPFPMINI
 WWWCONF=$(sudo find /etc/ \(  -name "www.conf" \))
@@ -90,7 +108,7 @@ sudo chown -R pi.pi $wwwdir
 sudo systemctl restart nginx
 sudo systemctl enable nginx
 
-sudo apt-get -y install zabbix-agent
+$INSTALL_CMD zabbix-agent
 echo 'zabbix ALL=(ALL) NOPASSWD: /home/pi/scripts/RPiMS/redis-get-data.py' | sudo EDITOR='tee -a' visudo
 
 echo "Generating a unique TLSPSKIdentity"
@@ -109,7 +127,7 @@ sudo systemctl restart zabbix-agent.service
 sudo systemctl enable zabbix-agent.service
 
 cat $unpackdir/etc/motd |sudo tee /etc/update-motd.d/20-rpims
-sudo chmod ugo+x  /etc/update-motd.d/20-rpims
+sudo chmod ugo+x /etc/update-motd.d/20-rpims
 
 cat $unpackdir/etc/cron |sudo tee /etc/cron.d/rpims
 sudo chown root.root /etc/cron.d/rpims
@@ -119,10 +137,9 @@ sudo systemctl daemon-reload
 sudo systemctl enable rpims.service
 
 
-
 #for DHT22 sensor
 sudo -H pip3 install --upgrade Adafruit_DHT adafruit-circuitpython-dht
-sudo apt-get -y install libgpiod2 libgpiod-dev
+$INSTALL_CMD libgpiod2 libgpiod-dev
 #cd ~
 #git clone https://github.com/michaellass/libgpiod_pulsein.git
 #cd libgpiod_pulsein

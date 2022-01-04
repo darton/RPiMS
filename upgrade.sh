@@ -54,8 +54,7 @@ read -r -p "$1 [y/N] " response < /dev/tty
 if [[ $response =~ ^(yes|y|Y)$ ]]; then
     echo "Greats ! The upgrade OS has started."
 
-    sudo python3 -m pip install --upgrade pip setuptools wheel
-    sudo -H pip3 install --upgrade RPi.bme280 smbus2 redis hiredis pid PyYAML luma.oled luma.lcd adafruit-circuitpython-ads1x15 rshell pyusb
+    sudo -H pip3 install --upgrade RPi.bme280 smbus2 w1thermsensor redis hiredis pid PyYAML luma.oled luma.lcd adafruit-circuitpython-ads1x15 rshell pyusb
 
     echo ""
     echo "-------------------------------------"
