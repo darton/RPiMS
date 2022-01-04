@@ -6,7 +6,7 @@ unpackdir=/tmp/RPiMS-master
 installdir=/home/pi/scripts/RPiMS
 wwwdir=/var/www/html
 
-INSTALL_CMD="sudo apt -y install"
+INSTALL_CMD="sudo apt-get -y install"
 PIP3_INSTALL_CMD="sudo -H pip3 install --upgrade"
 
 echo "Do you want to install the RPiMS software?"
@@ -22,7 +22,7 @@ sudo raspi-config nonint do_i2c 0
 sudo raspi-config nonint do_spi 0
 sudo raspi-config nonint do_onewire 0
 sudo raspi-config nonint do_camera 0
-#raspi-config nonint do_serial 1
+#sudo raspi-config nonint do_serial 1
 sudo raspi-config nonint do_change_timezone Europe/Warsaw
 
 [[ -d $wwwdir ]] || sudo mkdir -p $wwwdir
@@ -75,8 +75,6 @@ $INSTALL_CMD python3-systemd
 $INSTALL_CMD python3-pip
 $INSTALL_CMD python3-setuptools
 $INSTALL_CMD python3-wheel
-
-
 
 $PIP3_INSTALL_CMD RPi.bme280 smbus2
 $PIP3_INSTALL_CMD w1thermsensor

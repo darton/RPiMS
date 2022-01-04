@@ -67,9 +67,9 @@ echo "Do you want to upgrade the Operating System ?"
 read -r -p "$1 [y/N] " response < /dev/tty
 if [[ $response =~ ^(yes|y|Y)$ ]]; then
     echo "Greats ! The upgrade OS has started."
-    sudo apt -y update
-    sudo apt -y upgrade
-    sudo apt -y autoremove
+    sudo apt-get -y update
+    sudo apt-get -y upgrade
+    sudo apt-get -y autoremove
 
     echo ""
     echo "-------------------------------------"
