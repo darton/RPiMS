@@ -6,7 +6,7 @@ unpackdir=/tmp/RPiMS-master
 installdir=/home/pi/scripts/RPiMS
 wwwdir=/var/www/html
 
-INSTALL_CMD="sudo apt-get -y install"
+INSTALL_CMD="sudo apt -y install"
 PIP3_INSTALL_CMD="sudo -H pip3 install --upgrade"
 
 echo "Do you want to install the RPiMS software?"
