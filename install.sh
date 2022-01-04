@@ -7,6 +7,7 @@ installdir=/home/pi/scripts/RPiMS
 wwwdir=/var/www/html
 
 INSTALL_CMD="sudo apt-get -y install"
+PIP3_INSTALL_CMD="sudo -H pip3 install --upgrade"
 
 echo "Do you want to install the RPiMS software?"
 read -r -p "$1 [y/N] " response < /dev/tty
@@ -75,7 +76,17 @@ $INSTALL_CMD python3-pip
 $INSTALL_CMD python3-setuptools
 $INSTALL_CMD python3-wheel
 
-sudo -H pip3 install --upgrade RPi.bme280 smbus2 w1thermsensor redis hiredis pid PyYAML luma.oled luma.lcd adafruit-circuitpython-ads1x15 rshell pyusb
+
+
+$PIP3_INSTALL_CMD RPi.bme280 smbus2
+$PIP3_INSTALL_CMD w1thermsensor
+$PIP3_INSTALL_CMD redis hiredis
+$PIP3_INSTALL_CMD pid
+$PIP3_INSTALL_CMD PyYAML
+$PIP3_INSTALL_CMD luma.oled luma.lcd
+$PIP3_INSTALL_CMD adafruit-circuitpython-ads1x15
+$PIP3_INSTALL_CMD rshell
+$PIP3_INSTALL_CMD pyusb
 
 $INSTALL_CMD redis-server
 sudo systemctl enable redis-server.service
@@ -138,7 +149,7 @@ sudo systemctl enable rpims.service
 
 
 #for DHT22 sensor
-sudo -H pip3 install --upgrade Adafruit_DHT adafruit-circuitpython-dht
+$PIP3_INSTALL_CMD Adafruit_DHT adafruit-circuitpython-dht
 $INSTALL_CMD libgpiod2 libgpiod-dev
 #cd ~
 #git clone https://github.com/michaellass/libgpiod_pulsein.git
