@@ -416,15 +416,15 @@ def get_dht_data(**kwargs):
             if delay < 0:
                 delay = 0
         except OverflowError as error:
-            if debug is 'yes':
+            if debug == 'yes':
                 print(f'Problem with DHT sensor: {error}')
             delay += 1
         except  RuntimeError as error:
-            if debug is 'yes':
+            if debug == 'yes':
                 print(f'Problem with DHT sensor - {error}')
             delay += 1
         finally:
-            if debug is 'yes':
+            if debug == 'yes':
                 print(f'DHT delay: {delay}')
             redis_db.set('DHT_delay', delay)
             sleep(read_interval+delay)
