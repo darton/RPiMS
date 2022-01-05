@@ -372,7 +372,8 @@ def get_ds18b20_data(**kwargs):
         from w1thermsensor import W1ThermSensor
         from time import sleep
         while True:
-            data = W1ThermSensor.get_available_sensors([W1ThermSensor.THERM_SENSOR_DS18B20, W1ThermSensor.THERM_SENSOR_DS18S20])
+            #data = W1ThermSensor.get_available_sensors([W1ThermSensor.THERM_SENSOR_DS18B20, W1ThermSensor.THERM_SENSOR_DS18S20])
+            data = W1ThermSensor.get_available_sensors()
             for sensor in data:
                 redis_db.sadd('DS18B20_sensors', sensor.id)
                 redis_db.set(sensor.id, sensor.get_temperature())
