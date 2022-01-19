@@ -164,6 +164,9 @@ $INSTALL_CMD libgpiod2 libgpiod-dev
 rm $downloaddir/RPiMS.zip
 #rmdir $unpackdir
 
+sudo hostnamectl set-hostname rpims.example.com
+echo  "127.0.1.2       rpims.example.com" | sudo tee -a /etc/hosts
+
 _IP=$(ip route get 1.1.1.1 | awk '{print $7}')
 echo ""
 echo "-------------------------------------"
@@ -172,6 +175,7 @@ echo "-------------------------------------"
 echo ""
 echo "After restarting open http://$_IP/setup or http://127.0.0.1 to configure RPiMS"
 echo ""
+echo "Reboot is necessary for proper RPiMS operation."
 echo "Do you want to reboot RPiMS now ?"
 echo ""
 
