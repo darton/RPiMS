@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 repourl=https://github.com/darton/RPiMS/archive/refs/heads/master.zip
 downloaddir=/tmp
