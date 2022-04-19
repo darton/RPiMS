@@ -28,9 +28,15 @@ if ($_GET['settings'] == "show" || $showAll == true){
 if ($_GET['system'] == "show" || $showAll == true){
     $obj = $redis-> get('zabbix_agent');
     $zabbix_agent = json_decode($obj, true);
-    $system["hostip"] = $rpims["hostip"];
+    $_system = $redis->hgetall("system");
+
+    $system["hostip"] = $_system['hostip'];
+    $system["memused"] = $_system['memused'];
+    $system["fsused"] = $_system['fsused'];
+    $system["uptime"] = $_system['uptime'];
     $system["hostname"] = $zabbix_agent["hostname"];
     $system["location"] = $zabbix_agent["location"];
+
     $rpims_api["system"] = $system;
 }
 if ($_GET['cpu'] == "show" || $_GET['sensors'] == "show" || $showAll == true){
@@ -39,7 +45,7 @@ if ($_GET['cpu'] == "show" || $_GET['sensors'] == "show" || $showAll == true){
     }
 }
 if ($_GET['picamera'] == "show" || $_GET['sensors'] == "show" || $showAll == true){
-    if ($config["use_picamera"] == show) {  
+    if ($config["use_picamera"] == show) {
         $rpims_api["sensors"]["picamera"]["rotation"] = $sensors["PICAMERA"]["rotation"];
         $rpims_api["sensors"]["picamera"]["mode"] = $sensors["PICAMERA"]["mode"];
         $rpims_api["sensors"]["picamera"]["fps"] = $sensors["PICAMERA"]["fps"];
@@ -49,16 +55,22 @@ if ($_GET['bme280'] == "show" || $_GET['sensors'] == "show" || $showAll == true)
     if ($config["use_bme280_sensor"] == true) {
         foreach ($sensors['BME280'] as $key => $value) {
             $id = $sensors['BME280'][$key]["id"];
-            $t = $id."_BME280_Temperature";
-            $h = $id."_BME280_Humidity";
-            $p = $id."_BME280_Pressure";
+            $bme280id = $id."_BME280";
+	    $_bme280 = $redis->hgetall($bme280id);
             if ($sensors["BME280"][$id]["use"] == true) {
-                $rpims_api["sensors"]["bme280"][$id]["name"] = $sensors["BME280"][$id]["name"] ;
-                $rpims_api["sensors"]["bme280"][$id]["temperature"] = $rpims[$t] ;
-                $rpims_api["sensors"]["bme280"][$id]["humidity"] = $rpims[$h] ;
-                $rpims_api["sensors"]["bme280"][$id]["pressure"] = $rpims[$p] ;
+                $rpims_api["sensors"]["bme280"][$id]["name"] = $sensors["BME280"][$id]["name"];
+		$rpims_api["sensors"]["bme280"][$id]["temperature"] = $_bme280['Temperature'];
+		$rpims_api["sensors"]["bme280"][$id]["humidity"] = $_bme280['Humidity'];
+		$rpims_api["sensors"]["bme280"][$id]["pressure"] = $_bme280['Pressure'];
             }
-        }
+	}
+        //$BME280_sensors = $redis->smembers('BME280_sensors');
+        //foreach ($BME280_sensors as $key => $value) {
+        //    $bme280id = $value."_BME280";
+	//    $rpims_api["sensors"]["bme280"][$value]["temperature"] = $redis->hget($bme280id,"Temperature");
+	//    $rpims_api["sensors"]["bme280"][$value]["humidity"] = $redis->hget($bme280id,"Humidity");
+	//    $rpims_api["sensors"]["bme280"][$value]["pressure"] = $redis->hget($bme280id,"Pressure");
+	//}
     }
 }
 if ($_GET['one_wire'] == "show" || $_GET['sensors'] == "show" || $showAll == true){

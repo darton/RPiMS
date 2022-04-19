@@ -31,10 +31,11 @@ if len(sys.argv) > 1:
         if config['use_bme280_sensor'] is True:
             if len(sys.argv) == 3:
                 bme_id = sys.argv[2]
-                if redis_db.exists(f'id{bme_id}_BME280_Temperature') and redis_db.exists(f'id{bme_id}_BME280_Humidity') and redis_db.exists(f'id{bme_id}_BME280_Pressure'):
-                    temperature = redis_db.get(f'id{bme_id}_BME280_Temperature')
-                    humidity = redis_db.get(f'id{bme_id}_BME280_Humidity')
-                    pressure = redis_db.get(f'id{bme_id}_BME280_Pressure')
+                if redis_db.exists(f'id{bme_id}_BME280'):
+                    _bme280 = redis_db.hgetall(f'id{bme_id}_BME280')
+                    temperature = _bme280['Temperature']
+                    humidity = _bme280['Humidity']
+                    pressure = _bme280['Pressure']
                     print('Temperature={0:0.2f};Humidity={1:0.2f};Pressure={2:0.2f};'.format(float(temperature),float(humidity),float(pressure)))
             else: print_help()
 

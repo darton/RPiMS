@@ -183,15 +183,21 @@ def get_bme280_data(**kwargs):
             calibration_params = bme280.load_calibration_params(bus, address)
 
             while True:
-                data = bme280.sample(bus, address, calibration_params)
+                try:
+                  data = bme280.sample(bus, address, calibration_params)
+                except:
+                  sleep(read_interval*3/2)
+
                 temperature = round(data.temperature,3)
                 humidity = round(data.humidity,3)
                 pressure = round(data.pressure,3)
-                redis_db.sadd('BME280_sensors', sid)
-                redis_db.mset({f'{sid}_BME280_Temperature': temperature, f'{sid}_BME280_Humidity': humidity, f'{sid}_BME280_Pressure': pressure})
-                redis_db.expire(f'{sid}_BME280_Temperature', read_interval*2)
-                redis_db.expire(f'{sid}_BME280_Humidity', read_interval*2)
-                redis_db.expire(f'{sid}_BME280_Pressure', read_interval*2)
+
+                #redis_db.sadd('BME280_sensors', sid)
+                redis_db.hset(f'{sid}_BME280', 'Temperature', temperature)
+                redis_db.hset(f'{sid}_BME280', 'Humidity', humidity)
+                redis_db.hset(f'{sid}_BME280', 'Pressure', pressure)
+                redis_db.expire(f'{sid}_BME280', read_interval*2)
+
                 if bool(verbose) is True:
                     print('')
                     print(f'{sid}_BME280: Temperature: {temperature} °C, Humidity: {humidity} %, Pressure: {pressure} hPa')
@@ -229,7 +235,7 @@ def get_bme280_data(**kwargs):
 
         lecounter = 0
         necounter = 0
-        redis_db.sadd('BME280_sensors', sid)
+
 
         def reset_usbdevice():
             import usb.core
@@ -352,10 +358,13 @@ def get_bme280_data(**kwargs):
                 temperature = int(t)/1000
                 humidity = int(h)/1000
                 pressure = int(p)/1000
-                redis_db.mset({f'{sid}_BME280_Temperature': temperature, f'{sid}_BME280_Humidity': humidity, f'{sid}_BME280_Pressure': pressure})
-                redis_db.expire(f'{sid}_BME280_Temperature', read_interval*4)
-                redis_db.expire(f'{sid}_BME280_Humidity', read_interval*4)
-                redis_db.expire(f'{sid}_BME280_Pressure', read_interval*4)
+
+                #redis_db.sadd('BME280_sensors', sid)
+                redis_db.hset(f'{sid}_BME280', 'Temperature', temperature)
+                redis_db.hset(f'{sid}_BME280', 'Humidity', humidity)
+                redis_db.hset(f'{sid}_BME280', 'Pressure', pressure)
+                redis_db.expire(f'{sid}_BME280', read_interval*2)
+
                 if bool(verbose) is True:
                     print('')
                     print(f'{sid}_BME280: Temperature: {temperature}°C, Humidity: {humidity}%, Pressure: {pressure}hPa')
