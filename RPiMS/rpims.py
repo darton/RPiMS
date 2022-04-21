@@ -167,6 +167,8 @@ def get_cputemp_data(**kwargs):
 
 def get_bme280_data(**kwargs):
     from time import sleep
+    import sys
+
     verbose = kwargs['verbose']
     read_interval = kwargs['read_interval']
     interface_type = kwargs['interface']
@@ -201,22 +203,28 @@ def get_bme280_data(**kwargs):
 
     if interface_type == 'serial':
         from subprocess import check_output
+
         set1 = set(check_output(["cat /sys/firmware/devicetree/base/model"], shell=True).decode('UTF-8').split(' '))
 
-        try:
-            if bool(set1.remove('3')) is False:
-                serial_ports_by_path = {'USB1':'/dev/serial/by-path/platform-3f980000.usb-usb-0:1.1.2:1.0',
-                                        'USB2':'/dev/serial/by-path/platform-3f980000.usb-usb-0:1.1.3:1.0',
-                                        'USB3':'/dev/serial/by-path/platform-3f980000.usb-usb-0:1.2:1.0',
-                                        'USB4':'/dev/serial/by-path/platform-3f980000.usb-usb-0:1.3:1.0',
-                                        }
-        except:
-            if bool(set1.remove('4')) is False:
-                serial_ports_by_path = {'USB1':'/dev/serial/by-path/platform-fd500000.pcie-pci-0000:01:00.0-usb-0:1.1:1.0',
-                                        'USB2':'/dev/serial/by-path/platform-fd500000.pcie-pci-0000:01:00.0-usb-0:1.2:1.0',
-                                        'USB3':'/dev/serial/by-path/platform-fd500000.pcie-pci-0000:01:00.0-usb-0:1.3:1.0',
-                                        'USB4':'/dev/serial/by-path/platform-fd500000.pcie-pci-0000:01:00.0-usb-0:1.4:1.0',
-                                       }
+        if "3" in set1:
+            serial_ports_by_path = {'USB1':'/dev/serial/by-path/platform-3f980000.usb-usb-0:1.1.2:1.0',
+                                    'USB2':'/dev/serial/by-path/platform-3f980000.usb-usb-0:1.1.3:1.0',
+                                    'USB3':'/dev/serial/by-path/platform-3f980000.usb-usb-0:1.2:1.0',
+                                    'USB4':'/dev/serial/by-path/platform-3f980000.usb-usb-0:1.3:1.0',
+                                    }
+        elif "4" in set1:
+            serial_ports_by_path = {'USB1':'/dev/serial/by-path/platform-fd500000.pcie-pci-0000:01:00.0-usb-0:1.1:1.0',
+                                    'USB2':'/dev/serial/by-path/platform-fd500000.pcie-pci-0000:01:00.0-usb-0:1.2:1.0',
+                                    'USB3':'/dev/serial/by-path/platform-fd500000.pcie-pci-0000:01:00.0-usb-0:1.3:1.0',
+                                    'USB4':'/dev/serial/by-path/platform-fd500000.pcie-pci-0000:01:00.0-usb-0:1.4:1.0',
+                                   }
+        elif "400" in set1:
+            serial_ports_by_path = {'USB1':'/dev/serial/by-path/platform-fd500000.pcie-pci-0000:01:00.0-usb-0:1.1:1.0',
+                                    'USB2':'/dev/serial/by-path/platform-fd500000.pcie-pci-0000:01:00.0-usb-0:1.2:1.0',
+                                    'USB3':'/dev/serial/by-path/platform-fd500000.pcie-pci-0000:01:00.0-usb-0:1.3:1.0',
+                                   }
+        else :
+            sys.exit('Unknown device')
 
         if kwargs['serial_port'] == 'USB1':
             serial_port = serial_ports_by_path['USB1']
@@ -353,9 +361,19 @@ def get_bme280_data(**kwargs):
                 humidity = int(h)/1000
                 pressure = int(p)/1000
                 redis_db.mset({f'{sid}_BME280_Temperature': temperature, f'{sid}_BME280_Humidity': humidity, f'{sid}_BME280_Pressure': pressure})
-                redis_db.expire(f'{sid}_BME280_Temperature', read_interval*4)
-                redis_db.expire(f'{sid}_BME280_Humidity', read_interval*4)
-                redis_db.expire(f'{sid}_BME280_Pressure', read_interval*4)
+                if read_interval < 2:
+                    n = 10
+                elif read_interval < 3:
+                    n = 5
+                elif read_interval < 4:
+                    n = 4
+                elif read_interval < 5:
+                    n = 3
+                else:
+                    n = 2
+                redis_db.expire(f'{sid}_BME280_Temperature', read_interval*n)
+                redis_db.expire(f'{sid}_BME280_Humidity', read_interval*n)
+                redis_db.expire(f'{sid}_BME280_Pressure', read_interval*n)
                 if bool(verbose) is True:
                     print('')
                     print(f'{sid}_BME280: Temperature: {temperature}°C, Humidity: {humidity}%, Pressure: {pressure}hPa')
