@@ -1,13 +1,31 @@
 #!/usr/bin/env bash
 
+
+if [[ $(id -u) -ne 0 ]]; then
+  echo "This script must be executed as root or using "
+  exit 99
+fi
+
+systemd="$(ps --no-headers -o comm 1)"
+if [ ! "${systemd}" = "systemd" ]; then
+  echo "This system is not running systemd.  Exiting..."
+  exit 100
+fi
+
+if dpkg -l | grep -Eqw "gdm3|sddm|lxdm|xdm|lightdm|slim|wdm"; then
+  echo "Please use a Lite version of the image"
+  echo "Exiting..."
+  exit 101
+fi
+
 repourl=https://github.com/darton/RPiMS/archive/refs/heads/master.zip
 downloaddir=/tmp
 unpackdir=/tmp/RPiMS-master
 installdir=/home/pi/scripts/RPiMS
 wwwdir=/var/www/html
 
-INSTALL_CMD="sudo apt-get -y install"
-PIP3_INSTALL_CMD="sudo -H pip3 install --upgrade"
+INSTALL_CMD="apt-get -y install"
+PIP3_INSTALL_CMD="pip3 install --upgrade"
 
 echo "Do you want to install the RPiMS software?"
 read -r -p "$1 [y/N] " response < /dev/tty
@@ -18,32 +36,32 @@ else
     exit
 fi
 
-sudo raspi-config nonint do_i2c 0
-sudo raspi-config nonint do_spi 0
-sudo raspi-config nonint do_onewire 0
-sudo raspi-config nonint do_camera 0
-#sudo raspi-config nonint do_serial 1
-sudo raspi-config nonint do_change_timezone Europe/Warsaw
+raspi-config nonint do_i2c 0
+raspi-config nonint do_spi 0
+raspi-config nonint do_onewire 0
+raspi-config nonint do_camera 0
+#raspi-config nonint do_serial 1
+raspi-config nonint do_change_timezone Europe/Warsaw
 
-[[ -d $wwwdir ]] || sudo mkdir -p $wwwdir
+[[ -d $wwwdir ]] || mkdir -p $wwwdir
 [[ -d $installdir ]] || mkdir -p $installdir
 [[ -d /home/pi/Videos ]] || mkdir -p /home/pi/Videos
 
 curl -sS $repourl -L -o $downloaddir/RPiMS.zip
 unzip  $downloaddir/RPiMS.zip -d $downloaddir
-sudo cp -R $unpackdir/www/* $wwwdir
-sudo cp $unpackdir/RPiMS/* $installdir
-sudo chmod u+x $installdir/*.py $installdir/*.sh
-sudo chown -R pi.pi $installdir
-sudo systemctl stop dphys-swapfile.service
-sudo systemctl disable dphys-swapfile.service
+cp -R $unpackdir/www/* $wwwdir
+cp $unpackdir/RPiMS/* $installdir
+chmod u+x $installdir/*.py $installdir/*.sh
+chown -R pi.pi $installdir
+systemctl stop dphys-swapfile.service
+systemctl disable dphys-swapfile.service
 
-curl https://www.linux-projects.org/listing/uv4l_repo/lpkey.asc | sudo apt-key add -
-echo "deb https://www.linux-projects.org/listing/uv4l_repo/raspbian/stretch stretch main" | sudo tee /etc/apt/sources.list.d/uv4l.list
+curl https://www.linux-projects.org/listing/uv4l_repo/lpkey.asc | apt-key add -
+echo "deb https://www.linux-projects.org/listing/uv4l_repo/raspbian/stretch stretch main" | tee /etc/apt/sources.list.d/uv4l.list
 
-sudo apt-get -y update
-sudo apt-get -y upgrade
-sudo apt-get -y autoremove
+apt-get -y update
+apt-get -y upgrade
+apt-get -y autoremove
 
 $INSTALL_CMD uv4l uv4l-raspicam
 $INSTALL_CMD uv4l-raspicam-extras
@@ -51,9 +69,9 @@ $INSTALL_CMD uv4l-server
 #$INSTALL_CMD uv4l-server uv4l-uvc uv4l-xscreen uv4l-mjpegstream uv4l-dummy uv4l-raspidisp
 #$INSTALL_CMD uv4l-webrtc
 #$INSTALL_CMD uv4l-webrtc-armv6
-sudo mv /etc/uv4l/uv4l-raspicam.conf /etc/uv4l/uv4l-raspicam.conf.org
-sudo ln -s /var/www/html/conf/uv4l-raspicam.conf /etc/uv4l/uv4l-raspicam.conf
-sudo systemctl restart uv4l_raspicam
+mv /etc/uv4l/uv4l-raspicam.conf /etc/uv4l/uv4l-raspicam.conf.org
+ln -s /var/www/html/conf/uv4l-raspicam.conf /etc/uv4l/uv4l-raspicam.conf
+systemctl restart uv4l_raspicam
 
 $INSTALL_CMD git
 $INSTALL_CMD libfreetype6-dev
@@ -87,38 +105,38 @@ $PIP3_INSTALL_CMD rshell
 $PIP3_INSTALL_CMD pyusb
 
 $INSTALL_CMD redis-server
-sudo systemctl enable redis-server.service
-sudo sysctl -w vm.overcommit_memory=1
-sudo sysctl -w net.core.somaxconn=512
-echo 'vm.overcommit_memory=1' | sudo tee -a /etc/sysctl.conf
-echo 'net.core.somaxconn=512' | sudo tee -a /etc/sysctl.conf
-echo 'maxmemory 100mb' | sudo tee -a /etc/redis/redis.conf
-sudo systemctl start redis-server.service
+systemctl enable redis-server.service
+sysctl -w vm.overcommit_memory=1
+sysctl -w net.core.somaxconn=512
+echo 'vm.overcommit_memory=1' | tee -a /etc/sysctl.conf
+echo 'net.core.somaxconn=512' | tee -a /etc/sysctl.conf
+echo 'maxmemory 100mb' | tee -a /etc/redis/redis.conf
+systemctl start redis-server.service
 
 $INSTALL_CMD apache2-utils
 $INSTALL_CMD nginx
 $INSTALL_CMD php php-fpm php-redis php-yaml
-PHPFPMINI=$(sudo find /etc/ \(  -name "php.ini" \) |grep fpm)
-sudo sed -i 's/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/g' $PHPFPMINI
-WWWCONF=$(sudo find /etc/ \(  -name "www.conf" \))
-sudo sed -i 's/user = www-data/user = pi/g' $WWWCONF
-sudo sed -i 's/group = www-data/group = pi/g' $WWWCONF
-PHPFPMSERVICE=$(sudo systemctl -a |grep fpm.service|awk '{print $1}'|grep php)
-sudo systemctl restart $PHPFPMSERVICE
-sudo systemctl enable $PHPFPMSERVICE
+PHPFPMINI=$(find /etc/ \(  -name "php.ini" \) |grep fpm)
+sed -i 's/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/g' $PHPFPMINI
+WWWCONF=$(find /etc/ \(  -name "www.conf" \))
+sed -i 's/user = www-data/user = pi/g' $WWWCONF
+sed -i 's/group = www-data/group = pi/g' $WWWCONF
+PHPFPMSERVICE=$(systemctl -a |grep fpm.service|awk '{print $1}'|grep php)
+systemctl restart $PHPFPMSERVICE
+systemctl enable $PHPFPMSERVICE
 
-sudo rm $wwwdir/index.nginx-debian.html
+rm $wwwdir/index.nginx-debian.html
 
-sudo mv /etc/nginx/sites-available/default /etc/nginx/sites-available/default.org
-sudo mv $unpackdir/etc/nginx-default /etc/nginx/sites-available/default
-sudo mv $unpackdir/etc/nginx.conf /etc/nginx
-sudo chown root.root /etc/nginx/nginx.conf
-sudo chown -R pi.pi $wwwdir
-sudo systemctl restart nginx
-sudo systemctl enable nginx
+mv /etc/nginx/sites-available/default /etc/nginx/sites-available/default.org
+mv $unpackdir/etc/nginx-default /etc/nginx/sites-available/default
+mv $unpackdir/etc/nginx.conf /etc/nginx
+chown root.root /etc/nginx/nginx.conf
+chown -R pi.pi $wwwdir
+systemctl restart nginx
+systemctl enable nginx
 
 $INSTALL_CMD zabbix-agent
-echo 'zabbix ALL=(ALL) NOPASSWD: /home/pi/scripts/RPiMS/redis-get-data.py' | sudo EDITOR='tee -a' visudo
+echo 'zabbix ALL=(ALL) NOPASSWD: /home/pi/scripts/RPiMS/redis-get-data.py' | EDITOR='tee -a' visudo
 
 echo "Generating a unique TLSPSKIdentity"
 TLSPSKIdentity=$(openssl rand -hex 8)
@@ -128,22 +146,22 @@ sed -i "s/TLSPSKIdentity=.*/TLSPSKIdentity=${TLSPSKIdentity}/g" $wwwdir/conf/zab
 echo "Generating a unique TLSPSK"
 TLSPSK=$(openssl rand -hex 32)
 sed -i "s/ TLSPSK: .*/\ \TLSPSK: ${TLSPSK}/g" $wwwdir/conf/rpims.yaml
-echo $TLSPSK | sudo tee $wwwdir/conf/zabbix_agentd.psk
+echo $TLSPSK | tee $wwwdir/conf/zabbix_agentd.psk
 
-sudo cp $unpackdir/etc/zabbix_rpims.conf /etc/zabbix/zabbix_agentd.conf.d/
+cp $unpackdir/etc/zabbix_rpims.conf /etc/zabbix/zabbix_agentd.conf.d/
 
-sudo systemctl restart zabbix-agent.service
-sudo systemctl enable zabbix-agent.service
+systemctl restart zabbix-agent.service
+systemctl enable zabbix-agent.service
 
-cat $unpackdir/etc/motd |sudo tee /etc/update-motd.d/20-rpims
-sudo chmod ugo+x /etc/update-motd.d/20-rpims
+cat $unpackdir/etc/motd |tee /etc/update-motd.d/20-rpims
+chmod ugo+x /etc/update-motd.d/20-rpims
 
-cat $unpackdir/etc/cron |sudo tee /etc/cron.d/rpims
-sudo chown root.root /etc/cron.d/rpims
+cat $unpackdir/etc/cron |tee /etc/cron.d/rpims
+chown root.root /etc/cron.d/rpims
 
-sudo mv $unpackdir/etc/rpims.service /lib/systemd/system/rpims.service
-sudo systemctl daemon-reload
-sudo systemctl enable rpims.service
+mv $unpackdir/etc/rpims.service /lib/systemd/system/rpims.service
+systemctl daemon-reload
+systemctl enable rpims.service
 
 
 #for DHT22 sensor
@@ -157,15 +175,15 @@ $INSTALL_CMD libgpiod2 libgpiod-dev
 #make
 #cd ~/.local/lib/python3.7/site-packages/adafruit_blinka/microcontroller/bcm283x/pulseio/
 #cd /usr/local/lib/python3.7/dist-packages/adafruit_blinka/microcontroller/bcm283x/pulseio/
-#sudo cp libgpiod_pulsein libgpiod_pulsein.bak
-#sudo cp ~/libgpiod_pulsein/src/libgpiod_pulsein ./
+#cp libgpiod_pulsein libgpiod_pulsein.bak
+#cp ~/libgpiod_pulsein/src/libgpiod_pulsein ./
 #
 
 rm $downloaddir/RPiMS.zip
 #rmdir $unpackdir
 
-sudo hostnamectl set-hostname rpims.example.com
-echo  "127.0.1.2       rpims.example.com" | sudo tee -a /etc/hosts
+hostnamectl set-hostname rpims.example.com
+echo  "127.0.1.2       rpims.example.com" | tee -a /etc/hosts
 
 _IP=$(ip route get 1.1.1.1 | awk '{print $7}')
 echo ""
@@ -182,10 +200,10 @@ echo ""
 read -r -p "$1 [y/N] " response < /dev/tty
 
 if [[ $response =~ ^(yes|y|Y)$ ]]; then
-    sudo reboot
+    reboot
 else
     echo ""
-    echo "Run this command manually: sudo reboot"
+    echo "Run this command manually: reboot"
     echo ""
     echo "After restarting open http://$_IP/setup or http://127.0.0.1/setup to configure RPiMS"
     exit
