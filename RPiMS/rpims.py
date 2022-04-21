@@ -1099,12 +1099,15 @@ def main():
 
 # --- Main program ---
 if __name__ == '__main__':
-    from pid import PidFile
+    import pid
     try:
-        with PidFile('/home/pi/scripts/RPiMS/rpims.pid'):
+        with pid.PidFile('/home/pi/scripts/RPiMS/rpims.pid'):
             main()
     except KeyboardInterrupt:
         print('')
         print('# RPiMS is stopped #')
-    except Exception as err :
-        print(f'Another instance of RPiMS is already running. RPiMS will now close. {err}')
+    except pid.PidFileError:
+        print('')
+        print('Another instance of RPiMS is already running. RPiMS will now close.')
+    except Exception as err:
+        print(err)
