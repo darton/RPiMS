@@ -25,7 +25,7 @@ installdir=/home/pi/scripts/RPiMS
 wwwdir=/var/www/html
 
 INSTALL_CMD="apt-get -y install"
-PIP3_INSTALL_CMD="-H pip3 install --upgrade"
+PIP3_INSTALL_CMD="pip3 install --upgrade"
 
 echo "Do you want to install the RPiMS software?"
 read -r -p "$1 [y/N] " response < /dev/tty
