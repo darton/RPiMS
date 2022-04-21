@@ -278,6 +278,8 @@ Optional
 
 * [Reduce TTFB](https://blog.navicosoft.com/2018/02/reduce-ttfb-to-less-than-second-with.html)
 
+* [Log2Ram](https://github.com/azlux/log2ram)
+
 ## Configure if you have RTC (DS3231 I2C)
 
 1. I2C interface should be enabled. 
