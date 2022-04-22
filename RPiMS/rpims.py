@@ -365,7 +365,6 @@ def get_bme280_data(**kwargs):
                     expire_time = 10
                 else:
                     expire_time = read_interval*2
-                print(expire_time)
                 redis_db.expire(f'{sid}_BME280_Temperature', expire_time)
                 redis_db.expire(f'{sid}_BME280_Humidity', expire_time)
                 redis_db.expire(f'{sid}_BME280_Pressure', expire_time)
