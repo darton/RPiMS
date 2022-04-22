@@ -2,7 +2,7 @@
 
 
 if [[ $(id -u) -ne 0 ]]; then
-  echo "This script must be executed as root or using "
+  echo "This script must be executed as root or using sudo"
   exit 99
 fi
 
