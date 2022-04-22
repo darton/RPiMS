@@ -370,18 +370,12 @@ def get_bme280_data(**kwargs):
                 redis_db.hset(f'{sid}_BME280', 'Humidity', humidity)
                 redis_db.hset(f'{sid}_BME280', 'Pressure', pressure)
 
-                if read_interval < 2:
-                    n = 10
-                elif read_interval < 3:
-                    n = 5
-                elif read_interval < 4:
-                    n = 4
-                elif read_interval < 5:
-                    n = 3
+                if read_interval < 10:
+                    expire_time = 10
                 else:
-                    n = 2
+                    expire_time = read_interval*2
 
-                redis_db.expire(f'{sid}_BME280', read_interval*n)
+                redis_db.expire(f'{sid}_BME280', expire_time)
 
                 if bool(verbose) is True:
                     print('')
