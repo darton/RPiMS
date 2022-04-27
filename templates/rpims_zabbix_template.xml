@@ -342,7 +342,7 @@
                     </applications>
                 </item>
                 <item>
-                    <name>door-sensor</name>
+                    <name>Door Status</name>
                     <type>TRAP</type>
                     <key>trap</key>
                     <delay>0</delay>
@@ -355,43 +355,43 @@
                     </applications>
                     <triggers>
                         <trigger>
-                            <expression>{str(The door 1 has been opened,#1)}=1</expression>
-                            <name>Alarm - The door 1 has been opened !</name>
+                            <expression>{str(GPIO_21 has been opened,#1)}=1</expression>
+                            <name>Alarm - Door 1 has been opened !</name>
                             <priority>HIGH</priority>
                         </trigger>
                         <trigger>
-                            <expression>{str(The door 2 has been opened,#1)}=1</expression>
-                            <name>Alarm - The door 2 has been opened !</name>
-                            <priority>HIGH</priority>
-                        </trigger>
-                        <trigger>
-                            <expression>{str(The door 1 is closed,#1)}=1</expression>
-                            <name>Info after restart - The door 1 is closed.</name>
+                            <expression>{str(GPIO_21 has ben closed,#1)}=1</expression>
+                            <name>Door 1 has ben closed.</name>
                             <priority>INFO</priority>
                         </trigger>
                         <trigger>
-                            <expression>{str(The door 1 is opened,#1)}=1</expression>
-                            <name>Info after restart - The door 1 is opened!</name>
+                            <expression>{str(GPIO_21 is opened,#1)}=1</expression>
+                            <name>Info after restart - Door 1 is opened!</name>
                             <priority>HIGH</priority>
                         </trigger>
                         <trigger>
-                            <expression>{str(The door 2 is closed,#1)}=1</expression>
-                            <name>Info after restart - The door 2 is closed.</name>
+                            <expression>{str(GPIO_21 is closed,#1)}=1</expression>
+                            <name>Info after restart - Door 1 is closed.</name>
                             <priority>INFO</priority>
                         </trigger>
                         <trigger>
-                            <expression>{str(The door 2 is opened,#1)}=1</expression>
-                            <name>Info after restart - The door 2 is opened!</name>
+                            <expression>{str(GPIO_20 has been opened,#1)}=1</expression>
+                            <name>Alarm - Door 2 has been opened !</name>
                             <priority>HIGH</priority>
                         </trigger>
                         <trigger>
-                            <expression>{str(The door 1 has ben closed,#1)}=1</expression>
-                            <name>The door 1 has ben closed.</name>
+                            <expression>{str(GPIO_20 has ben closed,#1)}=1</expression>
+                            <name>Door 2 has ben closed.</name>
                             <priority>INFO</priority>
                         </trigger>
                         <trigger>
-                            <expression>{str(The door 2 has ben closed,#1)}=1</expression>
-                            <name>The door 2 has ben closed.</name>
+                            <expression>{str(GPIO_20 is opened,#1)}=1</expression>
+                            <name>Info after restart - Door 2 is opened!</name>
+                            <priority>HIGH</priority>
+                        </trigger>
+                        <trigger>
+                            <expression>{str(GPIO_20 is closed,#1)}=1</expression>
+                            <name>Info after restart - Door 2 is closed.</name>
                             <priority>INFO</priority>
                         </trigger>
                     </triggers>
