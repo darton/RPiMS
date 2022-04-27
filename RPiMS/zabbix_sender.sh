@@ -15,31 +15,32 @@
 
 location=$(redis-cli get zabbix_agent |awk -F, '{print $3}' |awk -F\" '{print $4}')
 zabbix_server=$(redis-cli get zabbix_agent |awk -F, '{print $1}' |awk -F\" '{print $4}')
+psk=$(echo "--tls-connect=psk --tls-psk-identity="$(awk -F\= '/TLSPSKIdentity/ {print $2}' /var/www/html/conf/zabbix_agentd.conf)" --tls-psk-file=/var/www/html/conf/zabbix_agentd.psk")
 
 case "$1" in
 
     'info_when_door_is_opened')
-        zabbix_sender -z $zabbix_server -p 10051 -s "$location" -k trap -o "The $2 is opened"
+        zabbix_sender -z $zabbix_server -p 10051 -s "$location" $psk -k trap -o "$2 is opened"
     ;;
 
     'info_when_door_is_closed')
-        zabbix_sender -z $zabbix_server -p 10051 -s "$location" -k trap -o "The $2 is closed"
+        zabbix_sender -z $zabbix_server -p 10051 -s "$location" $psk -k trap -o "$2 is closed"
     ;;
 
     'info_when_door_has_been_opened')
-        zabbix_sender -z $zabbix_server -p 10051 -s "$location" -k trap -o "The $2 has been opened"
+        zabbix_sender -z $zabbix_server -p 10051 -s "$location" $psk -k trap -o "$2 has been opened"
     ;;
 
     'info_when_door_has_been_closed')
-        zabbix_sender -z $zabbix_server -p 10051 -s "$location" -k trap -o "The $2 has been closed"
+        zabbix_sender -z $zabbix_server -p 10051 -s "$location" $psk -k trap -o "$2 has been closed"
     ;;
 
     'info_when_motion')
-        zabbix_sender -z $zabbix_server -p 10051 -s "$location" -k trap -o "The $2 motion was detected"
+        zabbix_sender -z $zabbix_server -p 10051 -s "$location" $psk -k trap -o "$2 motion was detected"
     ;;
 
     'info_when_no_motion')
-        zabbix_sender -z $zabbix_server -p 10051 -s "$location" -k trap -o "The $2 no motion"
+        zabbix_sender -z $zabbix_server -p 10051 -s "$location" $psk -k trap -o "$2 no motion"
     ;;
 
            *)
