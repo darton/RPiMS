@@ -13,7 +13,7 @@
 
 #zabbix_server=$(awk -F= '/^ServerActive=/{print $2}' /etc/zabbix/zabbix_agentd.conf.d/zabbix-rpims.conf)
 
-location=$(redis-cli get zabbix_agent |awk -F, '{print $3}' |awk -F\" '{print $4}')
+location=$(redis-cli get zabbix_agent |awk -F, '{print $4}' |awk -F\" '{print $4}')
 zabbix_server=$(redis-cli get zabbix_agent |awk -F, '{print $1}' |awk -F\" '{print $4}')
 psk=$(echo "--tls-connect=psk --tls-psk-identity="$(awk -F\= '/TLSPSKIdentity/ {print $2}' /var/www/html/conf/zabbix_agentd.conf)" --tls-psk-file=/var/www/html/conf/zabbix_agentd.psk")
 
