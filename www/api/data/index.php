@@ -28,7 +28,7 @@ if ($_GET['settings'] == "show" || $showAll == true){
 if ($_GET['system'] == "show" || $showAll == true){
     $obj = $redis-> get('zabbix_agent');
     $zabbix_agent = json_decode($obj, true);
-    $_system = $redis->hgetall("system");
+    $_system = $redis->hgetall("SYSTEM");
 
     $system["hostip"] = $_system['hostip'];
     $system["memused"] = $_system['memused'];
@@ -56,7 +56,7 @@ if ($_GET['bme280'] == "show" || $_GET['sensors'] == "show" || $showAll == true)
         foreach ($sensors['BME280'] as $key => $value) {
             $id = $sensors['BME280'][$key]["id"];
             $bme280id = $id."_BME280";
-	    $_bme280 = $redis->hgetall($bme280id);
+            $_bme280 = $redis->hgetall($bme280id);
             if ($sensors["BME280"][$id]["use"] == true) {
                 $rpims_api["sensors"]["bme280"][$id]["name"] = $sensors["BME280"][$id]["name"];
 		$rpims_api["sensors"]["bme280"][$id]["temperature"] = $_bme280['Temperature'];
@@ -103,6 +103,7 @@ if ($_GET['weather_station'] == "show" || $_GET['sensors'] == "show" || $showAll
 if ($_GET['gpio'] == "show" || $_GET['sensors'] == "show" || $showAll == true){
     $obj = $redis-> get('gpio');
     $gpio = json_decode($obj, true);
+    $_gpio = $redis->hgetall('GPIO');
     if ($config["use_door_sensor"] == true) {
         foreach ($gpio as $key=> $value) {
             if ($gpio[$key]["type"] == "DoorSensor" ) {
@@ -110,7 +111,7 @@ if ($_GET['gpio'] == "show" || $_GET['sensors'] == "show" || $showAll == true){
             }
         }
         foreach ($door_sensors as $key => $value){
-            $rpims_api["sensors"]["door_sensors"]["$key"] = $rpims[$key];
+            $rpims_api["sensors"]["door_sensors"]["$key"] = $_gpio[$key];
         }
     }
     if ($config["use_motion_sensor"] == true){
@@ -120,7 +121,7 @@ if ($_GET['gpio'] == "show" || $_GET['sensors'] == "show" || $showAll == true){
             }
         }
         foreach ($motion_sensors as $key => $value) {
-            $rpims_api["sensors"]["motion_sensors"]["$key"] = $rpims[$key];
+            $rpims_api["sensors"]["motion_sensors"]["$key"] = $_gpio[$key];
         }
     }
 }

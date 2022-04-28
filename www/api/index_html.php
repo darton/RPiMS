@@ -40,7 +40,14 @@
 				<p><a href="/api/data/?cpu=show">http://<?=$server_ip?>/api/data/?cpu=show</a></p>
 			</div>
 			<div class="w3-container">
-				<p>BME280 sensor</p>
+				<p>GPIO sensors</p>
+			</div>
+			<div class="w3-container w3-light-grey">
+				<p><a href="/api/data/?gpio=show">http://<?=$server_ip?>/api/data/?gpio=show</a></p>
+			</div>
+
+			<div class="w3-container">
+				<p>BME280 sensors</p>
 			</div>
 			<div class="w3-container w3-light-grey">
 				<p><a href="/api/data/?bme280=show">http://<?=$server_ip?>/api/data/?bme280=show</a></p>

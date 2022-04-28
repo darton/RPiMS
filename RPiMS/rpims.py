@@ -17,7 +17,7 @@
 
 def door_action_closed(door_id, **kwargs):
     lconfig = dict(kwargs)
-    redis_db.set(str(door_id), 'close')
+    redis_db.hset('GPIO', str(door_id), 'close')
     if bool(kwargs['verbose']) is True:
         print(f'The {door_id} has been closed!')
     if bool(kwargs['use_zabbix_sender']) is True:
@@ -28,7 +28,8 @@ def door_action_closed(door_id, **kwargs):
 
 
 def door_action_opened(door_id, **kwargs):
-    redis_db.set(str(door_id), 'open')
+    lconfig = dict(kwargs)
+    redis_db.hset('GPIO',str(door_id), 'open')
     if bool(kwargs['verbose']) is True:
         print(f'The {door_id} has been opened!')
     if bool(kwargs['use_zabbix_sender']) is True:
@@ -41,7 +42,8 @@ def door_action_opened(door_id, **kwargs):
 
 
 def door_status_open(door_id, **kwargs):
-    redis_db.set(str(door_id), 'open')
+    lconfig = dict(kwargs)
+    redis_db.hset('GPIO',str(door_id), 'open')
     if bool(kwargs['verbose']) is True:
         print(f'The {door_id} is opened!')
     if bool(kwargs['use_zabbix_sender']) is True:
@@ -52,7 +54,7 @@ def door_status_open(door_id, **kwargs):
 
 def door_status_close(door_id, **kwargs):
     lconfig = dict(kwargs)
-    redis_db.set(str(door_id), 'close')
+    redis_db.hset('GPIO',str(door_id), 'close')
     if bool(kwargs['verbose']) is True:
         print(f'The {door_id} is closed!')
     if bool(kwargs['use_zabbix_sender']) is True:
@@ -63,7 +65,8 @@ def door_status_close(door_id, **kwargs):
 
 
 def motion_sensor_when_motion(ms_id, **kwargs):
-    redis_db.set(str(ms_id), 'motion')
+    lconfig = dict(kwargs)
+    redis_db.hset('GPIO',str(ms_id), 'motion')
     if bool(kwargs['verbose']) is True:
         print(f'The {ms_id} : motion was detected!')
     if bool(kwargs['use_zabbix_sender']) is True:
@@ -74,7 +77,7 @@ def motion_sensor_when_motion(ms_id, **kwargs):
 
 def motion_sensor_when_no_motion(ms_id, **kwargs):
     lconfig = dict(kwargs)
-    redis_db.set(str(ms_id), 'nomotion')
+    redis_db.hset('GPIO',str(ms_id), 'nomotion')
     if bool(kwargs['verbose']) is True:
         print(f'The {ms_id} : no motion')
     #if bool(kwargs['use_picamera']) is True:
@@ -496,9 +499,9 @@ def serial_displays(**kwargs):
             while True:
                 with canvas(device) as draw:
                     # get data from redis db
-                    values = redis_db.mget('id1_BME280_Temperature', 'id1_BME280_Humidity', 'id1_BME280_Pressure', 'GPIO_5', 'GPIO_6', 'CPU_Temperature', 'hostip')
 
-                    t,h,p = values[0], values[1], values[2]
+                    sid = 'id3'
+                    t,h,p =  redis_db.hget(f'{sid}_BME280','Temperature'),redis_db.hget(f'{sid}_BME280','Humidity'),redis_db.hget(f'{sid}_BME280','Pressure')
                     if t == None or h == None or p == None:
                         temperature = '--.--'
                         humidity = '--.--'
@@ -508,17 +511,26 @@ def serial_displays(**kwargs):
                         humidity = int(round(float(h), 1))
                         pressure = int(round(float(p), 1))
 
-                    door_sensor_1, door_sensor_2  = values[3], values[4]
-                    if door_sensor_1 == None or door_sensor_2 == None:
-                        door_sensor_1 = '-----'
-                        door_sensor_2 = '-----'
+                    values = redis_db.hgetall('GPIO')
+                    _doors_opened = []
+                    for k,v in values.items():
+                        if v == 'open':
+                            _doors_opened.append(k)
+                    if all(_doors_opened):
+                        door_sensor_1 = 'Door is opened'
+                        door_sensor_2 = 'Door is opened'
+                    #door_sensor_1, door_sensor_2  = values[0], values[1]
+                    #if door_sensor_1 == None or door_sensor_2 == None:
+                    #    door_sensor_1 = '-----'
+                    #    door_sensor_2 = '-----'
 
-                    cputemp = values[5]
+                    cputemp = cputemp = redis_db.get('CPU_Temperature')
                     if cputemp == None:
                         cputemp = '-----'
                     else:
                         cputemp = round(float(cputemp), 1)
-                    hostip = values[6]
+
+                    hostip = redis_db.hget('system','hostip')
                     if hostip == None:
                         hostip = '---.---.---.---'
 
@@ -572,9 +584,8 @@ def serial_displays(**kwargs):
 
             while True:
                 # get data from redis db
-                values = redis_db.mget('id1_BME280_Temperature', 'id1_BME280_Humidity', 'id1_BME280_Pressure', 'GPIO_5', 'GPIO_6', 'CPU_Temperature', 'hostip')
-
-                t,h,p = values[0], values[1], values[2]
+                sid = 'id3'
+                t,h,p =  redis_db.hget(f'{sid}_BME280','Temperature'),redis_db.hget(f'{sid}_BME280','Humidity'),redis_db.hget(f'{sid}_BME280','Pressure')
                 if t == None or h == None or p == None:
                     temperature = '--.--'
                     humidity = '--.--'
@@ -584,18 +595,38 @@ def serial_displays(**kwargs):
                     humidity = int(round(float(h), 1))
                     pressure = int(round(float(p), 1))
 
-                door_sensor_1, door_sensor_2  = values[3], values[4]
-                if door_sensor_1 == None or door_sensor_2 == None:
-                    door_sensor_1 = '-----'
-                    door_sensor_2 = '-----'
+                values = redis_db.hgetall('GPIO')
+                _doors_opened = []
+                _motion_detected = []
+                for k,v in values.items():
+                    if v == 'open':
+                        _doors_opened.append(k)
+                    if v == 'motion':
+                        _motion_detected.append(k)
 
-                cputemp = values[5]
+                if any(_doors_opened):
+                    door_sensors = 'opened'
+                else:
+                    door_sensors = 'closed'
+
+                if any(_motion_detected):
+                    motion_sensors = 'yes'
+                else:
+                    motion_sensors = 'no'
+
+#                values = redis_db.mget('GPIO_5', 'GPIO_6')
+#                door_sensor_1, door_sensor_2  = values[0], values[1]
+#                if door_sensor_1 == None or door_sensor_2 == None:
+#                    door_sensor_1 = '-----'
+#                    door_sensor_2 = '-----'
+
+                cputemp = redis_db.get('CPU_Temperature')
                 if cputemp == None:
                     cputemp = '-----'
                 else:
                     cputemp = round(float(cputemp), 1)
 
-                hostip = values[6]
+                hostip = redis_db.hget('system','hostip')
                 if hostip == None:
                     hostip = '---.---.---.---'
 
@@ -615,13 +646,13 @@ def serial_displays(**kwargs):
                     # draw.text((x+70, top+41),'', font=font, fill="blue")
                     draw.text((x+77, top+41), str(pressure) + ' hPa',  font=font, fill="lime")
 
-                    draw.text((x, top+57), ' Door 1',  font=font, fill="yellow")
+                    draw.text((x, top+57), ' Door',  font=font, fill="yellow")
                     # draw.text((x+70, top+57),'', font=font, fill="yellow")
-                    draw.text((x+77, top+57), str(door_sensor_1),  font=font, fill="yellow")
+                    draw.text((x+77, top+57), str(door_sensors),  font=font, fill="yellow")
 
-                    draw.text((x, top+70), ' Door 2',  font=font, fill="yellow")
+                    draw.text((x, top+70), ' Motion',  font=font, fill="yellow")
                     # draw.text((x+70, top+70),'', font=font, fill="yellow")
-                    draw.text((x+77, top+70), str(door_sensor_2),  font=font, fill="yellow")
+                    draw.text((x+77, top+70), str(motion_sensors),  font=font, fill="yellow")
 
                     draw.text((x, top+86), ' CPUtemp',  font=font, fill="cyan")
                     draw.text((x+77, top+86), str(cputemp) + " *C",  font=font, fill="cyan")

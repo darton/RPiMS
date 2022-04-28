@@ -74,6 +74,7 @@ ln -s /var/www/html/conf/uv4l-raspicam.conf /etc/uv4l/uv4l-raspicam.conf
 systemctl restart uv4l_raspicam
 
 $INSTALL_CMD git
+$INSTALL_CMD liblockfile-bin
 $INSTALL_CMD libfreetype6-dev
 $INSTALL_CMD libopenjp2-7
 $INSTALL_CMD libtiff5
