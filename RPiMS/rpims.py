@@ -497,43 +497,46 @@ def serial_displays(**kwargs):
         try:
             device = sh1106(serial, rotate=display_rotate)
             while True:
+                sid = 'id3'
+                t,h,p =  redis_db.hget(f'{sid}_BME280','Temperature'),redis_db.hget(f'{sid}_BME280','Humidity'),redis_db.hget(f'{sid}_BME280','Pressure')
+                if t == None or h == None or p == None:
+                    temperature = '--.--'
+                    humidity = '--.--'
+                    pressure = '--.--'
+                elif t.replace('.','',1).isdigit() and h.replace('.','',1).isdigit() and p.replace('.','',1).isdigit():
+                    temperature = round(float(t), 1)
+                    humidity = int(round(float(h), 1))
+                    pressure = int(round(float(p), 1))
+                values = redis_db.hgetall('GPIO')
+                _doors_opened = []
+                _motion_detected = []
+                for k,v in values.items():
+                    if v == 'open':
+                        _doors_opened.append(k)
+                    if v == 'motion':
+                        _motion_detected.append(k)
+
+                if any(_doors_opened):
+                    door_sensors = 'opened'
+                else:
+                    door_sensors = 'closed'
+
+                if any(_motion_detected):
+                    motion_sensors = 'yes'
+                else:
+                    motion_sensors = 'no'
+
+                cputemp = redis_db.get('CPU_Temperature')
+                if cputemp == None:
+                    cputemp = '-----'
+                else:
+                    cputemp = round(float(cputemp), 1)
+
+                hostip = redis_db.hget('SYSTEM','hostip')
+                if hostip == None:
+                    hostip = '---.---.---.---'
+
                 with canvas(device) as draw:
-                    # get data from redis db
-
-                    sid = 'id3'
-                    t,h,p =  redis_db.hget(f'{sid}_BME280','Temperature'),redis_db.hget(f'{sid}_BME280','Humidity'),redis_db.hget(f'{sid}_BME280','Pressure')
-                    if t == None or h == None or p == None:
-                        temperature = '--.--'
-                        humidity = '--.--'
-                        pressure = '--.--'
-                    elif t.replace('.','',1).isdigit() and h.replace('.','',1).isdigit() and p.replace('.','',1).isdigit():
-                        temperature = round(float(t), 1)
-                        humidity = int(round(float(h), 1))
-                        pressure = int(round(float(p), 1))
-
-                    values = redis_db.hgetall('GPIO')
-                    _doors_opened = []
-                    for k,v in values.items():
-                        if v == 'open':
-                            _doors_opened.append(k)
-                    if all(_doors_opened):
-                        door_sensor_1 = 'Door is opened'
-                        door_sensor_2 = 'Door is opened'
-                    #door_sensor_1, door_sensor_2  = values[0], values[1]
-                    #if door_sensor_1 == None or door_sensor_2 == None:
-                    #    door_sensor_1 = '-----'
-                    #    door_sensor_2 = '-----'
-
-                    cputemp = cputemp = redis_db.get('CPU_Temperature')
-                    if cputemp == None:
-                        cputemp = '-----'
-                    else:
-                        cputemp = round(float(cputemp), 1)
-
-                    hostip = redis_db.hget('system','hostip')
-                    if hostip == None:
-                        hostip = '---.---.---.---'
-
                     # draw on oled
                     draw.text((x, top),       'IP:' + str(hostip), font=font, fill=255)
                     draw.text((x, top+9),     f'Temperature..{temperature}°C', font=font, fill=255)
@@ -583,7 +586,6 @@ def serial_displays(**kwargs):
             device = st7735(serial, width=128, height=128, h_offset=1, v_offset=2, bgr=True, persist=False, rotate=display_rotate)
 
             while True:
-                # get data from redis db
                 sid = 'id3'
                 t,h,p =  redis_db.hget(f'{sid}_BME280','Temperature'),redis_db.hget(f'{sid}_BME280','Humidity'),redis_db.hget(f'{sid}_BME280','Pressure')
                 if t == None or h == None or p == None:
