@@ -614,19 +614,13 @@ def serial_displays(**kwargs):
                 else:
                     motion_sensors = 'no'
 
-#                values = redis_db.mget('GPIO_5', 'GPIO_6')
-#                door_sensor_1, door_sensor_2  = values[0], values[1]
-#                if door_sensor_1 == None or door_sensor_2 == None:
-#                    door_sensor_1 = '-----'
-#                    door_sensor_2 = '-----'
-
                 cputemp = redis_db.get('CPU_Temperature')
                 if cputemp == None:
                     cputemp = '-----'
                 else:
                     cputemp = round(float(cputemp), 1)
 
-                hostip = redis_db.hget('system','hostip')
+                hostip = redis_db.hget('SYSTEM','hostip')
                 if hostip == None:
                     hostip = '---.---.---.---'
 
