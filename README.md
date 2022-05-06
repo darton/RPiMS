@@ -108,7 +108,7 @@ RPi Pico  [GND  Pin 23] ----------------------------- [GND]  BME280
 Connect the RPi with the RPi Pico together with the USB cable.
 
 ```
-BME280 [i2c] <------> [i2C] RPi Pico [USB] <----------------------------------->  RPi [USB]
+BME280 [i2c] <-- 4 wire cable --> [i2C] Raspberry Pi Pico [USB] <-- USB cable -->  Raspberry Pi [USB]
 ```
 
 Select [USB port number](https://raw.githubusercontent.com/darton/RPiMS/master/documents/RPiMS-RPi-USB.png) in RPiMS configuration for the BME280 sensor.
