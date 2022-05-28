@@ -280,6 +280,12 @@ Optional
 
 * [Log2Ram](https://github.com/azlux/log2ram)
 
+* [http-status-codes](https://www.webfx.com/web-development/glossary/http-status-codes/)
+
+* [rest-api](https://sztukakodu.pl/15-zasad-przy-budowie-rest-api-za-ktore-deweloperzy-cie-pokochaja/)
+
+
+
 ## Configure if you have RTC (DS3231 I2C)
 
 1. I2C interface should be enabled. 
