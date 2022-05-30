@@ -29,7 +29,7 @@
 
    <div class="rpimsbg">
       <div class="header"></div>
-        <div class="sensors" style="text-align: left;">
+        <div class="sensors" style="text-align: left;" id="sys_info">
               <ul style="list-style-type:none;">
                 <li>Hostname: <span class="value" id="hostname"></span></li>
                 <li>Location: <span class="value" id="location"></span></li>
@@ -52,7 +52,7 @@
           {% endfor %}
         </p>
       </div>
-     
+
       <div class="sensors" id="dht_sensor">
         <div class="w3-container w3-margin">DHT Sensor</div>
         <div style="width: 100%; display: table;">
@@ -74,7 +74,38 @@
           </div>
         </div>
       </div>
+        <div class='sensors'>
+          <div id='$n' class='w3-container w3-margin'></div>
+          <div style='width: 100%; display: table;'>
+            <div style='display: table-row';>
 
+              <div class='gauge_bme280' id='$t'>
+                <div class='gauge__body'>
+                    <div class='gauge__fill'></div>
+                    <div class='gauge__cover'></div>
+                </div>
+                <div class='sensors'>Temp</div>
+              </div>
+
+              <div class='gauge_bme280' id='$h'>
+                <div class='gauge__body'>
+                    <div class='gauge__fill'></div>
+                    <div class='gauge__cover'></div>
+                </div>
+                <div class='sensors'>Hum</div>
+              </div>
+
+              <div class='gauge_bme280' id='$p'>
+                <div class='gauge__body'>
+                    <div class='gauge__fill'></div>
+                    <div class='gauge__cover'></div>
+                </div>
+                <div class='sensors'>Pres</div>
+              </div>
+              
+            </div>
+          </div>
+        </div>
 
 {% endblock %}
    </div>

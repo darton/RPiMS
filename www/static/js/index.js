@@ -119,6 +119,13 @@ setInterval(function() {
 		$("#motion_sensors").hide(); 
 	}
 
+	if (data['settings']['show_sys_info'] == true) {
+		$("#sys_info").show(); 
+	}
+	else{
+		$("#sys_info").hide(); 
+	}
+
     $("#hostip").html(data['system']['hostip']);
     $("#hostname").html(data['system']['hostname']);
     $("#location").html(data['system']['location']);
