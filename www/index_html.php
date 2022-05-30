@@ -62,7 +62,7 @@
                 </div>
                 <div class="sensors">Temp</div>
               </div>
-              <div class="gauge" id="g12"  style="width: 50%; display: table-cell";>
+              <div class="gauge" id="g12" style="width: 50%; display: table-cell";>
                 <div class="gauge__body">
                   <div class="gauge__fill"></div>
                   <div class="gauge__cover"></div>
