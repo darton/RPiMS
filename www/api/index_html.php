@@ -53,5 +53,5 @@
 			</div>
 			<br>
 		</div>
-	<body>
+	</body>
 </html>
