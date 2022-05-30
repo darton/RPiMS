@@ -7,7 +7,6 @@ import json
 app = flask.Flask(__name__)
 app.config["DEBUG"] = True
 
-
 @app.route('/', methods=['GET'])
 def home():
     redis_db = redis.StrictRedis(host="localhost", port=6379, db=0, charset="utf-8", decode_responses=True)
@@ -49,7 +48,6 @@ def get_data():
 def api_sensors():
     return sensors
 
-
 @app.route('/api/data/sensors/bme280', methods=['GET'])
 def api_bme280():
     return sensors['BME280']
@@ -73,4 +71,3 @@ def api_gpio():
 @app.route('/api/data/sensors/config', methods=['GET'])
 def api_config():
     return config
-
