@@ -17,8 +17,6 @@ def home():
     MOTION_SENSORS = redis_db.hgetall('MOTION_SENSORS')
     DHT = redis_db.hgetall('DHT')
     return render_template('index.html', ds = DOOR_SENSORS, ms = MOTION_SENSORS, dht = DHT)
-#    return '''<h1>Distant Reading Archive</h1>
-#<p>A prototype API for distant reading of science fiction novels.</p>'''
 
 @app.route('/api/', methods=['GET'])
 def api():
