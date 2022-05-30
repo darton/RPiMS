@@ -18,6 +18,7 @@
 def door_action_closed(door_id, **kwargs):
     lconfig = dict(kwargs)
     redis_db.hset('GPIO', str(door_id), 'close')
+    redis_db.hset('DOOR_SENSORS', str(door_id), 'close')
     if bool(kwargs['verbose']) is True:
         print(f'The {door_id} has been closed!')
     if bool(kwargs['use_zabbix_sender']) is True:
@@ -30,6 +31,7 @@ def door_action_closed(door_id, **kwargs):
 def door_action_opened(door_id, **kwargs):
     lconfig = dict(kwargs)
     redis_db.hset('GPIO',str(door_id), 'open')
+    redis_db.hset('DOOR_SENSORS',str(door_id), 'open')
     if bool(kwargs['verbose']) is True:
         print(f'The {door_id} has been opened!')
     if bool(kwargs['use_zabbix_sender']) is True:
@@ -44,6 +46,7 @@ def door_action_opened(door_id, **kwargs):
 def door_status_open(door_id, **kwargs):
     lconfig = dict(kwargs)
     redis_db.hset('GPIO',str(door_id), 'open')
+    redis_db.hset('DOOR_SENSORS',str(door_id), 'open')
     if bool(kwargs['verbose']) is True:
         print(f'The {door_id} is opened!')
     if bool(kwargs['use_zabbix_sender']) is True:
@@ -55,6 +58,7 @@ def door_status_open(door_id, **kwargs):
 def door_status_close(door_id, **kwargs):
     lconfig = dict(kwargs)
     redis_db.hset('GPIO',str(door_id), 'close')
+    redis_db.hset('DOOR_SENSORS',str(door_id), 'close')
     if bool(kwargs['verbose']) is True:
         print(f'The {door_id} is closed!')
     if bool(kwargs['use_zabbix_sender']) is True:
@@ -67,6 +71,7 @@ def door_status_close(door_id, **kwargs):
 def motion_sensor_when_motion(ms_id, **kwargs):
     lconfig = dict(kwargs)
     redis_db.hset('GPIO',str(ms_id), 'motion')
+    redis_db.hset('MOTION_SENSORS',str(ms_id), 'motion')
     if bool(kwargs['verbose']) is True:
         print(f'The {ms_id} : motion was detected!')
     if bool(kwargs['use_zabbix_sender']) is True:
@@ -78,6 +83,7 @@ def motion_sensor_when_motion(ms_id, **kwargs):
 def motion_sensor_when_no_motion(ms_id, **kwargs):
     lconfig = dict(kwargs)
     redis_db.hset('GPIO',str(ms_id), 'nomotion')
+    redis_db.hset('MOTION_SENSORS',str(ms_id), 'nomotion')
     if bool(kwargs['verbose']) is True:
         print(f'The {ms_id} : no motion')
     #if bool(kwargs['use_picamera']) is True:
@@ -430,9 +436,9 @@ def get_dht_data(**kwargs):
         try:
             temperature = dht_device.temperature
             humidity = dht_device.humidity
-            redis_db.mset({'DHT_Humidity': humidity, 'DHT_Temperature': temperature, })
-            redis_db.expire('DHT_Humidity', read_interval*2)
-            redis_db.expire('DHT_Temperature', read_interval*2)
+            redis_db.hset(f'DHT', 'temperature', temperature)
+            redis_db.hset(f'DHT', 'humidity', humidity)
+            redis_db.expire(f'DHT', read_interval*2)
             if bool(verbose) is True:
                 print('')
                 print(dht_type + " Temperature: {:.1f}°C ".format(temperature))

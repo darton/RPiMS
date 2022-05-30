@@ -18,7 +18,7 @@ function setGaugeValue(gauge, value, divisor, unit ) {
 
 
 setInterval(function() {
-    $.getJSON("/api/data/index.php", function(data) {
+    $.getJSON("/api/data/all", function(data) {
 
     if (data['settings']['use_weather_station'] == true) {
 		$("#average_wind_direction").html(data['weather_station']['average_wind_direction']);
@@ -97,17 +97,27 @@ setInterval(function() {
 //	}
 
     if (data['settings']['use_door_sensor'] == true) {
+		$("#door_sensors").show();
 		for (var key in data['sensors']['door_sensors']){
 				var value = data['sensors']['door_sensors'][key];
 				$("#" + key).html(value);
 		}
-    }
+	}
+	if (data['settings']['use_door_sensor'] == false) {
+		$("#door_sensors").hide(); 
+	}
+
+	
     if (data['settings']['use_motion_sensor'] == true) {
+		$("#motion_sensors").show();
 		for (var key in data['sensors']['motion_sensors']){
 				var value = data['sensors']['motion_sensors'][key];
 				$("#" + key).html(value);
 		}
     }
+	if (data['settings']['use_motion_sensor'] == false) {
+		$("#motion_sensors").hide(); 
+	}
 
     $("#hostip").html(data['system']['hostip']);
     $("#hostname").html(data['system']['hostname']);
@@ -120,11 +130,16 @@ if (data['settings']['use_weather_station'] == true) {
 }
 
 if (data['settings']['use_dht_sensor'] == true) {
+	$("#dht_sensor").show();
     var DHTTemperature = roundPrecised(data['sensors']['dht']['temperature'],1);
     var DHTHumidity = Math.round(data['sensors']['dht']['humidity']);
 }
+if (data['settings']['use_dht_sensor'] == false) {
+	$("#dht_sensor").hide();
+}
 
 if (data['settings']['use_ds18b20_sensor'] == true & typeof(data['sensors']['one_wire']) !== 'undefined' ) {
+	$("#ds18b20_sensors").show();
     var DS18B20 = {};
     for (var DS18B20_id in data['sensors']['one_wire']['ds18b20']) {
 		//console.log(DS18B20_id)

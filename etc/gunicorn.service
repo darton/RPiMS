@@ -1,0 +1,14 @@
+[Unit]
+Description=gunicorn.service - A RPiMS Flask application run with Gunicorn.
+After=network.target
+Documentation=https://github.com/darton/rpims
+
+[Service]
+User=pi
+Group=www-data
+WorkingDirectory=/var/www/html/
+ExecStart=/usr/bin/gunicorn --workers 1 --bind unix:/var/www/rpims.sock wsgi:app
+ 
+[Install]
+WantedBy=multi-user.target
+

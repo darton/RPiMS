@@ -116,25 +116,21 @@ systemctl start redis-server.service
 
 $INSTALL_CMD apache2-utils
 $INSTALL_CMD nginx
-$INSTALL_CMD php php-fpm php-redis php-yaml
-PHPFPMINI=$(find /etc/ \(  -name "php.ini" \) |grep fpm)
-sed -i 's/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/g' $PHPFPMINI
-WWWCONF=$(find /etc/ \(  -name "www.conf" \))
-sed -i 's/user = www-data/user = pi/g' $WWWCONF
-sed -i 's/group = www-data/group = pi/g' $WWWCONF
-PHPFPMSERVICE=$(systemctl -a |grep fpm.service|awk '{print $1}'|grep php)
-systemctl restart $PHPFPMSERVICE
-systemctl enable $PHPFPMSERVICE
-
 rm $wwwdir/index.nginx-debian.html
 
 mv /etc/nginx/sites-available/default /etc/nginx/sites-available/default.org
 mv $unpackdir/etc/nginx-default /etc/nginx/sites-available/default
 mv $unpackdir/etc/nginx.conf /etc/nginx
 chown root.root /etc/nginx/nginx.conf
-chown -R pi.pi $wwwdir
+
+$INSTALL_CMD gunicorn
+$PIP3_INSTALL_CMD flask gunicorn
+
+chown -R pi.www-data $wwwdir
 systemctl restart nginx
 systemctl enable nginx
+
+
 
 $INSTALL_CMD zabbix-agent
 echo 'zabbix ALL=(ALL) NOPASSWD: /home/pi/scripts/RPiMS/redis-get-data.py' | EDITOR='tee -a' visudo

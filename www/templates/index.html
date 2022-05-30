@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="description" content="RPiMS - Raspberry Pi Monitoring System">
+    <meta name="keywords" content="Raspberry Pi, Monitoring System, Sensors">
+    <meta name="author" content="Dariusz Kowalczyk">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/static//css/index.css">
+    <link rel="stylesheet" href="/static/css/w3.css">
+    <link rel="stylesheet" href="/static/css/w3-colors-2020.css">
+    <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+    <script src="/static/js/jquery.min.js"></script>
+    <script src="/static//js/navbar.js"></script>
+    <script src="/static/js/index.js" defer></script>
+    <title>RPiMS</title>
+  </head>
+  <body>
+
+    <div class="w3-row w3-2020-ultramarine-green">
+      <div class="w3-dropdown-click">
+        <button onclick="navFunction()" class="w3-button w3-2020-ultramarine-green w3-xlarge">☰</button>
+        <div id="NavBar" class="w3-dropdown-content w3-bar-block w3-card-4 w3-animate-zoom">
+          <a href="/setup/" class="w3-bar-item w3-button w3-large">Setup</a>
+          <a href="/api/" class="w3-bar-item w3-button w3-large">API</a>
+        </div>
+      </div>
+    </div>
+
+   <div class="rpimsbg">
+      <div class="header"></div>
+        <div class="sensors" style="text-align: left;">
+              <ul style="list-style-type:none;">
+                <li>Hostname: <span class="value" id="hostname"></span></li>
+                <li>Location: <span class="value" id="location"></span></li>
+                <li>CPU Temperature: <span class="value" id="CPU_Temperature"> </span><span class="value" id="CPU_Temperature_unit"></span></li>
+              </ul>
+        </div>
+      </div>
+{% block page_content %}
+      <div class="sensors" id="door_sensors">
+        <div class="w3-container w3-margin">Door sensors</div>
+          {% for item in ds %}
+            <p>{{ item }} <span class="value" id = {{ item }} ></span></p> 
+          {% endfor %}
+        </p>
+      </div>
+      <div class="sensors" id="motion_sensors">
+        <div class="w3-container w3-margin">Motion sensors</div>
+          {% for item in ms %}
+            <p>{{ item }} <span class="value" id = {{ item }} ></span></p> 
+          {% endfor %}
+        </p>
+      </div>
+     
+      <div class="sensors" id="dht_sensor">
+        <div class="w3-container w3-margin">DHT Sensor</div>
+        <div style="width: 100%; display: table;">
+          <div style="display: table-row">
+            <div class="gauge_dht" id="g11" style="width: 50%; display: table-cell";>
+              <div class="gauge__body">
+                <div class="gauge__fill"></div>
+                <div class="gauge__cover"></div>
+              </div>
+              <div class="sensors">Temp</div>
+            </div>
+            <div class="gauge" id="g12" style="width: 50%; display: table-cell";>
+              <div class="gauge__body">
+                <div class="gauge__fill"></div>
+                <div class="gauge__cover"></div>
+              </div>
+              <div class="sensors">Hum</div>	
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+{% endblock %}
+   </div>
+ 
+
+
+  </body>
+</html>
