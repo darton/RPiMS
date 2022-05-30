@@ -55,7 +55,7 @@
           <div class="w3-container w3-margin">DHT Sensor</div>
           <div style="width: 100%; display: table;">
             <div style="display: table-row">
-              <div class="gauge_dht" id="g11" display: table-cell";>
+              <div class="gauge_dht" id="g11" style="width: 50%; display: table-cell";>
                 <div class="gauge__body">
                   <div class="gauge__fill"></div>
                   <div class="gauge__cover"></div>
