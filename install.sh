@@ -53,6 +53,7 @@ cp -R $unpackdir/www/* $wwwdir
 cp $unpackdir/RPiMS/* $installdir
 chmod u+x $installdir/*.py $installdir/*.sh
 chown -R pi.pi $installdir
+
 systemctl stop dphys-swapfile.service
 systemctl disable dphys-swapfile.service
 
@@ -130,8 +131,6 @@ chown -R pi.www-data $wwwdir
 systemctl restart nginx
 systemctl enable nginx
 
-
-
 $INSTALL_CMD zabbix-agent
 echo 'zabbix ALL=(ALL) NOPASSWD: /home/pi/scripts/RPiMS/redis-get-data.py' | EDITOR='tee -a' visudo
 
@@ -157,8 +156,10 @@ cat $unpackdir/etc/cron |tee /etc/cron.d/rpims
 chown root.root /etc/cron.d/rpims
 
 mv $unpackdir/etc/rpims.service /lib/systemd/system/rpims.service
+mv $unpackdir/etc/gunicorn.service /lib/systemd/system/gunicorn.service
 systemctl daemon-reload
 systemctl enable rpims.service
+systemctl enable gunicorn.service
 
 
 #for DHT22 sensor
@@ -177,7 +178,7 @@ $INSTALL_CMD libgpiod2 libgpiod-dev
 #
 
 rm $downloaddir/RPiMS.zip
-#rmdir $unpackdir
+rmdir $unpackdir
 
 hostnamectl set-hostname rpims.example.com
 echo  "127.0.1.2       rpims.example.com" | tee -a /etc/hosts
