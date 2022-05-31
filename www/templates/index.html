@@ -43,7 +43,7 @@
 {% if data['settings']['use_door_sensor']: %}
       <div class="sensors" id="door_sensors">
         <div class="w3-container w3-margin">Door sensors</div>
-          {% for item in ds %}
+          {% for item in data['sensors']['door_sensors'] %}
             <p>{{ item }} <span class="value" id = {{ item }} ></span></p> 
           {% endfor %}
         </p>
@@ -52,7 +52,7 @@
 {% if data['settings']['use_motion_sensor']: %}
       <div class="sensors" id="motion_sensors">
         <div class="w3-container w3-margin">Motion sensors</div>
-          {% for item in ms %}
+          {% for item in data['sensors']['motion_sensors'] %}
             <p>{{ item }} <span class="value" id = {{ item }} ></span></p> 
           {% endfor %}
         </p>

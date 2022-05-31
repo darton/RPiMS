@@ -43,6 +43,7 @@ setInterval(function() {
     }
 
     if (data['settings']['use_bme280_sensor'] == true) {
+		$("#bme280_sensors").show();
 		var BME280 = {};
 		var BME280_T = '_BME280_Temperature';
 		var BME280_H = '_BME280_Humidity';
@@ -82,6 +83,9 @@ setInterval(function() {
 				setGaugeValue(eval(p_sensor_name), "NULL", "", "");
 			}
 		}
+    }
+    else{
+	$("#bme280_sensors").hide();
     }
 
     if (data['settings']['use_dht_sensor'] == true) {
