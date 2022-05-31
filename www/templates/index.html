@@ -40,6 +40,12 @@
         </div>
       </div>
 {% endif %}
+{% if data['settings']['use_picamera']: %}
+  <div class="sensors">
+  <div><a class="sensors" href="http://{{request.host.split(':')[0]}}:8080/stream/video.mjpeg">Video Stream URL</a></div>
+  <div><iframe src="http://{{request.host.split(':')[0]}}:8080/stream/video.mjpeg" width="100%" height="{{picamera_height}}" style="border:none;" title="Video Stream"></iframe></div>
+  </div>
+{% endif %}
 {% if data['settings']['use_door_sensor']: %}
       <div class="sensors" id="door_sensors">
         <div class="w3-container w3-margin">Door sensors</div>
@@ -119,8 +125,63 @@
 {% endfor %}
        </div>
 {% endif %}
+{% if data['settings']['use_ds18b20_sensor']: %}
+      <div class='sensors'>
+      <div class='w3-container w3-margin'>ds18b20_sensor_name</div>
+      <div style='width: 100%; display: table;'>
+        <div style='display: table-row'>
+          <div class='gauge_ds18b20' id='$item'>
+            <div class='gauge__body'>
+              <div class='gauge__fill'></div>
+              <div class='gauge__cover'></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      </div>
+{% endif %}
+{% if data['settings']['use_weather_station']: %}
+  <div class="sensors">
+    <div class="w3-container w3-margin">Wind</div>
+    <div style="width: 100%; display: table;">
+      <div style="display: table-row">
+        <div class="gauge" id="g4" style="width: 33%; display: table-cell">
+          <div class="gauge__body">
+            <div class="gauge__fill"></div>
+            <div class="gauge__cover"></div>
+          </div>
+          <div class="sensors">Speed</div>
+        </div>
+        <div class="gauge" id="g5" style="width: 33%; display: table-cell">
+          <div class="gauge__body">
+            <div class="gauge__fill"></div>
+            <div class="gauge__cover"></div>
+          </div>
+          <div class="sensors">Gust</div>
+        </div>
+        <div class="gauge" id="g6" style="width: 33%; display: table-cell">
+          <div class="gauge__body">
+            <div class="gauge__fill"></div>
+            <div class="gauge__cover"></div>
+          </div>
+          <div class="sensors">Gust 24h</div>
+        </div>
+      </div>
+    </div>
+    <div class="w3-container">
+      <table class="w3-table">
+        <tr><td>Wind speed: </td><td><span class="value" id="wind_speed"></span><span class="value"> km/h</span></td></tr>
+        <tr><td>Average Wind speed: </td><td><span class="value" id="average_wind_speed"></span><span class="value"> km/h</span></td></tr>
+        <tr><td>Average Wind speed (Past 24h): </td><td><span class="value" id="daily_average_wind_speed"></span><span class="value"> km/h</span></td></tr>
+        <tr><td>Wind gust: </td><td><span class="value" id="wind_gust"></span><span class="value"> km/h</span></td></tr>
+        <tr><td>Peak Wind Gust (Past 24h): </td><td><span class="value" id="daily_wind_gust"></span><span class="value"> km/h</span></td></tr>
+        <tr><td>Wind direction: </td><td><span class="value" id="average_wind_direction"></span><span class="value"> &#176 </span></td></tr>
+        <tr><td>Rainfall (Past 24h): </td><td><span class="value" id="daily_rainfall"></span><span class="value"> mm</span></td></tr>
+      </table>
+    </div>
+  </div>
+{% endif %}
 {% endblock %}
    </div>
-
   </body>
 </html>
