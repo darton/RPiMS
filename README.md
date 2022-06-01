@@ -68,7 +68,7 @@ sudo systemclt stop rpims.service
 
 ### Zabbix
 
-You need to import this templates into zabbix: 
+You need to import this templates into Zabbix: 
 https://github.com/darton/RPiMS/blob/master/templates/rpims_zabbix_host_template.xml
 https://github.com/darton/RPiMS/blob/master/templates/rpims_zabbix_template.xml 
 In rpims_zabbix_template.xml template, the appropriate zabbix triggers for the temperature, humidity and door sensors are configured. 
