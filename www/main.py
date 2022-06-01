@@ -1,6 +1,5 @@
 import os
 import flask
-#from flask import request, jsonify, render_template
 import redis
 import json
 import requests
@@ -50,6 +49,42 @@ def api():
     return flask.render_template('api.html')
 
 @app.route('/api/data/all', methods=['GET'])
-def api_json(option='all'):
+def api_json():
     data = get_data()
-    return data
+    return flask.jsonify(data)
+
+@app.route('/api/data/sensors/<type>', methods=['GET'])
+def api_sensors_json(type):
+    data = get_data()
+    _data = {}
+    if type == 'all':
+        _data = data['sensors']
+    elif type == 'cpu':
+        if data['settings']['use_cpu_sensor']:
+            _data = data['sensors']['cpu']
+    elif type == 'bme280':
+        _data = data['sensors']['bme280']
+    elif type == 'dht':
+        if data['settings']['use_dht_sensor']:
+            _data = data['sensors']['dht']
+    elif type == 'door':
+        if data['settings']['use_door_sensor']:
+            _data = data['sensors']['door_sensors']
+    elif type == 'motion':
+        if data['settings']['use_motion_sensor']:
+            _data = data['sensors']['motion_sensors']
+    else:
+        _data = {}
+    return flask.jsonify(_data)
+
+@app.route('/api/data/<type>', methods=['GET'])
+def api_types_json(type):
+    data = get_data()
+    _data = {}
+    if type == 'settings':
+        _data = data['settings']
+    elif type == 'system':
+        _data = data['system']
+    else:
+        _data = {}
+    return flask.jsonify(_data)

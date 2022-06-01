@@ -26,7 +26,6 @@
 			<p>To download all current data in JSON format, use the following address:</p>
 			</div>
 			<div class="w3-container w3-light-grey">
-				<p><a href="/api/data/?all=show">http://{{ request.host.split(':')[0] }}/api/data/?all=show</a></p>
 				<p><a href="/api/data/all">http://{{ request.host.split(':')[0] }}/api/data/all</a></p>
 			</div>
 			<div class="w3-container">
@@ -34,32 +33,45 @@
 			    the address should be filled in with a parameter, e.g .:</p>
 			</div>
 			<div class="w3-container w3-light-grey w3-round">
-				<p><a href="/api/data?sensors=show">http://{{request.environ['SERVER_ADDR']}}/api/data/?sensors=show</a></p>
+				<p>All sensors</p>
+				<p><a href="/api/data/sensors/all">http://{{request.environ['SERVER_ADDR']}}/api/data/sensors/all</a></p>
 			</div>
 			<div class="w3-container">
 				<p>CPU sensor</p>
 			</div>
 			<div class="w3-container w3-light-grey">
-				<p><a href="/api/data/?cpu=show">http://{{request.environ['SERVER_ADDR']}}/api/data/?cpu=show</a></p>
+				<p><a href="/api/data/sensors/cpu">http://{{request.environ['SERVER_ADDR']}}/api/data/sensors/cpu</a></p>
 			</div>
 			<div class="w3-container">
-				<p>GPIO sensors</p>
+				<p>Door sensors</p>
 			</div>
 			<div class="w3-container w3-light-grey">
-				<p><a href="/api/data/?gpio=show">http://{{request.environ['SERVER_ADDR']}}/api/data/?gpio=show</a></p>
+				<p><a href="/api/data/sensors/door">http://{{request.environ['SERVER_ADDR']}}/api/data/sensors/door</a></p>
 			</div>
 
 			<div class="w3-container">
 				<p>BME280 sensors</p>
 			</div>
 			<div class="w3-container w3-light-grey">
-				<p><a href="/api/data/?bme280=show">http://{{request.environ['SERVER_ADDR']}}/api/data/?bme280=show</a></p>
+				<p><a href="/api/data/sensors/bme280">http://{{request.environ['SERVER_ADDR']}}/api/data/sensors/bme280</a></p>
 			</div>
 			<div class="w3-container">
-				<p>Show data from CPU and BME280 sensors</p>
+				<p>Motion sensors</p>
 			</div>
 			<div class="w3-container w3-light-grey">
-				<p><a href="/api/data/?cpu=show&bme280=show">http://{{request.environ['SERVER_ADDR']}}/api/data/?cpu=show&bme280=show</a></p>
+				<p><a href="/api/data/sensors/motion">http://{{request.environ['SERVER_ADDR']}}/api/data/sensors/motion</a></p>
+			</div>
+			<div class="w3-container">
+				<p>Settings</p>
+			</div>
+			<div class="w3-container w3-light-grey">
+				<p><a href="/api/data/settings">http://{{request.environ['SERVER_ADDR']}}/api/data/settings</a></p>
+			</div>
+			<div class="w3-container">
+				<p>System</p>
+			</div>
+			<div class="w3-container w3-light-grey">
+				<p><a href="/api/data/system">http://{{request.environ['SERVER_ADDR']}}/api/data/system</a></p>
 			</div>
 			<br>
 		</div>
