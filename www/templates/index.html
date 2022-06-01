@@ -29,7 +29,7 @@
 
 {% block page_content %}
    <div class="rpimsbg">
-{% if data['settings']['show_sys_info']: %}
+{% if data['config']['setup']['show_sys_info']: %}
       <div class="header"></div>
         <div class="sensors" style="text-align: left;" id="sys_info">
               <ul style="list-style-type:none;">
@@ -40,13 +40,13 @@
         </div>
       </div>
 {% endif %}
-{% if data['settings']['use_picamera']: %}
+{% if data['config']['setup']['use_picamera']: %}
   <div class="sensors">
   <div><a class="sensors" href="http://{{request.host.split(':')[0]}}:8080/stream/video.mjpeg">Video Stream URL</a></div>
   <div><iframe src="http://{{request.host.split(':')[0]}}:8080/stream/video.mjpeg" width="100%" height="{{picamera_height}}" style="border:none;" title="Video Stream"></iframe></div>
   </div>
 {% endif %}
-{% if data['settings']['use_door_sensor']: %}
+{% if data['config']['setup']['use_door_sensor']: %}
       <div class="sensors" id="door_sensors">
         <div class="w3-container w3-margin">Door sensors</div>
           {% for item in data['sensors']['door_sensors'] %}
@@ -55,7 +55,7 @@
         </p>
       </div>
 {% endif %}
-{% if data['settings']['use_motion_sensor']: %}
+{% if data['config']['setup']['use_motion_sensor']: %}
       <div class="sensors" id="motion_sensors">
         <div class="w3-container w3-margin">Motion sensors</div>
           {% for item in data['sensors']['motion_sensors'] %}
@@ -64,7 +64,7 @@
         </p>
       </div>
 {% endif %}
-{% if data['settings']['use_dht_sensor']: %}
+{% if data['config']['setup']['use_dht_sensor']: %}
       <div class="sensors" id="dht_sensor">
         <div class="w3-container w3-margin">DHT Sensor</div>
         <div style="width: 100%; display: table;">
@@ -87,7 +87,7 @@
         </div>
       </div>
 {% endif %}
-{% if data['settings']['use_bme280_sensor']: %}
+{% if data['config']['setup']['use_bme280_sensor']: %}
        <div id="bme280_sensors">
 {% for item in data['sensors']['bme280'] %}
         <div class='sensors'>
@@ -125,7 +125,7 @@
 {% endfor %}
        </div>
 {% endif %}
-{% if data['settings']['use_ds18b20_sensor']: %}
+{% if data['config']['setup']['use_ds18b20_sensor']: %}
 {% for item in data['sensors']['one_wire']['ds18b20'] %}
       <div class='sensors'>
       <div class='w3-container w3-margin'>{{item}}</div>
@@ -142,7 +142,7 @@
       </div>
 {% endfor %}
 {% endif %}
-{% if data['settings']['use_weather_station']: %}
+{% if data['config']['setup']['use_weather_station']: %}
   <div class="sensors">
     <div class="w3-container w3-margin">Wind</div>
     <div style="width: 100%; display: table;">

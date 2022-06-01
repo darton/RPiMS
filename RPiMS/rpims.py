@@ -1016,11 +1016,12 @@ def main():
     redis_db = db_connect('localhost', 0)
 
     config_yaml = config_load('/var/www/html/conf/rpims.yaml')
-    config = config_yaml['setup']
-    zabbix_agent = config_yaml['zabbix_agent']
-    gpio = config_yaml.get("gpio")
 
+    gpio = config_yaml.get("gpio")
+    config = config_yaml.get("setup")
+    zabbix_agent = config_yaml.get("zabbix_agent")
     sensors = config_yaml.get("sensors")
+
     bme280_config = sensors['BME280']
     dht_config = sensors['DHT']
     cputemp_config = sensors['CPU']['temp']
@@ -1030,10 +1031,11 @@ def main():
     winddirection_config = sensors['WEATHER']['WIND']['DIRECTION']
 
     redis_db.flushdb()
-    redis_db.set('gpio', json.dumps(gpio))
-    redis_db.set('config', json.dumps(config))
-    redis_db.set('sensors', json.dumps(sensors))
-    redis_db.set('zabbix_agent', json.dumps(zabbix_agent))
+    redis_db.set('rpims', json.dumps(config_yaml))
+    #redis_db.set('gpio', json.dumps(gpio))
+    #redis_db.set('config', json.dumps(config))
+    #redis_db.set('sensors', json.dumps(sensors))
+    #redis_db.set('zabbix_agent', json.dumps(zabbix_agent))
 
     get_hostip()
     hostnamectl_sh(**zabbix_agent)

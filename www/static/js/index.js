@@ -20,7 +20,7 @@ function setGaugeValue(gauge, value, divisor, unit ) {
 setInterval(function() {
     $.getJSON("/api/data/all", function(data) {
 
-    if (data['settings']['use_weather_station'] == true) {
+    if (data['config']['setup']['use_weather_station'] == true) {
 		$("#average_wind_direction").html(data['weather_station']['average_wind_direction']);
 		$("#daily_average_wind_speed").html(data['weather_station']['daily_average_wind_speed']);
 		$("#average_wind_speed").html(data['weather_station']['average_wind_speed']);
@@ -30,7 +30,7 @@ setInterval(function() {
 		$("#daily_rainfall").html(data['weather_station']['daily_rainfall']);
     }
 
-    if (data['settings']['use_cpu_sensor'] == true) {
+    if (data['config']['setup']['use_cpu_sensor'] == true) {
         var CPUTEMP = data['sensors']['cpu']['temperature'];
 		if (!!CPUTEMP) {
 			$("#CPU_Temperature").html(roundPrecised(CPUTEMP,0));
@@ -42,7 +42,7 @@ setInterval(function() {
 		}
     }
 
-    if (data['settings']['use_bme280_sensor'] == true) {
+    if (data['config']['setup']['use_bme280_sensor'] == true) {
 		$("#bme280_sensors").show();
 		var BME280 = {};
 		var BME280_T = '_BME280_Temperature';
@@ -88,7 +88,7 @@ setInterval(function() {
 	$("#bme280_sensors").hide();
     }
 
-    if (data['settings']['use_dht_sensor'] == true) {
+    if (data['config']['setup']['use_dht_sensor'] == true) {
 		$("#DHT_Temperature").html(data['sensors']['dht']['temperature']);
 		$("#DHT_Humidity").html(data['sensors']['dht']['humidity']);
     }
@@ -100,30 +100,30 @@ setInterval(function() {
 //		}
 //	}
 
-    if (data['settings']['use_door_sensor'] == true) {
+    if (data['config']['setup']['use_door_sensor'] == true) {
 		$("#door_sensors").show();
 		for (var key in data['sensors']['door_sensors']){
 				var value = data['sensors']['door_sensors'][key];
 				$("#" + key).html(value);
 		}
 	}
-	if (data['settings']['use_door_sensor'] == false) {
+	if (data['config']['setup']['use_door_sensor'] == false) {
 		$("#door_sensors").hide(); 
 	}
 
 	
-    if (data['settings']['use_motion_sensor'] == true) {
+    if (data['config']['setup']['use_motion_sensor'] == true) {
 		$("#motion_sensors").show();
 		for (var key in data['sensors']['motion_sensors']){
 				var value = data['sensors']['motion_sensors'][key];
 				$("#" + key).html(value);
 		}
     }
-	if (data['settings']['use_motion_sensor'] == false) {
+	if (data['config']['setup']['use_motion_sensor'] == false) {
 		$("#motion_sensors").hide(); 
 	}
 
-	if (data['settings']['show_sys_info'] == true) {
+	if (data['config']['setup']['show_sys_info'] == true) {
 		$("#sys_info").show(); 
 	}
 	else{
@@ -134,22 +134,22 @@ setInterval(function() {
     $("#hostname").html(data['system']['hostname']);
     $("#location").html(data['system']['location']);
 
-if (data['settings']['use_weather_station'] == true) {
+if (data['config']['setup']['use_weather_station'] == true) {
     var WindSpeed = Math.round(data['weather_station']['wind_speed']);
     var WindGust = Math.round(data['weather_station']['wind_gust']);
     var WindGust24h = Math.round(data['weather_station']['daily_wind_gust']);
 }
 
-if (data['settings']['use_dht_sensor'] == true) {
+if (data['config']['setup']['use_dht_sensor'] == true) {
 	$("#dht_sensor").show();
     var DHTTemperature = roundPrecised(data['sensors']['dht']['temperature'],1);
     var DHTHumidity = Math.round(data['sensors']['dht']['humidity']);
 }
-if (data['settings']['use_dht_sensor'] == false) {
+if (data['config']['setup']['use_dht_sensor'] == false) {
 	$("#dht_sensor").hide();
 }
 
-if (data['settings']['use_ds18b20_sensor'] == true & typeof(data['sensors']['one_wire']) !== 'undefined' ) {
+if (data['config']['setup']['use_ds18b20_sensor'] == true & typeof(data['sensors']['one_wire']) !== 'undefined' ) {
 	$("#ds18b20_sensors").show();
     var DS18B20 = {};
     for (var DS18B20_id in data['sensors']['one_wire']['ds18b20']) {
@@ -166,18 +166,18 @@ const g6 = document.querySelector("#g6");
 const g11 = document.querySelector("#g11");
 const g12 = document.querySelector("#g12");
 
-if (data['settings']['use_weather_station'] == true) {
+if (data['config']['setup']['use_weather_station'] == true) {
     setGaugeValue(g4, WindSpeed/100, 100, "km/h");
     setGaugeValue(g5, WindGust/100, 100, "km/h");
     setGaugeValue(g6, WindGust24h/100, 100, "km/h");
 }
 
-if (data['settings']['use_dht_sensor'] == true) {
+if (data['config']['setup']['use_dht_sensor'] == true) {
     setGaugeValue(g11, DHTTemperature/100, 100, "°C");
     setGaugeValue(g12, DHTHumidity/100, 100, "%");
 }
 
-if (data['settings']['use_ds18b20_sensor'] == true  & typeof(data['sensors']['one_wire']) !== 'undefined') {
+if (data['config']['setup']['use_ds18b20_sensor'] == true  & typeof(data['sensors']['one_wire']) !== 'undefined') {
     var DS18B20_prefix = 'DS18B20_';
     for (var DS18B20_id in data['sensors']['one_wire']['ds18b20']) {
 		var sensor_name = DS18B20_prefix + DS18B20_id;

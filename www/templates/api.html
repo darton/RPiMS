@@ -23,14 +23,14 @@
 		</div>
 		<div class="w3-2020-brilliant-white">
 			<div class="w3-container">
-			<p>To download all current data in JSON format, use the following address:</p>
+			<p>To download current data in JSON format, use the following address:</p>
 			</div>
 			<div class="w3-container w3-light-grey">
 				<p><a href="/api/data/all">http://{{ request.host.split(':')[0] }}/api/data/all</a></p>
 			</div>
 			<div class="w3-container">
-			    <p>In order to obtain data only for a selected sensor or a group of sensors, 
-			    the address should be filled in with a parameter, e.g .:</p>
+			    <p>To order to obtain data only for a selected sensor or only from sensors, 
+					the address should be filled in with a parameter, e.g .:</p>
 			</div>
 			<div class="w3-container w3-light-grey w3-round">
 				<p>All sensors</p>
@@ -43,22 +43,22 @@
 				<p><a href="/api/data/sensors/cpu">http://{{ request.host.split(':')[0] }}/api/data/sensors/cpu</a></p>
 			</div>
 			<div class="w3-container">
-				<p>Door sensors</p>
-			</div>
-			<div class="w3-container w3-light-grey">
-				<p><a href="/api/data/sensors/door">http://{{ request.host.split(':')[0] }}/api/data/sensors/door</a></p>
-			</div>
-			<div class="w3-container">
 				<p>BME280 sensors</p>
 			</div>
 			<div class="w3-container w3-light-grey">
 				<p><a href="/api/data/sensors/bme280">http://{{ request.host.split(':')[0] }}/api/data/sensors/bme280</a></p>
 			</div>
 			<div class="w3-container">
-				<p>DS18B20</p>
+				<p>DS18B20 sensor</p>
 			</div>
 			<div class="w3-container w3-light-grey">
 				<p><a href="/api/data/sensors/ds18b20">http://{{ request.host.split(':')[0] }}/api/data/sensors/ds18b20</a></p>
+			</div>
+			<div class="w3-container">
+				<p>Door sensors</p>
+			</div>
+			<div class="w3-container w3-light-grey">
+				<p><a href="/api/data/sensors/door">http://{{ request.host.split(':')[0] }}/api/data/sensors/door</a></p>
 			</div>
 			<div class="w3-container">
 				<p>Motion sensors</p>
@@ -67,16 +67,16 @@
 				<p><a href="/api/data/sensors/motion">http://{{ request.host.split(':')[0] }}/api/data/sensors/motion</a></p>
 			</div>
 			<div class="w3-container">
-				<p>Settings</p>
-			</div>
-			<div class="w3-container w3-light-grey">
-				<p><a href="/api/data/settings">http://{{ request.host.split(':')[0] }}/api/data/settings</a></p>
-			</div>
-			<div class="w3-container">
 				<p>System</p>
 			</div>
 			<div class="w3-container w3-light-grey">
 				<p><a href="/api/data/system">http://{{ request.host.split(':')[0] }}/api/data/system</a></p>
+			</div>
+			<div class="w3-container">
+				<p>Config</p>
+			</div>
+			<div class="w3-container w3-light-grey">
+				<p><a href="/api/data/config">http://{{ request.host.split(':')[0] }}/api/data/config</a></p>
 			</div>
 			<br>
 		</div>
