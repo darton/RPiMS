@@ -70,7 +70,7 @@ https://github.com/darton/RPiMS/blob/master/templates/rpims_zabbix_host_template
 https://github.com/darton/RPiMS/blob/master/templates/rpims_zabbix_template.xml 
 In rpims_zabbix_template.xml template, the appropriate zabbix triggers for the temperature, humidity and door sensors are configured.
 Door sensor triggering is pre-configured for GPIO_20, GPIO_21 only, if you need more, please do trigger clone.
-RPiMS (rpims.py) uses zabbix_sender.sh to activate the appropriate Zabbix triggers.
+RiMS (rims.py) uses zabbix_sender.sh to activate the appropriate triggers in zabbix for the door sensors.
 
 ### Main page
 
