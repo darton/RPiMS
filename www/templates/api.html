@@ -34,49 +34,49 @@
 			</div>
 			<div class="w3-container w3-light-grey w3-round">
 				<p>All sensors</p>
-				<p><a href="/api/data/sensors/all">http://{{request.environ['SERVER_ADDR']}}/api/data/sensors/all</a></p>
+				<p><a href="/api/data/sensors/all">http://{{ request.host.split(':')[0] }}/api/data/sensors/all</a></p>
 			</div>
 			<div class="w3-container">
 				<p>CPU sensor</p>
 			</div>
 			<div class="w3-container w3-light-grey">
-				<p><a href="/api/data/sensors/cpu">http://{{request.environ['SERVER_ADDR']}}/api/data/sensors/cpu</a></p>
+				<p><a href="/api/data/sensors/cpu">http://{{ request.host.split(':')[0] }}/api/data/sensors/cpu</a></p>
 			</div>
 			<div class="w3-container">
 				<p>Door sensors</p>
 			</div>
 			<div class="w3-container w3-light-grey">
-				<p><a href="/api/data/sensors/door">http://{{request.environ['SERVER_ADDR']}}/api/data/sensors/door</a></p>
+				<p><a href="/api/data/sensors/door">http://{{ request.host.split(':')[0] }}/api/data/sensors/door</a></p>
 			</div>
 			<div class="w3-container">
 				<p>BME280 sensors</p>
 			</div>
 			<div class="w3-container w3-light-grey">
-				<p><a href="/api/data/sensors/bme280">http://{{request.environ['SERVER_ADDR']}}/api/data/sensors/bme280</a></p>
+				<p><a href="/api/data/sensors/bme280">http://{{ request.host.split(':')[0] }}/api/data/sensors/bme280</a></p>
 			</div>
 			<div class="w3-container">
 				<p>DS18B20</p>
 			</div>
 			<div class="w3-container w3-light-grey">
-				<p><a href="/api/data/sensors/ds18b20">http://{{request.environ['SERVER_ADDR']}}/api/data/sensors/ds18b20</a></p>
+				<p><a href="/api/data/sensors/ds18b20">http://{{ request.host.split(':')[0] }}/api/data/sensors/ds18b20</a></p>
 			</div>
 			<div class="w3-container">
 				<p>Motion sensors</p>
 			</div>
 			<div class="w3-container w3-light-grey">
-				<p><a href="/api/data/sensors/motion">http://{{request.environ['SERVER_ADDR']}}/api/data/sensors/motion</a></p>
+				<p><a href="/api/data/sensors/motion">http://{{ request.host.split(':')[0] }}/api/data/sensors/motion</a></p>
 			</div>
 			<div class="w3-container">
 				<p>Settings</p>
 			</div>
 			<div class="w3-container w3-light-grey">
-				<p><a href="/api/data/settings">http://{{request.environ['SERVER_ADDR']}}/api/data/settings</a></p>
+				<p><a href="/api/data/settings">http://{{ request.host.split(':')[0] }}/api/data/settings</a></p>
 			</div>
 			<div class="w3-container">
 				<p>System</p>
 			</div>
 			<div class="w3-container w3-light-grey">
-				<p><a href="/api/data/system">http://{{request.environ['SERVER_ADDR']}}/api/data/system</a></p>
+				<p><a href="/api/data/system">http://{{ request.host.split(':')[0] }}/api/data/system</a></p>
 			</div>
 			<br>
 		</div>
