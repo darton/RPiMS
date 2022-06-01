@@ -126,11 +126,12 @@
        </div>
 {% endif %}
 {% if data['settings']['use_ds18b20_sensor']: %}
+{% for item in data['sensors']['one_wire']['ds18b20'] %}
       <div class='sensors'>
-      <div class='w3-container w3-margin'>ds18b20_sensor_name</div>
+      <div class='w3-container w3-margin'>{{item}}</div>
       <div style='width: 100%; display: table;'>
         <div style='display: table-row'>
-          <div class='gauge_ds18b20' id='$item'>
+          <div class='gauge_ds18b20' id='DS18B20_{{item}}'>
             <div class='gauge__body'>
               <div class='gauge__fill'></div>
               <div class='gauge__cover'></div>
@@ -139,6 +140,7 @@
         </div>
       </div>
       </div>
+{% endfor %}
 {% endif %}
 {% if data['settings']['use_weather_station']: %}
   <div class="sensors">
