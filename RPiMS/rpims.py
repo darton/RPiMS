@@ -202,9 +202,9 @@ def get_bme280_data(**kwargs):
                 pressure = round(data.pressure,3)
 
                 #redis_db.sadd('BME280_sensors', sid)
-                redis_db.hset(f'{sid}_BME280', 'Temperature', temperature)
-                redis_db.hset(f'{sid}_BME280', 'Humidity', humidity)
-                redis_db.hset(f'{sid}_BME280', 'Pressure', pressure)
+                redis_db.hset(f'{sid}_BME280', 'temperature', temperature)
+                redis_db.hset(f'{sid}_BME280', 'humidity', humidity)
+                redis_db.hset(f'{sid}_BME280', 'pressure', pressure)
                 redis_db.expire(f'{sid}_BME280', read_interval*2)
 
                 if bool(verbose) is True:
@@ -375,9 +375,9 @@ def get_bme280_data(**kwargs):
                 pressure = int(p)/1000
 
                 #redis_db.sadd('BME280_sensors', sid)
-                redis_db.hset(f'{sid}_BME280', 'Temperature', temperature)
-                redis_db.hset(f'{sid}_BME280', 'Humidity', humidity)
-                redis_db.hset(f'{sid}_BME280', 'Pressure', pressure)
+                redis_db.hset(f'{sid}_BME280', 'temperature', temperature)
+                redis_db.hset(f'{sid}_BME280', 'humidity', humidity)
+                redis_db.hset(f'{sid}_BME280', 'pressure', pressure)
 
                 if read_interval < 10:
                     expire_time = 10
@@ -405,14 +405,12 @@ def get_ds18b20_data(**kwargs):
             #data = W1ThermSensor.get_available_sensors([W1ThermSensor.THERM_SENSOR_DS18B20, W1ThermSensor.THERM_SENSOR_DS18S20])
             data = W1ThermSensor.get_available_sensors()
             for sensor in data:
-                redis_db.sadd('DS18B20_sensors', sensor.id)
-                redis_db.set(sensor.id, sensor.get_temperature())
+                redis_db.hset('DS18B20',sensor.id, sensor.get_temperature())
                 sleep(1)
-                redis_db.expire(sensor.id, read_interval*2)
                 if bool(verbose) is True:
                     print('')
                     print("Sensor %s temperature %.2f" % (sensor.id, sensor.get_temperature()), "\xb0C")
-            redis_db.expire('DS18B20_sensors', read_interval*2)
+            redis_db.expire('DS18B20', read_interval*2)
             sleep(read_interval)
     except Exception as err:
         print(f'Problem with sensor DS18B20: {err}')
