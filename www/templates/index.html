@@ -43,14 +43,14 @@
 {% if data['config']['setup']['use_picamera']: %}
   <div class="sensors">
   <div><a class="sensors" href="http://{{request.host.split(':')[0]}}:8080/stream/video.mjpeg">Video Stream URL</a></div>
-  <div><iframe src="http://{{request.host.split(':')[0]}}:8080/stream/video.mjpeg" width="100%" height="{{picamera_height}}" style="border:none;" title="Video Stream"></iframe></div>
+  <div><iframe src="http://{{request.host.split(':')[0]}}:8080/stream/video.mjpeg" width="100%" height="{{data['config']['sensors']['PICAMERA']['mode']}}" style="border:none;" title="Video Stream"></iframe></div>
   </div>
 {% endif %}
 {% if data['config']['setup']['use_door_sensor']: %}
       <div class="sensors" id="door_sensors">
         <div class="w3-container w3-margin">Door sensors</div>
           {% for item in data['sensors']['door_sensors'] %}
-            <p>{{ item }} <span class="value" id = {{ item }} ></span></p> 
+            <p>{{ data['config']['gpio'][item]['name'] }} <span class="value" id = {{ item }} ></span></p> 
           {% endfor %}
         </p>
       </div>
@@ -59,7 +59,7 @@
       <div class="sensors" id="motion_sensors">
         <div class="w3-container w3-margin">Motion sensors</div>
           {% for item in data['sensors']['motion_sensors'] %}
-            <p>{{ item }} <span class="value" id = {{ item }} ></span></p> 
+            <p>{{ data['config']['gpio'][item]['name'] }} <span class="value" id = {{ item }} ></span></p> 
           {% endfor %}
         </p>
       </div>

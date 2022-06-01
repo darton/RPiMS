@@ -90,3 +90,7 @@ def api_types_json(type):
     else:
         _data = {}
     return flask.jsonify(_data)
+
+@app.route('/setup/', methods=['GET'])
+def setup():
+    return flask.render_template('setup.html')
