@@ -66,7 +66,7 @@ sudo systemctl start rpims.service
 sudo systemclt stop rpims.service
 ```
 
-###Zabbix
+### Zabbix
 
 You need to import this templates into zabbix: 
 https://github.com/darton/RPiMS/blob/master/templates/rpims_zabbix_host_template.xml
