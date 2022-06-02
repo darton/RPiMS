@@ -102,4 +102,5 @@ def api_types_json(type):
 
 @app.route('/setup/', methods=['GET'])
 def setup():
-    return flask.render_template('setup.html')
+    data = get_data()
+    return flask.render_template('setup.html',data = data)
