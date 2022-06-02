@@ -103,27 +103,27 @@
                     <div class="w3-quarter w3-container w3-margin-top">
                         <label for="serial_type">Serial type:</label>
                         <select id="serial_type" name="serial_type" class="w3-select">
-                            <option value="i2c">i2c</option>
-                            <option value="spi">spi</option>
+                            <option value="i2c" {% if data['config']['setup']['serial_type'] == "i2c" %} selected="selected" {% endif %}>i2c</option>
+                            <option value="spi" {% if data['config']['setup']['serial_type'] == "spi" %} selected="selected" {% endif %}>spi</option>
                         </select>
                     </div>
                     <div class="w3-quarter w3-container w3-margin-top">
                         <label for="serial_display_type">Display type:</label>
                         <select id="serial_display_type" name="serial_display_type" class="w3-select">
-                            <option value="oled_sh1106">oled_sh1106</option>
-                            <option value="lcd_st7735">lcd_st7735</option>
+                            <option value="oled_sh1106" {% if data['config']['setup']['serial_display_type'] == "oled_sh1106" %} selected="selected" {% endif %}>oled_sh1106</option>
+                            <option value="lcd_st7735" {% if data['config']['setup']['serial_display_type'] == "lcd_st7735" %} selected="selected" {% endif %}>lcd_st7735</option>
                         </select>
                     </div>
                     <div class="w3-quarter w3-container w3-margin-top">
                         <label for="serial_display_rotate">Display rotate:</label>
                         <select id="serial_display_rotate" name="serial_display_rotate" class="w3-select">
-                            <option value="0">0</option>
-                            <option value="2">180</option>
+                            <option value="0" {% if data['config']['setup']['serial_display_rotate'] == 0 %} selected="selected" {% endif %}>0</option>
+                            <option value="2" {% if data['config']['setup']['serial_display_rotate'] == 2 %} selected="selected" {% endif %}>180</option>
                         </select>
                     </div>
                     <div class="w3-quarter w3-container w3-margin-top w3-margin-bottom">
                         <label for="serial_display_refresh_rate">Refresh rate:</label>
-                        <input id="serial_display_refresh_rate" name="serial_display_refresh_rate" class="w3-input" type="number" min="1" max="50" value="10" >
+                        <input id="serial_display_refresh_rate" name="serial_display_refresh_rate" class="w3-input" type="number" min="1" max="50" value="{{data['config']['setup']['serial_display_refresh_rate']}}" >
                     </div>
                 </div>
             </fieldset>
@@ -144,18 +144,18 @@
                     <div class="w3-third w3-container w3-margin-top">
                         <label for="picamera_rotation">Rotation:</label>
                         <select id="picamera_rotation" name="picamera_rotation" class="w3-select">
-                            <option value="0">0</option>
-                            <option value="90">90</option>
-                            <option value="180">180</option>
-                            <option value="270">270</option>
+                            <option value="0" {% if data['config']['sensors']['PICAMERA']['rotation'] == 0 %} selected="selected" {% endif %}>0</option>
+                            <option value="90" {% if data['config']['sensors']['PICAMERA']['rotation'] == 90 %} selected="selected" {% endif %}>90</option>
+                            <option value="180" {% if data['config']['sensors']['PICAMERA']['rotation'] == 180 %} selected="selected" {% endif %}>180</option>
+                            <option value="270" {% if data['config']['sensors']['PICAMERA']['rotation'] == 270 %} selected="selected" {% endif %}>270</option>
                         </select>
                     </div>
                     <div class="w3-third w3-container w3-margin-top">
                         <label for="picamera_mode">Mode:</label>
                         <select id="picamera_mode" name="picamera_mode" class="w3-select">
-                            <option value="1">1920x1080</option>
-                            <option value="6">1280x720</option>
-                            <option value="7">640x480</option>
+                            <option value="1" {% if data['config']['sensors']['PICAMERA']['mode'] == 1 %} selected="selected" {% endif %}>1920x1080</option>
+                            <option value="6" {% if data['config']['sensors']['PICAMERA']['mode'] == 6 %} selected="selected" {% endif %}>1280x720</option>
+                            <option value="7" {% if data['config']['sensors']['PICAMERA']['mode'] == 7 %} selected="selected" {% endif %}>640x480</option>
                         </select>
                     </div>
                     <div class="w3-third w3-container w3-margin-top w3-margin-bottom">
@@ -241,8 +241,8 @@
                             <div class="w3-quarter w3-container w3-margin-top">
                                 <label id="id1_BME280_i2c_address">I2C Address:
                                     <select name="id1_BME280_i2c_address" class="w3-select" >
-                                        <option value = "118" >0x76</option>
-                                        <option value = "119" >0x77</option>
+                                        <option value = "118" {% if data['config']['sensors']['BME280']['id1']['i2c_address'] == 118 %} selected="selected" {% endif %}>0x76</option>
+                                        <option value = "119" {% if data['config']['sensors']['BME280']['id1']['i2c_address'] == 119 %} selected="selected" {% endif %}>0x77</option>
                                     </select>
                                 </label>
                             </div>
@@ -274,10 +274,10 @@
                             <div class="w3-quarter w3-container w3-margin-top">
                                 <label id="id2_BME280_serial_port">Serial port:
                                     <select name="id2_BME280_serial_port" class="w3-select serial-port" id="id2_BME280_serial_port_select" >
-                                        <option value = "USB1" >USB1</option>
-                                        <option value = "USB2" >USB2</option>
-                                        <option value = "USB3" >USB3</option>
-                                        <option value = "USB4" >USB4</option>
+                                        <option value = "USB1" {% if data['config']['sensors']['BME280']['id2']['serial_port'] == "USB1" %} selected="selected" {% endif %}>USB1</option>
+                                        <option value = "USB2" {% if data['config']['sensors']['BME280']['id2']['serial_port'] == "USB2" %} selected="selected" {% endif %}>USB2</option>
+                                        <option value = "USB3" {% if data['config']['sensors']['BME280']['id2']['serial_port'] == "USB3" %} selected="selected" {% endif %}>USB3</option>
+                                        <option value = "USB4" {% if data['config']['sensors']['BME280']['id2']['serial_port'] == "USB4" %} selected="selected" {% endif %}>USB4</option>
                                     </select>
                                 </label>
                             </div>
@@ -309,10 +309,10 @@
                             <div class="w3-quarter w3-container w3-margin-top">
                                 <label id="id3_BME280_serial_port">Serial port:
                                     <select name="id3_BME280_serial_port" class="w3-select serial-port" id="id3_BME280_serial_port_select">
-                                        <option value = "USB1" >USB1</option>
-                                        <option value = "USB2" >USB2</option>
-                                        <option value = "USB3" >USB3</option>
-                                        <option value = "USB4" >USB4</option>
+                                        <option value = "USB1" {% if data['config']['sensors']['BME280']['id3']['serial_port'] == "USB1" %} selected="selected" {% endif %}>USB1</option>
+                                        <option value = "USB2" {% if data['config']['sensors']['BME280']['id3']['serial_port'] == "USB2" %} selected="selected" {% endif %}>USB2</option>
+                                        <option value = "USB3" {% if data['config']['sensors']['BME280']['id3']['serial_port'] == "USB3" %} selected="selected" {% endif %}>USB3</option>
+                                        <option value = "USB4" {% if data['config']['sensors']['BME280']['id3']['serial_port'] == "USB4" %} selected="selected" {% endif %}>USB4</option>
                                     </select>
                                 </label>
                             </div>
@@ -427,27 +427,27 @@
                         <div class="w3-quarter w3-container w3-margin-top">
                             <label for="winddirection_adc_type">ADC type:</label>
                             <select name="winddirection_adc_type" class="w3-select" id="winddirection_adc_type">
-                                <option value="AutomationPhat">AutomationPhat</option>
-                                <option value="STM32F030">STM32F030</option>
-                                <option value="ADS1115">ADS1115</option>
+                                <option value="AutomationPhat" {% if data['config']['sensors']['WEATHER']['WIND']['DIRECTION']['adc_type'] == "AutomationPhat" %} selected="selected" {% endif %}>AutomationPhat</option>
+                                <option value="STM32F030" {% if data['config']['sensors']['WEATHER']['WIND']['DIRECTION']['adc_type'] == "STM32F030" %} selected="selected" {% endif %}>STM32F030</option>
+                                <option value="ADS1115" {% if data['config']['sensors']['WEATHER']['WIND']['DIRECTION']['adc_type'] == "ADS1115" %} selected="selected" {% endif %}>ADS1115</option>
                             </select>
                         </div>
                         <div class="w3-quarter w3-container w3-margin-top">
                             <label for="winddirection_adc_input">Sensor input:</label>
                             <select name="winddirection_adc_input" class="w3-select" id="winddirection_adc_input">
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
+                                <option value="1" {% if data['config']['sensors']['WEATHER']['WIND']['DIRECTION']['adc_input'] == 1 %} selected="selected" {% endif %}>1</option>
+                                <option value="2" {% if data['config']['sensors']['WEATHER']['WIND']['DIRECTION']['adc_input'] == 2 %} selected="selected" {% endif %}>2</option>
+                                <option value="3" {% if data['config']['sensors']['WEATHER']['WIND']['DIRECTION']['adc_input'] == 3 %} selected="selected" {% endif %}>3</option>
+                                <option value="4" {% if data['config']['sensors']['WEATHER']['WIND']['DIRECTION']['adc_input'] == 4 %} selected="selected" {% endif %}>4</option>
                             </select>
                         </div>
                         <div class="w3-quarter w3-container w3-margin-top">
                             <label for="reference_voltage_adc_input">Reference input:</label>
                             <select name="reference_voltage_adc_input" class="w3-select" id="reference_voltage_adc_input">
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
+                                <option value="1" {% if data['config']['sensors']['WEATHER']['WIND']['DIRECTION']['reference_voltage_adc_input'] == 1 %} selected="selected" {% endif %}>1</option>
+                                <option value="2" {% if data['config']['sensors']['WEATHER']['WIND']['DIRECTION']['reference_voltage_adc_input'] == 2 %} selected="selected" {% endif %}>2</option>
+                                <option value="3" {% if data['config']['sensors']['WEATHER']['WIND']['DIRECTION']['reference_voltage_adc_input'] == 3 %} selected="selected" {% endif %}>3</option>
+                                <option value="4" {% if data['config']['sensors']['WEATHER']['WIND']['DIRECTION']['reference_voltage_adc_input'] == 4 %} selected="selected" {% endif %}>4</option>
                             </select>
                         </div>
                     </div>
