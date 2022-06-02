@@ -30,6 +30,12 @@ def get_data():
         if redis_db.hgetall('id3_BME280'):
             BME280['id3'] = redis_db.hgetall('id3_BME280')
         SENSORS['bme280'] = BME280
+    if rpims['setup']['use_ds18b20_sensor']:
+        DS18B20 = {}
+        _DS18B20 = redis_db.hgetall('DS18B20')
+        for k, v in _DS18B20.items():
+            DS18B20[k] = {'temperature': v}
+        SENSORS['one_wire'] = {'ds18b20': DS18B20 }
     data = {}
     data['config'] = rpims
     data['system'] = redis_db.hgetall('SYSTEM')
@@ -67,6 +73,9 @@ def api_sensors_json(type):
     elif type == 'dht':
         if data['config']['setup']['use_dht_sensor']:
             _data = data['sensors']['dht']
+    elif type == 'ds18b20':
+        if data['config']['setup']['use_ds18b20_sensor']:
+            _data = data['sensors']['one_wire']['ds18b20']
     elif type == 'door':
         if data['config']['setup']['use_door_sensor']:
             _data = data['sensors']['door_sensors']
