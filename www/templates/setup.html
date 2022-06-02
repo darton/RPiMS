@@ -324,7 +324,7 @@
                 <legend>DHT sensor configuration</legend>
                 <div class="w3-row w3-2020-ultramarine-green">
                     <div class="w3-container w3-margin-top w3-margin-bottom">
-                        <input id="use_dht_sensor" name="use_dht_sensor" type="checkbox" class="w3-check" id="use_dht_sensor" value="True">
+                        <input id="use_dht_sensor" name="use_dht_sensor" type="checkbox" {{'checked="checked"' if data['config']['setup']['use_dht_sensor'] else ""}} class="w3-check" id="use_dht_sensor" value="True">
                         <label for="use_dht_sensor">Use DHT sensor</label>
                     </div>
                 </div>
@@ -349,7 +349,7 @@
                         <div class="w3-quarter w3-container w3-margin-top">
                             <label for="DHT_pin">Pin:</label>
                             <select name="DHT_pin" class="w3-select" id="DHT_pin">
-                                <option value = 17>17</option>
+                                <option value = "{{ data['config']['sensors']['DHT']['pin'] }}">17</option>
                             </select>
                         </div>
                     </div>
@@ -359,7 +359,7 @@
                 <legend>Weather sensor configuration</legend>
                 <div class="w3-row w3-2020-ultramarine-green">
                     <div class="w3-container w3-margin-top w3-margin-bottom">
-                        <input name="use_weather_station" type="checkbox" class="w3-check" id="use_weather_station" value="True">
+                        <input name="use_weather_station" type="checkbox" {{'checked="checked"' if data['config']['setup']['use_weather_station'] else ""}} class="w3-check" id="use_weather_station" value="True">
                         <label for="use_weather_station">Use weather station</label>
                     </div>
                 </div>
@@ -367,23 +367,23 @@
                     <div class="w3-row w3-2020-green-sheen w3-margin-top">
                         <div class="w3-row w3-2020-ultramarine-green">
                             <div class="w3-container w3-margin-top w3-margin-bottom">
-                            <input id="rainfall_use" name="rainfall_use" type="checkbox" class="w3-check" value="True">
+                            <input id="rainfall_use" name="rainfall_use" type="checkbox" {{'checked="checked"' if data['config']['sensors']['WEATHER']['RAINFALL']['use'] else ""}} class="w3-check" value="True">
                             <label for="rainfall_use">Use Rainfall:</label>
                             </div>
                         </div>
                         <div class="w3-row w3-margin-bottom">
                             <div class="w3-third w3-container w3-margin-top">
                                 <label for="rainfall_acquisition_time">Aquisition time:</label>
-                                <input name="rainfall_acquisition_time" class="w3-input" id="rainfall_acquisition_time" type="number" min="1" max="3600" value="60" >
+                                <input name="rainfall_acquisition_time" class="w3-input" id="rainfall_acquisition_time" type="number" min="1" max="3600" value="{{ data['config']['sensors']['WEATHER']['RAINFALL']['acquisition_time'] }}" >
                             </div>
                             <div class="w3-third w3-container w3-margin-top">
                                 <label for="rainfall_agregation_time">Agregation time:</label>
-                                <input name="rainfall_agregation_time" class="w3-input" id="rainfall_agregation_time" type="number" min="1" max="86400" value="600" >
+                                <input name="rainfall_agregation_time" class="w3-input" id="rainfall_agregation_time" type="number" min="1" max="86400" value="{{ data['config']['sensors']['WEATHER']['RAINFALL']['agregation_time'] }}" >
                             </div>
                             <div class="w3-third w3-container w3-margin-top">
                                 <label for="rainfall_sensor_pin">Sensor pin:</label>
                                 <select name="rainfall_sensor_pin" class="w3-select" id="rainfall_sensor_pin">
-                                    <option value = 22>22</option>
+                                    <option value = "{{ data['config']['sensors']['WEATHER']['RAINFALL']['sensor_pin'] }}">22</option>
                                 </select>
                             </div>
                         </div>
@@ -391,23 +391,23 @@
                     <div class="w3-row w3-2020-green-sheen w3-margin-top">
                         <div class="w3-row w3-2020-ultramarine-green">
                             <div class="w3-container w3-margin-top w3-margin-bottom">
-                                <input id="windspeed_use" name="windspeed_use" type="checkbox" class="w3-check" value="True">
+                                <input id="windspeed_use" name="windspeed_use" type="checkbox" {{'checked="checked"' if data['config']['sensors']['WEATHER']['WIND']['SPEED']['use'] else ""}} class="w3-check" value="True">
                                 <label for="windspeed_use">Use Wind speed:</label>
                             </div>
                         </div>
                         <div class="w3-row w3-margin-bottom">
                             <div class="w3-third w3-container w3-margin-top">
                                 <label for="windspeed_acquisition_time">Acquisition time:</label>
-                                <input name="windspeed_acquisition_time" class="w3-input" id="windspeed_acquisition_time" type="number" min="1" max="3600" value="6" >
+                                <input name="windspeed_acquisition_time" class="w3-input" id="windspeed_acquisition_time" type="number" min="1" max="3600" value="{{ data['config']['sensors']['WEATHER']['WIND']['SPEED']['acquisition_time'] }}">
                             </div>
                             <div class="w3-third w3-container w3-margin-top">
                                 <label for="windspeed_agregation_time">Agregation time:</label>
-                                <input name="windspeed_agregation_time" class="w3-input" id="windspeed_agregation_time" type="number" min="1" max="3600" value="600" >
+                                <input name="windspeed_agregation_time" class="w3-input" id="windspeed_agregation_time" type="number" min="1" max="3600" value="{{ data['config']['sensors']['WEATHER']['WIND']['SPEED']['agregation_time'] }}" >
                             </div>
                             <div class="w3-third w3-container w3-margin-top">
                                 <label for="windspeed_sensor_pin">Sensor pin:</label>
                                 <select name="windspeed_sensor_pin" class="w3-select" id="windspeed_sensor_pin">
-                                    <option value = 23>23</option>
+                                    <option value = "{{ data['config']['sensors']['WEATHER']['WIND']['SPEED']['sensor_pin'] }}">23</option>
                                 </select>
                             </div>
                         </div>
@@ -415,14 +415,14 @@
                     <div class="w3-row w3-2020-green-sheen w3-margin-top">
                         <div class="w3-row w3-2020-ultramarine-green">
                             <div class="w3-container w3-margin-top w3-margin-bottom">
-                                <input id="winddirection_use" name="winddirection_use" type="checkbox" class="w3-check" value="True">
+                                <input id="winddirection_use" name="winddirection_use" type="checkbox" {{'checked="checked"' if data['config']['sensors']['WEATHER']['WIND']['DIRECTION']['use'] else ""}} class="w3-check" value="True">
                                 <label for="winddirection_use">Use Wind direction:</label>
                             </div>	
                         </div>
                         <div class="w3-row w3-margin-bottom">
                         <div class="w3-quarter w3-container w3-margin-top">
                             <label for="winddirection_acquisition_time">Acquisition time:</label>
-                            <input name="winddirection_acquisition_time" class="w3-input" id="winddirection_acquisition_time" type="number" min="1" max="3600" value="6" >
+                            <input name="winddirection_acquisition_time" class="w3-input" id="winddirection_acquisition_time" type="number" min="1" max="3600" value="{{data['config']['sensors']['WEATHER']['WIND']['DIRECTION']['acquisition_time']}}" >
                         </div>
                         <div class="w3-quarter w3-container w3-margin-top">
                             <label for="winddirection_adc_type">ADC type:</label>
