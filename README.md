@@ -293,6 +293,8 @@ Optional
 
 * [rest-api](https://sztukakodu.pl/15-zasad-przy-budowie-rest-api-za-ktore-deweloperzy-cie-pokochaja/)
 
+* [uv4l](https://www.linux-projects.org/uv4l/installation/)
+
 
 
 ## Configure if you have RTC (DS3231 I2C)
