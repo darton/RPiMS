@@ -233,7 +233,7 @@ Optional
 
 * [GPIOZERO Docs](https://gpiozero.readthedocs.io/en/stable/)
 
-* [UV4L Tutorials](https://www.linux-projects.org/uv4l/tutorials/)
+* [UV4L Tutorials](https://www.linux-projects.org/uv4l/installation/)
 
 * [HWclock tutorial](https://thepihut.com/blogs/raspberry-pi-tutorials/17209332-adding-a-real-time-clock-to-your-raspberry-pi)
 
@@ -292,8 +292,6 @@ Optional
 * [http-status-codes](https://www.webfx.com/web-development/glossary/http-status-codes/)
 
 * [rest-api](https://sztukakodu.pl/15-zasad-przy-budowie-rest-api-za-ktore-deweloperzy-cie-pokochaja/)
-
-* [uv4l](https://www.linux-projects.org/uv4l/installation/)
 
 
 
