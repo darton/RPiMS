@@ -124,7 +124,7 @@ mv $unpackdir/etc/nginx.conf /etc/nginx
 chown root.root /etc/nginx/nginx.conf
 
 $INSTALL_CMD gunicorn
-$PIP3_INSTALL_CMD flask gunicorn
+$PIP3_INSTALL_CMD flask
 
 chown -R pi.www-data /var/www
 systemctl restart nginx
