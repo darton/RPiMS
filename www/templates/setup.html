@@ -193,6 +193,7 @@
                         <input name="DS18B20_read_interval" class="w3-input" id="DS18B20_read_interval" type="number" min="1" max="3600" value="{{ data['config']['sensors']['ONE_WIRE']['DS18B20']['read_interval'] }}" >
                         <br>
                     </div>
+{% if data['config']['setup']['use_ds18b20_sensor']: %}
 {% for key, value in data['sensors']['one_wire']['ds18b20'].items() %}
                     <div class='w3-row w3-margin-top w3-margin-bottom'>
                       <div class='w3-quarter w3-container w3-margin-bottom'>
@@ -205,6 +206,7 @@
                       </div>
                     </div>
 {% endfor %}
+{% endif %}
                 </div>
             </fieldset>
             <fieldset>
