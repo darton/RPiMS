@@ -79,10 +79,10 @@ $INSTALL_CMD libfreetype6-dev
 $INSTALL_CMD libopenjp2-7
 $INSTALL_CMD libtiff5
 $INSTALL_CMD libjpeg-dev
-$INSTALL_CMD vlc
-$INSTALL_CMD ffmpeg
-$INSTALL_CMD gpac
-$INSTALL_CMD fbi
+#$INSTALL_CMD vlc
+#$INSTALL_CMD ffmpeg
+#$INSTALL_CMD gpac
+#$INSTALL_CMD fbi
 
 $INSTALL_CMD build-essential
 $INSTALL_CMD python3-gpiozero
@@ -126,7 +126,7 @@ chown root.root /etc/nginx/nginx.conf
 $INSTALL_CMD gunicorn
 $PIP3_INSTALL_CMD flask gunicorn
 
-chown -R pi.www-data $wwwdir
+chown -R pi.www-data /var/www
 systemctl restart nginx
 systemctl enable nginx
 
