@@ -26,18 +26,18 @@
         </div>
       </div>
       <div class="w3-2020-brilliant-white" >
-        <form action="setup_form" method="post">
+        <form action="" method="post">
             <fieldset>
                 <legend>System configuration</legend>
                 <div class="w3-row w3-2020-green-sheen">
                     <div class="w3-container">
-                        <p><input id="verbose" name="verbose" type="checkbox" class="w3-check" value="True">
+                        <p><input id="verbose" name="verbose" type="checkbox" {{'checked="checked"' if data.config.setup.verbose else ""}} class="w3-check" value="true">
                         <label for="verbose">Verbose mode</label></p>
-                        <p><input id="show_sys_info" name="show_sys_info" type="checkbox" {{'checked="checked"' if data.config.setup.show_sys_info else ""}} class="w3-check" value="True">
+                        <p><input id="show_sys_info" name="show_sys_info" type="checkbox" {{'checked="checked"' if data.config.setup.show_sys_info else ""}} class="w3-check" value="true">
                         <label for="show_sys_info">Show system info</label></p>
-                        <p><input id="use_door_sensor" name="use_door_sensor" type="checkbox" {{'checked="checked"' if data.config.setup.use_door_sensor else ""}} class="w3-check" value="True">
+                        <p><input id="use_door_sensor" name="use_door_sensor" type="checkbox" {{'checked="checked"' if data.config.setup.use_door_sensor else ""}} class="w3-check" value="true">
                         <label for="use_door_sensor">Use door sensors</label></p>
-                        <p><input id="use_motion_sensor" name="use_motion_sensor" type="checkbox" {{'checked="checked"' if data.config.setup.use_motion_sensor else ""}} class="w3-check" value="True">
+                        <p><input id="use_motion_sensor" name="use_motion_sensor" type="checkbox" {{'checked="checked"' if data.config.setup.use_motion_sensor else ""}} class="w3-check" value="true">
                         <label for= "use_motion_sensor">Use motion sensors</label></p>
                     </div>
                 </div>
@@ -46,7 +46,7 @@
                 <legend>Zabbix Agent configuration</legend>
                 <div class="w3-row w3-2020-ultramarine-green">
                         <div class="w3-container  w3-margin-top w3-margin-bottom">
-                            <input id="use_zabbix_sender" name="use_zabbix_sender" type="checkbox" {{'checked="checked"' if data.config.setup.use_zabbix_sender else ""}} class="w3-check" value="True">
+                            <input id="use_zabbix_sender" name="use_zabbix_sender" type="checkbox" {{'checked="checked"' if data.config.setup.use_zabbix_sender else ""}} class="w3-check" value="true">
                             <label for="use_zabbix_sender">Use zabbix sender</label>
                         </div>
                 </div>
@@ -95,7 +95,7 @@
                 <legend>Serial display configuration</legend>
                 <div class="w3-row w3-2020-ultramarine-green">
                     <div class="w3-container w3-margin-top w3-margin-bottom">
-                        <input id="use_serial_display" name="use_serial_display" type="checkbox" {{'checked="checked"' if data.config.setup.use_serial_display else ""}} class="w3-check" id="use_serial_display" value="True">
+                        <input id="use_serial_display" name="use_serial_display" type="checkbox" {{'checked="checked"' if data.config.setup.use_serial_display else ""}} class="w3-check" id="use_serial_display" value="true">
                         <label for="use_serial_display">Use serial display</label>
                     </div>
                 </div>
@@ -131,11 +131,11 @@
                 <legend>Pi Camera configuration</legend>
                 <div class="w3-row w3-2020-ultramarine-green">
                     <div class="w3-half w3-container w3-margin-top w3-margin-bottom">
-                        <input id="use_picamera" name="use_picamera" type="checkbox" {{'checked="checked"' if data.config.setup.use_picamera else ""}} class="w3-check" id="use_picamera" value="True">
+                        <input id="use_picamera" name="use_picamera" type="checkbox" {{'checked="checked"' if data.config.setup.use_picamera else ""}} class="w3-check" id="use_picamera" value="true">
                         <label for="use_picamera">Use Picamera</label>
                     </div>
                     <div class="w3-half w3-container w3-margin-top w3-margin-bottom">
-                        <input id="use_picamera_recording" name="use_picamera_recording" type="checkbox" class="w3-check" value="True">
+                        <input id="use_picamera_recording" name="use_picamera_recording" type="checkbox" class="w3-check" value="true">
                         <label for="use_picamera_recording">Use picamera recording</label>
 
                     </div>
@@ -168,7 +168,7 @@
                 <legend>CPU sensor configuration</legend>
                 <div class="w3-row w3-2020-ultramarine-green">
                     <div class="w3-container w3-margin-top w3-margin-bottom">
-                        <input id="use_cpu_sensor" name="use_cpu_sensor" type="checkbox" {{'checked="checked"' if data.config.setup.use_cpu_sensor else ""}} class="w3-check" id="use_cpu_sensor" value="True">
+                        <input id="use_cpu_sensor" name="use_cpu_sensor" type="checkbox" {{'checked="checked"' if data.config.setup.use_cpu_sensor else ""}} class="w3-check" id="use_cpu_sensor" value="true">
                         <label for="use_cpu_sensor">Use CPU Sensor</label>
                     </div>
                 </div>
@@ -183,7 +183,7 @@
                 <legend>DS18B20 sensor configuration</legend>
                 <div class="w3-row w3-2020-ultramarine-green">
                     <div class="w3-container w3-margin-top w3-margin-bottom">
-                        <input id="use_ds18b20_sensor" name="use_ds18b20_sensor" type="checkbox" {{'checked="checked"' if data.config.setup.use_ds18b20_sensor else ""}} class="w3-check" id="use_ds18b20_sensor" value="True">
+                        <input id="use_ds18b20_sensor" name="use_ds18b20_sensor" type="checkbox" {{'checked="checked"' if data.config.setup.use_ds18b20_sensor else ""}} class="w3-check" id="use_ds18b20_sensor" value="true">
                         <label for="use_ds18b20_sensor">Use DS18B20 sensor</label>
                     </div>
                 </div>
@@ -193,8 +193,8 @@
                         <input name="DS18B20_read_interval" class="w3-input" id="DS18B20_read_interval" type="number" min="1" max="3600" value="{{ data.config.sensors.ONE_WIRE.DS18B20.read_interval }}" >
                         <br>
                     </div>
-{% if data.config.setup.use_ds18b20_sensor: %}
-{% for key, value in data.sensors.one_wire.ds18b20.items() %}
+                    {% if data.config.setup.use_ds18b20_sensor: %}
+                    {% for key, value in data.sensors.one_wire.ds18b20.items() %}
                     <div class='w3-row w3-margin-top w3-margin-bottom'>
                       <div class='w3-quarter w3-container w3-margin-bottom'>
                         <label for='{{key}}'>Address:</label>
@@ -205,22 +205,22 @@
                         <input id='{{key}}_name' name='DS18B20{{ key }}' class='w3-input' type='text' value='{{ data.config.sensors.ONE_WIRE.DS18B20.addresses[key].name }}'>
                       </div>
                     </div>
-{% endfor %}
-{% endif %}
+                    {% endfor %}
+                    {% endif %}
                 </div>
             </fieldset>
             <fieldset>
                 <legend>BME280 sensor configuration</legend>
                 <div class="w3-row w3-2020-ultramarine-green">
                     <div class="w3-container w3-margin-top w3-margin-bottom">
-                        <input id="use_bme280_sensor" name="use_bme280_sensor" type="checkbox" {{'checked="checked"' if data.config.setup.use_bme280_sensor else ""}} class="w3-check" id="use_bme280_sensor" value="True">
+                        <input id="use_bme280_sensor" name="use_bme280_sensor" type="checkbox" {{'checked="checked"' if data.config.setup.use_bme280_sensor else ""}} class="w3-check" id="use_bme280_sensor" value="true">
                         <label for="use_bme280_sensor">Use BME280 sensor</label>
                     </div>
                 </div>
                 <div id="BME280_sensor" class="w3-row">
                     <div class="w3-row w3-2020-ultramarine-green w3-margin-top">
                         <div class="w3-container w3-margin-top w3-margin-bottom">
-                            <input name="id1_BME280_use" type="checkbox" class="w3-check" {{'checked="checked"' if data.config.sensors.BME280.id1.use else ""}} id="id1_BME280_use" value="True">
+                            <input name="id1_BME280_use" type="checkbox" class="w3-check" {{'checked="checked"' if data.config.sensors.BME280.id1.use else ""}} id="id1_BME280_use" value="true">
                             <label for="id1_BME280_use">Use #1 BME280:</label>
                         </div>
                     </div>
@@ -253,7 +253,7 @@
 
                     <div class="w3-row w3-2020-ultramarine-green w3-margin-top">
                         <div class="w3-container w3-margin-top w3-margin-bottom">
-                            <input name="id2_BME280_use" type="checkbox" {{'checked="checked"' if data.config.sensors.BME280.id2.use else ""}} class="w3-check" id="id2_BME280_use" value="True">
+                            <input name="id2_BME280_use" type="checkbox" {{'checked="checked"' if data.config.sensors.BME280.id2.use else ""}} class="w3-check" id="id2_BME280_use" value="true">
                             <label for="id2_BME280_use">Use #2 BME280:</label>
                         </div>
                     </div>
@@ -288,7 +288,7 @@
 
                     <div class="w3-row w3-2020-ultramarine-green w3-margin-top">
                         <div class="w3-container w3-margin-top w3-margin-bottom">
-                            <input name="id3_BME280_use" type="checkbox" {{'checked="checked"' if data.config.sensors.BME280.id3.use else ""}} class="w3-check" id="id3_BME280_use" value="True">
+                            <input name="id3_BME280_use" type="checkbox" {{'checked="checked"' if data.config.sensors.BME280.id3.use else ""}} class="w3-check" id="id3_BME280_use" value="true">
                             <label for="id3_BME280_use">Use #3 BME280:</label>
                         </div>
                     </div>
@@ -326,7 +326,7 @@
                 <legend>DHT sensor configuration</legend>
                 <div class="w3-row w3-2020-ultramarine-green">
                     <div class="w3-container w3-margin-top w3-margin-bottom">
-                        <input id="use_dht_sensor" name="use_dht_sensor" type="checkbox" {{'checked="checked"' if data.config.setup.use_dht_sensor else ""}} class="w3-check" id="use_dht_sensor" value="True">
+                        <input id="use_dht_sensor" name="use_dht_sensor" type="checkbox" {{'checked="checked"' if data.config.setup.use_dht_sensor else ""}} class="w3-check" id="use_dht_sensor" value="true">
                         <label for="use_dht_sensor">Use DHT sensor</label>
                     </div>
                 </div>
@@ -361,7 +361,7 @@
                 <legend>Weather sensor configuration</legend>
                 <div class="w3-row w3-2020-ultramarine-green">
                     <div class="w3-container w3-margin-top w3-margin-bottom">
-                        <input name="use_weather_station" type="checkbox" {{'checked="checked"' if data.config.setup.use_weather_station else ""}} class="w3-check" id="use_weather_station" value="True">
+                        <input name="use_weather_station" type="checkbox" {{'checked="checked"' if data.config.setup.use_weather_station else ""}} class="w3-check" id="use_weather_station" value="true">
                         <label for="use_weather_station">Use weather station</label>
                     </div>
                 </div>
@@ -369,7 +369,7 @@
                     <div class="w3-row w3-2020-green-sheen w3-margin-top">
                         <div class="w3-row w3-2020-ultramarine-green">
                             <div class="w3-container w3-margin-top w3-margin-bottom">
-                            <input id="rainfall_use" name="rainfall_use" type="checkbox" {{'checked="checked"' if data.config.sensors.WEATHER.RAINFALL.use else ""}} class="w3-check" value="True">
+                            <input id="rainfall_use" name="rainfall_use" type="checkbox" {{'checked="checked"' if data.config.sensors.WEATHER.RAINFALL.use else ""}} class="w3-check" value="true">
                             <label for="rainfall_use">Use Rainfall:</label>
                             </div>
                         </div>
@@ -393,7 +393,7 @@
                     <div class="w3-row w3-2020-green-sheen w3-margin-top">
                         <div class="w3-row w3-2020-ultramarine-green">
                             <div class="w3-container w3-margin-top w3-margin-bottom">
-                                <input id="windspeed_use" name="windspeed_use" type="checkbox" {{'checked="checked"' if data.config.sensors.WEATHER.WIND.SPEED.use else ""}} class="w3-check" value="True">
+                                <input id="windspeed_use" name="windspeed_use" type="checkbox" {{'checked="checked"' if data.config.sensors.WEATHER.WIND.SPEED.use else ""}} class="w3-check" value="true">
                                 <label for="windspeed_use">Use Wind speed:</label>
                             </div>
                         </div>
@@ -417,7 +417,7 @@
                     <div class="w3-row w3-2020-green-sheen w3-margin-top">
                         <div class="w3-row w3-2020-ultramarine-green">
                             <div class="w3-container w3-margin-top w3-margin-bottom">
-                                <input id="winddirection_use" name="winddirection_use" type="checkbox" {{'checked="checked"' if data.config.sensors.WEATHER.WIND.DIRECTION.use else ""}} class="w3-check" value="True">
+                                <input id="winddirection_use" name="winddirection_use" type="checkbox" {{'checked="checked"' if data.config.sensors.WEATHER.WIND.DIRECTION.use else ""}} class="w3-check" value="true">
                                 <label for="winddirection_use">Use Wind direction:</label>
                             </div>	
                         </div>

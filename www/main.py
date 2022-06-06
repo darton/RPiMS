@@ -1,11 +1,17 @@
 import os
+import yaml
 import flask
 import redis
 import json
 import requests
+#from flask_wtf import FlaskForm
+#from wtforms import StringField, TextAreaField, SubmitField
+#from wtforms.validators import DataRequired, Email
 
 app = flask.Flask(__name__)
+app.config["SECRET_KEY"] = 'b8f475757df5dc1cabfed8aee1ca84a6'
 app.config["DEBUG"] = True
+
 
 redis_db = redis.StrictRedis(host="localhost", port=6379, db=0, charset="utf-8", decode_responses=True)
 
@@ -100,7 +106,18 @@ def api_types_json(type):
         _data = {}
     return flask.jsonify(_data)
 
-@app.route('/setup/', methods=['GET'])
+@app.route('/setup/', methods=['GET', 'POST'])
 def setup():
     data = get_data()
+    if flask.request.method == "POST":
+        _rpims = {}
+        setup = {}
+        setup['verbose'] = bool(flask.request.form.get('verbose'))
+        setup['show_sys_info'] = bool(flask.request.form.get('show_sys_info'))
+        setup['use_door_sensor'] = bool(flask.request.form.get('use_door_sensor'))
+        setup['use_motion_sensor'] = bool(flask.request.form.get('use_motion_sensor'))
+        _rpims['setup'] = setup
+        with open('conf/_rpims.yaml','w') as f:
+            yaml.dump(_rpims, f)
+        return _rpims
     return flask.render_template('setup.html',data = data)
