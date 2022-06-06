@@ -463,15 +463,15 @@
                     {% for _gpio in data.config.gpio: %}
                     <div class='w3-row w3-2020-ultramarine-green'>
                         <div class='w3-container w3-margin-top w3-margin-bottom'>
-                        <label>GPIO {{ data.config.gpio[_gpio].gpio_pin }}<input name='{{ _gpio }}' type='hidden' value='{{ data.config.gpio[_gpio].gpio_pin }}'></label>
+                        <label>GPIO {{ data.config.gpio[_gpio].gpio_pin }}<input name='{{ _gpio }}[gpio_pin]' type='hidden' value='{{ data.config.gpio[_gpio].gpio_pin }}'></label>
                         </div>
                     </div>
 
                     <div class='w3-row w3-margin-bottom w3-2020-green-sheen'>
                         <div class='w3-row w3-margin-bottom'>
                             <div class='w3-third w3-container w3-margin-top'>
-                                <label for='{{_gpio}}'>Type:</label>
-                                <select name='{{gpio_select_name}}' class='gpioinputs w3-select' id='{{gpio_select_id}}'>
+                                <label for='{{_gpio}}_TYPE'>Type:</label>
+                                <select name='{{_gpio}}[type]' class='gpioinputs w3-select' id='{{_gpio}}_TYPE'>
                                 {% if data.config.gpio[_gpio].type == 'DoorSensor': %} 
                                     <option selected value='DoorSensor'>INPUT - Door Sensor</option>
                                     <option value='MotionSensor'>INPUT - Motion Sensor</option>
@@ -532,10 +532,10 @@
                                 </select>
                             </div>
                             <div class='w3-third w3-container w3-margin-top'>
-                            <label>Name:<input name='{{ data.config.gpio[_gpio].name }}' class='w3-input'  type='text' value='{{data.config.gpio[_gpio].name}}'></label>
+                            <label>Name:<input name='{{ data.config.gpio[_gpio][name] }}' class='w3-input'  type='text' value='{{data.config.gpio[_gpio].name}}'></label>
                             </div>
                             <div class='w3-third w3-container w3-margin-top'>
-                            <label id='{{_gpio}}input_holdtime_id_ds'>Hold time:<input id='{{_gpio}}_input_holdtime_id_ds_ht' name='{{ _gpio }}hold_time ' class='w3-input' type='number' min='1' max='60' value='{{ data.config.gpio[_gpio].hold_time }}'></label>
+                            <label id='{{_gpio}}_TYPE_DS'>Hold time:<input id='{{_gpio}}_TYPE_DS_HT' name='{{ _gpio }}[hold_time]' class='w3-input' type='number' min='1' max='60' value='{{ data.config.gpio[_gpio].hold_time }}'></label>
                             </div>
                         </div>
                     </div>
