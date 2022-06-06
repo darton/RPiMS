@@ -290,6 +290,8 @@ Optional
 
 * [Log2Ram](https://github.com/azlux/log2ram)
 
+* [Python - YAML](https://realpython.com/python-yaml/#dump-to-a-string-a-file-or-a-stream)
+
 ## Configure if you have RTC (DS3231 I2C)
 
 1. I2C interface should be enabled. 
