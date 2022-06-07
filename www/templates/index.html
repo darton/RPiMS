@@ -50,7 +50,7 @@
       <div class="sensors" id="door_sensors">
         <div class="w3-container w3-margin">Door sensors</div>
           {% for item in data.sensors.door_sensors: %}
-            <p>{{ data.config.gpio.item.name }} <span class="value" id = {{ item }} ></span></p> 
+            <p>{{ data.config.gpio[item].name }} <span class="value" id = {{ item }} ></span></p> 
           {% endfor %}
         </p>
       </div>
@@ -91,7 +91,7 @@
        <div id="bme280_sensors">
 {% for item in data.sensors.bme280: %}
         <div class='sensors'>
-          <div id='{{item}}' class='w3-container w3-margin'>{{ data.config.sensors.BME280.item.name }}</div>
+          <div id='{{item}}' class='w3-container w3-margin'>{{ data.config.sensors.BME280[item].name }}</div>
           <div style='width: 100%; display: table;'>
             <div style='display: table-row';>
 
@@ -128,7 +128,7 @@
 {% if data.config.setup.use_ds18b20_sensor: %}
 {% for item in data.sensors.one_wire.ds18b20: %}
       <div class='sensors'>
-      <div class='w3-container w3-margin'>{{ data.config.sensors.ONE_WIRE.DS18B20.addresses.item.name }}</div>
+      <div class='w3-container w3-margin'>{{ data.config.sensors.ONE_WIRE.DS18B20.addresses[item].name }}</div>
       <div style='width: 100%; display: table;'>
         <div style='display: table-row'>
           <div class='gauge_ds18b20' id='DS18B20_{{item}}'>
