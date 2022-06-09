@@ -165,7 +165,7 @@ systemctl enable rpims.service
 
 
 #for DHT22 sensor
-$PIP3_INSTALL_CMD Adafruit_DHT adafruit-circuitpython-dht
+$PIP3_INSTALL_CMD adafruit-circuitpython-dht
 $INSTALL_CMD libgpiod2 libgpiod-dev
 #cd ~
 #git clone https://github.com/michaellass/libgpiod_pulsein.git
