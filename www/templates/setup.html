@@ -195,14 +195,14 @@
                     </div>
                     {% if data.config.setup.use_ds18b20_sensor: %}
                     {% for key, value in data.sensors.one_wire.ds18b20.items() %}
-                    <div class='w3-row w3-margin-top w3-margin-bottom'>
+                    <div class='w3-row w3-margin-top w3-margin-bottom' id='{{key}}'>
                       <div class='w3-quarter w3-container w3-margin-bottom'>
                         <label for='{{key}}'>Address:</label>
-                        <input id='{{key}}' class='w3-input' type='text' value='{{ key }}'>
+                        <input id='{{key}}' name='DS18B20_{{key}}_address' class='w3-input' type='text' value='{{ key }}'>
                       </div>
                       <div class='w3-threequarter w3-container w3-margin-bottom'>
                         <label for='{{ key }}_name'> name:</label>
-                        <input id='{{key}}_name' name='DS18B20{{ key }}' class='w3-input' type='text' value='{{ data.config.sensors.ONE_WIRE.DS18B20.addresses[key].name }}'>
+                        <input id='{{key}}_name' name='DS18B20_{{key}}_name' class='w3-input' type='text' value='{{ data.config.sensors.ONE_WIRE.DS18B20.addresses[key].name }}'>
                       </div>
                     </div>
                     {% endfor %}

@@ -178,7 +178,8 @@ def setup():
         DHT['type'] = flask.request.form.get('DHT_type')
         DS18B20 = {}
         DS18B20['read_interval'] = flask.request.form.get('DS18B20_read_interval')
-        DS18B20['addresses'] = {}
+        for item in data['sensors']['one_wire']['ds18b20']:
+            DS18B20[item]= {'name': flask.request.form.get('DS18B20_'+ str(item) + '_name')}
         ONE_WIRE = {}
         ONE_WIRE['DS18B20'] = DS18B20
         PICAMERA = {}
@@ -214,11 +215,10 @@ def setup():
         sensors['ONE_WIRE'] = ONE_WIRE
         sensors['PICAMERA'] = PICAMERA
         sensors['WEATHER'] = WEATHER
-        _rpims['setup'] = setup
-        _rpims['zabbix_agent'] = zabbix_agent
         _rpims['sensors'] = sensors
-
+        _rpims['zabbix_agent'] = zabbix_agent
+        _rpims['setup'] = setup
         with open('conf/_rpims.yaml','w') as f:
-            yaml.dump(_rpims, f)
+            yaml.dump(_rpims, f, default_flow_style=False)
         return flask.jsonify(_rpims)
     return flask.render_template('setup.html',data = data)

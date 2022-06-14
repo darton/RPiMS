@@ -128,17 +128,17 @@
 {% if data.config.setup.use_ds18b20_sensor: %}
 {% for item in data.sensors.one_wire.ds18b20: %}
       <div class='sensors'>
-      <div class='w3-container w3-margin'>{{ data.config.sensors.ONE_WIRE.DS18B20.addresses[item].name }}</div>
-      <div style='width: 100%; display: table;'>
-        <div style='display: table-row'>
-          <div class='gauge_ds18b20' id='DS18B20_{{item}}'>
-            <div class='gauge__body'>
-              <div class='gauge__fill'></div>
-              <div class='gauge__cover'></div>
+        <div class='w3-container w3-margin'>{{ data.config.sensors.ONE_WIRE.DS18B20.addresses[item].name }}</div>
+          <div style='width: 100%; display: table;'>
+            <div style='display: table-row'>
+              <div class='gauge_ds18b20' id='DS18B20_{{item}}'>
+                <div class='gauge__body'>
+                  <div class='gauge__fill'></div>
+                  <div class='gauge__cover'></div>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-      </div>
       </div>
 {% endfor %}
 {% endif %}
