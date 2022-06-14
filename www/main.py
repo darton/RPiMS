@@ -179,14 +179,6 @@ def setup():
         DHT['read_interval'] = int(flask.request.form.get('DHT_read_interval'))
         DHT['type'] = flask.request.form.get('DHT_type')
 
-        DS18B20 = {}
-        addresses = {}
-        DS18B20['read_interval'] = int(flask.request.form.get('DS18B20_read_interval'))
-        for item in data['sensors']['one_wire']['ds18b20']:
-            addresses[item]= {'name': flask.request.form.get('DS18B20_'+ str(item) + '_name')}
-        DS18B20['addresses'] = addresses
-        ONE_WIRE = {}
-        ONE_WIRE['DS18B20'] = DS18B20
 
         gpios = ['GPIO_5','GPIO_6','GPIO_12','GPIO_13','GPIO_16','GPIO_18','GPIO_19','GPIO_20','GPIO_21','GPIO_26']
         gpio = {}
@@ -226,12 +218,21 @@ def setup():
         WEATHER = {}
         WEATHER['RAINFALL'] = RAINFALL
         WEATHER['WIND'] = WIND
-        
+
         sensors = {}
         sensors['CPU'] = CPU
         sensors['PICAMERA'] = PICAMERA
         sensors['BME280'] = BME280
-        sensors['ONE_WIRE'] = ONE_WIRE
+        if bool(flask.request.form.get('use_ds18b20_sensor')):
+            DS18B20 = {}
+            addresses = {}
+            DS18B20['read_interval'] = int(flask.request.form.get('DS18B20_read_interval'))
+            for item in flask.request.form.getlist('DS18B20_address'):
+                addresses[item]= {'name': flask.request.form.get('DS18B20_'+ str(item) + '_name')}
+            DS18B20['addresses'] = addresses
+            ONE_WIRE = {}
+            ONE_WIRE['DS18B20'] = DS18B20
+            sensors['ONE_WIRE'] = ONE_WIRE
         sensors['DHT'] = DHT
         sensors['WEATHER'] = WEATHER
         _rpims['setup'] = setup
@@ -240,5 +241,5 @@ def setup():
         _rpims['zabbix_agent'] = zabbix_agent
         with open('conf/rpims.yaml','w') as f:
             yaml.dump(_rpims, f, default_flow_style=False, sort_keys=False, explicit_start=True)
-        return flask.jsonify(_rpims)
+        #return flask.jsonify(_rpims)
     return flask.render_template('setup.html',data = data)
