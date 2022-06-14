@@ -410,7 +410,7 @@ def get_ds18b20_data(**kwargs):
                 if bool(verbose) is True:
                     print('')
                     print("Sensor %s temperature %.2f" % (sensor.id, sensor.get_temperature()), "\xb0C")
-            redis_db.expire('DS18B20', read_interval*2)
+            redis_db.expire('DS18B20', read_interval*3)
             sleep(read_interval)
     except Exception as err:
         print(f'Problem with sensor DS18B20: {err}')
@@ -1033,6 +1033,7 @@ def main():
     winddirection_config = sensors['WEATHER']['WIND']['DIRECTION']
 
     redis_db.flushdb()
+
     redis_db.set('rpims', json.dumps(config_yaml))
     #redis_db.set('gpio', json.dumps(gpio))
     #redis_db.set('config', json.dumps(config))
@@ -1054,31 +1055,31 @@ def main():
         door_sensors_list = {}
         for item in gpio:
             if (gpio[item]['type'] == 'DoorSensor'):
-                door_sensors_list[item] = Button(gpio[item]['gpio_pin'], hold_time=int(gpio[item]['hold_time']))
+                door_sensors_list[item] = Button(gpio[item]['pin'], hold_time=int(gpio[item]['hold_time']))
 
     if bool(config['use_motion_sensor']) is True:
         global motion_sensors_list
         motion_sensors_list = {}
         for item in gpio:
             if (gpio[item]['type'] == 'MotionSensor'):
-                motion_sensors_list[item] = MotionSensor(gpio[item]['gpio_pin'])
+                motion_sensors_list[item] = MotionSensor(gpio[item]['pin'])
 
     if bool(config['use_system_buttons']) is True:
         global system_buttons_list
         system_buttons_list = {}
         for item in gpio:
             if (gpio[item]['type'] == 'ShutdownButton'):
-                system_buttons_list['shutdown_button'] = Button(gpio[item]['gpio_pin'], hold_time=int(gpio[item]['hold_time']))
+                system_buttons_list['shutdown_button'] = Button(gpio[item]['pin'], hold_time=int(gpio[item]['hold_time']))
 
     global led_indicators_list
     led_indicators_list = {}
     for item in gpio:
         if (gpio[item]['type'] == 'door_led'):
-            led_indicators_list['door_led'] = LED(gpio[item]['gpio_pin'])
+            led_indicators_list['door_led'] = LED(gpio[item]['pin'])
         if (gpio[item]['type'] == 'motion_led'):
-            led_indicators_list['motion_led'] = LED(gpio[item]['gpio_pin'])
+            led_indicators_list['motion_led'] = LED(gpio[item]['pin'])
         if (gpio[item]['type'] == 'led'):
-            led_indicators_list['led'] = LED(gpio[item]['gpio_pin'])
+            led_indicators_list['led'] = LED(gpio[item]['pin'])
 
     if bool(config['use_door_sensor']) is True:
         for k, v in door_sensors_list.items():

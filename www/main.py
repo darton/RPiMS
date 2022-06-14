@@ -128,17 +128,17 @@ def setup():
         setup['use_picamera'] = bool(flask.request.form.get('use_picamera'))
         setup['use_picamera_recording'] = bool(flask.request.form.get('use_picamera_recording'))
         setup['use_serial_display'] = bool(flask.request.form.get('use_serial_display'))
-        setup['serial_display_refresh_rate'] = flask.request.form.get('serial_display_refresh_rate')
-        setup['serial_display_rotate'] = flask.request.form.get('serial_display_rotate')
         setup['serial_display_type'] = flask.request.form.get('serial_display_type')
         setup['serial_type'] = flask.request.form.get('serial_type')
+        setup['serial_display_refresh_rate'] = int(flask.request.form.get('serial_display_refresh_rate'))
+        setup['serial_display_rotate'] = int(flask.request.form.get('serial_display_rotate'))
         zabbix_agent = {}
         zabbix_agent['TLSAccept'] = 'psk'
         zabbix_agent['TLSConnect'] = 'psk'
         zabbix_agent['TLSPSK'] = flask.request.form.get('TLSPSK')
         zabbix_agent['TLSPSKFile'] = '/var/www/html/conf/zabbix_agentd.psk'
         zabbix_agent['TLSPSKIdentity'] = flask.request.form.get('TLSPSKIdentity')
-        zabbix_agent['Timeout'] = flask.request.form.get('Timeout')
+        zabbix_agent['Timeout'] = int(flask.request.form.get('Timeout'))
         zabbix_agent['hostname'] = flask.request.form.get('hostname')
         zabbix_agent['location'] = flask.request.form.get('location')
         zabbix_agent['chassis'] = 'embedded'
@@ -146,61 +146,79 @@ def setup():
         zabbix_agent['zabbix_server'] = flask.request.form.get('zabbix_server')
         zabbix_agent['zabbix_server_active'] = flask.request.form.get('zabbix_server_active')
         id1 = {}
-        id1['i2c_address'] = flask.request.form.get('id1_BME280_i2c_address')
+        id1['i2c_address'] = int(flask.request.form.get('id1_BME280_i2c_address'))
         id1['interface'] = flask.request.form.get('id1_BME280_interface')
         id1['name'] = flask.request.form.get('id1_BME280_name')
-        id1['read_interval'] = flask.request.form.get('id1_BME280_read_interval')
+        id1['read_interval'] = int(flask.request.form.get('id1_BME280_read_interval'))
         id1['use'] = bool(flask.request.form.get('id1_BME280_use'))
         id1['id'] = 'id1'
         id2 = {}
         id2['serial_port'] = flask.request.form.get('id2_BME280_serial_port')
         id2['interface'] = flask.request.form.get('id2_BME280_interface')
         id2['name'] = flask.request.form.get('id2_BME280_name')
-        id2['read_interval'] = flask.request.form.get('id2_BME280_read_interval')
+        id2['read_interval'] = int(flask.request.form.get('id2_BME280_read_interval'))
         id2['use'] = bool(flask.request.form.get('id2_BME280_use'))
         id2['id'] = 'id2'
         id3 = {}
         id3['serial_port'] = flask.request.form.get('id3_BME280_serial_port')
         id3['interface'] = flask.request.form.get('id3_BME280_interface')
         id3['name'] = flask.request.form.get('id3_BME280_name')
-        id3['read_interval'] = flask.request.form.get('id3_BME280_read_interval')
+        id3['read_interval'] = int(flask.request.form.get('id3_BME280_read_interval'))
         id3['use'] = bool(flask.request.form.get('id3_BME280_use'))
         id3['id'] = 'id3'
         BME280 = {}
         BME280['id1'] = id1
         BME280['id2'] = id2
         BME280['id3'] = id3
-        CPU = {'temp': {'read_intervatl': flask.request.form.get('CPUtemp_read_interval')}}
+
+        CPU = {'temp': {'read_interval': int(flask.request.form.get('CPUtemp_read_interval'))}}
+
         DHT = {}
         DHT['name'] = flask.request.form.get('DHT_name')
-        DHT['pin'] = flask.request.form.get('DHT_pin')
-        DHT['read_interval'] = flask.request.form.get('DHT_read_interval')
+        DHT['pin'] = int(flask.request.form.get('DHT_pin'))
+        DHT['read_interval'] = int(flask.request.form.get('DHT_read_interval'))
         DHT['type'] = flask.request.form.get('DHT_type')
+
         DS18B20 = {}
-        DS18B20['read_interval'] = flask.request.form.get('DS18B20_read_interval')
+        addresses = {}
+        DS18B20['read_interval'] = int(flask.request.form.get('DS18B20_read_interval'))
         for item in data['sensors']['one_wire']['ds18b20']:
-            DS18B20[item]= {'name': flask.request.form.get('DS18B20_'+ str(item) + '_name')}
+            addresses[item]= {'name': flask.request.form.get('DS18B20_'+ str(item) + '_name')}
+        DS18B20['addresses'] = addresses
         ONE_WIRE = {}
         ONE_WIRE['DS18B20'] = DS18B20
+
+        gpios = ['GPIO_5','GPIO_6','GPIO_12','GPIO_13','GPIO_16','GPIO_18','GPIO_19','GPIO_20','GPIO_21','GPIO_26']
+        gpio = {}
+        for item in gpios:
+            a = {}
+            a['pin'] = int(flask.request.form.get(str(item) +'_pin'))
+            a['type'] = flask.request.form.get(str(item) +'_type')
+            a['name'] = flask.request.form.get(str(item) +'_name')
+            a['hold_time'] = int(flask.request.form.get(str(item) +'_hold_time')) if flask.request.form.get(str(item) +'_hold_time') != '' else ''
+            gpio[item] = a 
+
         PICAMERA = {}
-        PICAMERA['fps'] = flask.request.form.get('picamera_fps')
-        PICAMERA['mode'] = flask.request.form.get('picamera_mode')
-        PICAMERA['rotation'] = flask.request.form.get('picamera_rotation')
+        PICAMERA['fps'] = int(flask.request.form.get('picamera_fps'))
+        PICAMERA['mode'] = int(flask.request.form.get('picamera_mode'))
+        PICAMERA['rotation'] = int(flask.request.form.get('picamera_rotation'))
+
         RAINFALL = {}
-        RAINFALL['acquisition_time'] = flask.request.form.get('rainfall_acquisition_time')
-        RAINFALL['agregation_time'] = flask.request.form.get('rainfall_agregation_time')
-        RAINFALL['sensor_pin'] = flask.request.form.get('rainfall_sensor_pin')
+        RAINFALL['acquisition_time'] = int(flask.request.form.get('rainfall_acquisition_time'))
+        RAINFALL['agregation_time'] = int(flask.request.form.get('rainfall_agregation_time'))
+        RAINFALL['sensor_pin'] = int(flask.request.form.get('rainfall_sensor_pin'))
         RAINFALL['use'] = bool(flask.request.form.get('rainfall_use'))
+
         DIRECTION = {}
-        DIRECTION['acquisition_time'] = flask.request.form.get('winddirection_acquisition_time')
-        DIRECTION['adc_input'] = flask.request.form.get('winddirection_adc_input')
+        DIRECTION['acquisition_time'] = int(flask.request.form.get('winddirection_acquisition_time'))
+        DIRECTION['adc_input'] = int(flask.request.form.get('winddirection_adc_input'))
         DIRECTION['adc_type'] = flask.request.form.get('winddirection_adc_type')
-        DIRECTION['reference_voltage_adc_input'] = flask.request.form.get('reference_voltage_adc_input')
+        DIRECTION['reference_voltage_adc_input'] = int(flask.request.form.get('reference_voltage_adc_input'))
         DIRECTION['use'] = bool(flask.request.form.get('winddirection_use'))
         SPEED = {}
-        SPEED['acquisition_time'] = flask.request.form.get('windspeed_acquisition_time')
-        SPEED['agregation_time'] = flask.request.form.get('windspeed_agregation_time')
-        SPEED['sensor_pin'] = flask.request.form.get('windspeed_sensor_pin')
+        SPEED['acquisition_time'] = int(flask.request.form.get('windspeed_acquisition_time'))
+        SPEED['agregation_time'] = int(flask.request.form.get('windspeed_agregation_time'))
+        SPEED['sensor_pin'] = int(flask.request.form.get('windspeed_sensor_pin'))
         SPEED['use'] = bool(flask.request.form.get('windspeed_use'))
         WIND = {}
         WIND['DIRECTION'] = DIRECTION
@@ -208,17 +226,19 @@ def setup():
         WEATHER = {}
         WEATHER['RAINFALL'] = RAINFALL
         WEATHER['WIND'] = WIND
+        
         sensors = {}
-        sensors['BME280'] = BME280
         sensors['CPU'] = CPU
-        sensors['DHT'] = DHT
-        sensors['ONE_WIRE'] = ONE_WIRE
         sensors['PICAMERA'] = PICAMERA
+        sensors['BME280'] = BME280
+        sensors['ONE_WIRE'] = ONE_WIRE
+        sensors['DHT'] = DHT
         sensors['WEATHER'] = WEATHER
-        _rpims['sensors'] = sensors
-        _rpims['zabbix_agent'] = zabbix_agent
         _rpims['setup'] = setup
-        with open('conf/_rpims.yaml','w') as f:
-            yaml.dump(_rpims, f, default_flow_style=False)
+        _rpims['sensors'] = sensors
+        _rpims['gpio'] = gpio
+        _rpims['zabbix_agent'] = zabbix_agent
+        with open('conf/rpims.yaml','w') as f:
+            yaml.dump(_rpims, f, default_flow_style=False, sort_keys=False, explicit_start=True)
         return flask.jsonify(_rpims)
     return flask.render_template('setup.html',data = data)
