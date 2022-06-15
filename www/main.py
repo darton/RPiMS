@@ -108,7 +108,20 @@ def api_types_json(type):
 
 @app.route('/setup/', methods=['GET', 'POST'])
 def setup():
-    data = get_data()
+    try:
+        import sys
+        import yaml
+        from systemd import journal
+
+        config = {}
+        _DS18B20 = redis_db.hgetall('DS18B20')
+        path_to_config = '/var/www/html/conf/rpims.yaml'
+        with open(path_to_config, 'r') as f:
+            config = yaml.full_load(f)
+    except Exception as error:
+        #error = f"Can't load RPiMS config file: {path_to_config}"
+        journal.send(error)
+
     if flask.request.method == "POST":
         _rpims = {}
         setup = {}
@@ -242,4 +255,5 @@ def setup():
         with open('conf/rpims.yaml','w') as f:
             yaml.dump(_rpims, f, default_flow_style=False, sort_keys=False, explicit_start=True)
         #return flask.jsonify(_rpims)
-    return flask.render_template('setup.html',data = data)
+        redis_db.set('reload', 'true')
+    return flask.render_template('setup.html',config = config, _DS18B20 = _DS18B20)
