@@ -1037,7 +1037,7 @@ def main():
     redis_db.set('rpims', json.dumps(config_yaml))
     #redis_db.set('gpio', json.dumps(gpio))
     #redis_db.set('config', json.dumps(config))
-    redis_db.set('sensors', json.dumps(sensors))
+    #redis_db.set('sensors', json.dumps(sensors))
     #redis_db.set('zabbix_agent', json.dumps(zabbix_agent))
 
     get_hostip()

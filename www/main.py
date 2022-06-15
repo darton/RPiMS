@@ -4,6 +4,7 @@ import flask
 import redis
 import json
 import requests
+from time import sleep
 #from flask_wtf import FlaskForm
 #from wtforms import StringField, TextAreaField, SubmitField
 #from wtforms.validators import DataRequired, Email
@@ -112,7 +113,6 @@ def setup():
         import sys
         import yaml
         from systemd import journal
-
         config = {}
         _DS18B20 = redis_db.hgetall('DS18B20')
         path_to_config = '/var/www/html/conf/rpims.yaml'
@@ -121,7 +121,6 @@ def setup():
     except Exception as error:
         #error = f"Can't load RPiMS config file: {path_to_config}"
         journal.send(error)
-
     if flask.request.method == "POST":
         _rpims = {}
         setup = {}
@@ -255,5 +254,8 @@ def setup():
         with open('conf/rpims.yaml','w') as f:
             yaml.dump(_rpims, f, default_flow_style=False, sort_keys=False, explicit_start=True)
         #return flask.jsonify(_rpims)
-        redis_db.set('reload', 'true')
+        #redis_db.set('reload', 'true')
+        redis_db.set('rpims', json.dumps(_rpims))
+        sleep(1)
+        return flask.redirect(flask.url_for('home'))
     return flask.render_template('setup.html',config = config, _DS18B20 = _DS18B20)
