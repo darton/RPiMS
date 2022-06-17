@@ -33,14 +33,25 @@ setInterval(function() {
     if (data['config']['setup']['use_cpu_sensor'] == true) {
         var CPUTEMP = data['sensors']['cpu']['temperature'];
 		if (!!CPUTEMP) {
-			$("#CPU_Temperature").html(roundPrecised(CPUTEMP,0));
+			$("#CPU_Temperature_value").html(roundPrecised(CPUTEMP,0));
 			$("#CPU_Temperature_unit").html("°C");
 			}
 		else {
-			$("#CPU_Temperature").html('NaN');
+			$("#CPU_Temperature_value").html('NaN');
 			$("#CPU_Temperature_unit").html('');
 		}
     }
+
+
+    if (data['config']['setup']['use_cpu_sensor'] == true) {
+            $("#CPU_Temperature").show();
+    }
+    else{
+            $("#CPU_Temperature").hide();
+    }
+
+
+
 
     if (data['config']['setup']['use_bme280_sensor'] == true) {
 		$("#bme280_sensors").show();
