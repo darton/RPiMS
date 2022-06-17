@@ -30,7 +30,7 @@
 {% block page_content %}
    <div class="rpimsbg">
 {% if data.config.setup.show_sys_info: %}
-      <div class="header"></div>
+     <!-- <div class="header"></div>-->
         <div class="sensors" style="text-align: left;" id="sys_info">
               <ul style="list-style-type:none;">
                 <li>Hostname: <span class="value" id="hostname"></span></li>
@@ -38,7 +38,6 @@
                 <li style="display:none;" id="CPU_Temperature">CPU Temperature: <span class="value" id="CPU_Temperature_value"> </span><span class="value" id="CPU_Temperature_unit"></span></li>
               </ul>
         </div>
-      </div>
 {% endif %}
 {% if data.config.setup.use_picamera: %}
   <div class="sensors">
