@@ -154,10 +154,15 @@ chmod ugo+x /etc/update-motd.d/20-rpims
 cat $unpackdir/etc/cron |tee /etc/cron.d/rpims
 chown root.root /etc/cron.d/rpims
 
+
 mv $unpackdir/etc/rpims.service /lib/systemd/system/rpims.service
+mv $unpackdir/etc/rpims-watcher.path /lib/systemd/system/rpims-watcher.path
+mv $unpackdir/etc/rpims-watcher.service /lib/systemd/system/rpims-watcher.service
 mv $unpackdir/etc/gunicorn.service /lib/systemd/system/gunicorn.service
 systemctl daemon-reload
 systemctl enable rpims.service
+systemctl enable rpims-watcher.path
+systemctl enable rpims-watcher.service
 systemctl enable gunicorn.service
 
 
