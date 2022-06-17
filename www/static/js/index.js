@@ -31,6 +31,7 @@ setInterval(function() {
     }
 
     if (data['config']['setup']['use_cpu_sensor'] == true) {
+        $("#CPU_Temperature").show();
         var CPUTEMP = data['sensors']['cpu']['temperature'];
 		if (!!CPUTEMP) {
 			$("#CPU_Temperature_value").html(roundPrecised(CPUTEMP,0));
@@ -41,17 +42,9 @@ setInterval(function() {
 			$("#CPU_Temperature_unit").html('');
 		}
     }
-
-
-    if (data['config']['setup']['use_cpu_sensor'] == true) {
-            $("#CPU_Temperature").show();
-    }
     else{
             $("#CPU_Temperature").hide();
     }
-
-
-
 
     if (data['config']['setup']['use_bme280_sensor'] == true) {
 		$("#bme280_sensors").show();
