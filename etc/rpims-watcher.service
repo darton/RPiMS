@@ -1,0 +1,11 @@
+[Unit]
+Description=RPiMS restarter
+After=network.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/systemctl restart rpims.service
+
+[Install]
+WantedBy=multi-user.target
+
