@@ -264,6 +264,36 @@ def setup():
         redis_db.set('rpims', json.dumps(_rpims))
         if not redis_db.get('reload'):
           redis_db.set('reload', 'true')
-        sleep(1)
+
+        zabbix_config = []
+        zabbix_config.append('Server=127.0.0.1,zabbix.example.com')
+        zabbix_config.append('ServerActive=zabbix.example.com')
+        zabbix_config.append('Hostname=rpims.example.com')
+        zabbix_config.append('TLSPSKIdentity=9bc20076d9b2e7b8')
+        zabbix_config.append('TLSPSKFile=/var/www/html/conf/zabbix_agentd.psk')
+        zabbix_config.append('TLSConnect=psk')
+        zabbix_config.append('TLSAccept=psk')
+        zabbix_config.append('Timeout=5')
+
+        with open('conf/_zabbix_agentd.conf', 'w', encoding='utf-8') as f:
+          f.write('\n'.join(zabbix_config))
+
+        with open('conf/_zabbix_agentd.psk', 'w', encoding='utf-8') as f:
+          f.write('730d40ddb8ce4097148622f99b901aac0c7a2783fbb3415d4f2e7f3a2ff62582')
+
+        uv4l_raspicam_config = []
+        uv4l_raspicam_config.append('# uv4l core options')
+        uv4l_raspicam_config.append('driver = raspicam')
+        uv4l_raspicam_config.append('auto-video_nr = yes')
+        uv4l_raspicam_config.append('frame-buffers = 4')
+        uv4l_raspicam_config.append('encoding = mjpeg')
+        uv4l_raspicam_config.append('nopreview = yes')
+        uv4l_raspicam_config.append('video-denoise = no')
+        uv4l_raspicam_config.append('server-option = --www-webrtc-signaling-path=/webrtc')
+        with open('conf/_uv4l-raspicam.conf', 'w', encoding='utf-8') as f:
+          f.write('\n'.join(uv4l_raspicam_config))
+
+        sleep(2)
         return flask.redirect(flask.url_for('home'))
     return flask.render_template('setup.html',config = config, _DS18B20 = _DS18B20)
+
