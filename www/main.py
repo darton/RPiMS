@@ -257,13 +257,6 @@ def setup():
         _rpims['gpio'] = gpio
         _rpims['zabbix_agent'] = zabbix_agent
 
-        with open('conf/rpims.yaml','w') as f:
-            yaml.dump(_rpims, f, default_flow_style=False, sort_keys=False, explicit_start=True)
-        #return flask.jsonify(_rpims)
-
-        redis_db.set('rpims', json.dumps(_rpims))
-        if not redis_db.get('reload'):
-          redis_db.set('reload', 'true')
 
         zabbix_config = []
         zabbix_config.append('Server=127.0.0.1,zabbix.example.com')
@@ -293,7 +286,14 @@ def setup():
         with open('conf/_uv4l-raspicam.conf', 'w', encoding='utf-8') as f:
           f.write('\n'.join(uv4l_raspicam_config))
 
-        sleep(2)
+        redis_db.set('rpims', json.dumps(_rpims))
+        if not redis_db.get('reload'):
+          redis_db.set('reload', 'true')
+
+        with open('conf/rpims.yaml','w') as f:
+            yaml.dump(_rpims, f, default_flow_style=False, sort_keys=False, explicit_start=True)
+        #return flask.jsonify(_rpims)
+
+        sleep(1)
         return flask.redirect(flask.url_for('home'))
     return flask.render_template('setup.html',config = config, _DS18B20 = _DS18B20)
-
