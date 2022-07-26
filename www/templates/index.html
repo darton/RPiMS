@@ -88,7 +88,8 @@
 {% endif %}
 {% if data.config.setup.use_bme280_sensor: %}
        <div id="bme280_sensors">
-{% for item in data.sensors.bme280: %}
+{% for item in data.config.sensors.BME280: %}
+{% if data.config.sensors.BME280[item].use is true: %}
         <div class='sensors'>
           <div id='{{item}}' class='w3-container w3-margin'>{{ data.config.sensors.BME280[item].name }}</div>
           <div style='width: 100%; display: table;'>
@@ -121,6 +122,7 @@
             </div>
           </div>
         </div>
+{% endif %}
 {% endfor %}
        </div>
 {% endif %}
