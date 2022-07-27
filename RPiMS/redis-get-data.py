@@ -21,7 +21,7 @@ redis_db = redis.StrictRedis(host="localhost", port=6379, db=0, charset="utf-8",
 
 rpims = json.loads(redis_db.get('rpims'))
 config = rpims['setup']
-#sensors = rpims['sensors']
+
 
 def print_help():
     print('You must use one parameter from list BME280 id (where id is 1, 2 or 3), DHT, CPUTEMP, DS18B20, ds18b20 address')

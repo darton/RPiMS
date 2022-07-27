@@ -12,6 +12,6 @@ server {
 
         location ^~ /static/  {
 		include  /etc/nginx/mime.types;
-		root /var/www/html/;
+		alias /var/www/html/static/;
 }
 }
