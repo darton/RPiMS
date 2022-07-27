@@ -40,7 +40,7 @@ If you're not using Etcher, you'll need to unzip .zip downloads to get the image
 
 Running the following command will download and run the script.
 ```
-curl -sS https://raw.githubusercontent.com/darton/RPiMS/master/install.sh | sudo bash
+curl -sS https://raw.githubusercontent.com/darton/RPiMS/devel-flask/install.sh | sudo bash
 
 ```
 
