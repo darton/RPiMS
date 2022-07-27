@@ -438,7 +438,7 @@ def get_dht_data(**kwargs):
             humidity = dht_device.humidity
             redis_db.hset(f'DHT', 'temperature', temperature)
             redis_db.hset(f'DHT', 'humidity', humidity)
-            redis_db.expire(f'DHT', read_interval*2)
+            redis_db.expire(f'DHT', read_interval*3)
             if bool(verbose) is True:
                 print('')
                 print(dht_type + " Temperature: {:.1f}°C ".format(temperature))

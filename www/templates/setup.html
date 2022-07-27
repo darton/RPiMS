@@ -190,7 +190,7 @@
                 <div id="DS18B20_sensor" class="w3-row w3-2020-green-sheen">
                     <div class="w3-quarter w3-container w3-margin-top w3-margin-bottom">
                         <label for="DS18B20_read_interval">Read interval:</label>
-                        <input name="DS18B20_read_interval" class="w3-input" id="DS18B20_read_interval" type="number" min="1" max="3600" value="{{ config.sensors.ONE_WIRE.DS18B20.read_interval }}" >
+                        <input name="DS18B20_read_interval" class="w3-input" id="DS18B20_read_interval" type="number" min="2" max="3600" value="{{ config.sensors.ONE_WIRE.DS18B20.read_interval }}" >
                         <br>
                     </div>
                     {% if config.setup.use_ds18b20_sensor: %}
@@ -232,7 +232,7 @@
                             </div>
                             <div class="w3-quarter w3-container w3-margin-top">
                                 <label for="id1_BME280_read_interval">Read interval:</label>
-                                <input name="id1_BME280_read_interval" class="w3-input" id="id1_BME280_read_interval" type="number" min="1" max="3600" value="{{ config.sensors.BME280.id1.read_interval }}" >
+                                <input name="id1_BME280_read_interval" class="w3-input" id="id1_BME280_read_interval" type="number" min="2" max="3600" value="{{ config.sensors.BME280.id1.read_interval }}" >
                             </div>
                             <div class="w3-quarter w3-container w3-margin-top">
                                 <label for="id1_BME280_interface">Interface type:</label>
@@ -265,7 +265,7 @@
                             </div>
                             <div class="w3-quarter w3-container w3-margin-top">
                                 <label for="id2_BME280_read_interval">Read interval:</label>
-                                <input name="id2_BME280_read_interval" class="w3-input" id="id2_BME280_read_interval" type="number" min="1" max="3600" value="{{ config.sensors.BME280.id2.read_interval }}" >
+                                <input name="id2_BME280_read_interval" class="w3-input" id="id2_BME280_read_interval" type="number" min="2" max="3600" value="{{ config.sensors.BME280.id2.read_interval }}" >
                             </div>
                             <div class="w3-quarter w3-container w3-margin-top">
                                 <label for="id2_BME280_interface">Interface type:</label>
@@ -300,7 +300,7 @@
                             </div>
                             <div class="w3-quarter w3-container w3-margin-top">
                                 <label for="id3_BME280_read_interval">Read interval:</label>
-                                <input name="id3_BME280_read_interval" class="w3-input" id="id3_BME280_read_interval" type="number" min="1" max="3600" value="{{ config.sensors.BME280.id3.read_interval }}" >
+                                <input name="id3_BME280_read_interval" class="w3-input" id="id3_BME280_read_interval" type="number" min="2" max="3600" value="{{ config.sensors.BME280.id3.read_interval }}" >
                             </div>
                             <div class="w3-quarter w3-container w3-margin-top">
                                 <label for="id3_BME280_interface">Interface type:</label>
@@ -346,7 +346,7 @@
                         </div>
                         <div class="w3-quarter w3-container w3-margin-top">
                             <label for="DHT_read_interval">Read interval:</label>
-                            <input name="DHT_read_interval" class="w3-input" id="DHT_read_interval" type="number" min="1" max="3600" value="{{ config.sensors.DHT.read_interval }}" >
+                            <input name="DHT_read_interval" class="w3-input" id="DHT_read_interval" type="number" min="2" max="3600" value="{{ config.sensors.DHT.read_interval }}" >
                         </div>
                         <div class="w3-quarter w3-container w3-margin-top">
                             <label for="DHT_pin">Pin:</label>
