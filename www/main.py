@@ -258,21 +258,26 @@ def setup():
         _rpims['zabbix_agent'] = zabbix_agent
 
 
+        zabbix_server = flask.request.form.get('zabbix_server')
+        zabbix_server_active = flask.request.form.get('zabbix_server_active')
+        zabbix_timeout = flask.request.form.get('Timeout')
+        zabbix_tlspskidentity = flask.request.form.get('TLSPSKIdentity')
+        zabbix_hostname = flask.request.form.get('hostname')
         zabbix_config = []
-        zabbix_config.append('Server=127.0.0.1,zabbix.example.com')
-        zabbix_config.append('ServerActive=zabbix.example.com')
-        zabbix_config.append('Hostname=rpims.example.com')
-        zabbix_config.append('TLSPSKIdentity=9bc20076d9b2e7b8')
+        zabbix_config.append(f'Server=127.0.0.1,{zabbix_server}')
+        zabbix_config.append(f'ServerActive={zabbix_server_active}')
+        zabbix_config.append(f'Hostname={zabbix_hostname}')
+        zabbix_config.append(f'TLSPSKIdentity={zabbix_tlspskidentity}')
         zabbix_config.append('TLSPSKFile=/var/www/html/conf/zabbix_agentd.psk')
         zabbix_config.append('TLSConnect=psk')
         zabbix_config.append('TLSAccept=psk')
-        zabbix_config.append('Timeout=5')
+        zabbix_config.append(f'Timeout={zabbix_timeout}')
 
-        with open('conf/_zabbix_agentd.conf', 'w', encoding='utf-8') as f:
+        with open('conf/zabbix_agentd.conf', 'w', encoding='utf-8') as f:
           f.write('\n'.join(zabbix_config))
 
-        with open('conf/_zabbix_agentd.psk', 'w', encoding='utf-8') as f:
-          f.write('730d40ddb8ce4097148622f99b901aac0c7a2783fbb3415d4f2e7f3a2ff62582')
+        with open('conf/zabbix_agentd.psk', 'w', encoding='utf-8') as f:
+          f.write(flask.request.form.get('TLSPSK'))
 
         uv4l_raspicam_config = []
         uv4l_raspicam_config.append('# uv4l core options')
@@ -283,7 +288,22 @@ def setup():
         uv4l_raspicam_config.append('nopreview = yes')
         uv4l_raspicam_config.append('video-denoise = no')
         uv4l_raspicam_config.append('server-option = --www-webrtc-signaling-path=/webrtc')
-        with open('conf/_uv4l-raspicam.conf', 'w', encoding='utf-8') as f:
+        picamera_rotation = int(flask.request.form.get('picamera_rotation'))
+        uv4l_raspicam_config.append(f'rotation = {picamera_rotation}')
+        picamera_mode = int(flask.request.form.get('picamera_mode'))
+        picamera_modes = {
+            1: [1920,1080],
+            6: [1280,720],
+            7: [640,480],
+        }
+        picamera_width = picamera_modes[picamera_mode][0]
+        picamera_height = picamera_modes[picamera_mode][1]
+        uv4l_raspicam_config.append(f'width = {picamera_width}')
+        uv4l_raspicam_config.append(f'height = {picamera_height}')
+        picamera_fps = int(flask.request.form.get('picamera_fps'))
+        uv4l_raspicam_config.append(f'framerate = {picamera_fps}')
+
+        with open('conf/uv4l-raspicam.conf', 'w', encoding='utf-8') as f:
           f.write('\n'.join(uv4l_raspicam_config))
 
         redis_db.set('rpims', json.dumps(_rpims))
