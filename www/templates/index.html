@@ -41,8 +41,9 @@
 {% endif %}
 {% if data.config.setup.use_picamera: %}
   <div class="sensors">
-  <div><a class="sensors" href="http://{{request.host.split(':')[0]}}:8080/stream/video.mjpeg">Video Stream URL</a></div>
-  <div><iframe src="http://{{request.host.split(':')[0]}}:8080/stream/video.mjpeg" width="{{data.config.sensors.PICAMERA.mode.hr}}" height="{{data.config.sensors.PICAMERA.mode.vr}}" style="border:none;" title="Video Stream"></iframe></div>
+  <div><a class="sensors" href="http://{{request.host.split(':')[0]}}:8080/stream/video.mjpeg">Webcam</a></div>
+<!--  <div><iframe src="http://{{request.host.split(':')[0]}}:8080/stream/video.mjpeg" width="{{data.config.sensors.PICAMERA.mode.hr}}" height="{{data.config.sensors.PICAMERA.mode.vr}}" style="border:none;" title="Video Stream"></iframe></div>
+-->
   </div>
 {% endif %}
 {% if data.config.setup.use_door_sensor: %}
