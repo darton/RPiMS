@@ -472,63 +472,13 @@
                             <div class='w3-third w3-container w3-margin-top'>
                                 <label for='{{ _gpio }}_TYPE'>Type:</label>
                                 <select name='{{ _gpio }}_type' class='gpioinputs w3-select' id='{{ _gpio }}_TYPE'>
-                                {% if config.gpio[_gpio].type == 'DoorSensor': %} 
-                                    <option selected value='DoorSensor'>INPUT - Door Sensor</option>
-                                    <option value='MotionSensor'>INPUT - Motion Sensor</option>
-                                    <option value='ShutdownButton'>INPUT - Shutdown Button</option>
-                                    <option value='led'>OUT - LED</option>
-                                    <option value='door_led'>OUT - Door Indicator</option>
-                                    <option value='motion_led'>OUT - Motion Indicator</option>
-                                    <option value='Reserved'>Reserved</option>
-                                {% elif config.gpio[_gpio].type == 'MotionSensor': %}
-                                    <option value='DoorSensor'>INPUT - Door Sensor</option>
-                                    <option selected value='MotionSensor'>INPUT - Motion Sensor</option>
-                                    <option value='ShutdownButton'>INPUT - Shutdown Button</option>
-                                    <option value='led'>OUT - LED</option>
-                                    <option value='door_led'>OUT - Door Indicator</option>
-                                    <option value='motion_led'>OUT - Motion Indicator</option>
-                                    <option value='Reserved'>Reserved</option>
-                                {% elif config.gpio[_gpio].type == 'Reserved': %}
-                                    <option value='DoorSensor'>INPUT - Door Sensor</option>
-                                    <option value='MotionSensor'>INPUT - Motion Sensor</option>
-                                    <option value='ShutdownButton'>INPUT - Shutdown Button</option>
-                                    <option value='led'>OUT - LED</option>
-                                    <option value='door_led'>OUT - Door Indicator</option>
-                                    <option value='motion_led'>OUT - Motion Indicator</option>
-                                    <option selected value='Reserved'>Reserved</option>
-                                {% elif config.gpio[_gpio].type == 'ShutdownButton': %}
-                                    <option value='DoorSensor'>INPUT - Door Sensor</option>
-                                    <option value='MotionSensor'>INPUT - Motion Sensor</option>
-                                    <option selected value='ShutdownButton'>INPUT - Shutdown Button</option>
-                                    <option value='led'>OUT - LED</option>
-                                    <option value='door_led'>OUT - Door Indicator</option>
-                                    <option value='motion_led'>OUT - Motion Indicator</option>
-                                    <option value='Reserved'>Reserved</option>
-                                {% elif config.gpio[_gpio].type == 'led': %}
-                                    <option value='DoorSensor'>INPUT - Door Sensor</option>
-                                    <option value='MotionSensor'>INPUT - Motion Sensor</option>
-                                    <option value='ShutdownButton'>INPUT - Shutdown Button</option>
-                                    <option selected value='led'>OUT - LED</option>
-                                    <option value='door_led'>OUT - Door Indicator</option>
-                                    <option value='motion_led'>OUT - Motion Indicator</option>
-                                    <option value='Reserved'>Reserved</option>
-                                {% elif config.gpio[_gpio].type == 'door_led': %}
-                                    <option value='DoorSensor'>INPUT - Door Sensor</option>
-                                    <option value='MotionSensor'>INPUT - Motion Sensor</option>
-                                    <option value='ShutdownButton'>INPUT - Shutdown Button</option>
-                                    <option value='led'>OUT - LED</option>
-                                    <option selected value='door_led'>OUT - Door Indicator</option>
-                                    <option value='motion_led'>OUT - Motion Indicator</option>
-                                    <option value='Reserved'>Reserved</option>
-                                {% elif config.gpio[_gpio].type == 'motion_led': %}
-                                    <option value='DoorSensor'>INPUT - Door Sensor</option>
-                                    <option value='MotionSensor'>INPUT - Motion Sensor</option>
-                                    <option value='ShutdownButton'>INPUT - Shutdown Button</option>
-                                    <option value='led'>OUT - LED</option>
-                                    <option value='door_led'>OUT - Door Indicator</option>
-                                    <option selected value='motion_led'>OUT - Motion Indicator</option>
-                                    <option value='Reserved'>Reserved</option>
-                                {% endif %}
+                                    <option {% if config.gpio[_gpio].type == 'DoorSensor' %} selected="selected" {% endif %} value='DoorSensor'>INPUT - Door Sensor</option>
+                                    <option {% if config.gpio[_gpio].type == 'MotionSensor' %} selected="selected" {% endif %} value='MotionSensor'>INPUT - Motion Sensor</option>
+                                    <option {% if config.gpio[_gpio].type == 'ShutdownButton' %} selected="selected" {% endif %} value='ShutdownButton'>INPUT - Shutdown Button</option>
+                                    <option {% if config.gpio[_gpio].type == 'led' %} selected="selected" {% endif %} value='led'>OUT - LED</option>
+                                    <option {% if config.gpio[_gpio].type == 'door_led' %} selected="selected" {% endif %} value='door_led'>OUT - Door Indicator</option>
+                                    <option {% if config.gpio[_gpio].type == 'motion_led' %} selected="selected" {% endif %} value='motion_led'>OUT - Motion Indicator</option>
+                                    <option {% if config.gpio[_gpio].type == 'Reserved' %} selected="selected" {% endif %} value='Reserved'>Reserved</option>
                                 </select>
                             </div>
                             <div class='w3-third w3-container w3-margin-top'>
