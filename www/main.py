@@ -302,6 +302,6 @@ def setup():
             yaml.dump(_rpims, f, default_flow_style=False, sort_keys=False, explicit_start=True)
         #return flask.jsonify(_rpims)
 
-        sleep(1)
+        sleep(2)
         return flask.redirect(flask.url_for('home'))
     return flask.render_template('setup.html',config = config, _DS18B20 = _DS18B20)
