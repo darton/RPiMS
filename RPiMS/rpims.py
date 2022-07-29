@@ -461,6 +461,307 @@ def get_dht_data(**kwargs):
             sleep(read_interval+delay)
 
 
+def rainfall(**kwargs):
+    from time import time, sleep
+    from gpiozero import Button
+    import math
+
+    def bucket_tipped():
+        nonlocal bucket_counter
+        bucket_counter += 1
+
+    def reset_bucket_counter():
+        nonlocal bucket_counter
+        bucket_counter = 0
+
+    def calculate_rainfall():
+        # global BUCKET_SIZE
+        rainfall = round(bucket_counter * BUCKET_SIZE, 0)
+        return rainfall
+
+    rain_sensor = Button(kwargs['sensor_pin'])
+    rain_sensor.when_pressed = bucket_tipped
+
+    bucket_counter = 0
+    rainfall_acquisition_time = kwargs['acquisition_time']
+    rainfall_agregation_time = kwargs['agregation_time']
+    rainfalls = []
+    redis_db.hset('WEATHER','daily_rainfall', 0)
+    redis_db.hset('WEATHER','rainfall', 0)
+    # global BUCKET_SIZE
+    BUCKET_SIZE = 0.2794  # [mm]
+
+    while True:
+        start_time = time()
+        while time() - start_time <= rainfall_acquisition_time:
+            reset_bucket_counter()
+            sleep(rainfall_acquisition_time)
+            rainfall = calculate_rainfall()
+            if len(rainfalls) == (rainfall_agregation_time/rainfall_acquisition_time):
+                rainfalls.clear()
+            rainfalls.append(calculate_rainfall())
+        daily_rainfall = round(math.fsum(rainfalls), 1)
+        if bool(kwargs['verbose']) is True:
+            print(f'Rainfall: {rainfall}mm, Daily rainfall: {daily_rainfall}mm')
+        redis_db.hset('WEATHER','daily_rainfall', daily_rainfall)
+        redis_db.hset('WEATHER','rainfall', rainfall)
+
+def wind_speed(**kwargs):
+    import statistics
+    from gpiozero import Button
+    from time import time, sleep
+
+    def anemometer_pulse_counter():
+        nonlocal anemometer_pulse
+        anemometer_pulse += 1
+
+    def reset_anemometer_pulse_counter():
+        nonlocal anemometer_pulse
+        anemometer_pulse = 0
+
+    def calculate_speed(wind_speed_acquisition_time):
+        nonlocal anemometer_pulse
+        rotations = anemometer_pulse/2
+        wind_speed_km_per_hour = round(ANEMOMETER_FACTOR * rotations * 2.4/wind_speed_acquisition_time, 1)
+        return wind_speed_km_per_hour
+
+    wind_speed_sensor = Button(kwargs['sensor_pin'])
+    wind_speed_sensor.when_pressed = anemometer_pulse_counter
+
+    anemometer_pulse = 0
+    wind_speed_acquisition_time = kwargs['acquisition_time']
+    wind_speed_agregation_time = kwargs['agregation_time']
+    wind_speeds = []
+    average_wind_speeds = []
+    daily_wind_gusts = []
+    ANEMOMETER_FACTOR = 1.18
+    wind_init_params = {
+        'wind_speed':0,
+        'wind_gust':0,
+        'daily_wind_gust':0,
+        'average_wind_speed':0,
+        'daily_average_wind_speed':0}
+    redis_db.hset('WEATHER',mapping=wind_init_params)
+    while True:
+        start_time = time()
+        while time() - start_time <= wind_speed_acquisition_time:
+            reset_anemometer_pulse_counter()
+            sleep(wind_speed_acquisition_time)
+            wind_speed = calculate_speed(wind_speed_acquisition_time)
+            redis_db.hset('WEATHER','wind_speed', wind_speed)
+            if len(wind_speeds) == (wind_speed_agregation_time/wind_speed_acquisition_time):
+                del wind_speeds[0]
+            wind_speeds.append(calculate_speed(wind_speed_acquisition_time))
+        wind_gust = max(wind_speeds)
+        redis_db.hset('WEATHER', 'wind_gust', wind_gust)
+        if len(daily_wind_gusts) == (86400/wind_speed_acquisition_time):
+            del daily_wind_gusts[0]
+        daily_wind_gusts.append(wind_gust)
+        daily_wind_gust = max(daily_wind_gusts)
+        redis_db.hset('WEATHER', 'daily_wind_gust', daily_wind_gust)
+        average_wind_speed = round(statistics.mean(wind_speeds), 1)
+        if len(average_wind_speeds) == (86400/wind_speed_agregation_time):
+            del average_wind_speeds[0]
+        average_wind_speeds.append(average_wind_speed)
+        redis_db.hset('WEATHER', 'average_wind_speed', average_wind_speed)
+        daily_average_wind_speed = round(statistics.mean(average_wind_speeds), 1)
+        redis_db.hset('WEATHER', 'daily_average_wind_speed', daily_average_wind_speed)
+        if bool(kwargs['verbose']) is True:
+            print(f'Wind speed:{wind_speed}km/h, Wind gust:{wind_gust}km/h, Daily wind gust:{daily_wind_gust}km/h, Average wind speed:{average_wind_speed}km/h, Daily average wind speed:{daily_average_wind_speed}km/h')
+
+
+def adc_stm32f030():
+    from grove.i2c import Bus
+
+    ADC_DEFAULT_IIC_ADDR = 0X04
+    ADC_CHAN_NUM = 8
+
+    REG_RAW_DATA_START = 0X10
+    REG_VOL_START = 0X20
+    REG_RTO_START = 0X30
+
+    REG_SET_ADDR = 0XC0
+
+    class Pi_hat_adc():
+        def __init__(self, bus_num=1, addr=ADC_DEFAULT_IIC_ADDR):
+            self.bus=Bus(bus_num)
+            self.addr=addr
+
+        def get_all_vol_milli_data(self):
+            array = []
+            for i in range(ADC_CHAN_NUM):
+                data = self.bus.read_i2c_block_data(self.addr, REG_VOL_START+i, 2)
+                val = data[1] << 8 | data[0]
+                array.append(val)
+            return array
+
+        def get_nchan_vol_milli_data(self, n):
+            data = self.bus.read_i2c_block_data(self.addr, REG_VOL_START+n, 2)
+            val = data[1] << 8 | data[0]
+            return val
+
+    adc = Pi_hat_adc()
+    adc_inputs_values = adc.get_all_vol_milli_data()
+    return adc_inputs_values
+
+
+def adc_automationphat():
+    import sys
+    from time import sleep
+    
+    try:
+      import automationhat
+    except:
+      sys.exit('automationphat library is not installed')
+
+    try:
+      sleep(0.1)  # Delay for automationhat
+      adc_inputs_values = [automationhat.analog.one.read(), automationhat.analog.two.read(),
+                         automationhat.analog.three.read()]
+      return adc_inputs_values
+    except:
+      return [0,0,0]
+      sys.exit('automationphat is not detected')
+
+
+def adc_ads1115():
+    import board
+    import busio
+    import adafruit_ads1x15.ads1115 as ADS
+    from adafruit_ads1x15.analog_in import AnalogIn
+    # Create the I2C bus
+    i2c = busio.I2C(board.SCL, board.SDA)
+    # Create the ADC object using the I2C bus
+    ads = ADS.ADS1115(i2c)
+    chan1 = AnalogIn(ads, ADS.P0)
+    chan2 = AnalogIn(ads, ADS.P1)
+    chan3 = AnalogIn(ads, ADS.P2)
+    chan4 = AnalogIn(ads, ADS.P3)
+    adc_inputs_values = [chan1.voltage, chan2.voltage, chan3.voltage, chan4.voltage]
+    return adc_inputs_values
+
+
+def wind_direction(**kwargs):
+    from time import time
+    import math
+
+    redis_db.hset('WEATHER', 'wind_direction', 0)
+    redis_db.hset('WEATHER', 'average_wind_direction', 0)
+    def get_average(angles):
+        sin_sum = 0.0
+        cos_sum = 0.0
+
+        for angle in angles:
+            r = math.radians(angle)
+            sin_sum += math.sin(r)
+            cos_sum += math.cos(r)
+
+        flen = float(len(angles))
+        s = sin_sum / flen
+        c = cos_sum / flen
+        arc = math.degrees(math.atan(s / c))
+        average = 0.0
+
+        if s > 0 and c > 0:
+            average = arc
+        elif c < 0:
+            average = arc + 180
+        elif s < 0 < c:
+            average = arc + 360
+
+        return 0.0 if average == 360 else average
+
+    direction_mapr = {
+        "N": 5080,
+        "NNE": 5188,
+        "NE": 6417,
+        "ENE": 6253,
+        "E": 17419,
+        "ESE": 9380,
+        "SE": 11613,
+        "SSE": 6968,
+        "S": 8129,
+        "SSW": 5419,
+        "SW": 5542,
+        "W": 4781,
+        "NW": 4977,
+        "NNW": 4877,
+        }
+
+    direction_mapa = {
+        "N": 0,
+        "NNE": 22.5,
+        "NE": 45,
+        "ENE": 67.5,
+        "E": 90,
+        "ESE": 112.5,
+        "SE": 135,
+        "SSE": 157.5,
+        "S": 180,
+        "SSW": 202.5,
+        "SW": 225,
+        "W": 270,
+        "NW": 315,
+        "NNW": 337.5
+        }
+
+    uin = 5.2
+    uout = 0
+    r1 = 4690
+    r2 = 0
+    wind_direction_acquisition_time = kwargs['acquisition_time']
+    angles = []
+    average_wind_direction = 0
+    while True:
+        start_time = time()
+        angles.clear()
+        while time() - start_time <= wind_direction_acquisition_time:
+            if kwargs['adc_type'] == 'AutomationPhat':
+                adc_values = adc_automationphat()
+            if kwargs['adc_type'] == 'STM32F030':
+                adc_values = adc_stm32f030()
+            if kwargs['adc_type'] == 'ADS1115':
+                adc_values = adc_ads1115()
+
+            if kwargs['adc_input'] == 1:
+                uout = round(adc_values[0], 1)
+            if kwargs['adc_input'] == 2:
+                uout = round(adc_values[1], 1)
+            if kwargs['adc_input'] == 3:
+                uout = round(adc_values[2], 1)
+            if kwargs['adc_input'] == 4:
+                uout = round(adc_values[3], 1)
+
+            if kwargs['reference_voltage_adc_input'] == 1:
+                uin = round(adc_values[0], 1)
+            if kwargs['reference_voltage_adc_input'] == 2:
+                uin = round(adc_values[1], 1)
+            if kwargs['reference_voltage_adc_input'] == 3:
+                uin = round(adc_values[2], 1)
+            if kwargs['reference_voltage_adc_input'] == 4:
+                uin = round(adc_values[3], 1)
+
+            if uin != uout and uin != 0:
+                r2 = int(r1/(1 - uout/uin))
+                # print(r2,uin,uout)
+            '''else:
+                print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+                print(f'Uin = {uin}')
+                print(f'Uout = {uout}')
+                print('Check sensor connections to ADC')
+                print('Wind Direction Meter program was terminated')
+                print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+                quit()'''
+            for item in direction_mapr:
+                if (r2 <= direction_mapr.get(item) * 1.005) and (r2 >= direction_mapr.get(item) * 0.995):
+                    angles.append(direction_mapa.get(item))
+        if len(angles) != 0:
+            average_wind_direction = int(round(get_average(angles), 0))
+            if bool(kwargs['verbose']) is True:
+                print(f'Average Wind Direction: {average_wind_direction}')
+            redis_db.hset('WEATHER', 'wind_direction', item)
+            redis_db.hset('WEATHER', 'average_wind_direction', average_wind_direction )
+
 def serial_displays(**kwargs):
 
     if kwargs['serial_display_type'] == 'oled_sh1106':
@@ -668,287 +969,6 @@ def serial_displays(**kwargs):
                 sleep(1/kwargs['serial_display_refresh_rate'])
         except Exception as err:
             logger.error(err)
-
-
-def rainfall(**kwargs):
-    from time import time, sleep
-    from gpiozero import Button
-    import math
-
-    def bucket_tipped():
-        nonlocal bucket_counter
-        bucket_counter += 1
-
-    def reset_bucket_counter():
-        nonlocal bucket_counter
-        bucket_counter = 0
-
-    def calculate_rainfall():
-        # global BUCKET_SIZE
-        rainfall = round(bucket_counter * BUCKET_SIZE, 0)
-        return rainfall
-
-    rain_sensor = Button(kwargs['sensor_pin'])
-    rain_sensor.when_pressed = bucket_tipped
-
-    bucket_counter = 0
-    rainfall_acquisition_time = kwargs['acquisition_time']
-    rainfall_agregation_time = kwargs['agregation_time']
-    rainfalls = []
-
-    # global BUCKET_SIZE
-    BUCKET_SIZE = 0.2794  # [mm]
-
-    while True:
-        start_time = time()
-        while time() - start_time <= rainfall_acquisition_time:
-            reset_bucket_counter()
-            sleep(rainfall_acquisition_time)
-            rainfall = calculate_rainfall()
-            if len(rainfalls) == (rainfall_agregation_time/rainfall_acquisition_time):
-                rainfalls.clear()
-            rainfalls.append(calculate_rainfall())
-        daily_rainfall = round(math.fsum(rainfalls), 1)
-        if bool(kwargs['verbose']) is True:
-            print(f'Rainfall: {rainfall}mm, Daily rainfall: {daily_rainfall}mm')
-        redis_db.mset({'daily_rainfall': daily_rainfall, 'rainfall': rainfall})
-
-
-def wind_speed(**kwargs):
-    import statistics
-    from gpiozero import Button
-    from time import time, sleep
-
-    def anemometer_pulse_counter():
-        nonlocal anemometer_pulse
-        anemometer_pulse += 1
-
-    def reset_anemometer_pulse_counter():
-        nonlocal anemometer_pulse
-        anemometer_pulse = 0
-
-    def calculate_speed(wind_speed_acquisition_time):
-        nonlocal anemometer_pulse
-        rotations = anemometer_pulse/2
-        wind_speed_km_per_hour = round(ANEMOMETER_FACTOR * rotations * 2.4/wind_speed_acquisition_time, 1)
-        return wind_speed_km_per_hour
-
-    wind_speed_sensor = Button(kwargs['sensor_pin'])
-    wind_speed_sensor.when_pressed = anemometer_pulse_counter
-
-    anemometer_pulse = 0
-    wind_speed_acquisition_time = kwargs['acquisition_time']
-    wind_speed_agregation_time = kwargs['agregation_time']
-    wind_speeds = []
-    average_wind_speeds = []
-    daily_wind_gusts = []
-    ANEMOMETER_FACTOR = 1.18
-
-    while True:
-        start_time = time()
-        while time() - start_time <= wind_speed_acquisition_time:
-            reset_anemometer_pulse_counter()
-            sleep(wind_speed_acquisition_time)
-            wind_speed = calculate_speed(wind_speed_acquisition_time)
-            if len(wind_speeds) == (wind_speed_agregation_time/wind_speed_acquisition_time):
-                del wind_speeds[0]
-            wind_speeds.append(calculate_speed(wind_speed_acquisition_time))
-        wind_gust = max(wind_speeds)
-        if len(daily_wind_gusts) == (86400/wind_speed_acquisition_time):
-            del daily_wind_gusts[0]
-        daily_wind_gusts.append(wind_gust)
-        daily_wind_gust = max(daily_wind_gusts)
-
-        average_wind_speed = round(statistics.mean(wind_speeds), 1)
-        if len(average_wind_speeds) == (86400/wind_speed_agregation_time):
-            del average_wind_speeds[0]
-        average_wind_speeds.append(average_wind_speed)
-        daily_average_wind_speed = round(statistics.mean(average_wind_speeds), 1)
-
-        if bool(kwargs['verbose']) is True:
-            print(f'Wind speed:{wind_speed}km/h, Wind gust:{wind_gust}km/h, Daily wind gust:{daily_wind_gust}km/h, Average wind speed:{average_wind_speed}km/h, Daily average wind speed:{daily_average_wind_speed}km/h')
-        redis_db.mset({'wind_speed': wind_speed, 'wind_gust': wind_gust, 'daily_wind_gust': daily_wind_gust, 'average_wind_speed': average_wind_speed, 'daily_average_wind_speed': daily_average_wind_speed})
-
-
-def adc_stm32f030():
-    from grove.i2c import Bus
-
-    ADC_DEFAULT_IIC_ADDR = 0X04
-    ADC_CHAN_NUM = 8
-
-    REG_RAW_DATA_START = 0X10
-    REG_VOL_START = 0X20
-    REG_RTO_START = 0X30
-
-    REG_SET_ADDR = 0XC0
-
-    class Pi_hat_adc():
-        def __init__(self, bus_num=1, addr=ADC_DEFAULT_IIC_ADDR):
-            self.bus=Bus(bus_num)
-            self.addr=addr
-
-        def get_all_vol_milli_data(self):
-            array = []
-            for i in range(ADC_CHAN_NUM):
-                data = self.bus.read_i2c_block_data(self.addr, REG_VOL_START+i, 2)
-                val = data[1] << 8 | data[0]
-                array.append(val)
-            return array
-
-        def get_nchan_vol_milli_data(self, n):
-            data = self.bus.read_i2c_block_data(self.addr, REG_VOL_START+n, 2)
-            val = data[1] << 8 | data[0]
-            return val
-
-    adc = Pi_hat_adc()
-    adc_inputs_values = adc.get_all_vol_milli_data()
-    return adc_inputs_values
-
-
-def adc_automationphat():
-    import automationhat
-    from time import sleep
-    sleep(0.1)  # Delay for automationhat
-    adc_inputs_values = [automationhat.analog.one.read(), automationhat.analog.two.read(),
-                         automationhat.analog.three.read()]
-    return adc_inputs_values
-
-
-def adc_ads1115():
-    import board
-    import busio
-    import adafruit_ads1x15.ads1115 as ADS
-    from adafruit_ads1x15.analog_in import AnalogIn
-    # Create the I2C bus
-    i2c = busio.I2C(board.SCL, board.SDA)
-    # Create the ADC object using the I2C bus
-    ads = ADS.ADS1115(i2c)
-    chan1 = AnalogIn(ads, ADS.P0)
-    chan2 = AnalogIn(ads, ADS.P1)
-    chan3 = AnalogIn(ads, ADS.P2)
-    chan4 = AnalogIn(ads, ADS.P3)
-    adc_inputs_values = [chan1.voltage, chan2.voltage, chan3.voltage, chan4.voltage]
-    return adc_inputs_values
-
-
-def wind_direction(**kwargs):
-    from time import time
-    import math
-
-    def get_average(angles):
-        sin_sum = 0.0
-        cos_sum = 0.0
-
-        for angle in angles:
-            r = math.radians(angle)
-            sin_sum += math.sin(r)
-            cos_sum += math.cos(r)
-
-        flen = float(len(angles))
-        s = sin_sum / flen
-        c = cos_sum / flen
-        arc = math.degrees(math.atan(s / c))
-        average = 0.0
-
-        if s > 0 and c > 0:
-            average = arc
-        elif c < 0:
-            average = arc + 180
-        elif s < 0 < c:
-            average = arc + 360
-
-        return 0.0 if average == 360 else average
-
-    direction_mapr = {
-        "N": 5080,
-        "NNE": 5188,
-        "NE": 6417,
-        "ENE": 6253,
-        "E": 17419,
-        "ESE": 9380,
-        "SE": 11613,
-        "SSE": 6968,
-        "S": 8129,
-        "SSW": 5419,
-        "SW": 5542,
-        "W": 4781,
-        "NW": 4977,
-        "NNW": 4877,
-        }
-
-    direction_mapa = {
-        "N": 0,
-        "NNE": 22.5,
-        "NE": 45,
-        "ENE": 67.5,
-        "E": 90,
-        "ESE": 112.5,
-        "SE": 135,
-        "SSE": 157.5,
-        "S": 180,
-        "SSW": 202.5,
-        "SW": 225,
-        "W": 270,
-        "NW": 315,
-        "NNW": 337.5
-        }
-
-    uin = 5.2
-    uout = 0
-    r1 = 4690
-    r2 = 0
-    wind_direction_acquisition_time = kwargs['acquisition_time']
-    angles = []
-    average_wind_direction = 0
-
-    while True:
-        start_time = time()
-        angles.clear()
-        while time() - start_time <= wind_direction_acquisition_time:
-            if kwargs['adc_type'] == 'AutomationPhat':
-                adc_values = adc_automationphat()
-            if kwargs['adc_type'] == 'STM32F030':
-                adc_values = adc_stm32f030()
-            if kwargs['adc_type'] == 'ADS1115':
-                adc_values = adc_ads1115()
-
-            if kwargs['adc_input'] == 1:
-                uout = round(adc_values[0], 1)
-            if kwargs['adc_input'] == 2:
-                uout = round(adc_values[1], 1)
-            if kwargs['adc_input'] == 3:
-                uout = round(adc_values[2], 1)
-            if kwargs['adc_input'] == 4:
-                uout = round(adc_values[3], 1)
-
-            if kwargs['reference_voltage_adc_input'] == 1:
-                uin = round(adc_values[0], 1)
-            if kwargs['reference_voltage_adc_input'] == 2:
-                uin = round(adc_values[1], 1)
-            if kwargs['reference_voltage_adc_input'] == 3:
-                uin = round(adc_values[2], 1)
-            if kwargs['reference_voltage_adc_input'] == 4:
-                uin = round(adc_values[3], 1)
-
-            if uin != uout and uin != 0:
-                r2 = int(r1/(1 - uout/uin))
-                # print(r2,uin,uout)
-            else:
-                print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
-                print(f'Uin = {uin}')
-                print(f'Uout = {uout}')
-                print('Check sensor connections to ADC')
-                print('Wind Direction Meter program was terminated')
-                print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
-                quit()
-            for item in direction_mapr:
-                if (r2 <= direction_mapr.get(item) * 1.005) and (r2 >= direction_mapr.get(item) * 0.995):
-                    angles.append(direction_mapa.get(item))
-        if len(angles) != 0:
-            average_wind_direction = int(round(get_average(angles), 0))
-            if bool(kwargs['verbose']) is True:
-                print(f'Average Wind Direction: {average_wind_direction}')
-            redis_db.mset({'average_wind_direction': average_wind_direction, 'wind_direction': item})
 
 
 def threading_function(function_name, **kwargs):
