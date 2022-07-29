@@ -169,20 +169,9 @@ systemctl enable rpims-watcher.service
 systemctl enable gunicorn.service
 
 
-#for DHT22 sensor
+#for DHT22/DHT11 sensors
 $PIP3_INSTALL_CMD Adafruit_DHT adafruit-circuitpython-dht
 $INSTALL_CMD libgpiod2 libgpiod-dev
-#cd ~
-#git clone https://github.com/michaellass/libgpiod_pulsein.git
-#cd libgpiod_pulsein
-#git checkout cpu-fix
-#cd src
-#make
-#cd ~/.local/lib/python3.7/site-packages/adafruit_blinka/microcontroller/bcm283x/pulseio/
-#cd /usr/local/lib/python3.7/dist-packages/adafruit_blinka/microcontroller/bcm283x/pulseio/
-#cp libgpiod_pulsein libgpiod_pulsein.bak
-#cp ~/libgpiod_pulsein/src/libgpiod_pulsein ./
-#
 
 rm $downloaddir/RPiMS.zip
 rmdir $unpackdir
@@ -210,6 +199,6 @@ else
     echo ""
     echo "Run this command manually: reboot"
     echo ""
-    echo "After restarting open http://$_IP/setup or http://127.0.0.1/setup to configure RPiMS"
+    echo "After restarting open http://$_IP/setup or http://rpims.home/setup to configure RPiMS"
     exit
 fi
