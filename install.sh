@@ -89,7 +89,6 @@ $INSTALL_CMD python3-gpiozero
 $INSTALL_CMD python3-dev
 $INSTALL_CMD python3-numpy
 $INSTALL_CMD python3-picamera
-$INSTALL_CMD python3-automationhat
 $INSTALL_CMD python3-systemd
 $INSTALL_CMD python3-pip
 $INSTALL_CMD python3-setuptools
@@ -102,6 +101,7 @@ $PIP3_INSTALL_CMD pid
 $PIP3_INSTALL_CMD PyYAML
 $PIP3_INSTALL_CMD luma.oled luma.lcd
 $PIP3_INSTALL_CMD adafruit-circuitpython-ads1x15
+$PIP3_INSTALL_CMD automationhat
 $PIP3_INSTALL_CMD rshell
 $PIP3_INSTALL_CMD pyusb
 
