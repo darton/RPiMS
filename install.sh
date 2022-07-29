@@ -75,10 +75,12 @@ systemctl restart uv4l_raspicam
 
 $INSTALL_CMD git
 $INSTALL_CMD liblockfile-bin
+$INSTALL_CMD libjpeg-dev
+$INSTALL_CMD zlib1g-dev
 $INSTALL_CMD libfreetype6-dev
+$INSTALL_CMD liblcms2-dev
 $INSTALL_CMD libopenjp2-7
 $INSTALL_CMD libtiff5
-$INSTALL_CMD libjpeg-dev
 #$INSTALL_CMD vlc
 #$INSTALL_CMD ffmpeg
 #$INSTALL_CMD gpac
@@ -88,7 +90,8 @@ $INSTALL_CMD build-essential
 $INSTALL_CMD python3-gpiozero
 $INSTALL_CMD python3-dev
 $INSTALL_CMD python3-numpy
-$INSTALL_CMD python3-picamera
+#$INSTALL_CMD python3-picamera
+#$INSTALL_CMD python3-pil
 $INSTALL_CMD python3-systemd
 $INSTALL_CMD python3-pip
 $INSTALL_CMD python3-setuptools
