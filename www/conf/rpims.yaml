@@ -133,10 +133,10 @@ gpio:
     name: not used
     hold_time: "1"
 zabbix_agent:
-  zabbix_server: zabbix.example.com
-  zabbix_server_active: zabbix.example.com
+  zabbix_server: zabbix.home
+  zabbix_server_active: zabbix.home
   location: My Home
-  hostname: rpims.example.com
+  hostname: rpims.home
   chassis: embedded
   deployment: RPiMS
   TLSPSKIdentity: 610e655e89ce433e

@@ -1,17 +1,19 @@
 server {
         listen 80;
-        server_name application;
- 
+        listen [::]:80;
+
+        server_name _;
+
         access_log /var/log/nginx/rpims.access.log;
         error_log /var/log/nginx/rpims.error.log;
- 
+
         location / {
                 include proxy_params;
                 proxy_pass http://unix:/var/www/rpims.sock;
         }
 
         location ^~ /static/  {
-		include  /etc/nginx/mime.types;
-		alias /var/www/html/static/;
-}
+                include  /etc/nginx/mime.types;
+                alias /var/www/html/static/;
+        }
 }

@@ -187,8 +187,8 @@ $INSTALL_CMD libgpiod2 libgpiod-dev
 rm $downloaddir/RPiMS.zip
 rmdir $unpackdir
 
-hostnamectl set-hostname rpims.example.com
-echo  "127.0.1.2       rpims.example.com" | tee -a /etc/hosts
+hostnamectl set-hostname rpims.home
+echo  "127.0.1.2       rpims.home" | tee -a /etc/hosts
 
 _IP=$(ip route get 1.1.1.1 | awk '{print $7}')
 echo ""
