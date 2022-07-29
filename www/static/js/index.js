@@ -21,13 +21,13 @@ setInterval(function() {
     $.getJSON("/api/data/all", function(data) {
 
     if (data['config']['setup']['use_weather_station'] == true) {
-		$("#average_wind_direction").html(data['sensors']['ws']['average_wind_direction']);
-		$("#daily_average_wind_speed").html(data['sensors']['ws']['daily_average_wind_speed']);
-		$("#average_wind_speed").html(data['sensors']['ws']['average_wind_speed']);
-		$("#wind_speed").html(data['sensors']['ws']['wind_speed']);
-		$("#wind_gust").html(data['sensors']['ws']['wind_gust']);
-		$("#daily_wind_gust").html(data['sensors']['ws']['daily_wind_gust']);
-		$("#daily_rainfall").html(data['sensors']['ws']['daily_rainfall']);
+		$("#average_wind_direction").html(data['sensors']['weather_station']['average_wind_direction']);
+		$("#daily_average_wind_speed").html(data['sensors']['weather_station']['daily_average_wind_speed']);
+		$("#average_wind_speed").html(data['sensors']['weather_station']['average_wind_speed']);
+		$("#wind_speed").html(data['sensors']['weather_station']['wind_speed']);
+		$("#wind_gust").html(data['sensors']['weather_station']['wind_gust']);
+		$("#daily_wind_gust").html(data['sensors']['weather_station']['daily_wind_gust']);
+		$("#daily_rainfall").html(data['sensors']['weather_station']['daily_rainfall']);
     }
 
     if (data['config']['setup']['use_cpu_sensor'] == true) {
@@ -139,9 +139,9 @@ setInterval(function() {
     $("#location").html(data['system']['location']);
 
 if (data['config']['setup']['use_weather_station'] == true) {
-    var WindSpeed = Math.round(data['sensors']['ws']['wind_speed']);
-    var WindGust = Math.round(data['sensors']['ws']['wind_gust']);
-    var WindGust24h = Math.round(data['sensors']['ws']['daily_wind_gust']);
+    var WindSpeed = Math.round(data['sensors']['weather_station']['wind_speed']);
+    var WindGust = Math.round(data['sensors']['weather_station']['wind_gust']);
+    var WindGust24h = Math.round(data['sensors']['weather_station']['daily_wind_gust']);
 }
 
 if (data['config']['setup']['use_dht_sensor'] == true) {

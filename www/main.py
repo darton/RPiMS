@@ -45,7 +45,7 @@ def get_data():
         SENSORS['one_wire'] = {'ds18b20': DS18B20 }
     if rpims['setup']['use_weather_station']:
       WEATHER = redis_db.hgetall('WEATHER')
-      SENSORS['ws'] = WEATHER
+      SENSORS['weather_station'] = WEATHER
     data = {}
     data['config'] = rpims
     data['system'] = redis_db.hgetall('SYSTEM')
@@ -92,9 +92,9 @@ def api_sensors_json(type):
     elif type == 'motion':
         if data['config']['setup']['use_motion_sensor']:
             _data = data['sensors']['motion_sensors']
-    elif type == 'ws':
+    elif type == 'weather-station':
         if data['config']['setup']['use_weather_station']:
-            _data = data['sensors']['ws']
+            _data = data['sensors']['weather_station']
     else:
         _data = {}
     return flask.jsonify(_data)
