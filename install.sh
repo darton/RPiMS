@@ -91,7 +91,7 @@ $INSTALL_CMD python3-gpiozero
 $INSTALL_CMD python3-dev
 $INSTALL_CMD python3-numpy
 #$INSTALL_CMD python3-picamera
-#$INSTALL_CMD python3-pil
+$INSTALL_CMD python3-pil
 $INSTALL_CMD python3-systemd
 $INSTALL_CMD python3-pip
 $INSTALL_CMD python3-setuptools
