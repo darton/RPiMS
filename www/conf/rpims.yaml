@@ -83,52 +83,52 @@ sensors:
       agregation_time: 3600
 gpio:
   GPIO_5:
-    gpio_pin: "5"
+    pin: "5"
     type: MotionSensor
     name: motion sensor in room 1
     hold_time: "1"
   GPIO_6:
-    gpio_pin: "6"
+    pin: "6"
     type: MotionSensor
     name: motion sensor in room 2
     hold_time: "1"
   GPIO_12:
-    gpio_pin: "12"
+    pin: "12"
     type: door_led
     name: door led
     hold_time: ""
   GPIO_13:
-    gpio_pin: "13"
+    pin: "13"
     type: MotionSensor
     name: motion sensor in room 3
     hold_time: "1"
   GPIO_16:
-    gpio_pin: "16"
+    pin: "16"
     type: DoorSensor
     name: door in room 1
     hold_time: "1"
   GPIO_18:
-    gpio_pin: "18"
+    pin: "18"
     type: motion_led
     name: motion led
     hold_time: ""
   GPIO_19:
-    gpio_pin: "19"
+    pin: "19"
     type: DoorSensor
     name: door in room 2
     hold_time: "1"
   GPIO_20:
-    gpio_pin: "20"
+    pin: "20"
     type: DoorSensor
     name: door in room 3
     hold_time: "1"
   GPIO_21:
-    gpio_pin: "21"
+    pin: "21"
     type: Reserved
     name: not used
     hold_time: "1"
   GPIO_26:
-    gpio_pin: "26"
+    pin: "26"
     type: Reserved
     name: not used
     hold_time: "1"
