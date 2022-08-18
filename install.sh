@@ -170,7 +170,7 @@ systemctl enable gunicorn.service
 
 
 #for DHT22/DHT11 sensors
-$PIP3_INSTALL_CMD Adafruit_DHT adafruit-circuitpython-dht
+$PIP3_INSTALL_CMD adafruit-circuitpython-dht
 $INSTALL_CMD libgpiod2 libgpiod-dev
 
 rm $downloaddir/RPiMS.zip
