@@ -17,7 +17,7 @@ if dpkg -l | grep -Eqw "gdm3|sddm|lxdm|xdm|lightdm|slim|wdm"; then
   exit 101
 fi
 
-repourl=https://github.com/darton/RPiMS/archive/refs/heads/master.zip
+repourl=https://github.com/darton/RPiMS/archive/refs/heads/flask.zip
 downloaddir=/tmp
 unpackdir=/tmp/RPiMS-master
 installdir=/home/pi/scripts/RPiMS
