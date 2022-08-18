@@ -158,10 +158,11 @@ cat $unpackdir/etc/cron |tee /etc/cron.d/rpims
 chown root.root /etc/cron.d/rpims
 
 
-mv $unpackdir/etc/rpims.service /lib/systemd/system/rpims.service
-mv $unpackdir/etc/rpims-watcher.path /lib/systemd/system/rpims-watcher.path
-mv $unpackdir/etc/rpims-watcher.service /lib/systemd/system/rpims-watcher.service
-mv $unpackdir/etc/gunicorn.service /lib/systemd/system/gunicorn.service
+cp $unpackdir/etc/rpims.service /lib/systemd/system/rpims.service
+cp $unpackdir/etc/rpims-watcher.path /lib/systemd/system/rpims-watcher.path
+cp $unpackdir/etc/rpims-watcher.service /lib/systemd/system/rpims-watcher.service
+cp $unpackdir/etc/gunicorn.service /lib/systemd/system/gunicorn.service
+
 systemctl daemon-reload
 systemctl enable rpims.service
 systemctl enable rpims-watcher.path
