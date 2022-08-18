@@ -122,8 +122,8 @@ $INSTALL_CMD nginx
 rm $wwwdir/index.nginx-debian.html
 
 mv /etc/nginx/sites-available/default /etc/nginx/sites-available/default.org
-mv $unpackdir/etc/nginx-default /etc/nginx/sites-available/default
-mv $unpackdir/etc/nginx.conf /etc/nginx
+cp $unpackdir/etc/nginx-default /etc/nginx/sites-available/default
+cp $unpackdir/etc/nginx.conf /etc/nginx
 chown root.root /etc/nginx/nginx.conf
 
 $INSTALL_CMD gunicorn
