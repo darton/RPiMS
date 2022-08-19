@@ -191,8 +191,7 @@ $rpims = array(
 );
 
 
-yaml_emit_file ("/var/www/html/conf/rpims.yaml", $rpims, YAML_UTF8_ENCODING, YAML_ANY_BREAK);
-exec('sudo /bin/systemctl restart rpims.service');
+
 
 $streamconfile = fopen("/var/www/html/conf/uv4l-raspicam.conf", "w") or die("Unable to open file!");
 $picamera_rotation="rotation = ".(int)$_POST['picamera_rotation']."\n";
@@ -256,9 +255,7 @@ fwrite($zabpskfile, $TLSPSK);
 fclose($zabconfile);
 fclose($zabpskfile);
 
-if (filter_var($_POST['use_zabbix_sender'], FILTER_VALIDATE_BOOLEAN) == true ) {
-    exec('sudo /bin/systemctl restart zabbix-agent.service');
-}
+yaml_emit_file ("/var/www/html/conf/rpims.yaml", $rpims, YAML_UTF8_ENCODING, YAML_ANY_BREAK);
 
 sleep(2);
 header("Location: /");
