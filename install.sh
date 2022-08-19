@@ -104,6 +104,10 @@ $PIP3_INSTALL_CMD adafruit-circuitpython-ads1x15
 $PIP3_INSTALL_CMD rshell
 $PIP3_INSTALL_CMD pyusb
 
+#for DHT sensors
+$PIP3_INSTALL_CMD adafruit-circuitpython-dht
+$INSTALL_CMD libgpiod2 libgpiod-dev
+
 $INSTALL_CMD redis-server
 sysctl -w vm.overcommit_memory=1
 sysctl -w net.core.somaxconn=512
@@ -159,13 +163,9 @@ cp $unpackdir/etc/rpims-watcher.path /lib/systemd/system/rpims-watcher.path
 cp $unpackdir/etc/rpims-watcher.service /lib/systemd/system/rpims-watcher.service
 
 systemctl daemon-reload
-systemctl enable --now rpims.service
-systemctl enable --now rpims-watcher.path
-systemctl enable --now rpims-watcher.service
-
-#for DHT22 sensor
-$PIP3_INSTALL_CMD adafruit-circuitpython-dht
-$INSTALL_CMD libgpiod2 libgpiod-dev
+systemctl enable rpims.service
+systemctl enable rpims-watcher.path
+systemctl enable rpims-watcher.service
 
 rm $downloaddir/RPiMS.zip
 rm -rf $unpackdir
