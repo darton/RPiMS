@@ -19,7 +19,7 @@ fi
 
 repourl=https://github.com/darton/RPiMS/archive/refs/heads/flask.zip
 downloaddir=/tmp
-unpackdir=/tmp/RPiMS-master
+unpackdir=/tmp/RPiMS-flask
 installdir=/home/pi/scripts/RPiMS
 wwwdir=/var/www/html
 
