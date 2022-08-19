@@ -163,21 +163,9 @@ mv $unpackdir/etc/rpims.service /lib/systemd/system/rpims.service
 systemctl daemon-reload
 systemctl enable rpims.service
 
-
 #for DHT22 sensor
 $PIP3_INSTALL_CMD adafruit-circuitpython-dht
 $INSTALL_CMD libgpiod2 libgpiod-dev
-#cd ~
-#git clone https://github.com/michaellass/libgpiod_pulsein.git
-#cd libgpiod_pulsein
-#git checkout cpu-fix
-#cd src
-#make
-#cd ~/.local/lib/python3.7/site-packages/adafruit_blinka/microcontroller/bcm283x/pulseio/
-#cd /usr/local/lib/python3.7/dist-packages/adafruit_blinka/microcontroller/bcm283x/pulseio/
-#cp libgpiod_pulsein libgpiod_pulsein.bak
-#cp ~/libgpiod_pulsein/src/libgpiod_pulsein ./
-#
 
 rm $downloaddir/RPiMS.zip
 rmdir $unpackdir
