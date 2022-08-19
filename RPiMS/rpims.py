@@ -262,11 +262,13 @@ def get_bme280_data(**kwargs):
                         rtscts=False,
                         dsrdtr=True,
                         timeout=1)
-                    print('Serial device finded')
+                    if bool(verbose) is True:
+                        print('Serial device finded')
                     return ser
                     break
                 except Exception as e:
-                    print('Resetting USB devices')
+                    if bool(verbose) is True:
+                        print('Resetting USB devices')
                     reset_usbdevice()
                     sleep(2)
 
@@ -284,10 +286,12 @@ def get_bme280_data(**kwargs):
                         rtscts=False,
                         dsrdtr=True,
                         timeout=1)
-                    print('Serial device finded')
+                    if bool(verbose) is True:
+                        print('Serial device finded')
                     break
                 except Exception as e:
-                    print('Resetting USB devices')
+                    if bool(verbose) is True:
+                        print('Resetting USB devices')
                     reset_usbdevice()
                     sleep(1)
 
@@ -323,7 +327,8 @@ def get_bme280_data(**kwargs):
                         sleep(0.5)
                 #except (OSError, serial.serialutil.SerialException):
                 except Exception as e :
-                    print('Lost connection with serial devices')
+                    if bool(verbose) is True:
+                        print('Lost connection with serial devices')
                     find_serial_device(port,baudrate)
                     sleep(2)
 
@@ -406,9 +411,10 @@ def get_dht_data(**kwargs):
     dht_type = kwargs['type']
     pin = kwargs['pin']
     import adafruit_dht
+    import board
     from time import sleep
 
-    debug = "yes"
+    debug = "no"
     delay = 0
 
     if dht_type == "DHT11":
@@ -438,11 +444,14 @@ def get_dht_data(**kwargs):
             if debug == 'yes':
                 print(f'Problem with DHT sensor - {error}')
             delay += 1
+        except Exception as error:
+            dhtDevice.exit()
+            raise error
         finally:
             if debug == 'yes':
                 print(f'DHT delay: {delay}')
             redis_db.set('DHT_delay', delay)
-            sleep(read_interval+delay)
+        sleep(read_interval+delay)
 
 
 def serial_displays(**kwargs):
