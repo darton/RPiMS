@@ -164,10 +164,10 @@ cp $unpackdir/etc/rpims-watcher.service /lib/systemd/system/rpims-watcher.servic
 cp $unpackdir/etc/gunicorn.service /lib/systemd/system/gunicorn.service
 
 systemctl daemon-reload
-systemctl enable rpims.service
-systemctl enable rpims-watcher.path
-systemctl enable rpims-watcher.service
-systemctl enable gunicorn.service
+systemctl enable --now rpims.service
+systemctl enable --now rpims-watcher.path
+systemctl enable --now rpims-watcher.service
+systemctl enable --now gunicorn.service
 
 
 #for DHT22/DHT11 sensors
