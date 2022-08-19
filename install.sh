@@ -71,7 +71,7 @@ $INSTALL_CMD uv4l-server
 #$INSTALL_CMD uv4l-webrtc-armv6
 cp /etc/uv4l/uv4l-raspicam.conf /etc/uv4l/uv4l-raspicam.conf.org
 ln -s /var/www/html/conf/uv4l-raspicam.conf /etc/uv4l/uv4l-raspicam.conf
-systemctl enable --now uv4l_raspicam
+systemctl enable uv4l_raspicam
 
 $INSTALL_CMD git
 $INSTALL_CMD libfreetype6-dev
@@ -114,7 +114,7 @@ sysctl -w net.core.somaxconn=512
 echo 'vm.overcommit_memory=1' | tee -a /etc/sysctl.conf
 echo 'net.core.somaxconn=512' | tee -a /etc/sysctl.conf
 echo 'maxmemory 100mb' | tee -a /etc/redis/redis.conf
-systemctl enable --now redis-server.service
+systemctl enable redis-server.service
 
 $INSTALL_CMD apache2-utils
 $INSTALL_CMD nginx
@@ -125,7 +125,7 @@ WWWCONF=$(find /etc/ \(  -name "www.conf" \))
 sed -i 's/user = www-data/user = pi/g' $WWWCONF
 sed -i 's/group = www-data/group = pi/g' $WWWCONF
 PHPFPMSERVICE=$(systemctl -a |grep fpm.service|awk '{print $1}'|grep php)
-systemctl enable --now $PHPFPMSERVICE
+systemctl enable $PHPFPMSERVICE
 
 rm $wwwdir/index.nginx-debian.html
 
@@ -134,7 +134,7 @@ cp $unpackdir/etc/nginx-default /etc/nginx/sites-available/default
 cp $unpackdir/etc/nginx.conf /etc/nginx
 chown root.root /etc/nginx/nginx.conf
 chown -R pi.pi $wwwdir
-systemctl enable --now nginx
+systemctl enable nginx
 
 $INSTALL_CMD zabbix-agent
 echo 'zabbix ALL=(ALL) NOPASSWD: /home/pi/scripts/RPiMS/redis-get-data.py' | EDITOR='tee -a' visudo
@@ -150,7 +150,7 @@ sed -i "s/ TLSPSK: .*/\ \TLSPSK: ${TLSPSK}/g" $wwwdir/conf/rpims.yaml
 echo $TLSPSK | tee $wwwdir/conf/zabbix_agentd.psk
 
 cp $unpackdir/etc/zabbix_rpims.conf /etc/zabbix/zabbix_agentd.conf.d/
-systemctl enable --now zabbix-agent.service
+systemctl enable zabbix-agent.service
 
 cat $unpackdir/etc/motd |tee /etc/update-motd.d/20-rpims
 chmod ugo+x /etc/update-motd.d/20-rpims
