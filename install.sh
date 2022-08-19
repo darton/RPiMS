@@ -71,7 +71,7 @@ $INSTALL_CMD uv4l-server
 #$INSTALL_CMD uv4l-webrtc-armv6
 mv /etc/uv4l/uv4l-raspicam.conf /etc/uv4l/uv4l-raspicam.conf.org
 ln -s /var/www/html/conf/uv4l-raspicam.conf /etc/uv4l/uv4l-raspicam.conf
-systemctl enable --now uv4l_raspicam
+systemctl enable uv4l_raspicam
 
 $INSTALL_CMD git
 $INSTALL_CMD liblockfile-bin
@@ -118,7 +118,7 @@ sysctl -w net.core.somaxconn=512
 echo 'vm.overcommit_memory=1' | tee -a /etc/sysctl.conf
 echo 'net.core.somaxconn=512' | tee -a /etc/sysctl.conf
 echo 'maxmemory 100mb' | tee -a /etc/redis/redis.conf
-systemctl enable --now redis-server.service
+systemctl enable redis-server.service
 
 $INSTALL_CMD apache2-utils
 $INSTALL_CMD nginx
@@ -133,7 +133,7 @@ $INSTALL_CMD gunicorn
 $PIP3_INSTALL_CMD flask
 
 chown -R pi.www-data /var/www
-systemctl enable --now nginx
+systemctl enable nginx
 
 $INSTALL_CMD zabbix-agent
 echo 'zabbix ALL=(ALL) NOPASSWD: /home/pi/scripts/RPiMS/redis-get-data.py' | EDITOR='tee -a' visudo
@@ -150,7 +150,6 @@ echo $TLSPSK | tee $wwwdir/conf/zabbix_agentd.psk
 
 cp $unpackdir/etc/zabbix_rpims.conf /etc/zabbix/zabbix_agentd.conf.d/
 
-systemctl restart zabbix-agent.service
 systemctl enable zabbix-agent.service
 
 cat $unpackdir/etc/motd |tee /etc/update-motd.d/20-rpims
