@@ -69,7 +69,7 @@ $INSTALL_CMD uv4l-server
 #$INSTALL_CMD uv4l-server uv4l-uvc uv4l-xscreen uv4l-mjpegstream uv4l-dummy uv4l-raspidisp
 #$INSTALL_CMD uv4l-webrtc
 #$INSTALL_CMD uv4l-webrtc-armv6
-mv /etc/uv4l/uv4l-raspicam.conf /etc/uv4l/uv4l-raspicam.conf.org
+cp /etc/uv4l/uv4l-raspicam.conf /etc/uv4l/uv4l-raspicam.conf.org
 ln -s /var/www/html/conf/uv4l-raspicam.conf /etc/uv4l/uv4l-raspicam.conf
 systemctl enable --now uv4l_raspicam
 
@@ -125,9 +125,9 @@ systemctl enable --now $PHPFPMSERVICE
 
 rm $wwwdir/index.nginx-debian.html
 
-mv /etc/nginx/sites-available/default /etc/nginx/sites-available/default.org
-mv $unpackdir/etc/nginx-default /etc/nginx/sites-available/default
-mv $unpackdir/etc/nginx.conf /etc/nginx
+cp /etc/nginx/sites-available/default /etc/nginx/sites-available/default.org
+cp $unpackdir/etc/nginx-default /etc/nginx/sites-available/default
+cp $unpackdir/etc/nginx.conf /etc/nginx
 chown root.root /etc/nginx/nginx.conf
 chown -R pi.pi $wwwdir
 systemctl enable --now nginx
@@ -154,9 +154,14 @@ chmod ugo+x /etc/update-motd.d/20-rpims
 cat $unpackdir/etc/cron |tee /etc/cron.d/rpims
 chown root.root /etc/cron.d/rpims
 
-mv $unpackdir/etc/rpims.service /lib/systemd/system/rpims.service
+cp $unpackdir/etc/rpims.service /lib/systemd/system/rpims.service
+cp $unpackdir/etc/rpims-watcher.path /lib/systemd/system/rpims-watcher.path
+cp $unpackdir/etc/rpims-watcher.service /lib/systemd/system/rpims-watcher.service
+
 systemctl daemon-reload
 systemctl enable --now rpims.service
+systemctl enable --now rpims-watcher.path
+systemctl enable --now rpims-watcher.service
 
 #for DHT22 sensor
 $PIP3_INSTALL_CMD adafruit-circuitpython-dht

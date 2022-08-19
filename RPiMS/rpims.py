@@ -410,9 +410,11 @@ def get_dht_data(**kwargs):
 
     debug = "yes"
     delay = 0
-    dht_device = adafruit_dht.DHT22(pin)
+
     if dht_type == "DHT11":
         dht_device = adafruit_dht.DHT11(pin)
+    else:
+        dht_device = adafruit_dht.DHT22(pin)
 
     while True:
         try:
