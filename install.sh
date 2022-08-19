@@ -71,7 +71,7 @@ $INSTALL_CMD uv4l-server
 #$INSTALL_CMD uv4l-webrtc-armv6
 mv /etc/uv4l/uv4l-raspicam.conf /etc/uv4l/uv4l-raspicam.conf.org
 ln -s /var/www/html/conf/uv4l-raspicam.conf /etc/uv4l/uv4l-raspicam.conf
-systemctl restart uv4l_raspicam
+systemctl enable --now uv4l_raspicam
 
 $INSTALL_CMD git
 $INSTALL_CMD liblockfile-bin
@@ -109,13 +109,12 @@ $PIP3_INSTALL_CMD rshell
 $PIP3_INSTALL_CMD pyusb
 
 $INSTALL_CMD redis-server
-systemctl enable redis-server.service
 sysctl -w vm.overcommit_memory=1
 sysctl -w net.core.somaxconn=512
 echo 'vm.overcommit_memory=1' | tee -a /etc/sysctl.conf
 echo 'net.core.somaxconn=512' | tee -a /etc/sysctl.conf
 echo 'maxmemory 100mb' | tee -a /etc/redis/redis.conf
-systemctl start redis-server.service
+systemctl enable --now redis-server.service
 
 $INSTALL_CMD apache2-utils
 $INSTALL_CMD nginx
@@ -130,8 +129,7 @@ $INSTALL_CMD gunicorn
 $PIP3_INSTALL_CMD flask
 
 chown -R pi.www-data /var/www
-systemctl restart nginx
-systemctl enable nginx
+systemctl enable --now nginx
 
 $INSTALL_CMD zabbix-agent
 echo 'zabbix ALL=(ALL) NOPASSWD: /home/pi/scripts/RPiMS/redis-get-data.py' | EDITOR='tee -a' visudo
