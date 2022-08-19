@@ -180,7 +180,7 @@ $INSTALL_CMD libgpiod2 libgpiod-dev
 #
 
 rm $downloaddir/RPiMS.zip
-#rmdir $unpackdir
+rmdir $unpackdir
 
 hostnamectl set-hostname rpims.example.com
 echo  "127.0.1.2       rpims.example.com" | tee -a /etc/hosts
