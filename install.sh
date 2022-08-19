@@ -173,7 +173,7 @@ $PIP3_INSTALL_CMD adafruit-circuitpython-dht
 $INSTALL_CMD libgpiod2 libgpiod-dev
 
 rm $downloaddir/RPiMS.zip
-rmdir $unpackdir
+rm -rf $unpackdir
 
 hostnamectl set-hostname rpims.home
 echo  "127.0.1.2       rpims.home" | tee -a /etc/hosts
