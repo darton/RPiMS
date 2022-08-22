@@ -394,8 +394,12 @@ def get_ds18b20_data(**kwargs):
             for sensor in data:
                 redis_db.sadd('DS18B20_sensors', sensor.id)
                 redis_db.set(sensor.id, sensor.get_temperature())
-                sleep(1)
-                redis_db.expire(sensor.id, read_interval*2)
+                #sleep(1)
+                if read_interval < 5:
+                    expire_time = 10
+                else:
+                    expire_time = read_interval*2
+                redis_db.expire(sensor.id, expire_time)
                 if bool(verbose) is True:
                     print('')
                     print("Sensor %s temperature %.2f" % (sensor.id, sensor.get_temperature()), "\xb0C")
