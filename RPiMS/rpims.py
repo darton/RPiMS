@@ -393,6 +393,7 @@ def get_ds18b20_data(**kwargs):
             data = W1ThermSensor.get_available_sensors()
             for sensor in data:
                 redis_db.sadd('DS18B20_sensors', sensor.id)
+            for sensor in data:
                 redis_db.set(sensor.id, sensor.get_temperature())
                 #sleep(1)
                 if read_interval < 5:
@@ -403,7 +404,7 @@ def get_ds18b20_data(**kwargs):
                 if bool(verbose) is True:
                     print('')
                     print("Sensor %s temperature %.2f" % (sensor.id, sensor.get_temperature()), "\xb0C")
-            redis_db.expire('DS18B20_sensors', read_interval*2)
+            redis_db.expire('DS18B20_sensors', expire_time*2)
             sleep(read_interval)
     except Exception as err:
         print(f'Problem with sensor DS18B20: {err}')
