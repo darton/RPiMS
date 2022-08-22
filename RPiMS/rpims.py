@@ -385,6 +385,11 @@ def get_bme280_data(**kwargs):
 def get_ds18b20_data(**kwargs):
     verbose = kwargs['verbose']
     read_interval = kwargs['read_interval']
+    if read_interval < 5:
+        expire_time = 10
+    else:
+        expire_time = read_interval*2
+
     try:
         from w1thermsensor import W1ThermSensor
         from time import sleep
@@ -393,18 +398,14 @@ def get_ds18b20_data(**kwargs):
             data = W1ThermSensor.get_available_sensors()
             for sensor in data:
                 redis_db.sadd('DS18B20_sensors', sensor.id)
+            redis_db.expire('DS18B20_sensors', expire_time*4)
             for sensor in data:
                 redis_db.set(sensor.id, sensor.get_temperature())
                 #sleep(1)
-                if read_interval < 5:
-                    expire_time = 10
-                else:
-                    expire_time = read_interval*2
                 redis_db.expire(sensor.id, expire_time)
                 if bool(verbose) is True:
                     print('')
                     print("Sensor %s temperature %.2f" % (sensor.id, sensor.get_temperature()), "\xb0C")
-            redis_db.expire('DS18B20_sensors', expire_time*2)
             sleep(read_interval)
     except Exception as err:
         print(f'Problem with sensor DS18B20: {err}')
