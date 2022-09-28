@@ -273,6 +273,8 @@ Optional
 
 * [A Raspberry Pi Streaming Camera using MPEG-DASH, HLS or RTSP](https://codecalamity.com/a-raspberry-pi-streaming-camera-using-mpeg-dash-hls-or-rtsp/)
 
+* [RPi Pico - rshell](https://www.mfitzp.com/using-micropython-raspberry-pico/)
+
 * [Reduce TTFB](https://blog.navicosoft.com/2018/02/reduce-ttfb-to-less-than-second-with.html)
 
 * [Log2Ram](https://github.com/azlux/log2ram)
