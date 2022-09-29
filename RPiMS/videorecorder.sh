@@ -17,7 +17,7 @@ location=$(redis-cli get zabbix_agent |awk -F, '{print $3}' |awk -F\" '{print $4
 video_dir=/home/pi/Videos
 video_file=pivideo_$now
 
-[[ -d $video_dir ]] || mkdir $video_dir
+[[ -d $video_dir ]] || mkdir $video_dir; chown pi.pi $video_dir
 
 raspivid_pid=$(pidof raspivid)
 
