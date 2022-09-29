@@ -35,9 +35,9 @@ def door_action_opened(door_id, **kwargs):
         zabbix_sender_call('info_when_door_has_been_opened', door_id)
     if bool(kwargs['use_picamera']) is True:
         if bool(kwargs['use_picamera_recording']) is True:
-            av_stream('stop')
+            #av_stream('stop')
             av_recording()
-            av_stream('start')
+            #av_stream('start')
 
 
 def door_status_open(door_id, **kwargs):
