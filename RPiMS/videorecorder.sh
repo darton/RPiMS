@@ -21,9 +21,9 @@ video_file=pivideo_$now
 
 ffmpeg_pid=$(pidof ffmpeg)
 
-if [ $ffmpeg_pid -n ]
+if [ $ffmpeg_pid ]
 then
-    pkill ffmpeg
+    exit 0
 fi
 
 ffmpeg -use_wallclock_as_timestamps 1 -f mjpeg -i "http://localhost:8080/stream/video.mjpeg" -t 5 -c copy -y $video_dir/$video_file.mp4
