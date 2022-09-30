@@ -112,9 +112,13 @@ def av_stream(state):
 
 
 def av_recording():
-    from subprocess import call
+    import subprocess
     _cmd = '/home/pi/scripts/RPiMS/videorecorder.sh'
-    call(_cmd, shell=True)
+    #subprocess.Popen(['/home/pi/scripts/RPiMS/videorecorder.sh'],
+    subprocess.Popen([_cmd],
+    stdout=subprocess.PIPE, 
+    stderr=subprocess.PIPE,
+    shell=True)
 
 
 def zabbix_sender_call(message, sensor_id):
