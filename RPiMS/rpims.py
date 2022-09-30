@@ -58,6 +58,9 @@ def motion_sensor_when_motion(ms_id, **kwargs):
         print(f'The {ms_id} : motion was detected!')
     if bool(kwargs['use_zabbix_sender']) is True:
         zabbix_sender_call('info_when_motion', ms_id)
+    if bool(kwargs['use_picamera']) is True:
+        if bool(kwargs['use_picamera_recording']) is True:
+            av_recording()
 
 
 def motion_sensor_when_no_motion(ms_id, **kwargs):
