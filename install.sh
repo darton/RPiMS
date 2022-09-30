@@ -81,8 +81,8 @@ $INSTALL_CMD libfreetype6-dev
 $INSTALL_CMD liblcms2-dev
 $INSTALL_CMD libopenjp2-7
 $INSTALL_CMD libtiff5
+$INSTALL_CMD ffmpeg
 #$INSTALL_CMD vlc
-#$INSTALL_CMD ffmpeg
 #$INSTALL_CMD gpac
 #$INSTALL_CMD fbi
 
