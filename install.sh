@@ -38,7 +38,7 @@ fi
 raspi-config nonint do_i2c 0
 raspi-config nonint do_spi 0
 raspi-config nonint do_onewire 0
-raspi-config nonint do_camera 0
+raspi-config nonint do_legacy 0
 #raspi-config nonint do_serial 1
 raspi-config nonint do_change_timezone Europe/Warsaw
 
