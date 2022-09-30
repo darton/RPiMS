@@ -1091,9 +1091,6 @@ def main():
     if bool(config['use_serial_display']) is True:
         threading_function(serial_displays, **config)
 
-    #if bool(config['use_picamera']) is True and bool(config['use_picamera_recording']) is False and bool(config['use_door_sensor']) is False and bool(config['use_motion_sensor']) is False:
-    #    av_stream('restart')
-
     if bool(config['use_picamera']) is True:
         av_stream('restart')
     else:
