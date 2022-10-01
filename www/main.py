@@ -213,6 +213,17 @@ def setup():
         PICAMERA['mode'] = int(flask.request.form.get('picamera_mode'))
         PICAMERA['rotation'] = int(flask.request.form.get('picamera_rotation'))
 
+        picamera_mode = int(flask.request.form.get('picamera_mode'))
+        picamera_modes = {
+            1: [1920,1080],
+            6: [1280,720],
+            7: [640,480],
+        }
+        picamera_width = picamera_modes[picamera_mode][0]
+        picamera_height = picamera_modes[picamera_mode][1]
+        PICAMERA['vr'] = picamera_height
+        PICAMERA['hr'] = picamera_width
+
         RAINFALL = {}
         RAINFALL['acquisition_time'] = int(flask.request.form.get('rainfall_acquisition_time'))
         RAINFALL['agregation_time'] = int(flask.request.form.get('rainfall_agregation_time'))
@@ -289,14 +300,7 @@ def setup():
         uv4l_raspicam_config.append('video-denoise = no')
         uv4l_raspicam_config.append('server-option = --www-webrtc-signaling-path=/webrtc')
         uv4l_raspicam_config.append(f'rotation = {int(flask.request.form.get("picamera_rotation"))}')
-        picamera_mode = int(flask.request.form.get('picamera_mode'))
-        picamera_modes = {
-            1: [1920,1080],
-            6: [1280,720],
-            7: [640,480],
-        }
-        picamera_width = picamera_modes[picamera_mode][0]
-        picamera_height = picamera_modes[picamera_mode][1]
+
         uv4l_raspicam_config.append(f'width = {picamera_width}')
         uv4l_raspicam_config.append(f'height = {picamera_height}')
         uv4l_raspicam_config.append(f'framerate = {int(flask.request.form.get("picamera_fps"))}')
