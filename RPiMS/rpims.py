@@ -121,9 +121,12 @@ def av_recording():
 
 
 def zabbix_sender_call(message, sensor_id):
-    from subprocess import call
     _cmd = '/home/pi/scripts/RPiMS/zabbix_sender.sh ' + message + " " + str(sensor_id)
-    call(_cmd, shell=True)
+    import subprocess
+    subprocess.Popen([_cmd],
+    stdout=subprocess.PIPE,
+    stderr=subprocess.PIPE,
+    shell=True)
 
 
 def hostnamectl_sh(**kwargs):
