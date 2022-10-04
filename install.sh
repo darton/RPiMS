@@ -69,7 +69,7 @@ $INSTALL_CMD uv4l-server
 #$INSTALL_CMD uv4l-server uv4l-uvc uv4l-xscreen uv4l-mjpegstream uv4l-dummy uv4l-raspidisp
 #$INSTALL_CMD uv4l-webrtc
 #$INSTALL_CMD uv4l-webrtc-armv6
-mv /etc/uv4l/uv4l-raspicam.conf /etc/uv4l/uv4l-raspicam.conf.org
+mv -f /etc/uv4l/uv4l-raspicam.conf /etc/uv4l/uv4l-raspicam.conf.org
 ln -s /var/www/html/conf/uv4l-raspicam.conf /etc/uv4l/uv4l-raspicam.conf
 systemctl enable uv4l_raspicam
 
