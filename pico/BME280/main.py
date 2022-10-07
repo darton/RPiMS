@@ -16,25 +16,21 @@ i2c = machine.I2C(0,sda=SDA_PIN, scl=SCL_PIN, freq=SCL_FREQ)
 
 led = machine.Pin(25, machine.Pin.OUT)
 led.value(0)
-   
+
+
+def led_blinking(on_time, off_time, number_of_blinks):
+    for n in range(number_of_blinks):
+        led.toggle()
+        sleep_ms(on_time)
+        led.toggle()
+        sleep_ms(off_time)    
+    
 
 def reset_bme280():
     BME280VCC.value(0)
-    led.toggle()
-    sleep_ms(150)
-    led.toggle()
-    sleep_ms(350)
-    led.toggle()
-    sleep_ms(150)
-    led.toggle()
-    sleep_ms(350)
+    led_blinking(150,350,2)
     BME280VCC.value(1)
-    led.toggle()
-    sleep_ms(150)
-    led.toggle()
-    sleep_ms(350)
-    led.toggle()
-    sleep_ms(150)
+    led_blinking(150,350,2)
 
 
 while True:
@@ -61,10 +57,8 @@ while True:
     if len(val) == 3:
         t,h,p = int(float(val[0])*1000),int(float(val[2])*1000),int(float(val[1])*1000)
         print(sid,t,h,p)
-        led.toggle()
-        sleep_ms(1500)
-        led.toggle()
-        sleep_ms(500)
+        led_blinking(700,1300,1)
     else:
         print(' BADREAD')
         reset_bme280()
+
