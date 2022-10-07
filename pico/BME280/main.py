@@ -14,10 +14,18 @@ SCL_PIN = machine.Pin(17)
 SCL_FREQ = 100000
 i2c = machine.I2C(0,sda=SDA_PIN, scl=SCL_PIN, freq=SCL_FREQ)
 
+led = machine.Pin(25, machine.Pin.OUT)
+led.value(0)
+
 def reset_bme280():
     BME280VCC.value(0)
-    sleep_ms(1000)
+    led.toggle()
+    sleep_ms(500)
+    led.toggle()
+    sleep_ms(500)
+    led.toggle()
     BME280VCC.value(1)
+    led.toggle()
     sleep_ms(1000)
 
 while True:
@@ -44,7 +52,11 @@ while True:
     if len(val) == 3:
         t,h,p = int(float(val[0])*1000),int(float(val[2])*1000),int(float(val[1])*1000)
         print(sid,t,h,p)
-        sleep_ms(2000)
+        led.toggle()
+        sleep_ms(1500)
+        led.toggle()
+        sleep_ms(500)
     else:
         print(' BADREAD')
         reset_bme280()
+
