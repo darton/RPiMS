@@ -275,6 +275,8 @@ Optional
 
 * [RPi Pico - rshell](https://www.mfitzp.com/using-micropython-raspberry-pico/)
 
+* [Raspberry Pi Pico Python SDK](https://datasheets.raspberrypi.com/pico/raspberry-pi-pico-python-sdk.pdf)
+
 * [Reduce TTFB](https://blog.navicosoft.com/2018/02/reduce-ttfb-to-less-than-second-with.html)
 
 * [Log2Ram](https://github.com/azlux/log2ram)
