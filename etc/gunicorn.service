@@ -1,5 +1,5 @@
 [Unit]
-Description=gunicorn.service - A RPiMS Flask application run with Gunicorn.
+Description=gunicorn.service - RPiMS Flask application launched from Gunicorn.
 After=network.target
 Documentation=https://github.com/darton/rpims
 
