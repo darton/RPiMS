@@ -43,6 +43,10 @@ Running the following command will download and run the script.
 curl -sS https://raw.githubusercontent.com/darton/RPiMS/flask/install.sh | sudo bash
 
 ```
+or
+```
+curl -sSL https://github.com/darton/RPiMS/raw/master/install.sh | sudo bash
+```
 
 ### Setup
 
