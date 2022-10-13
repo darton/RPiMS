@@ -107,6 +107,7 @@ Connect the BME280 sensor to the i2C RPi Pico port:
 RPi Pico  [GP22 Pin 29]------------------------------ [VCC]  BME280
 RPi Pico  [GP16 Pin 21] ----------------------------- [SDA]  BME280
 RPi Pico  [GP17 Pin 22] ----------------------------- [SDC]  BME280
+RPi Pico  [3v3  Pin 36] ----------------------------- [CS]   BME280
 RPi Pico  [GND  Pin 23] ----------------------------- [GND]  BME280
 ```
 
