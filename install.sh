@@ -63,7 +63,11 @@ apt-get -y update
 apt-get -y upgrade
 apt-get -y autoremove
 
-$INSTALL_CMD uv4l uv4l-raspicam
+echo /opt/vc/lib/ | sudo tee /etc/ld.so.conf.d/vc.conf
+ldconfig
+
+$INSTALL_CMD uv4l 
+$INSTALL_CMD uv4l-raspicam
 $INSTALL_CMD uv4l-raspicam-extras
 $INSTALL_CMD uv4l-server
 #$INSTALL_CMD uv4l-server uv4l-uvc uv4l-xscreen uv4l-mjpegstream uv4l-dummy uv4l-raspidisp
