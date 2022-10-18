@@ -189,7 +189,8 @@ def get_bme280_data(**kwargs):
                 try:
                   data = bme280.sample(bus, address, calibration_params)
                 except:
-                  sleep(read_interval*3/2)
+                  sleep(5)
+                  continue
 
                 temperature = round(data.temperature,3)
                 humidity = round(data.humidity,3)
