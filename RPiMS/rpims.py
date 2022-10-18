@@ -176,19 +176,23 @@ def get_bme280_data(**kwargs):
             calibration_params = bme280.load_calibration_params(bus, address)
 
             while True:
-                data = bme280.sample(bus, address, calibration_params)
-                temperature = round(data.temperature,3)
-                humidity = round(data.humidity,3)
-                pressure = round(data.pressure,3)
-                redis_db.sadd('BME280_sensors', sid)
-                redis_db.mset({f'{sid}_BME280_Temperature': temperature, f'{sid}_BME280_Humidity': humidity, f'{sid}_BME280_Pressure': pressure})
-                redis_db.expire(f'{sid}_BME280_Temperature', read_interval*2)
-                redis_db.expire(f'{sid}_BME280_Humidity', read_interval*2)
-                redis_db.expire(f'{sid}_BME280_Pressure', read_interval*2)
-                if bool(verbose) is True:
-                    print('')
-                    print(f'{sid}_BME280: Temperature: {temperature} °C, Humidity: {humidity} %, Pressure: {pressure} hPa')
-                sleep(read_interval)
+                try:
+                    data = bme280.sample(bus, address, calibration_params)
+                    temperature = round(data.temperature,3)
+                    humidity = round(data.humidity,3)
+                    pressure = round(data.pressure,3)
+                    redis_db.sadd('BME280_sensors', sid)
+                    redis_db.mset({f'{sid}_BME280_Temperature': temperature, f'{sid}_BME280_Humidity': humidity, f'{sid}_BME280_Pressure': pressure})
+                    redis_db.expire(f'{sid}_BME280_Temperature', read_interval*2)
+                    redis_db.expire(f'{sid}_BME280_Humidity', read_interval*2)
+                    redis_db.expire(f'{sid}_BME280_Pressure', read_interval*2)
+                    if bool(verbose) is True:
+                        print('')
+                        print(f'{sid}_BME280: Temperature: {temperature} °C, Humidity: {humidity} %, Pressure: {pressure} hPa')
+                    sleep(read_interval)
+                except:
+                    sleep(5)
+                    continue
         except Exception as err:
             print(f'Problem with sensor BME280: {err}')
 
