@@ -190,8 +190,11 @@ def get_bme280_data(**kwargs):
                         print('')
                         print(f'{sid}_BME280: Temperature: {temperature} °C, Humidity: {humidity} %, Pressure: {pressure} hPa')
                     sleep(read_interval)
-                except:
-                    sleep(5)
+                except (KeyboardInterrupt, SystemExit):
+                    break
+                except Exception as err:
+                    print(f'Problem with sensor BME280: {err}')
+                    sleep(1)
                     continue
         except Exception as err:
             print(f'Problem with sensor BME280: {err}')
