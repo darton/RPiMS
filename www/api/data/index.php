@@ -75,6 +75,7 @@ if ($_GET['dht'] == "show" || $_GET['sensors'] == "show" || $showAll == true){
     if ($config["use_dht_sensor"] == true) {
         $rpims_api["sensors"]["dht"]["temperature"] = $rpims["DHT_Temperature"];
         $rpims_api["sensors"]["dht"]["humidity"] = $rpims["DHT_Humidity"];
+        $rpims_api["sensors"]["dht"]["name"] = $sensors["DHT"]["name"];
     }
 }
 if ($_GET['weather_station'] == "show" || $_GET['sensors'] == "show" || $showAll == true){

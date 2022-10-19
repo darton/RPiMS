@@ -87,6 +87,7 @@ setInterval(function() {
     if (data['settings']['use_dht_sensor'] == true) {
 		$("#DHT_Temperature").html(data['sensors']['dht']['temperature']);
 		$("#DHT_Humidity").html(data['sensors']['dht']['humidity']);
+		$("#DHT_Name").html(data['sensors']['dht']['name']);
     }
 
 //	if (data['settings']['use_DS18B20_sensor'] == "True") {

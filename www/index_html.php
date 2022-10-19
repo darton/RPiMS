@@ -52,7 +52,7 @@
 
       <?php if ($config["use_dht_sensor"] == "True") {?>
         <div class="sensors">
-          <div class="w3-container w3-margin">DHT Sensor</div>
+          <div class="w3-container w3-margin" id="DHT_Name">DHT Sensor</div>
           <div style="width: 100%; display: table;">
             <div style="display: table-row">
               <div class="gauge_dht" id="g11" style="width: 50%; display: table-cell";>
