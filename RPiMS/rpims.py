@@ -188,26 +188,27 @@ def get_bme280_data(**kwargs):
             while True:
                 try:
                   data = bme280.sample(bus, address, calibration_params)
-                except:
-                  sleep(5)
-                  continue
+                  temperature = round(data.temperature,3)
+                  humidity = round(data.humidity,3)
+                  pressure = round(data.pressure,3)
+                  #redis_db.sadd('BME280_sensors', sid)
+                  redis_db.hset(f'{sid}_BME280', 'temperature', temperature)
+                  redis_db.hset(f'{sid}_BME280', 'humidity', humidity)
+                  redis_db.hset(f'{sid}_BME280', 'pressure', pressure)
+                  redis_db.expire(f'{sid}_BME280', read_interval*2)
 
-                temperature = round(data.temperature,3)
-                humidity = round(data.humidity,3)
-                pressure = round(data.pressure,3)
-
-                #redis_db.sadd('BME280_sensors', sid)
-                redis_db.hset(f'{sid}_BME280', 'temperature', temperature)
-                redis_db.hset(f'{sid}_BME280', 'humidity', humidity)
-                redis_db.hset(f'{sid}_BME280', 'pressure', pressure)
-                redis_db.expire(f'{sid}_BME280', read_interval*2)
-
-                if bool(verbose) is True:
-                    print('')
-                    print(f'{sid}_BME280: Temperature: {temperature} °C, Humidity: {humidity} %, Pressure: {pressure} hPa')
-                sleep(read_interval)
+                  if bool(verbose) is True:
+                      print('')
+                      print(f'{sid}_BME280: Temperature: {temperature} °C, Humidity: {humidity} %, Pressure: {pressure} hPa')
+                  sleep(read_interval)
+                except (KeyboardInterrupt, SystemExit):
+                    break
+                except Exception as err:
+                    print(f'Problem with sensor BME280: {err}')
+                    sleep(1)
+                    continue
         except Exception as err:
-            print(f'Problem with sensor BME280: {err}')
+            print(f'Problem with: {err}')
 
     if interface_type == 'serial':
         from subprocess import check_output
