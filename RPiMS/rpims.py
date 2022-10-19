@@ -452,6 +452,9 @@ def get_dht_data(**kwargs):
             if debug == 'yes':
                 print(f'Problem with DHT sensor - {error}')
             delay += 1
+        except Exception as error:
+            dhtDevice.exit()
+            raise error
         finally:
             if debug == 'yes':
                 print(f'DHT delay: {delay}')
