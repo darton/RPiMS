@@ -208,7 +208,7 @@ def get_bme280_data(**kwargs):
                     sleep(1)
                     continue
         except Exception as err:
-            print(f'Problem with: {err}')
+            print(f'Problem with BME280 sensor: {err}')
 
     if interface_type == 'serial':
         from subprocess import check_output
