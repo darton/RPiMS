@@ -55,7 +55,7 @@ if [[ $response =~ ^(yes|y|Y)$ ]]; then
     echo "Greats ! The upgrade OS has started."
     
     sudo /usr/bin/python3 -m pip install --upgrade pip
-    sudo -H pip3 install --upgrade RPi.bme280 smbus2 w1thermsensor redis hiredis pid PyYAML luma.oled luma.lcd luma.core adafruit-circuitpython-ads1x15 rshell pyusb
+    sudo -H pip3 install --upgrade RPi.bme280 smbus2 w1thermsensor redis[hiredis] pid PyYAML luma.oled luma.lcd luma.core adafruit-circuitpython-ads1x15 rshell pyusb
 
     echo ""
     echo "-------------------------------------"
