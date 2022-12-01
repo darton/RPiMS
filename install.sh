@@ -100,7 +100,7 @@ $INSTALL_CMD python3-wheel
 
 $PIP3_INSTALL_CMD RPi.bme280 smbus2
 $PIP3_INSTALL_CMD w1thermsensor
-$PIP3_INSTALL_CMD redis hiredis
+$PIP3_INSTALL_CMD redis[hiredis]
 $PIP3_INSTALL_CMD pid
 $PIP3_INSTALL_CMD PyYAML
 $PIP3_INSTALL_CMD luma.oled luma.lcd
