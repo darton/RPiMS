@@ -44,7 +44,6 @@
 /* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
 .show {display:block;}
 
-
 td {
   text-align: left;
 }
@@ -130,16 +129,17 @@ span {
   text-align: left;
 }
 
-
 .rpimsbg
 {
   background-color: steelblue;
 }
+
 .header
 {
   padding: 1px;
   margin: 0px;
 }
+
 .footer
 {
   padding: 1px;
@@ -153,6 +153,7 @@ span {
   margin: 10px;
   font-size: 4vw;
 }
+
 .sensors {
   background-color: darkslategray;
   color: white;
@@ -174,4 +175,8 @@ span {
 .center {
   margin-left: auto;
   margin-right: auto;
+}
+
+.alarm {
+  color: red;
 }

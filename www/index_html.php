@@ -164,7 +164,7 @@
           <p>
             <table class="center">
               <?php foreach ($door_sensors as $key => $value) {
-              echo "<tr><td>"; echo $value["name"]; echo "</td><td>: <span class='value' id='$key'></span></td></tr>";
+              echo "<tr><td>"; echo $value["name"]; echo "</td><td>: <span id='$key'></span></td></tr>";
               }
               ?>
             </table>
@@ -178,7 +178,7 @@
           <p>
             <table class="center">
               <?php foreach ($motion_sensors as $key => $value) {
-              echo "<tr><td>"; echo $value["name"]; echo "</td><td>: <span class='value' id='$key'></span></td></tr>";
+              echo "<tr><td>"; echo $value["name"]; echo "</td><td>: <span id='$key'></span></td></tr>";
               }
               ?>
             </table>

@@ -99,14 +99,30 @@ setInterval(function() {
 
     if (data['settings']['use_door_sensor'] == true) {
 		for (var key in data['sensors']['door_sensors']){
-				var value = data['sensors']['door_sensors'][key];
-				$("#" + key).html(value);
+		    var value = data['sensors']['door_sensors'][key];
+		    $("#" + key).html(value);
+		    if (value == "open"){
+			$('#' + key).removeClass("value");
+			$('#' + key).addClass("alarm");
+		    }
+		    if (value == "close"){
+			$('#' + key).removeClass("alarm");
+			$('#' + key).addClass("value");
+		    }
 		}
     }
     if (data['settings']['use_motion_sensor'] == true) {
 		for (var key in data['sensors']['motion_sensors']){
 				var value = data['sensors']['motion_sensors'][key];
 				$("#" + key).html(value);
+		    if (value == "motion"){
+			$('#' + key).removeClass("value");
+			$('#' + key).addClass("alarm");
+		    }
+		    if (value == "nomotion"){
+			$('#' + key).removeClass("alarm");
+			$('#' + key).addClass("value");
+		    }
 		}
     }
 
