@@ -12,7 +12,7 @@
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <script src="/js/jquery.min.js"></script>
     <script src="/js/navbar.js"></script>
-    <script src="/js/index.js" defer></script>
+    <script src="/js/index.js?ver=003" defer></script>
     <title>RPiMS</title>
   </head>
   <body>
