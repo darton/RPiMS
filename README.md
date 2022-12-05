@@ -13,6 +13,8 @@ Supports wind speed meter, wind direction meter, rainfall meter.
 
 ## Description
 
+Sensors are polled and measured values are saved to Redis database periodically.
+
 The Zabbix Agent periodicaly pull temperature,humidity and pressure sensor data from redis db and send to Zabbix Server. 
 
 When any of the doors sensors opens or closed then a message will be sent to the Zabbix server. 
@@ -22,8 +24,7 @@ When the motion sensor detects motion a message will be sent to Zabbix server.
 When any of the doors senors is opened, a video sequence will be recorded.
 
 Video stream will be turned on automaticly when use picamera sensor are set to enable in setup.
-
-Sensors are polled and measured values are saved to Redis database periodically. 
+ 
 
 
 ## Installing
