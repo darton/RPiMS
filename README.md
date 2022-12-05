@@ -1,6 +1,6 @@
 # RPiMSv2
 
-RPiMS is Raspberry Pi based Monitoring System 
+RPiMS is Raspberry Pi based Monitoring System.
 
 Supports sensor like door/window sensor, motion sensor, water sensor, smoke sensor, light sensors.
 
