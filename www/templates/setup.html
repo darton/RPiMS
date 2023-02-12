@@ -18,7 +18,7 @@
   <body>
     <div class="w3-row w3-2020-ultramarine-green">
         <div class="w3-dropdown-click">
-          <button onclick="navFunction()" class="w3-button w3-2020-ultramarine-green w3-xlarge">☰ Setup</button>
+          <button onclick="toggleShowHide('NavBar')" class="w3-button w3-2020-ultramarine-green w3-xlarge">☰ Setup</button>
           <div id="NavBar" class="w3-dropdown-content w3-bar-block w3-card-4 w3-animate-zoom">
             <a href="/" class="w3-bar-item w3-button w3-large">Home</a>
             <a href="/api/" class="w3-bar-item w3-button w3-large">API</a>
@@ -457,7 +457,7 @@
             </fieldset>
             <fieldset>
                 <legend>GPIO configuration</legend>
-                <h2><input onclick="gpioSH('gpio')" type="button" value="GPIO" class="w3-btn w3-block w3-left-align w3-2020-ultramarine-green"></h2>
+                <h2><input onclick="toggleShowHide('gpio')" type="button" value="GPIO" class="w3-btn w3-block w3-left-align w3-2020-ultramarine-green"></h2>
                 <div id="gpio" class="w3-row w3-hide">
                     <br>
                     {% for _gpio in config.gpio: %}
