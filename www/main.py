@@ -66,11 +66,11 @@ def api():
 @app.route('/api/data/all', methods=['GET'])
 def api_json():
     data = get_data()
-    response = flask.jsonify({"status": "ok" })
     response = flask.jsonify(data)
     response.status_code = 200
     response.headers["Content-Type"] = "application/json; charset=utf-8"
     return response
+
 
 @app.route('/api/data/sensors/<type>', methods=['GET'])
 def api_sensors_json(type):
