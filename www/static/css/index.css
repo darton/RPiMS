@@ -180,3 +180,7 @@ span {
 .alarm {
   color: red;
 }
+
+ul {
+    list-style-type:none;
+}

@@ -6,13 +6,13 @@
     <meta name="keywords" content="Raspberry Pi, Monitoring System, Sensors">
     <meta name="author" content="Dariusz Kowalczyk">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="/static/css/index.css?v=003">
+    <link rel="stylesheet" href="/static/css/index.css?v=004">
     <link rel="stylesheet" href="/static/css/w3.css">
     <link rel="stylesheet" href="/static/css/w3-colors-2020.css">
     <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
-    <script src="/static/js/jquery.min.js"></script>
+    <script src="/static/js/jquery.min.js?v=3.6.3"></script>
     <script defer src="/static/js/navbar.js?v=002"></script>
-    <script defer src="/static/js/index.js?v=004"></script>
+    <script defer src="/static/js/index.js?v=029"></script>
     <title>RPiMS</title>
   </head>
   <body>
@@ -32,7 +32,7 @@
 {% if data.config.setup.show_sys_info: %}
      <!-- <div class="header"></div>-->
         <div class="sensors" style="text-align: left;" id="sys_info">
-              <ul style="list-style-type:none;">
+              <ul>
                 <li>Hostname: <span class="value" id="hostname"></span></li>
                 <li>Location: <span class="value" id="location"></span></li>
                 <li style="display:none;" id="CPU_Temperature">CPU Temperature: <span class="value" id="CPU_Temperature_value"> </span><span class="value" id="CPU_Temperature_unit"></span></li>
@@ -69,14 +69,14 @@
         <div class="w3-container w3-margin">{{ data.config.sensors.DHT.name }}</div>
         <div style="width: 100%; display: table;">
           <div style="display: table-row">
-            <div class="gauge_dht" id="g11" style="width: 50%; display: table-cell";>
+            <div class="gauge_dht" id="gdhttemp" style="width: 50%; display: table-cell";>
               <div class="gauge__body">
                 <div class="gauge__fill"></div>
                 <div class="gauge__cover"></div>
               </div>
               <div class="sensors">Temp</div>
             </div>
-            <div class="gauge" id="g12" style="width: 50%; display: table-cell";>
+            <div class="gauge" id="gdhthum" style="width: 50%; display: table-cell";>
               <div class="gauge__body">
                 <div class="gauge__fill"></div>
                 <div class="gauge__cover"></div>
@@ -151,21 +151,21 @@
     <div class="w3-container w3-margin">Wind</div>
     <div style="width: 100%; display: table;">
       <div style="display: table-row">
-        <div class="gauge" id="g4" style="width: 33%; display: table-cell">
+        <div class="gauge" id="gws" style="width: 33%; display: table-cell">
           <div class="gauge__body">
             <div class="gauge__fill"></div>
             <div class="gauge__cover"></div>
           </div>
           <div class="sensors">Speed</div>
         </div>
-        <div class="gauge" id="g5" style="width: 33%; display: table-cell">
+        <div class="gauge" id="gwg" style="width: 33%; display: table-cell">
           <div class="gauge__body">
             <div class="gauge__fill"></div>
             <div class="gauge__cover"></div>
           </div>
           <div class="sensors">Gust</div>
         </div>
-        <div class="gauge" id="g6" style="width: 33%; display: table-cell">
+        <div class="gauge" id="gwg24h" style="width: 33%; display: table-cell">
           <div class="gauge__body">
             <div class="gauge__fill"></div>
             <div class="gauge__cover"></div>
