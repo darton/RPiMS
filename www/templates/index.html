@@ -6,13 +6,13 @@
     <meta name="keywords" content="Raspberry Pi, Monitoring System, Sensors">
     <meta name="author" content="Dariusz Kowalczyk">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="/static/css/index.css">
+    <link rel="stylesheet" href="/static/css/index.css?v=003">
     <link rel="stylesheet" href="/static/css/w3.css">
     <link rel="stylesheet" href="/static/css/w3-colors-2020.css">
     <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
     <script src="/static/js/jquery.min.js"></script>
-    <script src="/static/js/navbar.js"></script>
-    <script src="/static/js/index.js" defer></script>
+    <script defer src="/static/js/navbar.js?v=002"></script>
+    <script defer src="/static/js/index.js?v=004"></script>
     <title>RPiMS</title>
   </head>
   <body>
@@ -50,7 +50,7 @@
       <div class="sensors" id="door_sensors">
         <div class="w3-container w3-margin">Door sensors</div>
           {% for item in data.sensors.door_sensors: %}
-            <p>{{ data.config.gpio[item].name }} <span class="value" id = {{ item }} ></span></p> 
+            <p>{{ data.config.gpio[item].name }} <span id = {{ item }} ></span></p> 
           {% endfor %}
         </p>
       </div>
@@ -59,7 +59,7 @@
       <div class="sensors" id="motion_sensors">
         <div class="w3-container w3-margin">Motion sensors</div>
           {% for item in data.sensors.motion_sensors: %}
-            <p>{{ data.config.gpio[item].name }} <span class="value" id = {{ item }} ></span></p> 
+            <p>{{ data.config.gpio[item].name }} <span id = {{ item }} ></span></p> 
           {% endfor %}
         </p>
       </div>

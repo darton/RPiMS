@@ -17,6 +17,7 @@ function setGaugeValue(gauge, value, divisor, unit ) {
   }
 
 
+
 setInterval(function() {
     $.getJSON("/api/data/all", function(data) {
 
@@ -105,34 +106,51 @@ setInterval(function() {
 //	}
 
     if (data['config']['setup']['use_door_sensor'] == true) {
-		$("#door_sensors").show();
-		for (var key in data['sensors']['door_sensors']){
-				var value = data['sensors']['door_sensors'][key];
-				$("#" + key).html(value);
-		}
-	}
-	if (data['config']['setup']['use_door_sensor'] == false) {
+	    $("#door_sensors").show();
+	    for (var key in data['sensors']['door_sensors']){
+		var value = data['sensors']['door_sensors'][key];
+		$("#" + key).html(value);
+	    if (value == "open"){
+		$('#' + key).removeClass("value");
+		$('#' + key).addClass("alarm");
+	    }
+	    if (value == "close"){
+		$('#' + key).removeClass("alarm");
+		$('#' + key).addClass("value");
+	    }
+	    }
+    }
+    if (data['config']['setup']['use_door_sensor'] == false) {
 		$("#door_sensors").hide(); 
-	}
+    }
 
 	
     if (data['config']['setup']['use_motion_sensor'] == true) {
-		$("#motion_sensors").show();
-		for (var key in data['sensors']['motion_sensors']){
-				var value = data['sensors']['motion_sensors'][key];
-				$("#" + key).html(value);
-		}
+	$("#motion_sensors").show();
+	for (var key in data['sensors']['motion_sensors']){
+	    var value = data['sensors']['motion_sensors'][key];
+	    $("#" + key).html(value);
+	    if (value == "motion"){
+		$('#' + key).removeClass("value");
+		$('#' + key).addClass("alarm");
+	    }
+	    if (value == "nomotion"){
+		$('#' + key).removeClass("alarm");
+		$('#' + key).addClass("value");
+	    }
+	}
     }
-	if (data['config']['setup']['use_motion_sensor'] == false) {
-		$("#motion_sensors").hide(); 
-	}
 
-	if (data['config']['setup']['show_sys_info'] == true) {
-		$("#sys_info").show(); 
-	}
-	else{
-		$("#sys_info").hide(); 
-	}
+    if (data['config']['setup']['use_motion_sensor'] == false) {
+	$("#motion_sensors").hide(); 
+    }
+
+    if (data['config']['setup']['show_sys_info'] == true) {
+	$("#sys_info").show(); 
+    }
+    else {
+	$("#sys_info").hide(); 
+    }
 
     $("#hostip").html(data['system']['hostip']);
     $("#hostname").html(data['system']['hostname']);
