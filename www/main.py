@@ -55,11 +55,6 @@ def get_data():
     data['sensors'] = SENSORS
     return data
 
-#@app.route("/favicon.ico") 
-#def fav():
-#    print(os.path.join(app.root_path, 'static'))
-#    return send_from_directory(app.static_folder, 'favicon.ico')
-
 @app.route('/', methods=['GET'])
 def home():
     data = get_data()
@@ -104,7 +99,7 @@ def api_sensors_json(type):
         if data['config']['setup']['use_weather_station']:
             _data = data['sensors']['weather_station']
     else:
-        _data = {}
+        flask.abort(404)
     return flask.jsonify(_data)
 
 @app.route('/api/data/<type>', methods=['GET'])
@@ -118,7 +113,7 @@ def api_types_json(type):
     elif type == 'sensors':
         _data = data['sensors']
     else:
-        _data = {}
+        flask.abort(404)
     return flask.jsonify(_data)
 
 @app.route('/setup/', methods=['GET', 'POST'])
@@ -323,3 +318,7 @@ def setup():
         sleep(2)
         return flask.redirect(flask.url_for('home'))
     return flask.render_template('setup.html',config = config, _DS18B20 = _DS18B20)
+
+@app.errorhandler(404)
+def not_found(error):
+    return flask.jsonify({'error': '404 Not Found'}), 404

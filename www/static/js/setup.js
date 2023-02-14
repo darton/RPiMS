@@ -135,15 +135,6 @@ $("#use_serial_display").change(function() {
     }
 });
 
-$("#use_serial_display").each(function() {
-    if(this.checked) {
-        showFunction('serial_display') 
-    }
-    if (!(this.checked)) {
-        hideFunction('serial_display')
-    }
-});
-
 $("#use_picamera").change(function() {
     if(this.checked) {
         showFunction('picamera')
