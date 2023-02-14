@@ -46,7 +46,7 @@ curl -sS https://raw.githubusercontent.com/darton/RPiMS/flask/install.sh | sudo 
 ```
 or
 ```
-curl -sSL https://github.com/darton/RPiMS/raw/master/install.sh | sudo bash
+curl -sSL https://github.com/darton/RPiMS/raw/flask/install.sh | sudo bash
 ```
 
 ### Setup
