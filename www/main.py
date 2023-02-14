@@ -15,7 +15,6 @@ app.config["DEBUG"] = True
 app.config["JSON_AS_ASCII"] = False
 app.config["JSONIFY_MIMETYPE"] = "application/json; charset=utf-8"
 
-
 redis_db = redis.StrictRedis(host="localhost", port=6379, db=0, charset="utf-8", decode_responses=True)
 
 def get_data():
@@ -56,6 +55,11 @@ def get_data():
     data['sensors'] = SENSORS
     return data
 
+#@app.route("/favicon.ico") 
+#def fav():
+#    print(os.path.join(app.root_path, 'static'))
+#    return send_from_directory(app.static_folder, 'favicon.ico')
+
 @app.route('/', methods=['GET'])
 def home():
     data = get_data()
@@ -68,11 +72,9 @@ def api():
 @app.route('/api/data/all', methods=['GET'])
 def api_json():
     data = get_data()
-    response = flask.jsonify(data)
-    response.status_code = 200
-    #response.headers["Content-Type"] = "application/json; charset=utf-8"
-    return response
-
+    flask.response = flask.jsonify(data)
+    #flask.response.status_code = 200
+    return flask.response
 
 @app.route('/api/data/sensors/<type>', methods=['GET'])
 def api_sensors_json(type):
@@ -134,7 +136,7 @@ def setup():
         #error = f"Can't load RPiMS config file: {path_to_config}"
         journal.send(error)
     if flask.request.method == "POST":
-        _rpims = {}
+
         setup = {}
         setup['verbose'] = bool(flask.request.form.get('verbose'))
         setup['show_sys_info'] = bool(flask.request.form.get('show_sys_info'))
@@ -156,6 +158,7 @@ def setup():
         setup['serial_type'] = flask.request.form.get('serial_type')
         setup['serial_display_refresh_rate'] = int(flask.request.form.get('serial_display_refresh_rate'))
         setup['serial_display_rotate'] = int(flask.request.form.get('serial_display_rotate'))
+
         zabbix_agent = {}
         zabbix_agent['TLSAccept'] = 'psk'
         zabbix_agent['TLSConnect'] = 'psk'
@@ -169,40 +172,6 @@ def setup():
         zabbix_agent['deployment'] = 'RPiMS'
         zabbix_agent['zabbix_server'] = flask.request.form.get('zabbix_server')
         zabbix_agent['zabbix_server_active'] = flask.request.form.get('zabbix_server_active')
-        id1 = {}
-        id1['i2c_address'] = int(flask.request.form.get('id1_BME280_i2c_address'))
-        id1['interface'] = flask.request.form.get('id1_BME280_interface')
-        id1['name'] = flask.request.form.get('id1_BME280_name')
-        id1['read_interval'] = int(flask.request.form.get('id1_BME280_read_interval'))
-        id1['use'] = bool(flask.request.form.get('id1_BME280_use'))
-        id1['id'] = 'id1'
-        id2 = {}
-        id2['serial_port'] = flask.request.form.get('id2_BME280_serial_port')
-        id2['interface'] = flask.request.form.get('id2_BME280_interface')
-        id2['name'] = flask.request.form.get('id2_BME280_name')
-        id2['read_interval'] = int(flask.request.form.get('id2_BME280_read_interval'))
-        id2['use'] = bool(flask.request.form.get('id2_BME280_use'))
-        id2['id'] = 'id2'
-        id3 = {}
-        id3['serial_port'] = flask.request.form.get('id3_BME280_serial_port')
-        id3['interface'] = flask.request.form.get('id3_BME280_interface')
-        id3['name'] = flask.request.form.get('id3_BME280_name')
-        id3['read_interval'] = int(flask.request.form.get('id3_BME280_read_interval'))
-        id3['use'] = bool(flask.request.form.get('id3_BME280_use'))
-        id3['id'] = 'id3'
-        BME280 = {}
-        BME280['id1'] = id1
-        BME280['id2'] = id2
-        BME280['id3'] = id3
-
-        CPU = {'temp': {'read_interval': int(flask.request.form.get('CPUtemp_read_interval'))}}
-
-        DHT = {}
-        DHT['name'] = flask.request.form.get('DHT_name')
-        DHT['pin'] = int(flask.request.form.get('DHT_pin'))
-        DHT['read_interval'] = int(flask.request.form.get('DHT_read_interval'))
-        DHT['type'] = flask.request.form.get('DHT_type')
-
 
         gpios = ['GPIO_5','GPIO_6','GPIO_12','GPIO_13','GPIO_16','GPIO_18','GPIO_19','GPIO_20','GPIO_21','GPIO_26']
         gpio = {}
@@ -213,6 +182,41 @@ def setup():
             a['name'] = flask.request.form.get(str(item) +'_name')
             a['hold_time'] = int(flask.request.form.get(str(item) +'_hold_time')) if flask.request.form.get(str(item) +'_hold_time') != '' else ''
             gpio[item] = a 
+
+        BME280 = {}
+        id1 = {}
+        id1['i2c_address'] = int(flask.request.form.get('id1_BME280_i2c_address'))
+        id1['interface'] = flask.request.form.get('id1_BME280_interface')
+        id1['name'] = flask.request.form.get('id1_BME280_name')
+        id1['read_interval'] = int(flask.request.form.get('id1_BME280_read_interval'))
+        id1['use'] = bool(flask.request.form.get('id1_BME280_use'))
+        id1['id'] = 'id1'
+        BME280['id1'] = id1
+        id2 = {}
+        id2['serial_port'] = flask.request.form.get('id2_BME280_serial_port')
+        id2['interface'] = flask.request.form.get('id2_BME280_interface')
+        id2['name'] = flask.request.form.get('id2_BME280_name')
+        id2['read_interval'] = int(flask.request.form.get('id2_BME280_read_interval'))
+        id2['use'] = bool(flask.request.form.get('id2_BME280_use'))
+        id2['id'] = 'id2'
+        BME280['id2'] = id2
+        id3 = {}
+        id3['serial_port'] = flask.request.form.get('id3_BME280_serial_port')
+        id3['interface'] = flask.request.form.get('id3_BME280_interface')
+        id3['name'] = flask.request.form.get('id3_BME280_name')
+        id3['read_interval'] = int(flask.request.form.get('id3_BME280_read_interval'))
+        id3['use'] = bool(flask.request.form.get('id3_BME280_use'))
+        id3['id'] = 'id3'
+        BME280['id3'] = id3
+
+        CPU = {'temp': {'read_interval': int(flask.request.form.get('CPUtemp_read_interval'))}}
+
+        DHT = {}
+        DHT['name'] = flask.request.form.get('DHT_name')
+        DHT['pin'] = int(flask.request.form.get('DHT_pin'))
+        DHT['read_interval'] = int(flask.request.form.get('DHT_read_interval'))
+        DHT['type'] = flask.request.form.get('DHT_type')
+
 
         PICAMERA = {}
         PICAMERA['fps'] = int(flask.request.form.get('picamera_fps'))
@@ -254,11 +258,6 @@ def setup():
         WEATHER['RAINFALL'] = RAINFALL
         WEATHER['WIND'] = WIND
 
-        sensors = {}
-        sensors['CPU'] = CPU
-        sensors['PICAMERA'] = PICAMERA
-        sensors['BME280'] = BME280
-
         DS18B20 = {}
         addresses = {}
         DS18B20['addresses'] = addresses
@@ -270,16 +269,20 @@ def setup():
             DS18B20['addresses'] = addresses
         ONE_WIRE = {}
         ONE_WIRE['DS18B20'] = DS18B20
-        sensors['ONE_WIRE'] = ONE_WIRE
 
+        sensors = {}
+        sensors['CPU'] = CPU
+        sensors['PICAMERA'] = PICAMERA
+        sensors['BME280'] = BME280
+        sensors['ONE_WIRE'] = ONE_WIRE
         sensors['DHT'] = DHT
         sensors['WEATHER'] = WEATHER
 
+        _rpims = {}
         _rpims['setup'] = setup
-        _rpims['sensors'] = sensors
-        _rpims['gpio'] = gpio
         _rpims['zabbix_agent'] = zabbix_agent
-
+        _rpims['gpio'] = gpio
+        _rpims['sensors'] = sensors
 
         zabbix_config = []
         zabbix_config.append(f'Server=127.0.0.1,{zabbix_agent.get("zabbix_server")}')
@@ -306,7 +309,6 @@ def setup():
         uv4l_raspicam_config.append('video-denoise = no')
         uv4l_raspicam_config.append('server-option = --www-webrtc-signaling-path=/webrtc')
         uv4l_raspicam_config.append(f'rotation = {int(flask.request.form.get("picamera_rotation"))}')
-
         uv4l_raspicam_config.append(f'width = {picamera_width}')
         uv4l_raspicam_config.append(f'height = {picamera_height}')
         uv4l_raspicam_config.append(f'framerate = {int(flask.request.form.get("picamera_fps"))}')
