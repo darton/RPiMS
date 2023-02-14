@@ -12,6 +12,8 @@ from time import sleep
 app = flask.Flask(__name__)
 app.config["SECRET_KEY"] = 'b8f475757df5dc1cabfed8aee1ca84a6'
 app.config["DEBUG"] = True
+app.config["JSON_AS_ASCII"] = False
+app.config["JSONIFY_MIMETYPE"] = "application/json; charset=utf-8"
 
 
 redis_db = redis.StrictRedis(host="localhost", port=6379, db=0, charset="utf-8", decode_responses=True)
@@ -68,7 +70,7 @@ def api_json():
     data = get_data()
     response = flask.jsonify(data)
     response.status_code = 200
-    response.headers["Content-Type"] = "application/json; charset=utf-8"
+    #response.headers["Content-Type"] = "application/json; charset=utf-8"
     return response
 
 
