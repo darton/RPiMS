@@ -11,11 +11,11 @@ if [ ! "${systemd}" = "systemd" ]; then
   exit 100
 fi
 
-if dpkg -l | grep -Eqw "gdm3|sddm|lxdm|xdm|lightdm|slim|wdm"; then
-  echo "Please use a Lite version of the image"
-  echo "Exiting..."
-  exit 101
-fi
+#if dpkg -l | grep -Eqw "gdm3|sddm|lxdm|xdm|lightdm|slim|wdm"; then
+#  echo "Please use a Lite version of the image"
+#  echo "Exiting..."
+#  exit 101
+#fi
 
 repourl=https://github.com/darton/RPiMS/archive/refs/heads/flask.zip
 downloaddir=/tmp
