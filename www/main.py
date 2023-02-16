@@ -256,9 +256,9 @@ def setup():
         DS18B20 = {}
         addresses = {}
         DS18B20['addresses'] = addresses
-        DS18B20['read_interval'] = 2
+        DS18B20['read_interval'] = 1
+        DS18B20['read_interval'] = int(flask.request.form.get('DS18B20_read_interval'))
         if bool(flask.request.form.get('use_ds18b20_sensor')):
-            DS18B20['read_interval'] = int(flask.request.form.get('DS18B20_read_interval'))
             for item in flask.request.form.getlist('DS18B20_address'):
                 addresses[item]= {'name': flask.request.form.get('DS18B20_'+ str(item) + '_name')}
             DS18B20['addresses'] = addresses
@@ -315,8 +315,8 @@ def setup():
             yaml.dump(_rpims, f, default_flow_style=False, sort_keys=False, explicit_start=True)
         #return flask.jsonify(_rpims)
 
-        sleep(2)
-        return flask.redirect(flask.url_for('home'))
+        #sleep(2)
+        return flask.redirect(flask.url_for('setup'))
     return flask.render_template('setup.html',config = config, _DS18B20 = _DS18B20)
 
 @app.errorhandler(404)
