@@ -6,7 +6,7 @@
     <meta name="keywords" content="Raspberry Pi, Monitoring System, Sensors">
     <meta name="author" content="Dariusz Kowalczyk">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="/static/css/index.css">
+    <link rel="stylesheet" href="/static/css/index.css?v=002">
     <link rel="stylesheet" href="/static/css/w3.css">
     <link rel="stylesheet" href="/static/css/w3-colors-2020.css">
     <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
@@ -16,9 +16,9 @@
     <title>RPiMS</title>
   </head>
   <body>
-    <div class="w3-row w3-2020-ultramarine-green">
+    <div class="w3-row rpims-navbar-color">
         <div class="w3-dropdown-click">
-          <button onclick="toggleShowHide('NavBar')" class="w3-button w3-2020-ultramarine-green w3-xlarge">☰ Setup</button>
+          <button onclick="toggleShowHide('NavBar')" class="w3-button rpims-navbar-color w3-xlarge">☰ Setup</button>
           <div id="NavBar" class="w3-dropdown-content w3-bar-block w3-card-4 w3-animate-zoom">
             <a href="/" class="w3-bar-item w3-button w3-large">Home</a>
             <a href="/api/" class="w3-bar-item w3-button w3-large">API</a>
@@ -44,7 +44,7 @@
             </fieldset>
             <fieldset>
                 <legend>Zabbix Agent configuration</legend>
-                <div class="w3-row w3-2020-ultramarine-green">
+                <div class="w3-row rpims-navbar-color">
                         <div class="w3-container  w3-margin-top w3-margin-bottom">
                             <input id="use_zabbix_sender" name="use_zabbix_sender" type="checkbox" {{'checked="checked"' if config.setup.use_zabbix_sender else ""}} class="w3-check" value="true">
                             <label for="use_zabbix_sender">Use zabbix sender</label>
@@ -93,7 +93,7 @@
             </fieldset>
             <fieldset>
                 <legend>Serial display configuration</legend>
-                <div class="w3-row w3-2020-ultramarine-green">
+                <div class="w3-row rpims-navbar-color">
                     <div class="w3-container w3-margin-top w3-margin-bottom">
                         <input id="use_serial_display" name="use_serial_display" type="checkbox" {{'checked="checked"' if config.setup.use_serial_display else ""}} class="w3-check" id="use_serial_display" value="true">
                         <label for="use_serial_display">Use serial display</label>
@@ -129,7 +129,7 @@
             </fieldset>
             <fieldset>
                 <legend>Pi Camera configuration</legend>
-                <div class="w3-row w3-2020-ultramarine-green">
+                <div class="w3-row rpims-navbar-color">
                     <div class="w3-half w3-container w3-margin-top w3-margin-bottom">
                         <input id="use_picamera" name="use_picamera" type="checkbox" {{'checked="checked"' if config.setup.use_picamera else ""}} class="w3-check" id="use_picamera" value="true">
                         <label for="use_picamera">Use Picamera</label>
@@ -166,7 +166,7 @@
             </fieldset>
             <fieldset>
                 <legend>CPU sensor configuration</legend>
-                <div class="w3-row w3-2020-ultramarine-green">
+                <div class="w3-row rpims-navbar-color">
                     <div class="w3-container w3-margin-top w3-margin-bottom">
                         <input id="use_cpu_sensor" name="use_cpu_sensor" type="checkbox" {{'checked="checked"' if config.setup.use_cpu_sensor else ""}} class="w3-check" id="use_cpu_sensor" value="true">
                         <label for="use_cpu_sensor">Use CPU Sensor</label>
@@ -181,7 +181,7 @@
             </fieldset>
             <fieldset>
                 <legend>DS18B20 sensor configuration</legend>
-                <div class="w3-row w3-2020-ultramarine-green">
+                <div class="w3-row rpims-navbar-color">
                     <div class="w3-container w3-margin-top w3-margin-bottom">
                         <input id="use_ds18b20_sensor" name="use_ds18b20_sensor" type="checkbox" {{'checked="checked"' if config.setup.use_ds18b20_sensor else ""}} class="w3-check" id="use_ds18b20_sensor" value="true">
                         <label for="use_ds18b20_sensor">Use DS18B20 sensor</label>
@@ -214,14 +214,14 @@
             </fieldset>
             <fieldset>
                 <legend>BME280 sensor configuration</legend>
-                <div class="w3-row w3-2020-ultramarine-green">
+                <div class="w3-row rpims-navbar-color">
                     <div class="w3-container w3-margin-top w3-margin-bottom">
                         <input id="use_bme280_sensor" name="use_bme280_sensor" type="checkbox" {{'checked="checked"' if config.setup.use_bme280_sensor else ""}} class="w3-check" id="use_bme280_sensor" value="true">
                         <label for="use_bme280_sensor">Use BME280 sensor</label>
                     </div>
                 </div>
                 <div id="BME280_sensor" class="w3-row">
-                    <div class="w3-row w3-2020-ultramarine-green w3-margin-top">
+                    <div class="w3-row rpims-navbar-color w3-margin-top">
                         <div class="w3-container w3-margin-top w3-margin-bottom">
                             <input name="id1_BME280_use" type="checkbox" class="w3-check" {{'checked="checked"' if config.sensors.BME280.id1.use else ""}} id="id1_BME280_use" value="true">
                             <label for="id1_BME280_use">Use #1 BME280:</label>
@@ -254,7 +254,7 @@
                         </div>
                     </div>
 
-                    <div class="w3-row w3-2020-ultramarine-green w3-margin-top">
+                    <div class="w3-row rpims-navbar-color w3-margin-top">
                         <div class="w3-container w3-margin-top w3-margin-bottom">
                             <input name="id2_BME280_use" type="checkbox" {{'checked="checked"' if config.sensors.BME280.id2.use else ""}} class="w3-check" id="id2_BME280_use" value="true">
                             <label for="id2_BME280_use">Use #2 BME280:</label>
@@ -289,7 +289,7 @@
                         </div>
                     </div>
 
-                    <div class="w3-row w3-2020-ultramarine-green w3-margin-top">
+                    <div class="w3-row rpims-navbar-color w3-margin-top">
                         <div class="w3-container w3-margin-top w3-margin-bottom">
                             <input name="id3_BME280_use" type="checkbox" {{'checked="checked"' if config.sensors.BME280.id3.use else ""}} class="w3-check" id="id3_BME280_use" value="true">
                             <label for="id3_BME280_use">Use #3 BME280:</label>
@@ -327,7 +327,7 @@
             </fieldset>
             <fieldset>
                 <legend>DHT sensor configuration</legend>
-                <div class="w3-row w3-2020-ultramarine-green">
+                <div class="w3-row rpims-navbar-color">
                     <div class="w3-container w3-margin-top w3-margin-bottom">
                         <input id="use_dht_sensor" name="use_dht_sensor" type="checkbox" {{'checked="checked"' if config.setup.use_dht_sensor else ""}} class="w3-check" id="use_dht_sensor" value="true">
                         <label for="use_dht_sensor">Use DHT sensor</label>
@@ -362,7 +362,7 @@
             </fieldset>
             <fieldset>
                 <legend>Weather sensor configuration</legend>
-                <div class="w3-row w3-2020-ultramarine-green">
+                <div class="w3-row rpims-navbar-color">
                     <div class="w3-container w3-margin-top w3-margin-bottom">
                         <input name="use_weather_station" type="checkbox" {{'checked="checked"' if config.setup.use_weather_station else ""}} class="w3-check" id="use_weather_station" value="true">
                         <label for="use_weather_station">Use weather station</label>
@@ -370,7 +370,7 @@
                 </div>
                 <div id="weather_station" class="w3-row">
                     <div class="w3-row w3-2020-green-sheen w3-margin-top">
-                        <div class="w3-row w3-2020-ultramarine-green">
+                        <div class="w3-row rpims-navbar-color">
                             <div class="w3-container w3-margin-top w3-margin-bottom">
                             <input id="rainfall_use" name="rainfall_use" type="checkbox" {{'checked="checked"' if config.sensors.WEATHER.RAINFALL.use else ""}} class="w3-check" value="true">
                             <label for="rainfall_use">Use Rainfall:</label>
@@ -394,7 +394,7 @@
                         </div>
                     </div>
                     <div class="w3-row w3-2020-green-sheen w3-margin-top">
-                        <div class="w3-row w3-2020-ultramarine-green">
+                        <div class="w3-row rpims-navbar-color">
                             <div class="w3-container w3-margin-top w3-margin-bottom">
                                 <input id="windspeed_use" name="windspeed_use" type="checkbox" {{'checked="checked"' if config.sensors.WEATHER.WIND.SPEED.use else ""}} class="w3-check" value="true">
                                 <label for="windspeed_use">Use Wind speed:</label>
@@ -418,11 +418,11 @@
                         </div>
                     </div>
                     <div class="w3-row w3-2020-green-sheen w3-margin-top">
-                        <div class="w3-row w3-2020-ultramarine-green">
+                        <div class="w3-row rpims-navbar-color">
                             <div class="w3-container w3-margin-top w3-margin-bottom">
                                 <input id="winddirection_use" name="winddirection_use" type="checkbox" {{'checked="checked"' if config.sensors.WEATHER.WIND.DIRECTION.use else ""}} class="w3-check" value="true">
                                 <label for="winddirection_use">Use Wind direction:</label>
-                            </div>	
+                            </div>
                         </div>
                         <div class="w3-row w3-margin-bottom">
                         <div class="w3-quarter w3-container w3-margin-top">
@@ -460,11 +460,11 @@
             </fieldset>
             <fieldset>
                 <legend>GPIO configuration</legend>
-                <h2><input onclick="toggleShowHide('gpio')" type="button" value="GPIO" class="w3-btn w3-block w3-left-align w3-2020-ultramarine-green"></h2>
+                <h2 class="rpims-navbar-color"><input onclick="toggleShowHide('gpio')" type="button" value="GPIO" class="w3-btn w3-block w3-left-align"></h2>
                 <div id="gpio" class="w3-row w3-hide">
                     <br>
                     {% for _gpio in config.gpio: %}
-                    <div class='w3-row w3-2020-ultramarine-green'>
+                    <div class='w3-row rpims-navbar-color'>
                         <div class='w3-container w3-margin-top w3-margin-bottom'>
                         <label>GPIO {{ _gpio }}<input name='{{ _gpio }}_pin' type='hidden' value='{{ config.gpio[_gpio].pin }}'></label>
                         </div>

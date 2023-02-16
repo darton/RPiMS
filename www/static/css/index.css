@@ -106,7 +106,7 @@ td {
 .gauge__cover {
   width: 75%;
   height: 150%;
-  background: darkslategray;
+  background: #00283f;
   border-radius: 50%;
   position: absolute;
   top: 25%;
@@ -130,17 +130,24 @@ span {
   text-align: left;
 }
 
+.rpims-background-color
+{color:#fff;background-color:#00283f}
+
+.rpims-navbar-color
+{color:#fff;background-color:#00283f}
 
 .rpimsbg
 {
   /*background-color: steelblue;*/
   padding-bottom: 1px;
 }
+
 .header
 {
   padding: 1px;
   margin: 0px;
 }
+
 .footer
 {
   padding: 1px;
@@ -148,21 +155,21 @@ span {
 }
 
 .rpims {
-  background-color: darkslateblue;
+  background-color: #00283f;
   color: white;
   padding: 8px;
   margin: 10px;
   font-size: 4vw;
 }
+
 .sensors {
-  background-color: darkslategray;
+  background-color: #00283f;
   color: white;
   padding: 8px;
   margin: 10px;
   font-size: 4vw;
   text-align: center;
 }
-
 .table {
   background-color: darkslategray;
   color: white;
