@@ -12,7 +12,7 @@
     <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
     <script src="/static/js/jquery.min.js?v=3.6.3"></script>
     <script defer src="/static/js/navbar.js?v=002"></script>
-    <script defer src="/static/js/index.js?v=029"></script>
+    <script defer src="/static/js/index.js?v=041"></script>
     <title>RPiMS</title>
   </head>
   <body>
@@ -129,8 +129,8 @@
 {% endif %}
 {% if data.config.setup.use_ds18b20_sensor: %}
 {% for item in data.sensors.one_wire.ds18b20: %}
-      <div class='sensors'>
-        <div class='w3-container w3-margin'></div>
+      <div class='sensors ds18b20_sensors'>
+        <div class='w3-container w3-margin'>{{ data.config.sensors.ONE_WIRE.DS18B20.addresses[item].name }}</div>
           <div style='width: 100%; display: table;'>
             <div style='display: table-row'>
               <div class='gauge_ds18b20' id='DS18B20_{{item}}'>

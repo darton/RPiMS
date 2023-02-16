@@ -29,6 +29,9 @@ function hideFunction(id) {
             }
           }
 
+function getDS18B20Sensors() {
+    $.getJSON("/api/data/sensors/ds18b20", function(ds18b20data) { for (var sensorId in ds18b20data) {  console.log('DS18B20_' + sensorId); }});
+}
 
 document.addEventListener("DOMContentLoaded", () => {
 
@@ -126,7 +129,35 @@ $('#id1_BME280_interface').each(function(){
         });
 */
 
+$("#use_zabbix_sender").change(function() {
+    if(this.checked) {
+        showFunction('zabbix_config')
+    }
+    if (!(this.checked)) {
+        hideFunction('zabbix_config')
+    }
+});
+
+$("#use_zabbix_sender").each(function() {
+    if(this.checked) {
+        showFunction('zabbix_config')
+    }
+    if (!(this.checked)) {
+        hideFunction('zabbix_config')
+    }
+});
+
+
 $("#use_serial_display").change(function() {
+    if(this.checked) {
+        showFunction('serial_display')
+    }
+    if (!(this.checked)) {
+        hideFunction('serial_display')
+    }
+});
+
+$("#use_serial_display").each(function() {
     if(this.checked) {
         showFunction('serial_display')
     }

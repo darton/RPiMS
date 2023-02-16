@@ -12,7 +12,7 @@
     <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
     <script src="/static/js/jquery.min.js?v=3.6.3"></script>
     <script defer src="/static/js/navbar.js?v=002"></script>
-    <script defer src="/static/js/setup.js?v=013"></script>
+    <script defer src="/static/js/setup.js?v=018"></script>
     <title>RPiMS</title>
   </head>
   <body>
@@ -50,7 +50,7 @@
                             <label for="use_zabbix_sender">Use zabbix sender</label>
                         </div>
                 </div>
-                <div>
+                <div id="zabbix_config">
                     <div class="w3-row w3-2020-green-sheen">
                         <p>
                         <div class="w3-third w3-container w3-margin-bottom">
@@ -190,19 +190,22 @@
                 <div id="DS18B20_sensor" class="w3-row w3-2020-green-sheen">
                     <div class="w3-quarter w3-container w3-margin-top w3-margin-bottom">
                         <label for="DS18B20_read_interval">Read interval:</label>
-                        <input name="DS18B20_read_interval" class="w3-input" id="DS18B20_read_interval" type="number" min="2" max="3600" value="{{ config.sensors.ONE_WIRE.DS18B20.read_interval }}" >
-                        <br>
+                        <input name="DS18B20_read_interval" class="w3-input" id="DS18B20_read_interval" type="number" min="1" max="3600" value="{{ config.sensors.ONE_WIRE.DS18B20.read_interval }}" >
                     </div>
                     {% if config.setup.use_ds18b20_sensor: %}
+                    <div class="w3-container w3-margin-top w3-margin-bottom">
+                    <button type="button" onClick="window.location.href=window.location.href" >Discover sensors</button> <br>
+                    <p></p><b>Discovered sensors:</b></p> 
+                    </div>   
                     {% for item in _DS18B20 %}
                     <div class='w3-row w3-margin-top w3-margin-bottom' id='{{ item }}'>
                       <div class='w3-quarter w3-container w3-margin-bottom'>
                         <label for='{{ item }}'>Address:</label>
-                        <input id='{{ item }}' name='DS18B20_address' class='w3-input' type='text' value='{{ item }}'>
+                        <input id='{{ item }}' name='DS18B20_address' class='w3-input' type='text' value='{{ item }}' readonly>
                       </div>
                       <div class='w3-threequarter w3-container w3-margin-bottom'>
                         <label for='{{ item }}_name'> name:</label>
-                        <input id='{{ item }}_name' name='DS18B20_{{ item }}_name' class='w3-input' type='text' value=''>
+                        <input id='{{ item }}_name' name='DS18B20_{{ item }}_name' class='w3-input' type='text' value='{{ config.sensors.ONE_WIRE.DS18B20.addresses[item].name }}'>
                       </div>
                     </div>
                     {% endfor %}

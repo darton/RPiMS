@@ -160,58 +160,58 @@ function getJsonData() {
 
 
     if (data['config']['setup']['use_ds18b20_sensor'] == true & typeof(data['sensors']['one_wire']) !== 'undefined' ) {
-	$("#ds18b20_sensors").show();
-	var DS18B20 = {};
-	for (var DS18B20_id in data['sensors']['one_wire']['ds18b20']) {
-	    //console.log(DS18B20_id)
-	    DS18B20[DS18B20_id] = roundPrecised(data['sensors']['one_wire']['ds18b20'][DS18B20_id]['temperature'],1);
-	    //console.log(DS18B20[DS18B20_id])
-	}
-	var DS18B20_prefix = 'DS18B20_';
-	for (var DS18B20_id in data['sensors']['one_wire']['ds18b20']) {
-	    var sensor_name = DS18B20_prefix + DS18B20_id;
-	    var sensor_value = DS18B20[DS18B20_id];
-	    //console.log(eval(sensor_name));
-	    if (!!sensor_value) {
-		setGaugeValue(eval(sensor_name), sensor_value/100, 100, "°C");
-	    }
-	    else {
-		setGaugeValue(eval(sensor_name), "NULL", "", "");
-	    }
-	}
+		$(".ds18b20_sensors").show();
+		var DS18B20 = {};
+		for (var DS18B20_id in data['sensors']['one_wire']['ds18b20']) {
+			//console.log(DS18B20_id)
+			DS18B20[DS18B20_id] = roundPrecised(data['sensors']['one_wire']['ds18b20'][DS18B20_id]['temperature'],1);
+			//console.log(DS18B20[DS18B20_id])
+		}
+		var DS18B20_prefix = 'DS18B20_';
+		for (var DS18B20_id in data['sensors']['one_wire']['ds18b20']) {
+			var sensor_name = DS18B20_prefix + DS18B20_id;
+			var sensor_value = DS18B20[DS18B20_id];
+			//console.log(sensor_name);
+			if (!!sensor_value) {
+				$("#" + sensor_name).show();
+				setGaugeValue(eval(sensor_name), sensor_value/100, 100, "°C");
+			}
+			else {
+				$("#" + sensor_name).hide();
+				setGaugeValue(eval(sensor_name), "NULL", "", "");
+			}
+		}
     }
     else {
-	$("#ds18b20_sensors").hide();
+		$(".ds18b20_sensors").hide();
     }
 
     if (data['config']['setup']['use_weather_station'] == true) {
-	if (data['config']['sensors']['WEATHER']['WIND']['SPEED']['use'] == true) {
-	    $("#wind_speed").html(data['sensors']['weather_station']['wind_speed']);
-	    $("#average_wind_speed").html(data['sensors']['weather_station']['average_wind_speed']);
-	    $("#wind_gust").html(data['sensors']['weather_station']['wind_gust']);
-	    $("#daily_wind_gust").html(data['sensors']['weather_station']['daily_wind_gust']);
-	    $("#daily_average_wind_speed").html(data['sensors']['weather_station']['daily_average_wind_speed']);
-	    //const gws = document.querySelector("#gws");
-	    //const gwg = document.querySelector("#gwg");
-	    //const gwg24h = document.querySelector("#gwg24h");
-	    const gws = $("#gws")[0];
-	    const gwg = $("#gwg")[0];
-	    const gwg24h = $("#gwg24h")[0];
-	    var WindSpeed = Math.round(data['sensors']['weather_station']['wind_speed']);
-	    var WindGust = Math.round(data['sensors']['weather_station']['wind_gust']);
-	    var WindGust24h = Math.round(data['sensors']['weather_station']['daily_wind_gust']);
-	    setGaugeValue(gws, WindSpeed/100, 100, "km/h");
-	    setGaugeValue(gwg, WindGust/100, 100, "km/h");
-	    setGaugeValue(gwg24h, WindGust24h/100, 100, "km/h");
-	}
-	if (data['config']['sensors']['WEATHER']['WIND']['DIRECTION']['use'] == true) {
-	    $("#average_wind_direction").html(data['sensors']['weather_station']['average_wind_direction']);
-	}
-	if (data['config']['sensors']['WEATHER']['RAINFALL']['use'] == true) {
-	    $("#daily_rainfall").html(data['sensors']['weather_station']['daily_rainfall']);
-	}
-
-
+		if (data['config']['sensors']['WEATHER']['WIND']['SPEED']['use'] == true) {
+			$("#wind_speed").html(data['sensors']['weather_station']['wind_speed']);
+			$("#average_wind_speed").html(data['sensors']['weather_station']['average_wind_speed']);
+			$("#wind_gust").html(data['sensors']['weather_station']['wind_gust']);
+			$("#daily_wind_gust").html(data['sensors']['weather_station']['daily_wind_gust']);
+			$("#daily_average_wind_speed").html(data['sensors']['weather_station']['daily_average_wind_speed']);
+			//const gws = document.querySelector("#gws");
+			//const gwg = document.querySelector("#gwg");
+			//const gwg24h = document.querySelector("#gwg24h");
+			const gws = $("#gws")[0];
+			const gwg = $("#gwg")[0];
+			const gwg24h = $("#gwg24h")[0];
+			var WindSpeed = Math.round(data['sensors']['weather_station']['wind_speed']);
+			var WindGust = Math.round(data['sensors']['weather_station']['wind_gust']);
+			var WindGust24h = Math.round(data['sensors']['weather_station']['daily_wind_gust']);
+			setGaugeValue(gws, WindSpeed/100, 100, "km/h");
+			setGaugeValue(gwg, WindGust/100, 100, "km/h");
+			setGaugeValue(gwg24h, WindGust24h/100, 100, "km/h");
+		}
+		if (data['config']['sensors']['WEATHER']['WIND']['DIRECTION']['use'] == true) {
+			$("#average_wind_direction").html(data['sensors']['weather_station']['average_wind_direction']);
+		}
+		if (data['config']['sensors']['WEATHER']['RAINFALL']['use'] == true) {
+			$("#daily_rainfall").html(data['sensors']['weather_station']['daily_rainfall']);
+		}
     }
 
   });
