@@ -8,6 +8,7 @@ function generateP(lenght) {
         return RandomHex(lenght);
         }
 
+
 function gfg_Run(psk_len,id) {
             document.getElementById(id).value =  generateP(psk_len);
         }
@@ -21,6 +22,7 @@ function showFunction(id) {
             }
           }
 
+
 function hideFunction(id) {
             var x = document.getElementById(id);
             if (x.className.indexOf("w3-hide") == -1) {
@@ -29,36 +31,38 @@ function hideFunction(id) {
             }
           }
 
+
 function getDS18B20Sensors() {
     $.getJSON("/api/data/sensors/ds18b20", function(ds18b20data) { for (var sensorId in ds18b20data) {  console.log('DS18B20_' + sensorId); }});
 }
 
+
 //document.addEventListener("DOMContentLoaded", () => {
 $(function(){
 
-var select2 = document.body.querySelector('#id2_BME280_serial_port_select')
-var select3 = document.body.querySelector('#id3_BME280_serial_port_select')
+  var select2 = document.body.querySelector('#id2_BME280_serial_port_select')
+  var select3 = document.body.querySelector('#id3_BME280_serial_port_select')
 
-var select3si = document.body.querySelector('#id3_BME280_serial_port_select').selectedIndex
-for ( var i=0; i<select2.length; i++ ) {
+  var select3si = document.body.querySelector('#id3_BME280_serial_port_select').selectedIndex
+  for ( var i=0; i<select2.length; i++ ) {
     if (select2.options[i].value == select3.options[select3si].value){
 	    select2.remove(i);
     }
-}
+  }
 
-var select2si = document.body.querySelector('#id2_BME280_serial_port_select').selectedIndex
-for ( var i=0; i<select3.length; i++ ) {
+  var select2si = document.body.querySelector('#id2_BME280_serial_port_select').selectedIndex
+  for ( var i=0; i<select3.length; i++ ) {
     if (select3.options[i].value == select2.options[select2si].value) {
 	    select3.remove(i);
     }
-}
+  }
 
-var id2_selectedport = $('#id2_BME280_serial_port_select').children("option:selected").val();
-//var id2_selectedid = $('#id2_BME280_serial_port_select').attr('id');
-var id3_selectedport = $('#id3_BME280_serial_port_select').children("option:selected").val();
-//var id3_selectedid = $('#id3_BME280_serial_port_select').attr('id');
+  var id2_selectedport = $('#id2_BME280_serial_port_select').children("option:selected").val();
+  //var id2_selectedid = $('#id2_BME280_serial_port_select').attr('id');
+  var id3_selectedport = $('#id3_BME280_serial_port_select').children("option:selected").val();
+  //var id3_selectedid = $('#id3_BME280_serial_port_select').attr('id');
 
-$('.serial-port').change(function() {
+  $('.serial-port').change(function() {
     var selectedport = $(this).children("option:selected").val();
     var selectedid = $(this).attr('id');
     if (selectedid == 'id2_BME280_serial_port_select') {
@@ -74,11 +78,11 @@ $('.serial-port').change(function() {
         id3_selectedport = $('#id3_BME280_serial_port_select').children("option:selected").val();
         //console.log(selectedport,selectedid);
     }
-})
+  })
 
-/* When the page is loaded it shows the input Hold Time for the GPIO Button input type.
-Hides the field for another GPIO input type value.  */
-$('.gpioinputs').each(function() {
+  /* When the page is loaded it shows the input Hold Time for the GPIO Button input type.
+  Hides the field for another GPIO input type value.  */
+  $('.gpioinputs').each(function() {
             var selectedGPIOtype = $(this).children("option:selected").val();
             var z = $(this).attr('id') + "_" + 'DS'
             if (selectedGPIOtype == 'DoorSensor' || selectedGPIOtype == 'ShutdownButton' ) {
@@ -89,10 +93,10 @@ $('.gpioinputs').each(function() {
             }
         });
 
-/* Shows input Hold Time when GPIO input type is selected as Button,
-and sets default hold time value to 1. 
-Hides this field when other GPIO input type is selected. */
-$('.gpioinputs').change(function(){
+  /* Shows input Hold Time when GPIO input type is selected as Button,
+  and sets default hold time value to 1. 
+  Hides this field when other GPIO input type is selected. */
+  $('.gpioinputs').change(function(){
             var selectedGPIOtype = $(this).children("option:selected").val();
             var z = $(this).attr('id') + "_" + 'DS'
             if (selectedGPIOtype == 'DoorSensor' || selectedGPIOtype == 'ShutdownButton') {
@@ -104,8 +108,8 @@ $('.gpioinputs').change(function(){
             }
         });
 
-/*
-$('#id1_BME280_interface').change(function(){
+  /*
+  $('#id1_BME280_interface').change(function(){
             var selectedInterfacetype = $(this).children("option:selected").val();
             if (selectedInterfacetype == 'i2c') {
                 $("#id1_BME280_i2c_address").show();
@@ -117,7 +121,7 @@ $('#id1_BME280_interface').change(function(){
             }
         });
 
-$('#id1_BME280_interface').each(function(){
+  $('#id1_BME280_interface').each(function(){
             var selectedInterfacetype = $(this).children("option:selected").val();
             if (selectedInterfacetype == 'i2c') {
                 $("#id1_BME280_i2c_address").show();
@@ -128,205 +132,46 @@ $('#id1_BME280_interface').each(function(){
                 $("#id1_BME280_serial_port").show();
             }
         });
-*/
+ */
 
-$("#use_zabbix_sender").change(function() {
+  var use_sensors = { 
+    use_zabbix_sender: "zabbix_config",
+    use_serial_display: "serial_display",
+    use_picamera: "picamera",
+    use_weather_station: "weather_station",
+    use_dht_sensor: "DHT_sensor",
+    use_bme280_sensor: "BME280_sensor",
+    id1_BME280_use: "id1_BME280",
+    id2_BME280_use: "id2_BME280",
+    id3_BME280_use: "id3_BME280",
+    use_ds18b20_sensor: "DS18B20_sensor",
+    use_cpu_sensor: "CPU_sensor"
+  };
+
+  function shid(key,value){
+   $("#" + key).change(function() {
     if(this.checked) {
-        showFunction('zabbix_config')
+        showFunction(value)
     }
     if (!(this.checked)) {
-        hideFunction('zabbix_config')
+        hideFunction(value)
     }
-});
+  });
 
-$("#use_zabbix_sender").each(function() {
+   $("#" + key).each(function() {
     if(this.checked) {
-        showFunction('zabbix_config')
+        showFunction(value)
     }
     if (!(this.checked)) {
-        hideFunction('zabbix_config')
+        hideFunction(value)
     }
-});
+   });
+  }
 
-
-$("#use_serial_display").change(function() {
-    if(this.checked) {
-        showFunction('serial_display')
-    }
-    if (!(this.checked)) {
-        hideFunction('serial_display')
-    }
-});
-
-$("#use_serial_display").each(function() {
-    if(this.checked) {
-        showFunction('serial_display')
-    }
-    if (!(this.checked)) {
-        hideFunction('serial_display')
-    }
-});
-
-$("#use_picamera").change(function() {
-    if(this.checked) {
-        showFunction('picamera')
-    }
-    if (!(this.checked)) {
-        hideFunction('picamera')
-    }
-});
-
-$("#use_picamera").each(function() {
-    if(this.checked) {
-        showFunction('picamera')
-    }
-    if (!(this.checked)) {
-        hideFunction('picamera')
-    }
-});
-
-$("#use_weather_station").change(function() {
-    if(this.checked) {
-        showFunction('weather_station')
-    }
-    if (!(this.checked)) {
-        hideFunction('weather_station')
-    }
-});
-
-$("#use_weather_station").each(function() {
-    if(this.checked) {
-        showFunction('weather_station')
-    }
-    if (!(this.checked)) {
-        hideFunction('weather_station')
-    }
-});
-
-$("#use_dht_sensor").change(function() {
-    if(this.checked) {
-        showFunction('DHT_sensor')
-    }
-    if (!(this.checked)) {
-        hideFunction('DHT_sensor')
-    }
-});
-
-$("#use_dht_sensor").each(function() {
-    if(this.checked) {
-        showFunction('DHT_sensor')
-    }
-    if (!(this.checked)) {
-        hideFunction('DHT_sensor')
-    }
-});
-
-$("#use_bme280_sensor").change(function() {
-    if(this.checked) {
-        showFunction('BME280_sensor')
-    }
-    if (!(this.checked)) {
-        hideFunction('BME280_sensor')
-    }
-});
-
-$("#use_bme280_sensor").each(function() {
-    if(this.checked) {
-        showFunction('BME280_sensor')
-    }
-    if (!(this.checked)) {
-        hideFunction('BME280_sensor')
-    }
-});
-
-$("#id1_BME280_use").change(function() {
-    if(this.checked) {
-        showFunction('id1_BME280')
-    }
-    if (!(this.checked)) {
-        hideFunction('id1_BME280')
-    }
-});
-
-$("#id1_BME280_use").each(function() {
-    if(this.checked) {
-        showFunction('id1_BME280')
-    }
-    if (!(this.checked)) {
-        hideFunction('id1_BME280')
-    }
-});
-
-$("#id2_BME280_use").change(function() {
-    if(this.checked) {
-        showFunction('id2_BME280')
-    }
-    if (!(this.checked)) {
-        hideFunction('id2_BME280')
-    }
-});
-
-$("#id2_BME280_use").each(function() {
-    if(this.checked) {
-        showFunction('id2_BME280')
-    }
-    if (!(this.checked)) {
-        hideFunction('id2_BME280')
-    }
-});
-
-$("#id3_BME280_use").change(function() {
-    if(this.checked) {
-        showFunction('id3_BME280')
-    }
-    if (!(this.checked)) {
-        hideFunction('id3_BME280')
-    }
-});
-
-$("#id3_BME280_use").each(function() {
-    if(this.checked) {
-        showFunction('id3_BME280')
-    }
-    if (!(this.checked)) {
-        hideFunction('id3_BME280')
-    }
-});
-
-$("#use_ds18b20_sensor").change(function() {
-    if(this.checked) {
-        showFunction('DS18B20_sensor')
-    }
-    if (!(this.checked)) {
-        hideFunction('DS18B20_sensor')
-    }
-});
-
-$("#use_ds18b20_sensor").each(function() {
-    if(this.checked) {
-        showFunction('DS18B20_sensor')
-    }
-    if (!(this.checked)) {
-        hideFunction('DS18B20_sensor')
-    }
-});
-
-$("#use_cpu_sensor").change(function() {
-    if(this.checked) {
-        showFunction('CPU_sensor')
-    }
-    if (!(this.checked)) {
-        hideFunction('CPU_sensor')
-    }
-});
-
-$("#use_cpu_sensor").each(function() {
-    if(this.checked) {
-        showFunction('CPU_sensor')
-    }
-    if (!(this.checked)) {
-        hideFunction('CPU_sensor')
-    }
-});
+  for (var key in use_sensors) {
+    var value = use_sensors[key];
+    //console.log(key, value);
+    shid(key,value);
+  }
 
 });
