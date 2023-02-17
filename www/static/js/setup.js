@@ -33,7 +33,8 @@ function getDS18B20Sensors() {
     $.getJSON("/api/data/sensors/ds18b20", function(ds18b20data) { for (var sensorId in ds18b20data) {  console.log('DS18B20_' + sensorId); }});
 }
 
-document.addEventListener("DOMContentLoaded", () => {
+//document.addEventListener("DOMContentLoaded", () => {
+$(function(){
 
 var select2 = document.body.querySelector('#id2_BME280_serial_port_select')
 var select3 = document.body.querySelector('#id3_BME280_serial_port_select')
@@ -327,6 +328,5 @@ $("#use_cpu_sensor").each(function() {
         hideFunction('CPU_sensor')
     }
 });
-
 
 });
