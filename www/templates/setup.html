@@ -195,8 +195,8 @@
                     {% if config.setup.use_ds18b20_sensor: %}
                     <div class="w3-container w3-margin-top w3-margin-bottom">
                     <button type="button" onClick="window.location.href=window.location.href" >Discover sensors</button> <br>
-                    <p></p><b>Discovered sensors:</b></p> 
-                    </div>   
+                    <p><b>Discovered sensors:</b></p>
+                    </div>
                     {% for item in _DS18B20 %}
                     <div class='w3-row w3-margin-top w3-margin-bottom' id='{{ item }}'>
                       <div class='w3-quarter w3-container w3-margin-bottom'>
