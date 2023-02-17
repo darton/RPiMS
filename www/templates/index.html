@@ -130,7 +130,7 @@
 {% if data.config.setup.use_ds18b20_sensor: %}
 {% for item in data.sensors.one_wire.ds18b20: %}
       <div class='sensors ds18b20_sensors'>
-        <div class='w3-container w3-margin'>{{ data.config.sensors.ONE_WIRE.DS18B20.addresses[item].name }}</div>
+        <div class='w3-container w3-margin'>{{ data.config.sensors.ONE_WIRE.DS18B20.addresses.get(item).name if data.config.sensors.ONE_WIRE.DS18B20.addresses.get(item).name else item }}</div>
           <div style='width: 100%; display: table;'>
             <div style='display: table-row'>
               <div class='gauge_ds18b20' id='DS18B20_{{item}}'>

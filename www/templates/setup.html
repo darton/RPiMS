@@ -205,7 +205,7 @@
                       </div>
                       <div class='w3-threequarter w3-container w3-margin-bottom'>
                         <label for='{{ item }}_name'> name:</label>
-                        <input id='{{ item }}_name' name='DS18B20_{{ item }}_name' class='w3-input' type='text' value='{{ config.sensors.ONE_WIRE.DS18B20.addresses[item].name }}'>
+                        <input id='{{ item }}_name' name='DS18B20_{{ item }}_name' class='w3-input' type='text' value='{{ config.sensors.ONE_WIRE.DS18B20.addresses.get(item).name if config.sensors.ONE_WIRE.DS18B20.addresses.get(item).name else item }}'>
                       </div>
                     </div>
                     {% endfor %}
@@ -492,7 +492,7 @@
                             </div>
                         </div>
                     </div>
-                    {% endfor%}       
+                    {% endfor%}
                 </div>
             </fieldset>
             <fieldset>
