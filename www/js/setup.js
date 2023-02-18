@@ -136,185 +136,42 @@ $('#id1_BME280_interface').each(function(){
         });
 */
 
-$("#use_serial_display").change(function() {
+  var use_sensors = { 
+    use_serial_display: "serial_display",
+    use_picamera: "picamera",
+    use_weather_station: "weather_station",
+    use_dht_sensor: "DHT_sensor",
+    use_bme280_sensor: "BME280_sensor",
+    id1_BME280_use: "id1_BME280",
+    id2_BME280_use: "id2_BME280",
+    id3_BME280_use: "id3_BME280",
+    use_ds18b20_sensor: "DS18B20_sensor",
+    use_cpu_sensor: "CPU_sensor"
+  };
+
+  function shid(key,value){
+   $("#" + key).change(function() {
     if(this.checked) {
-        showFunction('serial_display')
+        showFunction(value)
     }
     if (!(this.checked)) {
-        hideFunction('serial_display')
+        hideFunction(value)
     }
-});
+  });
 
-$("#use_serial_display").each(function() {
+   $("#" + key).each(function() {
     if(this.checked) {
-        showFunction('serial_display') 
+        showFunction(value)
     }
     if (!(this.checked)) {
-        hideFunction('serial_display')
+        hideFunction(value)
     }
-});
+   });
+  }
 
-$("#use_picamera").change(function() {
-    if(this.checked) {
-        showFunction('picamera')
-    }
-    if (!(this.checked)) {
-        hideFunction('picamera')
-    }
-});
-
-$("#use_picamera").each(function() {
-    if(this.checked) {
-        showFunction('picamera')
-    }
-    if (!(this.checked)) {
-        hideFunction('picamera')
-    }
-});
-
-$("#use_weather_station").change(function() {
-    if(this.checked) {
-        showFunction('weather_station')
-    }
-    if (!(this.checked)) {
-        hideFunction('weather_station')
-    }
-});
-
-$("#use_weather_station").each(function() {
-    if(this.checked) {
-        showFunction('weather_station')
-    }
-    if (!(this.checked)) {
-        hideFunction('weather_station')
-    }
-});
-
-$("#use_dht_sensor").change(function() {
-    if(this.checked) {
-        showFunction('DHT_sensor')
-    }
-    if (!(this.checked)) {
-        hideFunction('DHT_sensor')
-    }
-});
-
-$("#use_dht_sensor").each(function() {
-    if(this.checked) {
-        showFunction('DHT_sensor')
-    }
-    if (!(this.checked)) {
-        hideFunction('DHT_sensor')
-    }
-});
-
-$("#use_bme280_sensor").change(function() {
-    if(this.checked) {
-        showFunction('BME280_sensor')
-    }
-    if (!(this.checked)) {
-        hideFunction('BME280_sensor')
-    }
-});
-
-$("#use_bme280_sensor").each(function() {
-    if(this.checked) {
-        showFunction('BME280_sensor')
-    }
-    if (!(this.checked)) {
-        hideFunction('BME280_sensor')
-    }
-});
-
-$("#id1_BME280_use").change(function() {
-    if(this.checked) {
-        showFunction('id1_BME280')
-    }
-    if (!(this.checked)) {
-        hideFunction('id1_BME280')
-    }
-});
-
-$("#id1_BME280_use").each(function() {
-    if(this.checked) {
-        showFunction('id1_BME280')
-    }
-    if (!(this.checked)) {
-        hideFunction('id1_BME280')
-    }
-});
-
-$("#id2_BME280_use").change(function() {
-    if(this.checked) {
-        showFunction('id2_BME280')
-    }
-    if (!(this.checked)) {
-        hideFunction('id2_BME280')
-    }
-});
-
-$("#id2_BME280_use").each(function() {
-    if(this.checked) {
-        showFunction('id2_BME280')
-    }
-    if (!(this.checked)) {
-        hideFunction('id2_BME280')
-    }
-});
-
-$("#id3_BME280_use").change(function() {
-    if(this.checked) {
-        showFunction('id3_BME280')
-    }
-    if (!(this.checked)) {
-        hideFunction('id3_BME280')
-    }
-});
-
-$("#id3_BME280_use").each(function() {
-    if(this.checked) {
-        showFunction('id3_BME280')
-    }
-    if (!(this.checked)) {
-        hideFunction('id3_BME280')
-    }
-});
-
-$("#use_ds18b20_sensor").change(function() {
-    if(this.checked) {
-        showFunction('DS18B20_sensor')
-    }
-    if (!(this.checked)) {
-        hideFunction('DS18B20_sensor')
-    }
-});
-
-$("#use_ds18b20_sensor").each(function() {
-    if(this.checked) {
-        showFunction('DS18B20_sensor')
-    }
-    if (!(this.checked)) {
-        hideFunction('DS18B20_sensor')
-    }
-});
-
-$("#use_cpu_sensor").change(function() {
-    if(this.checked) {
-        showFunction('CPU_sensor')
-    }
-    if (!(this.checked)) {
-        hideFunction('CPU_sensor')
-    }
-});
-
-$("#use_cpu_sensor").each(function() {
-    if(this.checked) {
-        showFunction('CPU_sensor')
-    }
-    if (!(this.checked)) {
-        hideFunction('CPU_sensor')
-    }
-});
-
+  for (var key in use_sensors) {
+    var value = use_sensors[key];
+    shid(key,value);
+  }
 
 });

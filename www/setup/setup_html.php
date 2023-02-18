@@ -10,7 +10,7 @@
         <link rel="stylesheet" href="/css/w3-colors-2020.css">
         <script src="/js/jquery.min.js"></script>
         <script src="/js/navbar.js"></script>
-        <script src="/js/setup.js" defer></script>
+        <script src="/js/setup.js?v=001" defer></script>
         <title>RPiMS configuration</title>
     </head>
     <body>
