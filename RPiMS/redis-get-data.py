@@ -37,14 +37,18 @@ if len(sys.argv) > 1:
                     temperature = _bme280['temperature']
                     humidity = _bme280['humidity']
                     pressure = _bme280['pressure']
-                    print('Temperature={0:0.2f};Humidity={1:0.2f};Pressure={2:0.2f};'.format(float(temperature),float(humidity),float(pressure)))
-            else: print_help()
+                    print('Temperature={0:0.2f}; \
+                          Humidity={1:0.2f}; \
+                          Pressure={2:0.2f};'
+                          .format(float(temperature), float(humidity), float(pressure)))
+            else:
+                print_help()
 
     elif sys.argv[1] == 'DS18B20':
         if config['use_ds18b20_sensor'] is True:
             ds18b20_sensors = redis_db.hgetall('DS18B20')
             for sensor_id, sensor_value in ds18b20_sensors.items():
-              print(sensor_id + '={0:0.2f}'.format(float(sensor_value)), end=';')
+                print(sensor_id + '={0:0.2f}'.format(float(sensor_value)), end=';')
 
     elif sys.argv[1] == 'ds18b20':
         if config['use_ds18b20_sensor'] is True:
@@ -53,7 +57,8 @@ if len(sys.argv) > 1:
                 ds18b20_sensors = redis_db.hgetall('DS18B20')
                 if ds18b20_sensors[onewire_addr]:
                     print(ds18b20_sensors[onewire_addr])
-            else: print_help()
+            else:
+                print_help()
 
     elif sys.argv[1] == 'DHT':
         if config['use_dht_sensor'] is True:
@@ -61,7 +66,7 @@ if len(sys.argv) > 1:
                 dht = redis_db.hgetall('DHT')
                 temperature = dht['temperature']
                 humidity = dht['humidity']
-                print('Temperature={0:0.2f};Humidity={1:0.2f};'.format(float(temperature),float(humidity)))
+                print('Temperature={0:0.2f};Humidity={1:0.2f};'.format(float(temperature), float(humidity)))
 
     elif sys.argv[1] == 'CPUTEMP':
         if config['use_cpu_sensor'] is True:
@@ -70,4 +75,3 @@ if len(sys.argv) > 1:
                 print('CPUTemperature' + '={0:0.2f};'.format(float(temperature)))
 else:
     print_help()
-
