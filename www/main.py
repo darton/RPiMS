@@ -1,13 +1,13 @@
-import os
-import yaml
+# import os
+# import yaml
 import flask
 import redis
 import json
-import requests
-from time import sleep
-#from flask_wtf import FlaskForm
-#from wtforms import StringField, TextAreaField, SubmitField
-#from wtforms.validators import DataRequired, Email
+# import requests
+# from time import sleep
+# from flask_wtf import FlaskForm
+# from wtforms import StringField, TextAreaField, SubmitField
+# from wtforms.validators import DataRequired, Email
 
 app = flask.Flask(__name__)
 app.config["SECRET_KEY"] = 'b8f475757df5dc1cabfed8aee1ca84a6'
@@ -17,12 +17,13 @@ app.config["JSONIFY_MIMETYPE"] = "application/json; charset=utf-8"
 
 redis_db = redis.StrictRedis(host="localhost", port=6379, db=0, charset="utf-8", decode_responses=True)
 
+
 def get_data():
     rpims = json.loads(redis_db.get('rpims'))
     SENSORS = {}
     if rpims['setup']['use_cpu_sensor']:
         CPU_Temperature = redis_db.get('CPU_Temperature')
-        SENSORS['cpu'] = {'temperature':CPU_Temperature}
+        SENSORS['cpu'] = {'temperature': CPU_Temperature}
     if rpims['setup']['use_dht_sensor']:
         SENSORS['dht'] = redis_db.hgetall('DHT')
     if rpims['setup']['use_door_sensor']:
@@ -43,10 +44,10 @@ def get_data():
         _DS18B20 = redis_db.hgetall('DS18B20')
         for k, v in _DS18B20.items():
             DS18B20[k] = {'temperature': v}
-        SENSORS['one_wire'] = {'ds18b20': DS18B20 }
+        SENSORS['one_wire'] = {'ds18b20': DS18B20}
     if rpims['setup']['use_weather_station']:
-      WEATHER = redis_db.hgetall('WEATHER')
-      SENSORS['weather_station'] = WEATHER
+        WEATHER = redis_db.hgetall('WEATHER')
+        SENSORS['weather_station'] = WEATHER
     data = {}
     data['config'] = rpims
     data['system'] = redis_db.hgetall('SYSTEM')
@@ -55,21 +56,25 @@ def get_data():
     data['sensors'] = SENSORS
     return data
 
+
 @app.route('/', methods=['GET'])
 def home():
     data = get_data()
-    return flask.render_template('index.html',data = data)
+    return flask.render_template('index.html', data=data)
+
 
 @app.route('/api/', methods=['GET'])
 def api():
     return flask.render_template('api.html')
 
+
 @app.route('/api/data/all', methods=['GET'])
 def api_json():
     data = get_data()
     flask.response = flask.jsonify(data)
-    #flask.response.status_code = 200
+    # flask.response.status_code = 200
     return flask.response
+
 
 @app.route('/api/data/sensors/<type>', methods=['GET'])
 def api_sensors_json(type):
@@ -102,6 +107,7 @@ def api_sensors_json(type):
         flask.abort(404)
     return flask.jsonify(_data)
 
+
 @app.route('/api/data/<type>', methods=['GET'])
 def api_types_json(type):
     data = get_data()
@@ -116,20 +122,21 @@ def api_types_json(type):
         flask.abort(404)
     return flask.jsonify(_data)
 
+
 @app.route('/setup/', methods=['GET', 'POST'])
 def setup():
     try:
-        import sys
+        # import sys
         import yaml
         from systemd import journal
         config = {}
-        _DS18B20 = redis_db.hgetall('DS18B20')
         path_to_config = '/var/www/html/conf/rpims.yaml'
         with open(path_to_config, 'r') as f:
             config = yaml.full_load(f)
     except Exception as error:
-        #error = f"Can't load RPiMS config file: {path_to_config}"
+        # error = f"Can't load RPiMS config file: {path_to_config}"
         journal.send(error)
+
     if flask.request.method == "POST":
 
         setup = {}
@@ -168,15 +175,16 @@ def setup():
         zabbix_agent['zabbix_server'] = flask.request.form.get('zabbix_server')
         zabbix_agent['zabbix_server_active'] = flask.request.form.get('zabbix_server_active')
 
-        gpios = ['GPIO_5','GPIO_6','GPIO_12','GPIO_13','GPIO_16','GPIO_18','GPIO_19','GPIO_20','GPIO_21','GPIO_26']
+        gpios = ['GPIO_5', 'GPIO_6', 'GPIO_12', 'GPIO_13', 'GPIO_16', 'GPIO_18', 'GPIO_19', 'GPIO_20', 'GPIO_21', 'GPIO_26']
         gpio = {}
         for item in gpios:
             a = {}
-            a['pin'] = int(flask.request.form.get(str(item) +'_pin'))
-            a['type'] = flask.request.form.get(str(item) +'_type')
-            a['name'] = flask.request.form.get(str(item) +'_name')
-            a['hold_time'] = int(flask.request.form.get(str(item) +'_hold_time')) if flask.request.form.get(str(item) +'_hold_time') != '' else ''
-            gpio[item] = a 
+            a['pin'] = int(flask.request.form.get(str(item) + '_pin'))
+            a['type'] = flask.request.form.get(str(item) + '_type')
+            a['name'] = flask.request.form.get(str(item) + '_name')
+            a['hold_time'] = int(flask.request.form.get(str(item) + '_hold_time')) \
+                if flask.request.form.get(str(item) + '_hold_time') != '' else ''
+            gpio[item] = a
 
         BME280 = {}
         id1 = {}
@@ -212,7 +220,6 @@ def setup():
         DHT['read_interval'] = int(flask.request.form.get('DHT_read_interval'))
         DHT['type'] = flask.request.form.get('DHT_type')
 
-
         PICAMERA = {}
         PICAMERA['fps'] = int(flask.request.form.get('picamera_fps'))
         PICAMERA['mode'] = int(flask.request.form.get('picamera_mode'))
@@ -220,9 +227,9 @@ def setup():
 
         picamera_mode = int(flask.request.form.get('picamera_mode'))
         picamera_modes = {
-            1: [1920,1080],
-            6: [1280,720],
-            7: [640,480],
+            1: [1920, 1080],
+            6: [1280, 720],
+            7: [640, 480],
         }
         picamera_width = picamera_modes[picamera_mode][0]
         picamera_height = picamera_modes[picamera_mode][1]
@@ -248,7 +255,7 @@ def setup():
         SPEED['use'] = bool(flask.request.form.get('windspeed_use'))
         WIND = {}
         WIND['DIRECTION'] = DIRECTION
-        WIND['SPEED'] =SPEED
+        WIND['SPEED'] = SPEED
         WEATHER = {}
         WEATHER['RAINFALL'] = RAINFALL
         WEATHER['WIND'] = WIND
@@ -260,7 +267,7 @@ def setup():
         DS18B20['read_interval'] = int(flask.request.form.get('DS18B20_read_interval'))
         if bool(flask.request.form.get('use_ds18b20_sensor')):
             for item in flask.request.form.getlist('DS18B20_address'):
-                addresses[item]= {'name': flask.request.form.get('DS18B20_'+ str(item) + '_name')}
+                addresses[item] = {'name': flask.request.form.get('DS18B20_' + str(item) + '_name')}
             DS18B20['addresses'] = addresses
         ONE_WIRE = {}
         ONE_WIRE['DS18B20'] = DS18B20
@@ -289,10 +296,10 @@ def setup():
         zabbix_config.append(f'TLSAccept={zabbix_agent.get("TLSAccept")}')
         zabbix_config.append(f'Timeout={zabbix_agent.get("Timeout")}')
         with open('conf/zabbix_agentd.conf', 'w', encoding='utf-8') as f:
-          f.write('\n'.join(zabbix_config))
+            f.write('\n'.join(zabbix_config))
 
         with open('conf/zabbix_agentd.psk', 'w', encoding='utf-8') as f:
-          f.write(zabbix_agent.get("TLSPSK"))
+            f.write(zabbix_agent.get("TLSPSK"))
 
         uv4l_raspicam_config = []
         uv4l_raspicam_config.append('# uv4l core options')
@@ -308,16 +315,19 @@ def setup():
         uv4l_raspicam_config.append(f'height = {picamera_height}')
         uv4l_raspicam_config.append(f'framerate = {int(flask.request.form.get("picamera_fps"))}')
         with open('conf/uv4l-raspicam.conf', 'w', encoding='utf-8') as f:
-          f.write('\n'.join(uv4l_raspicam_config))
+            f.write('\n'.join(uv4l_raspicam_config))
 
         redis_db.set('rpims', json.dumps(_rpims))
-        with open('conf/rpims.yaml','w') as f:
+        with open('conf/rpims.yaml', 'w') as f:
             yaml.dump(_rpims, f, default_flow_style=False, sort_keys=False, explicit_start=True)
-        #return flask.jsonify(_rpims)
+        # return flask.jsonify(_rpims)
 
-        #sleep(2)
+        # sleep(2)
         return flask.redirect(flask.url_for('setup'))
-    return flask.render_template('setup.html',config = config, _DS18B20 = _DS18B20)
+
+    DS18B20 = redis_db.hgetall('DS18B20')
+    return flask.render_template('setup.html', config=config, _DS18B20=DS18B20)
+
 
 @app.errorhandler(404)
 def not_found(error):
