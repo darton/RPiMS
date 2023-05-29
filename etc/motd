@@ -1,14 +1,14 @@
 #!/bin/bash
 
 export TERM=xterm-256color
-IFS=';'
-SENSOR_TYPE="BME280 3"  #Use BME280, DHT, DS18B20
-arr=($(/home/pi/scripts/RPiMS/redis-get-data.py $SENSOR_TYPE)) 
-SENSOR_TEMP=$(echo ${arr[0]}|awk -F[=\;] '{print $2"°C"}')
-SENSOR_HUM=$(echo ${arr[1]}|awk -F[=\;] '{print $2"%"}')
-SENSOR_PRESSURE=$(echo ${arr[2]}|awk -F[=\;] '{print $2"hPa"}')
-CPU_TEMP=$(vcgencmd measure_temp|awk -F[=\'] '{print $2"°C"}')
-
+IFS='; '
+SENSOR_TYPE="BME280 1"  #Use BME280 1,2 or 3
+str=$(/home/pi/scripts/RPiMS/redis-get-data.py $SENSOR_TYPE)
+read -r -a arr <<< "$str"
+SENSOR_TEMP=$(echo ${arr[0]}|awk -F[=] '{print $2" °C"}')
+SENSOR_HUM=$(echo ${arr[1]}|awk -F[=] '{print $2" %"}')
+SENSOR_PRESSURE=$(echo ${arr[2]}|awk -F[=] '{print $2" hPa"}')
+CPU_TEMP=$(vcgencmd measure_temp|awk -F[=\'] '{print $2" °C"}')
 
 echo "$(tput setaf 2)
    .~~.   .~~.
