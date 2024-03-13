@@ -31,7 +31,7 @@ Video stream will be turned on automaticly when use picamera sensor are set to e
 
 ### Installing operating system images 
 
-Download the image [Raspberry Pi OS Lite](https://downloads.raspberrypi.org/raspios_lite_armhf_latest).
+Download the image [Raspberry Pi OS Lite - 32bit bullseye](https://downloads.raspberrypi.com/raspios_oldstable_lite_armhf/images/raspios_oldstable_lite_armhf-2024-03-12/2024-03-12-raspios-bullseye-armhf-lite.img.xz).
 
 To writing an image to the SD card, use [Imager](https://www.raspberrypi.org/downloads/).
 
