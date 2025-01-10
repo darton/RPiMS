@@ -51,6 +51,8 @@ curl -sSL https://github.com/darton/RPiMS/raw/master/install.sh | sudo bash
 
 ### Setup
 
+![RPiMS setup](https://github.com/darton/RPiMS/blob/master/documents/RPiMS_SETUP.png)
+
 login: admin
 
 password: admin
