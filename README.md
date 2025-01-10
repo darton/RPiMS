@@ -10,6 +10,7 @@ Supports UV4L Video Streaming Server and video recording from picamera.
 
 Supports wind speed meter, wind direction meter, rainfall meter.
 
+![RPiMS](https://github.com/darton/RPiMS/blob/master/documents/RPiMS_MAIN.png)
 
 ## Description
 
