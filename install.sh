@@ -111,6 +111,7 @@ $PIP3_INSTALL_CMD adafruit-circuitpython-ads1x15
 $PIP3_INSTALL_CMD automationhat
 $PIP3_INSTALL_CMD rshell
 $PIP3_INSTALL_CMD pyusb
+$PIP3_INSTALL_CMD setproctitle
 
 #for DHT sensors
 $PIP3_INSTALL_CMD adafruit-circuitpython-dht
