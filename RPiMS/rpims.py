@@ -13,13 +13,54 @@
 #  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #  GNU General Public License for more details.
 
-# --- Functions ---
 
+import logging
+import json
+import pid
+import sys
+import yaml
+import subprocess
+import redis
+import smbus2
+import bme280
+import usb.core
+import serial
+import adafruit_dht
+import datetime
+import math
+import statistics
+import automationhat
+import board
+import busio
+import adafruit_ads1x15.ads1115 as ADS
+from adafruit_ads1x15.analog_in import AnalogIn
+from luma.core.interface.serial import i2c, spi
+from luma.core.render import canvas
+from luma.oled.device import sh1106
+from luma.lcd.device import st7735
+from PIL import ImageFont
+# from luma.core import lib
+# from PIL import Image
+# from PIL import ImageDraw
+# from PIL import ImageColor
+# import RPi.GPIO as GPIO
+from w1thermsensor import W1ThermSensor
+from grove.i2c import Bus
+from time import time, sleep
+from systemd import journal
+# import socket
+# from picamera import PiCamera
+from gpiozero import LED, Button, MotionSensor, CPUTemperature
+from gpiozero.tools import all_values, any_values
+from signal import pause
 from concurrent.futures import ProcessPoolExecutor
 from concurrent.futures import ThreadPoolExecutor
 import setproctitle
 
 
+
+
+# --- Functions ---
 def door_action_closed(door_id, **kwargs):
     # lconfig = dict(kwargs)
     redis_db.hset('GPIO', str(door_id), 'close')
@@ -109,15 +150,13 @@ def detect_no_alarms(**kwargs):
 
 
 def av_stream(state):
-    from subprocess import call
     # _cmd = '/home/pi/scripts/RPiMS/videostreamer.sh' + " " + state
     # _cmd = f'sudo systemctl {state} rpims-stream.service'
     _cmd = f'sudo systemctl {state} uv4l_raspicam.service'
-    call(_cmd, shell=True)
+    subprocess.call(_cmd, shell=True)
 
 
 def av_recording():
-    import subprocess
     _cmd = '/home/pi/scripts/RPiMS/videorecorder.sh'
     subprocess.Popen([_cmd],
                      stdout=subprocess.PIPE,
@@ -127,7 +166,6 @@ def av_recording():
 
 def zabbix_sender_call(message, sensor_id):
     _cmd = '/home/pi/scripts/RPiMS/zabbix_sender.sh ' + message + " " + str(sensor_id)
-    import subprocess
     subprocess.Popen([_cmd],
                      stdout=subprocess.PIPE,
                      stderr=subprocess.PIPE,
@@ -135,32 +173,28 @@ def zabbix_sender_call(message, sensor_id):
 
 
 def hostnamectl_sh(**kwargs):
-    from subprocess import call
     hctldict = {"location": "set-location", "chassis": "set-chassis", "deployment": "set-deployment", }
     _cmd = 'sudo raspi-config nonint do_hostname' + ' "' + kwargs['hostname'] + '"'
-    call(_cmd, shell=True)
+    subprocess.call(_cmd, shell=True)
     for item in hctldict:
         _cmd = 'sudo /usr/bin/hostnamectl ' + hctldict[item] + ' "' + kwargs[item] + '"'
-        call(_cmd, shell=True)
+        subprocess.call(_cmd, shell=True)
 
 
 def get_hostip():
-    from subprocess import call
     _cmd = '/home/pi/scripts/RPiMS/gethostinfo.sh'
-    call(_cmd, shell=True)
+    subprocess.call(_cmd, shell=True)
 
 
 def shutdown():
-    from subprocess import check_call
-    check_call(['sudo', 'poweroff'])
+    subprocess.check_call(['sudo', 'poweroff'])
 
 
 def get_cputemp_data(**kwargs):
     verbose = kwargs['verbose']
     read_interval = kwargs['read_interval']
     try:
-        from time import sleep
-        from gpiozero import CPUTemperature
+
         while True:
             data = CPUTemperature()
             redis_db.set('CPU_Temperature', data.temperature)
@@ -174,8 +208,7 @@ def get_cputemp_data(**kwargs):
 
 
 def get_bme280_data(**kwargs):
-    import sys
-    from time import sleep
+
     verbose = kwargs['verbose']
     read_interval = kwargs['read_interval']
     interface_type = kwargs['interface']
@@ -183,9 +216,6 @@ def get_bme280_data(**kwargs):
 
     if interface_type == 'i2c':
         try:
-            import smbus2
-            import bme280
-
             port = 1
             address = kwargs['i2c_address']
             bus = smbus2.SMBus(port)
@@ -217,8 +247,7 @@ def get_bme280_data(**kwargs):
             print(f'Problem with BME280 sensor: {err}')
 
     if interface_type == 'serial':
-        from subprocess import check_output
-        set1 = set(check_output(["cat /sys/firmware/devicetree/base/model"], shell=True).decode('UTF-8').split(' '))
+        set1 = set(subprocess.check_output(["cat /sys/firmware/devicetree/base/model"], shell=True).decode('UTF-8').split(' '))
 
         if "3" in set1:
             serial_ports_by_path = {'USB1': '/dev/serial/by-path/platform-3f980000.usb-usb-0:1.1.2:1.0',
@@ -253,7 +282,7 @@ def get_bme280_data(**kwargs):
         necounter = 0
 
         def reset_usbdevice():
-            import usb.core
+
             devices = usb.core.find(find_all=True)
             for item in devices:
                 if hex(item.idVendor) == '0x2e8a':
@@ -263,7 +292,6 @@ def get_bme280_data(**kwargs):
         def find_serial_device(port, baudrate):
             while True:
                 try:
-                    import serial
                     global ser
                     ser = serial.Serial(
                         port,
@@ -284,7 +312,6 @@ def get_bme280_data(**kwargs):
                     sleep(2)
 
         def serial_data(port, baudrate):
-            import serial
             while True:
                 try:
                     ser = serial.Serial(
@@ -342,7 +369,6 @@ def get_bme280_data(**kwargs):
 
         '''
         def serial_data(port,baudrate):
-            import serial
             ser = serial.Serial(port, baudrate)
             ser.flushInput()
             ser.write( b'\x03' ) # Sent CTRL-C -- interrupt a running program
@@ -397,8 +423,6 @@ def get_ds18b20_data(**kwargs):
     verbose = kwargs['verbose']
     read_interval = kwargs['read_interval']
     try:
-        from w1thermsensor import W1ThermSensor
-        from time import sleep
         while True:
             # data = W1ThermSensor.get_available_sensors([W1ThermSensor.THERM_SENSOR_DS18B20, W1ThermSensor.THERM_SENSOR_DS18S20])
             data = W1ThermSensor.get_available_sensors()
@@ -422,8 +446,6 @@ def get_dht_data(**kwargs):
     read_interval = kwargs['read_interval']
     dht_type = kwargs['type']
     pin = kwargs['pin']
-    import adafruit_dht
-    from time import sleep
 
     debug = "no"
     delay = 0
@@ -466,9 +488,7 @@ def get_dht_data(**kwargs):
 
 
 def rainfall(**kwargs):
-    from time import time, sleep
-    from gpiozero import Button
-    import math
+
 
     def bucket_tipped():
         nonlocal bucket_counter
@@ -512,9 +532,7 @@ def rainfall(**kwargs):
 
 
 def wind_speed(**kwargs):
-    import statistics
-    from gpiozero import Button
-    from time import time, sleep
+
 
     def anemometer_pulse_counter():
         nonlocal anemometer_pulse
@@ -580,8 +598,6 @@ def wind_speed(**kwargs):
 
 
 def adc_stm32f030():
-    from grove.i2c import Bus
-
     ADC_DEFAULT_IIC_ADDR = 0X04
     ADC_CHAN_NUM = 8
 
@@ -614,15 +630,8 @@ def adc_stm32f030():
     return adc_inputs_values
 
 
-def adc_automationphat():
-    import sys
-    from time import sleep
-    try:
-        import automationhat
-    except Exception as err:
-        print(err)
-        sys.exit('automationphat library is not installed')
 
+def adc_automationphat():
     try:
         sleep(0.1)  # Delay for automationhat
         adc_inputs_values = [automationhat.analog.one.read(), automationhat.analog.two.read(),
@@ -635,10 +644,7 @@ def adc_automationphat():
 
 
 def adc_ads1115():
-    import board
-    import busio
-    import adafruit_ads1x15.ads1115 as ADS
-    from adafruit_ads1x15.analog_in import AnalogIn
+
     # Create the I2C bus
     i2c = busio.I2C(board.SCL, board.SDA)
     # Create the ADC object using the I2C bus
@@ -652,9 +658,6 @@ def adc_ads1115():
 
 
 def wind_direction(**kwargs):
-    from time import time
-    import math
-
     redis_db.hset('WEATHER', 'wind_direction', 0)
     redis_db.hset('WEATHER', 'average_wind_direction', 0)
 
@@ -775,19 +778,7 @@ def wind_direction(**kwargs):
 
 
 def serial_displays(**kwargs):
-
     if kwargs['serial_display_type'] == 'oled_sh1106':
-        from luma.core.interface.serial import i2c, spi
-        from luma.core.render import canvas
-        # from luma.core import lib
-        from luma.oled.device import sh1106
-        # from PIL import Image
-        # from PIL import ImageDraw
-        from PIL import ImageFont
-        from time import sleep
-        import logging
-        # import socket
-
         # Load default font.
         font = ImageFont.load_default()
         # Create blank image for drawing.
@@ -873,20 +864,7 @@ def serial_displays(**kwargs):
             logger.error(err)
 
     if kwargs['serial_display_type'] == 'lcd_st7735':
-        from luma.core.interface.serial import spi
-        from luma.core.render import canvas
-        # from luma.core import lib
-        from luma.lcd.device import st7735
-        # from PIL import Image
-        # from PIL import ImageDraw
-        from PIL import ImageFont
-        # from PIL import ImageColor
-        # import RPi.GPIO as GPIO
-        from time import sleep
-        import datetime
-        import logging
-        # import socket
-        # import redis
+
     # Load default font.
         font = ImageFont.load_default()
     # Display width/height
@@ -1019,9 +997,6 @@ def multiprocessing_function(function_name, **kwargs):
 
 
 def db_connect(dbhost, dbnum):
-    import redis
-    import sys
-    from systemd import journal
 
     try:
         redis_db = redis.StrictRedis(host=dbhost, port=6379, db=str(dbnum), charset="utf-8", decode_responses=True)
@@ -1035,11 +1010,8 @@ def db_connect(dbhost, dbnum):
 
 
 def config_load(path_to_config):
-    import sys
-    from systemd import journal
-
     try:
-        import yaml
+
         with open(path_to_config, mode='r') as file:
             config_yaml = yaml.full_load(file)
         return config_yaml
@@ -1051,21 +1023,12 @@ def config_load(path_to_config):
 
 
 def use_logger():
-    import logging
     logging.basicConfig(filename='/tmp/rpims.log', level=logging.DEBUG, format='%(asctime)s %(levelname)s %(name)s %(message)s')
     global logger
     logger = logging.getLogger(__name__)
 
 
 def main():
-    # from picamera import PiCamera
-    from gpiozero import LED, Button, MotionSensor
-    from gpiozero.tools import all_values, any_values
-    from signal import pause
-    # import logging
-    import json
-    # import sys
-
     print('')
     print('# RPiMS is running #')
     print('')
@@ -1165,6 +1128,7 @@ def main():
         system_buttons_list['shutdown_button'].when_held = shutdown
 
     if bool(config['use_cpu_sensor']) is True:
+        #threading_function_cf(get_cputemp_data, **cputemp_config, **config)
         threading_function(get_cputemp_data, **cputemp_config, **config)
 
     if bool(config['use_bme280_sensor']) is True:
@@ -1204,8 +1168,6 @@ def main():
 
 # --- Main program ---
 if __name__ == '__main__':
-    import pid
-    import sys
     try:
         with pid.PidFile('/home/pi/scripts/RPiMS/rpims.pid'):
             main()
