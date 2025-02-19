@@ -15,6 +15,11 @@
 
 # --- Functions ---
 
+from concurrent.futures import ProcessPoolExecutor
+from concurrent.futures import ThreadPoolExecutor
+import setproctitle
+
+
 def door_action_closed(door_id, **kwargs):
     # lconfig = dict(kwargs)
     redis_db.hset('GPIO', str(door_id), 'close')
@@ -984,18 +989,20 @@ def serial_displays(**kwargs):
         except Exception as err:
             logger.error(err)
 
+def set_process_name_and_run(function_name, **kwargs):
+    process_name = function_name.__name__
+    setproctitle.setproctitle(process_name)
+    function_name(**kwargs)
+
 
 def threading_function(function_name, **kwargs):
-    import threading
-    t = threading.Thread(target=function_name, name=function_name, kwargs=kwargs)
-    t.daemon = True
-    t.start()
+    with ThreadPoolExecutor() as executor:
+        future = executor.submit(function_name, **kwargs)
 
 
 def multiprocessing_function(function_name, **kwargs):
-    import multiprocessing
-    p = multiprocessing.Process(target=function_name, name=function_name, kwargs=kwargs)
-    p.start()
+    with ProcessPoolExecutor() as executor:
+        future = executor.submit(set_process_name_and_run, function_name, **kwargs)
 
 
 def db_connect(dbhost, dbnum):
