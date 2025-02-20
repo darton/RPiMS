@@ -39,11 +39,9 @@ from luma.core.render import canvas
 from luma.oled.device import sh1106
 from luma.lcd.device import st7735
 from PIL import ImageFont
-# from luma.core import lib
 # from PIL import Image
 # from PIL import ImageDraw
 # from PIL import ImageColor
-# import RPi.GPIO as GPIO
 from w1thermsensor import W1ThermSensor
 from grove.i2c import Bus
 from time import time, sleep
@@ -194,7 +192,6 @@ def get_cputemp_data(**kwargs):
     verbose = kwargs['verbose']
     read_interval = kwargs['read_interval']
     try:
-
         while True:
             data = CPUTemperature()
             redis_db.set('CPU_Temperature', data.temperature)
@@ -208,7 +205,6 @@ def get_cputemp_data(**kwargs):
 
 
 def get_bme280_data(**kwargs):
-
     verbose = kwargs['verbose']
     read_interval = kwargs['read_interval']
     interface_type = kwargs['interface']
@@ -488,8 +484,6 @@ def get_dht_data(**kwargs):
 
 
 def rainfall(**kwargs):
-
-
     def bucket_tipped():
         nonlocal bucket_counter
         bucket_counter += 1
@@ -532,8 +526,6 @@ def rainfall(**kwargs):
 
 
 def wind_speed(**kwargs):
-
-
     def anemometer_pulse_counter():
         nonlocal anemometer_pulse
         anemometer_pulse += 1
@@ -644,7 +636,6 @@ def adc_automationphat():
 
 
 def adc_ads1115():
-
     # Create the I2C bus
     i2c = busio.I2C(board.SCL, board.SDA)
     # Create the ADC object using the I2C bus
@@ -997,7 +988,6 @@ def multiprocessing_function(function_name, **kwargs):
 
 
 def db_connect(dbhost, dbnum):
-
     try:
         redis_db = redis.StrictRedis(host=dbhost, port=6379, db=str(dbnum), charset="utf-8", decode_responses=True)
         redis_db.ping()
@@ -1011,7 +1001,6 @@ def db_connect(dbhost, dbnum):
 
 def config_load(path_to_config):
     try:
-
         with open(path_to_config, mode='r') as file:
             config_yaml = yaml.full_load(file)
         return config_yaml
