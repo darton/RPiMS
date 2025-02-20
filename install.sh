@@ -112,6 +112,13 @@ $PIP3_INSTALL_CMD pyusb
 $PIP3_INSTALL_CMD adafruit-circuitpython-dht
 $INSTALL_CMD libgpiod2 libgpiod-dev
 
+# for Seedstudio Grove Devices 
+cd /tmp
+git clone https://github.com/Seeed-Studio/grove.py
+cd grove.py
+sudo pip3 install .
+rm -rf /tmp/grove.py
+
 $INSTALL_CMD redis-server
 sysctl -w vm.overcommit_memory=1
 sysctl -w net.core.somaxconn=512
