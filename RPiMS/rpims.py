@@ -1087,10 +1087,15 @@ if __name__ == '__main__':
         with pid.PidFile('/home/pi/scripts/RPiMS/rpims.pid'):
             main()
     except KeyboardInterrupt:
+        error = '# RPiMS is stopped #'
         print('')
-        print('# RPiMS is stopped #')
+        print(error)
+        journal.send(error)
     except pid.PidFileError:
+        error = 'Another instance of RPiMS is already running. RPiMS will now close.'
         print('')
-        print('Another instance of RPiMS is already running. RPiMS will now close.')
-    except Exception as err:
-        print(err)
+        print(error)
+        journal.send(error)
+    except Exception as error:
+        print(error)
+        journal.send(error)
