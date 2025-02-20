@@ -14,48 +14,40 @@
 #  GNU General Public License for more details.
 
 
-import logging
-import json
-import pid
-import sys
-import yaml
-import subprocess
-import redis
-import smbus2
-import bme280
-import usb.core
-import serial
 import adafruit_dht
-import datetime
-import math
-import statistics
+import adafruit_ads1x15.ads1115 as ADS
 import automationhat
+import bme280
 import board
 import busio
-import adafruit_ads1x15.ads1115 as ADS
+import datetime
+import json
+import logging
+import math
+import pid
+import redis
+import smbus2
+import subprocess
+import sys
+import serial
+import setproctitle
+import statistics
+import usb.core
+import yaml
 from adafruit_ads1x15.analog_in import AnalogIn
+from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor
+from gpiozero import LED, Button, MotionSensor, CPUTemperature
+from gpiozero.tools import all_values, any_values
+from grove.i2c import Bus
 from luma.core.interface.serial import i2c, spi
 from luma.core.render import canvas
 from luma.oled.device import sh1106
 from luma.lcd.device import st7735
 from PIL import ImageFont
-# from PIL import Image
-# from PIL import ImageDraw
-# from PIL import ImageColor
-from w1thermsensor import W1ThermSensor
-from grove.i2c import Bus
-from time import time, sleep
-from systemd import journal
-# import socket
-# from picamera import PiCamera
-from gpiozero import LED, Button, MotionSensor, CPUTemperature
-from gpiozero.tools import all_values, any_values
 from signal import pause
-from concurrent.futures import ProcessPoolExecutor
-from concurrent.futures import ThreadPoolExecutor
-import setproctitle
-
-
+from systemd import journal
+from time import time, sleep
+from w1thermsensor import W1ThermSensor
 
 
 # --- Functions ---
