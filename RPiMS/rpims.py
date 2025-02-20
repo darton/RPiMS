@@ -46,6 +46,7 @@ from luma.core.render import canvas
 from luma.oled.device import sh1106
 from luma.lcd.device import st7735
 from PIL import ImageFont
+from serial.serialutil import SerialException
 from signal import pause
 from systemd import journal
 from time import time, sleep
@@ -295,10 +296,15 @@ def get_bme280_data(**kwargs):
                     print('Serial device finded')
                     return ser
                     break
-                except Exception as err:
-                    print(f'Resetting USB devices because {err}')
-                    reset_usbdevice()
+                except SerialException as err:
+                    print(f"USB devices not conneted to port {kwargs['serial_port']}")
                     sleep(2)
+                except Exception as err:
+                    print(f"Resseting USB port - device not respond on port {kwargs['serial_port']}")
+                    print("")
+                    print(err)
+                    reset_usbdevice()
+                    sleep(10)
 
         def serial_data(port, baudrate):
             while True:
@@ -316,8 +322,8 @@ def get_bme280_data(**kwargs):
                     print('Serial device finded')
                     break
                 except Exception as err:
-                    print(f'Resetting USB devices because {err}')
-                    reset_usbdevice()
+                    print(f"Could not open port {kwargs['serial_port']}")
+                    #reset_usbdevice()
                     sleep(1)
 
             ser.flushInput()
@@ -352,7 +358,7 @@ def get_bme280_data(**kwargs):
                         sleep(0.5)
                 # except (OSError, serial.serialutil.SerialException):
                 except Exception as err:
-                    print(f'Lost connection with serial devices {err}')
+                    print(f"Lost connection with serial device on port {kwargs['serial_port']}")
                     find_serial_device(port, baudrate)
                     sleep(2)
 
@@ -369,6 +375,7 @@ def get_bme280_data(**kwargs):
                 yield ser.readline()
                 #print(response)
         '''
+
         msg = []
         for line in serial_data(serial_port, 115200):
             msg = line.decode('utf-8').split()
