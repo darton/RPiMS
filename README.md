@@ -11,7 +11,6 @@ Supports UV4L Video Streaming Server and video recording from picamera.
 Supports wind speed meter, wind direction meter, rainfall meter.
 
 ![RPiMS](https://github.com/darton/RPiMS/blob/master/documents/RPiMS_MAIN.png)
-
 ## Description
 
 Sensors are polled and measured values are saved to Redis database periodically.
@@ -126,7 +125,7 @@ BME280 [i2c] <-- 4 wire cable --> [i2C] Raspberry Pi Pico [USB] <-- USB cable --
 ```
 
 Select [USB port number](https://raw.githubusercontent.com/darton/RPiMS/master/documents/RPiMS-RPi-USB.png) in RPiMS configuration for the BME280 sensor.
-
+![USB PORTS](https://github.com/darton/RPiMS/blob/master/documents/RPiMS-RPi-USB.png)
 
 - ### DS18B20 Temperature sensor
 ```
