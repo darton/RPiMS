@@ -54,7 +54,6 @@ from w1thermsensor import W1ThermSensor
 
 
 # --- Functions ---
-
 def door_action_closed(door_id, **kwargs):
     lconfig = dict(kwargs)
     redis_db.set(str(door_id), 'close')
@@ -165,7 +164,7 @@ def hostnamectl_sh(**kwargs):
 
 
 def get_hostip():
-    _cmd = '/home/pi/scripts/RPiMS/gethostinfo.sh'
+    _cmd = 'sudo /home/pi/scripts/RPiMS/gethostinfo.sh'
     subprocess.call(_cmd, shell=True)
 
 
@@ -190,7 +189,6 @@ def get_cputemp_data(**kwargs):
 
 
 def get_bme280_data(**kwargs):
-
     verbose = kwargs['verbose']
     read_interval = kwargs['read_interval']
     interface_type = kwargs['interface']
@@ -264,7 +262,6 @@ def get_bme280_data(**kwargs):
         redis_db.sadd('BME280_sensors', sid)
 
         def reset_usbdevice():
-
             devices = usb.core.find(find_all=True)
             for item in devices:
                 if hex(item.idVendor) == '0x2e8a':
@@ -286,14 +283,14 @@ def get_bme280_data(**kwargs):
                         dsrdtr=True,
                         timeout=1)
                     if bool(verbose) is True:
-                        print('Serial device finded')
+                        print(f"BME280PicoUSB serial device finded on port {kwargs['serial_port']}")
                     return ser
                     break
                 except Exception as e:
                     if bool(verbose) is True:
-                        print('Resetting USB devices')
-                    reset_usbdevice()
-                    sleep(2)
+                        print(f"BME280PicoUSB serial device not connected to port {kwargs['serial_port']}")
+                    #reset_usbdevice()
+                    sleep(5)
 
         def serial_data(port, baudrate):
             while True:
@@ -309,13 +306,16 @@ def get_bme280_data(**kwargs):
                         dsrdtr=True,
                         timeout=1)
                     if bool(verbose) is True:
-                        print('Serial device finded')
+                        print(f"BME280PicoUSB serial device finded on port {kwargs['serial_port']}")
                     break
-                except Exception as e:
+                except SerialException:
                     if bool(verbose) is True:
-                        print('Resetting USB devices')
-                    reset_usbdevice()
-                    sleep(1)
+                        print(f"BME280PicoUSB serial device not connected to port {kwargs['serial_port']}")
+                    sleep(2)
+                except:
+                    print(f"Another error on port {kwargs['serial_port']}")
+                    #reset_usbdevice()
+                    sleep(5)
 
             ser.flushInput()
             ser.write( b'\x03' ) # Sent CTRL-C -- interrupt a running program
@@ -350,7 +350,7 @@ def get_bme280_data(**kwargs):
                 #except (OSError, serial.serialutil.SerialException):
                 except Exception as e :
                     if bool(verbose) is True:
-                        print('Lost connection with serial devices')
+                        print(f"Lost connection to BME280PicoUSB serial device on port {kwargs['serial_port']}")
                     find_serial_device(port,baudrate)
                     sleep(2)
 
@@ -1054,13 +1054,13 @@ def main():
         for item in bme280_config:
             bme280 = bme280_config[item]
             if bool(bme280_config[item]['use']) is True:
-                threading_function(get_bme280_data, **bme280, **config)
+                multiprocessing_function(get_bme280_data, **bme280, **config)
 
     if bool(config['use_ds18b20_sensor']) is True:
         threading_function(get_ds18b20_data, **ds18b20_config, **config)
 
     if bool(config['use_dht_sensor']) is True:
-        threading_function(get_dht_data, **dht_config, **config)
+        multiprocessing_function(get_dht_data, **dht_config, **config)
 
     if bool(config['use_weather_station']) is True:
         if bool(rainfall_config['use']) is True:
