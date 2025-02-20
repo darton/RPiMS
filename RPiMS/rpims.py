@@ -272,7 +272,6 @@ def get_bme280_data(**kwargs):
         necounter = 0
 
         def reset_usbdevice():
-
             devices = usb.core.find(find_all=True)
             for item in devices:
                 if hex(item.idVendor) == '0x2e8a':
