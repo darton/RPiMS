@@ -1,18 +1,25 @@
 #!/usr/bin/env bash
 
+redis_cmd='timeout 2 /usr/bin/redis-cli'
+
+if [[ $(id -u) -ne 0 ]]; then
+  echo "This script must be executed as root or using sudo"
+  exit 1
+fi
+
 _IP=$(ip route get 1.1.1.1 | awk '{print $7}')
 
 if [ "$_IP" ]; then
-    timeout 2 /usr/bin/redis-cli hset SYSTEM hostip "$_IP" 2>&1 > /dev/null
+    $redis_cmd set hostip "$_IP" 2>&1 > /dev/null
 fi
 
 _UPTIME=$(/usr/bin/uptime -s)
-timeout 2 /usr/bin/redis-cli hset SYSTEM uptime "$_UPTIME" 2>&1 > /dev/null
+$redis_cmd set uptime "$_UPTIME" 2>&1 > /dev/null
 
 _FSUSED=$(df -h| awk '/root/ {print $5}')
-timeout 2 /usr/bin/redis-cli hset SYSTEM fsused "$_FSUSED" 2>&1 > /dev/null
+$redis_cmd set fsused "$_FSUSED" 2>&1 > /dev/null
 
 _MEMUSED=$(free -m |awk '/Mem/ {print $3}')
-timeout 2 /usr/bin/redis-cli hset SYSTEM memused "$_MEMUSED MB" 2>&1 > /dev/null
+$redis_cmd set memused "$_MEMUSED" 2>&1 > /dev/null
 
 exit 0
