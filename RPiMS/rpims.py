@@ -297,10 +297,10 @@ def get_bme280_data(**kwargs):
                     return ser
                     break
                 except SerialException as err:
-                    print(f"USB devices not conneted to port {kwargs['serial_port']}")
+                    print(f"BME280PicoUSB serial device not conneted to port {kwargs['serial_port']}")
                     sleep(2)
                 except Exception as err:
-                    print(f"Resseting USB port - device not respond on port {kwargs['serial_port']}")
+                    print(f"Resseting USB port - BME280PicoUSB serial device not respond on port {kwargs['serial_port']}")
                     print("")
                     print(err)
                     reset_usbdevice()
@@ -322,7 +322,7 @@ def get_bme280_data(**kwargs):
                     print('Serial device finded')
                     break
                 except Exception as err:
-                    print(f"Could not open port {kwargs['serial_port']}")
+                    print(f"Could not open BME280PicoUSB serial device on port {kwargs['serial_port']}")
                     #reset_usbdevice()
                     sleep(1)
 
@@ -358,7 +358,7 @@ def get_bme280_data(**kwargs):
                         sleep(0.5)
                 # except (OSError, serial.serialutil.SerialException):
                 except Exception as err:
-                    print(f"Lost connection with serial device on port {kwargs['serial_port']}")
+                    print(f"Lost connection with BME280PicoUSB serial device on port {kwargs['serial_port']}")
                     find_serial_device(port, baudrate)
                     sleep(2)
 
