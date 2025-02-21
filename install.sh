@@ -67,7 +67,7 @@ apt-get -y autoremove
 echo /opt/vc/lib/ | sudo tee /etc/ld.so.conf.d/vc.conf
 ldconfig
 
-$INSTALL_CMD uv4l 
+$INSTALL_CMD uv4l
 $INSTALL_CMD uv4l-raspicam
 $INSTALL_CMD uv4l-raspicam-extras
 $INSTALL_CMD uv4l-server
