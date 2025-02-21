@@ -45,14 +45,15 @@ raspi-config nonint do_change_timezone Europe/Warsaw
 
 [[ -d $wwwdir ]] || mkdir -p $wwwdir
 [[ -d $installdir ]] || mkdir -p $installdir
-[[ -d /home/pi/Videos ]] || mkdir -p /home/pi/Videos
+[[ -d /home/pi/Videos ]] || { mkdir -p /home/pi/Videos; chown pi:pi /home/pi/Videos; }
 
 curl -sS $repourl -L -o $downloaddir/RPiMS.zip
 unzip  $downloaddir/RPiMS.zip -d $downloaddir
 cp -R $unpackdir/www/* $wwwdir
 cp $unpackdir/RPiMS/* $installdir
 chmod u+x $installdir/*.py $installdir/*.sh
-chown -R pi.pi $installdir
+chown -R pi.pi $installdir;
+
 systemctl stop dphys-swapfile.service
 systemctl disable dphys-swapfile.service
 
