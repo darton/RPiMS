@@ -243,21 +243,21 @@ def get_bme280_data(**kwargs):
         rpimodel = devicetree[2]
 
         rpi3_serial_ports_by_path = {'3':{'USB1':'/dev/serial/by-path/platform-3f980000.usb-usb-0:1.1.2:1.0',
-                                    'USB2':'/dev/serial/by-path/platform-3f980000.usb-usb-0:1.1.3:1.0',
-                                    'USB3':'/dev/serial/by-path/platform-3f980000.usb-usb-0:1.2:1.0',
-                                    'USB4':'/dev/serial/by-path/platform-3f980000.usb-usb-0:1.3:1.0',
+                                     'USB2':'/dev/serial/by-path/platform-3f980000.usb-usb-0:1.1.3:1.0',
+                                     'USB3':'/dev/serial/by-path/platform-3f980000.usb-usb-0:1.2:1.0',
+                                     'USB4':'/dev/serial/by-path/platform-3f980000.usb-usb-0:1.3:1.0',
                                     }}
 
         rpi4_serial_ports_by_path = {'4':{'USB1':'/dev/serial/by-path/platform-fd500000.pcie-pci-0000:01:00.0-usb-0:1.1:1.0',
-                                    'USB2':'/dev/serial/by-path/platform-fd500000.pcie-pci-0000:01:00.0-usb-0:1.2:1.0',
-                                    'USB3':'/dev/serial/by-path/platform-fd500000.pcie-pci-0000:01:00.0-usb-0:1.3:1.0',
-                                    'USB4':'/dev/serial/by-path/platform-fd500000.pcie-pci-0000:01:00.0-usb-0:1.4:1.0',
-                                   }}
+                                     'USB2':'/dev/serial/by-path/platform-fd500000.pcie-pci-0000:01:00.0-usb-0:1.2:1.0',
+                                     'USB3':'/dev/serial/by-path/platform-fd500000.pcie-pci-0000:01:00.0-usb-0:1.3:1.0',
+                                     'USB4':'/dev/serial/by-path/platform-fd500000.pcie-pci-0000:01:00.0-usb-0:1.4:1.0',
+                                    }}
 
         rpi400_serial_ports_by_path = {'400':{'USB1':'/dev/serial/by-path/platform-fd500000.pcie-pci-0000:01:00.0-usb-0:1.1:1.0',
-                                    'USB2':'/dev/serial/by-path/platform-fd500000.pcie-pci-0000:01:00.0-usb-0:1.2:1.0',
-                                    'USB3':'/dev/serial/by-path/platform-fd500000.pcie-pci-0000:01:00.0-usb-0:1.3:1.0',
-                                   }}
+                                       'USB2':'/dev/serial/by-path/platform-fd500000.pcie-pci-0000:01:00.0-usb-0:1.2:1.0',
+                                       'USB3':'/dev/serial/by-path/platform-fd500000.pcie-pci-0000:01:00.0-usb-0:1.3:1.0',
+                                      }}
 
         rpi_serial_ports_by_path = { **rpi3_serial_ports_by_path, **rpi4_serial_ports_by_path, **rpi400_serial_ports_by_path }
 
