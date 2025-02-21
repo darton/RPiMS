@@ -226,36 +226,33 @@ def get_bme280_data(**kwargs):
             print(f'Problem with sensor BME280: {err}')
 
     if interface_type == 'serial':
-        set1 = set(subprocess.check_output(["cat /sys/firmware/devicetree/base/model"], shell=True).decode('UTF-8').split(' '))
+        usbport = kwargs['serial_port']
+        devicetree = subprocess.check_output(["cat /sys/firmware/devicetree/base/model"], shell=True).decode('UTF-8').split(' ')
+        rpimodel = devicetree[2]
 
-        if "3" in set1:
-            serial_ports_by_path = {'USB1':'/dev/serial/by-path/platform-3f980000.usb-usb-0:1.1.2:1.0',
+        rpi3_serial_ports_by_path = {'3':{'USB1':'/dev/serial/by-path/platform-3f980000.usb-usb-0:1.1.2:1.0',
                                     'USB2':'/dev/serial/by-path/platform-3f980000.usb-usb-0:1.1.3:1.0',
                                     'USB3':'/dev/serial/by-path/platform-3f980000.usb-usb-0:1.2:1.0',
                                     'USB4':'/dev/serial/by-path/platform-3f980000.usb-usb-0:1.3:1.0',
-                                    }
-        elif "4" in set1:
-            serial_ports_by_path = {'USB1':'/dev/serial/by-path/platform-fd500000.pcie-pci-0000:01:00.0-usb-0:1.1:1.0',
+                                    }}
+
+        rpi4_serial_ports_by_path = {'4':{'USB1':'/dev/serial/by-path/platform-fd500000.pcie-pci-0000:01:00.0-usb-0:1.1:1.0',
                                     'USB2':'/dev/serial/by-path/platform-fd500000.pcie-pci-0000:01:00.0-usb-0:1.2:1.0',
                                     'USB3':'/dev/serial/by-path/platform-fd500000.pcie-pci-0000:01:00.0-usb-0:1.3:1.0',
                                     'USB4':'/dev/serial/by-path/platform-fd500000.pcie-pci-0000:01:00.0-usb-0:1.4:1.0',
-                                   }
-        elif "400" in set1:
-            serial_ports_by_path = {'USB1':'/dev/serial/by-path/platform-fd500000.pcie-pci-0000:01:00.0-usb-0:1.1:1.0',
+                                   }}
+
+        rpi400_serial_ports_by_path = {'400':{'USB1':'/dev/serial/by-path/platform-fd500000.pcie-pci-0000:01:00.0-usb-0:1.1:1.0',
                                     'USB2':'/dev/serial/by-path/platform-fd500000.pcie-pci-0000:01:00.0-usb-0:1.2:1.0',
                                     'USB3':'/dev/serial/by-path/platform-fd500000.pcie-pci-0000:01:00.0-usb-0:1.3:1.0',
-                                   }
-        else :
-            sys.exit('Unknown device')
+                                   }}
 
-        if kwargs['serial_port'] == 'USB1':
-            serial_port = serial_ports_by_path['USB1']
-        elif kwargs['serial_port'] == 'USB2':
-            serial_port = serial_ports_by_path['USB2']
-        elif kwargs['serial_port'] == 'USB3':
-            serial_port = serial_ports_by_path['USB3']
-        elif kwargs['serial_port'] == 'USB4':
-            serial_port = serial_ports_by_path['USB4']
+        rpi_serial_ports_by_path = { **rpi3_serial_ports_by_path, **rpi4_serial_ports_by_path, **rpi400_serial_ports_by_path }
+
+        try:
+            serial_port = rpi_serial_ports_by_path.get(rpimodel).get(usbport)
+        except:
+            sys.exit('Unknown serial device')
 
         lecounter = 0
         necounter = 0
