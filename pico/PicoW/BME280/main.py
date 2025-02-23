@@ -19,7 +19,7 @@ REDIS_PORT = 6379
 REDIS_PASSWORD = "verycomplexredispassword"
 REDIS_KEY = "BME280PicoW01"
 
-BME280VCC = Pin(22, Pin.OUT)
+BME280VCC = machine.Pin(22, Pin.OUT)
 
 led = machine.Pin("LED", machine.Pin.OUT)
 led.off()
