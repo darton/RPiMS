@@ -1,8 +1,8 @@
 import network
 import socket
 import machine
-import urequests as requests
-import ujson
+#import urequests as requests
+#import ujson
 import time
 import bme280_float as bme280
 from utime import sleep_ms
