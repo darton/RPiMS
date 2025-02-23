@@ -8,7 +8,7 @@ import bme280_float as bme280
 from utime import sleep_ms
 import rp2
 
-# Konfiguracja
+# Configuration
 WIFI_SSID = "IoT"
 WIFI_PASSWORD = "verycomplexwifipassword"
 
