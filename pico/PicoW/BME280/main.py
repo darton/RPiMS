@@ -3,7 +3,6 @@ import socket
 import machine
 import urequests as requests
 import ujson
-from machine import Pin, I2C, reset, Timer
 import time
 import bme280_float as bme280
 from utime import sleep_ms
