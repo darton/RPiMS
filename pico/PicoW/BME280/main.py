@@ -6,7 +6,6 @@ import ujson
 import time
 import bme280_float as bme280
 from utime import sleep_ms
-import sys
 import rp2
 
 # Konfiguracja
