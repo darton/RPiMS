@@ -1,11 +1,11 @@
-from machine import Pin, I2C, reset
+import machine
 import bme280_float as bme280
 from utime import sleep_ms
-import sys
+
 
 sid = 'BME280'
 
-BME280VCC = Pin(22, Pin.OUT)
+BME280VCC = machine.Pin(22, machine.Pin.OUT)
 BME280VCC.value(1)
 sleep_ms(1000)
 
