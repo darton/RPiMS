@@ -1,11 +1,9 @@
 import network
-import socket
+import usocket as socket
 import machine
-#import urequests as requests
-#import ujson
 import time
 import bme280_float as bme280
-from utime import sleep_ms
+from utime import sleep_ms, sleep
 import rp2
 
 # Configuration
