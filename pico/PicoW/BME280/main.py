@@ -85,7 +85,7 @@ def connect_wifi():
         print("Connecting to Wi-Fi...")
         wlan.connect(WIFI_SSID, WIFI_PASSWORD)
         while not wlan.isconnected():
-            time.sleep(0.5)
+            sleep(0.5)
     print("Connected to Wi-Fi, IP:", wlan.ifconfig()[0])
 
 def send_to_redis(data):
@@ -102,7 +102,7 @@ def send_to_redis(data):
         # Authentication (if required)
         if REDIS_PASSWORD:
             s.send(f"AUTH {REDIS_PASSWORD}\r\n".encode())
-            time.sleep(1)
+            sleep(1)
         
         # Sending command
         s.send(f"{cmd}\r\n".encode())
@@ -134,4 +134,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
