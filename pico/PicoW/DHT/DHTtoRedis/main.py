@@ -34,13 +34,13 @@ def read_sensors():
     dht_sensor = DHT22(DHT_DATA_PIN,DHT22_VCC,dht11=False)
     T,H = dht_sensor.read()
     if T is not None and H <= 100:
-        sensor_data = {
+        sensors_data = {
                         "temp": T,  # Temperature in °C
                         "hum": H,    # Humidity in %
                         "vcc": V # Battery voltage
                       }
         led_blinking(700,1300,1)
-        return sensor_data
+        return sensors_data
     else:
         print(' SENSOR ERROR')
         return None 
