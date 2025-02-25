@@ -2,7 +2,7 @@ import utime
 from utime import sleep_ms, sleep
 import rp2
 import machine
-from machine import Pin
+from machine import Pin, ADC
 import network
 import usocket as socket
 from PicoDHT import DHT22
@@ -19,23 +19,31 @@ REDIS_KEY = "DHT22PicoW01"
 led = machine.Pin("LED", machine.Pin.OUT)
 led.off()
 
+def read_ADC():
+    adc = ADC(Pin(26))
+    raw_value = adc.read_u16()  # Read the raw value from the ADC (0-65535)
+    voltage = raw_value * 3.3 / 65535  # Scale to the voltage range (0-3.3V)
+    battery_voltage = voltage * 2  # Account for the voltage divider
+    return round(battery_voltage, 2)
 
-def read_sensor():
+def read_sensors():
     DHT22_VCC = Pin(22, Pin.OUT)
     DHT_DATA_PIN = Pin(20,Pin.IN,Pin.PULL_UP)
     utime.sleep_ms(1000)
+    V = read_ADC()
     dht_sensor = DHT22(DHT_DATA_PIN,DHT22_VCC,dht11=False)
     T,H = dht_sensor.read()
     if T is not None and H <= 100:
         sensor_data = {
                         "temp": T,  # Temperature in °C
-                        "hum": H    # Humidity in %
+                        "hum": H,    # Humidity in %
+                        "vcc": V # Battery voltage
                       }
-        print(sensor_data)
         led_blinking(700,1300,1)
         return sensor_data
     else:
         print(' SENSOR ERROR')
+        return None 
 
 
 def led_blinking(on_time, off_time, number_of_blinks):
@@ -61,7 +69,7 @@ def send_to_redis(data):
     try:
         #data
         # Formatting data for Redis (e.g., HSET)
-        cmd = f"HSET {REDIS_KEY} temperature {data['temp']} humidity {data['hum']}"
+        cmd = f"HSET {REDIS_KEY} temperature {data['temp']} humidity {data['hum']} vcc {data['vcc']}"
         
         # Establishing TCP connection with Redis
         addr = (REDIS_HOST, REDIS_PORT)
@@ -88,10 +96,10 @@ def main():
     while True:
         # 1. Turn on Wi-Fi, read data, send to Redis
         connect_wifi()
-        sensor_data = read_sensor()
-        print (f"Data read from sensor: {sensor_data}")
-        send_to_redis(sensor_data)
-        
+        sensors_data = read_sensors()
+        print (f"Data read from sensor: {sensors_data}")
+        send_to_redis(sensors_data)
+       
         # 2. Turn off Wi-Fi and enter power-saving mode
         wlan = network.WLAN(network.STA_IF)
         wlan.disconnect()
