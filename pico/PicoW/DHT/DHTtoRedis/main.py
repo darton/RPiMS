@@ -87,7 +87,7 @@ def send_to_redis(data):
         # Closing connection with Redis
         s.close()
         led_blinking(700,1300,1)
-        print("Data sent to Redis!")
+        print(f"Data sent to Redis: {cmd}")
     except Exception as e:
         print("Error:", e)
 
