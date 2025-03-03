@@ -141,7 +141,6 @@ def av_stream(state):
 
 
 def av_recording():
-
     _cmd = '/home/pi/scripts/RPiMS/videorecorder.sh'
     subprocess.Popen([_cmd],
     stdout=subprocess.PIPE,
