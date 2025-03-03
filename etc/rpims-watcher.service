@@ -5,8 +5,6 @@ After=network.target
 [Service]
 Type=oneshot
 ExecStart=/usr/bin/systemctl restart rpims.service
-ExecStart=/usr/bin/systemctl restart zabbix-agent.service
-ExecStart=/usr/bin/systemctl restart uv4l_raspicam
 
 [Install]
 WantedBy=multi-user.target

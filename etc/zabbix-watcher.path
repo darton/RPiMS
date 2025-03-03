@@ -1,0 +1,10 @@
+[Unit]
+Description="Monitor the zabbix config files for changes"
+
+[Path]
+PathModified=/var/www/html/conf/zabbix_agentd.conf
+PathModified=/var/www/html/conf/zabbix_agentd.psk
+Unit=zabbix-watcher.service
+
+[Install]
+WantedBy=multi-user.target

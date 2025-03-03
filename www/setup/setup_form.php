@@ -1,5 +1,35 @@
 <?php
 
+function calculate_and_save_checksum($file_path) {
+    // Check if the file exists
+    if (!file_exists($file_path)) {
+        echo "File does not exist: " . $file_path;
+        return;
+    }
+
+    // Checksum file names
+    $checksum_file = $file_path . '.sha256';
+    $old_checksum_file = $file_path . '.old.sha256';
+
+    // If the current checksum file exists, rename it to the old checksum file
+    if (file_exists($checksum_file)) {
+        rename($checksum_file, $old_checksum_file);
+    }
+
+    // Calculate the SHA-256 checksum
+    $checksum = hash_file('sha256', $file_path);
+
+    // Save the new checksum to the file
+    file_put_contents($checksum_file, $checksum);
+
+    // Display the result
+    echo "SHA-256 checksum has been saved in the file: " . $checksum_file;
+    if (file_exists($old_checksum_file)) {
+        echo " (Previous checksum saved in: " . $old_checksum_file . ")";
+    }
+}
+
+
 $GPIO = array(
     "GPIO_5" => $_POST['GPIO_5'],
     "GPIO_6" => $_POST['GPIO_6'],
@@ -191,8 +221,6 @@ $rpims = array(
 );
 
 
-
-
 $streamconfile = fopen("/var/www/html/conf/uv4l-raspicam.conf", "w") or die("Unable to open file!");
 $picamera_rotation="rotation = ".(int)$_POST['picamera_rotation']."\n";
 $picamera_fps="framerate = ".(int)$_POST['picamera_fps']."\n";
@@ -230,6 +258,9 @@ fwrite($streamconfile, "preview = 320\n");
 fwrite($streamconfile, "preview = 240\n");
 fwrite($streamconfile, "\n");
 fwrite($streamconfile, "server-option = --www-webrtc-signaling-path=/webrtc\n");
+$file_path = '/var/www/html/conf/uv4l-raspicam.conf';
+calculate_and_save_checksum($file_path);
+
 
 $zabconfile = fopen("/var/www/html/conf/zabbix_agentd.conf", "w") or die("Unable to open file!");
 $zabpskfile = fopen("/var/www/html/conf/zabbix_agentd.psk", "w") or die("Unable to open file!");
@@ -253,7 +284,12 @@ fwrite($zabconfile, $TLSAccept);
 fwrite($zabconfile, $Timeout);
 fwrite($zabpskfile, $TLSPSK);
 fclose($zabconfile);
+$file_path = '/var/www/html/conf/zabbix_agentd.conf';
+calculate_and_save_checksum($file_path);
 fclose($zabpskfile);
+$file_path = '/var/www/html/conf/zabbix_agentd.psk';
+calculate_and_save_checksum($file_path);
+
 
 yaml_emit_file ("/var/www/html/conf/rpims.yaml", $rpims, YAML_UTF8_ENCODING, YAML_ANY_BREAK);
 

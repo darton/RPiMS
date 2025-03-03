@@ -23,6 +23,7 @@ downloaddir=/tmp
 unpackdir=/tmp/RPiMS-master
 installdir=/home/pi/scripts/RPiMS
 wwwdir=/var/www/html
+systemddir=/lib/systemd/system
 
 INSTALL_CMD="apt-get -y install"
 PIP3_INSTALL_CMD="pip3 install --upgrade"
@@ -170,14 +171,23 @@ chmod ugo+x /etc/update-motd.d/20-rpims
 cat $unpackdir/etc/cron |tee /etc/cron.d/rpims
 chown root.root /etc/cron.d/rpims
 
-cp $unpackdir/etc/rpims.service /lib/systemd/system/rpims.service
-cp $unpackdir/etc/rpims-watcher.path /lib/systemd/system/rpims-watcher.path
-cp $unpackdir/etc/rpims-watcher.service /lib/systemd/system/rpims-watcher.service
-
+cp $unpackdir/etc/rpims.service $systemddir
+cp $unpackdir/etc/rpims-watcher.path $systemddir
+cp $unpackdir/etc/rpims-watcher.service $systemddir
+cp $unpackdir/etc/uv4l-watcher.path $systemddir
+cp $unpackdir/etc/uv4l-watcher.service $systemddir
+cp $unpackdir/etc/zabbix-watcher.path $systemddir
+cp $unpackdir/etc/zabbix-watcher.service $systemddir
 systemctl daemon-reload
+
 systemctl enable rpims.service
 systemctl enable rpims-watcher.path
 systemctl enable rpims-watcher.service
+systemctl enable uv4l-watcher.path
+systemctl enable uv4l-watcher.service
+systemctl enable zabbix-watcher.path
+systemctl enable zabbix-watcher.service
+
 
 rm $downloaddir/RPiMS.zip
 rm -rf $unpackdir

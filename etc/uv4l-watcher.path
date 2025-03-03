@@ -1,0 +1,9 @@
+[Unit]
+Description="Monitor the /var/www/html/conf/uv4l-raspicam.conf file for changes"
+
+[Path]
+PathModified=/var/www/html/conf/uv4l-raspicam.conf
+Unit=uv4l-watcher.service
+
+[Install]
+WantedBy=multi-user.target

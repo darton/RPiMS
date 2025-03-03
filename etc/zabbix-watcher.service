@@ -1,0 +1,11 @@
+[Unit]
+Description=Zabbix Agent restarter
+After=network.target
+
+[Service]
+Type=oneshot
+ExecStart=/home/pi/scripts/RPiMS/config-file-watcher.sh  /var/www/html/conf/zabbix_agentd.conf /var/www/html/conf/zabbix_agentd.psk zabbix-agent.service
+
+[Install]
+WantedBy=multi-user.target
+

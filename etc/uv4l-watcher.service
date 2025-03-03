@@ -1,0 +1,11 @@
+[Unit]
+Description=uv4l restarter
+After=network.target
+
+[Service]
+Type=oneshot
+ExecStart=/home/pi/scripts/RPiMS/config-file-watcher.sh  /var/www/html/conf/uv4l-raspicam.conf uv4l_raspicam.service
+
+[Install]
+WantedBy=multi-user.target
+
