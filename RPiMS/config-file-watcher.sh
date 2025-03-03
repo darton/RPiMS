@@ -40,8 +40,6 @@ for file in "$@"; do
     if [ "$current_checksum" != "$previous_checksum" ]; then
         # Restart the service
         systemctl restart "$service_name"
-
-        echo "Service $service_name has been restarted due to configuration change in $file." >> /tmp/s.log
         exit 0
     fi
 done
