@@ -1145,7 +1145,7 @@ def main():
     #    av_stream('restart')
 
     if bool(config['use_picamera']) is True:
-        av_stream('restart')
+        av_stream('start')
     else:
         av_stream('stop')
 
