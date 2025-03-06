@@ -44,6 +44,7 @@ def read_sensors():
         led_blinking(700,1300,1)
         return sensors_data
     else:
+        led_blinking(300,100,2)
         print(' SENSOR ERROR')
         return None 
 
@@ -93,6 +94,7 @@ def send_to_redis(data):
         led_blinking(700,1300,1)
         
     except Exception as e:
+        led_blinking(300,100,3)
         print("Error:", e)
 
 
@@ -101,8 +103,9 @@ def main():
         # 1. Turn on Wi-Fi, read data, send to Redis
         connect_wifi()
         sensors_data = read_sensors()
-        print (f"Data read from sensor: {sensors_data}")
-        send_to_redis(sensors_data)
+        if sensors_data is not None:
+            print (f"Data readed from sensor: {sensors_data}")
+            send_to_redis(sensors_data)
        
         # 2. Turn off Wi-Fi and enter power-saving mode
         wlan = network.WLAN(network.STA_IF)
