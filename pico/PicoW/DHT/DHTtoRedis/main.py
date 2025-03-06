@@ -8,16 +8,19 @@ import usocket as socket
 from PicoDHT import DHT22
 
 # Configuration
-WIFI_SSID = "IoT"
-WIFI_PASSWORD = "verycomplexwifipassword"
+WIFI_SSID = "kowalczyk.it"
+WIFI_PASSWORD = "vva2-e3e4-fkeh"
 
-REDIS_HOST = "192.168.1.2"
+REDIS_HOST = "192.168.1.22"
 REDIS_PORT = 6379
-REDIS_PASSWORD = "verycomplexredispassword"
+REDIS_PASSWORD = "Q1w2e3r4t5."
 REDIS_KEY = "DHT22PicoW01"
+
+MACHINE_SLEEP_TIME = 120 #seconds
 
 led = machine.Pin("LED", machine.Pin.OUT)
 led.off()
+
 
 def read_ADC():
     adc = ADC(Pin(26))
@@ -62,7 +65,7 @@ def connect_wifi():
         print("Connecting to Wi-Fi...")
         wlan.connect(WIFI_SSID, WIFI_PASSWORD)
         while not wlan.isconnected():
-            led_blinking(100,100,3)
+            led_blinking(100,100,9)
     print("Connected to Wi-Fi, IP:", wlan.ifconfig()[0])
 
 def send_to_redis(data):
@@ -70,7 +73,7 @@ def send_to_redis(data):
         #data
         # Formatting data for Redis (e.g., HSET)
         cmd = f"HSET {REDIS_KEY} temperature {data['temp']} humidity {data['hum']} vcc {data['vcc']}"
-        
+        cmde = f"EXPIRE {REDIS_KEY} {2 * MACHINE_SLEEP_TIME}"
         # Establishing TCP connection with Redis
         addr = (REDIS_HOST, REDIS_PORT)
         s = socket.socket()
@@ -81,13 +84,15 @@ def send_to_redis(data):
             s.send(f"AUTH {REDIS_PASSWORD}\r\n".encode())
             sleep(1)
         
-        # Sending command
-        s.send(f"{cmd}\r\n".encode())
-        
+        # Sending commands
+        for _cmd in (cmd, cmde):
+            s.send(f"{_cmd}\r\n".encode())
+            print(f"Data sent to Redis: {_cmd}")
+
         # Closing connection with Redis
         s.close()
         led_blinking(700,1300,1)
-        print(f"Data sent to Redis: {cmd}")
+        
     except Exception as e:
         print("Error:", e)
 
@@ -108,8 +113,7 @@ def main():
         
         # 3. Put Pico to sleep for 60 seconds (light sleep)
         print("Sleeping...")
-        machine.lightsleep(60 * 1000)  # 60,000 ms = 60 seconds
+        machine.lightsleep(MACHINE_SLEEP_TIME * 1000)  # 60 * 1000 ms = 60 seconds
 
 if __name__ == "__main__":
     main()
-
