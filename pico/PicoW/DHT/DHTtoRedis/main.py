@@ -88,6 +88,7 @@ def send_to_redis(data):
         for _cmd in (cmd, cmde):
             s.send(f"{_cmd}\r\n".encode())
             print(f"Data sent to Redis: {_cmd}")
+            led_blinking(700,300,1)
 
         # Closing connection with Redis
         s.close()
