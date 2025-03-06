@@ -22,7 +22,7 @@ led = machine.Pin("LED", machine.Pin.OUT)
 led.off()
 
 def read_ADC():
-    adc = ADC(Pin(26))
+    adc = ADC(Pin(28))
     raw_value = adc.read_u16()  # Read the raw value from the ADC (0-65535)
     voltage = raw_value * 3.3 / 65535  # Scale to the voltage range (0-3.3V)
     battery_voltage = voltage * 2  # Account for the voltage divider
