@@ -17,7 +17,7 @@ REDIS_KEY = "BME280PicoW01"
 
 BME280VCC = machine.Pin(22, machine.Pin.OUT)
 
-MACHINE_SLEEP_TIME = 120 #seconds
+MACHINE_SLEEP_TIME = 300 #seconds
 
 led = machine.Pin("LED", machine.Pin.OUT)
 led.off()
@@ -67,11 +67,9 @@ def read_sensors():
                     break
                 except Exception:
                     reset_bme280()
-                    pass
         val = bme.values  
         if len(val) == 3:
             t,h,p = float(val[0]),float(val[2]),float(val[1])
-            led_blinking(700,1300,1)
             sensor_data = {
             "temp": t,  # Temperature in °C
             "pres": p,  # Pressure in hPa
@@ -79,25 +77,33 @@ def read_sensors():
             "vcc": v # battery voltage
             }
             if t is not None and h is not None and p is not None:
-                led_blinking(300,100,1)
+                BME280VCC.value(0)
+                led_blinking(700,1300,1)
                 return sensor_data
             else:
-                return None
+                led_blinking(300,100,2)
+                machine.reset()
     except:
-        led_blinking(300,100,2)
-        print(' NODATA')
-        return None
+        led_blinking(300,100,10)
+        machine.reset()
 
 
 def connect_wifi():
     rp2.country('PL')
     wlan = network.WLAN(network.STA_IF)
     wlan.active(True)
+    
+    start_time = time.time()
+    timeout = 60
+    
     if not wlan.isconnected():
         print("Connecting to Wi-Fi...")
         wlan.connect(WIFI_SSID, WIFI_PASSWORD)
         while not wlan.isconnected():
-             led_blinking(100,100,5)
+            if time.time() - start_time > timeout:
+                machine.reset()
+            led_blinking(100,100,5)
+
     print("Connected to Wi-Fi, IP:", wlan.ifconfig()[0])
 
 def send_to_redis(data):
@@ -151,3 +157,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
