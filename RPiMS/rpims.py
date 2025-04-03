@@ -960,11 +960,6 @@ def set_process_name_and_run(function_name, **kwargs):
     function_name(**kwargs)
 
 
-def multiprocessing_function_cf(function_name, **kwargs):
-    with ProcessPoolExecutor() as executor:
-        future = executor.submit(set_process_name_and_run, function_name, **kwargs)
-
-
 def threading_function(function_name, **kwargs):
     import threading
     t = threading.Thread(target=function_name, name=function_name, kwargs=kwargs)
@@ -975,6 +970,7 @@ def threading_function(function_name, **kwargs):
 def multiprocessing_function(function_name, **kwargs):
     import multiprocessing
     p = multiprocessing.Process(target=function_name, name=function_name, kwargs=kwargs)
+    t.daemon = True
     p.start()
 
 
