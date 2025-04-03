@@ -37,7 +37,6 @@ import threading
 import usb.core
 import yaml
 from adafruit_ads1x15.analog_in import AnalogIn
-from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor
 from gpiozero import LED, Button, MotionSensor, CPUTemperature
 from gpiozero.tools import all_values, any_values
 from grove.i2c import Bus
