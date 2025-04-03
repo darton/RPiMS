@@ -961,11 +961,6 @@ def set_process_name_and_run(function_name, **kwargs):
     function_name(**kwargs)
 
 
-def threading_function_cf(function_name, **kwargs):
-    with ThreadPoolExecutor() as executor:
-        future = executor.submit(function_name, **kwargs)
-
-
 def multiprocessing_function_cf(function_name, **kwargs):
     with ProcessPoolExecutor() as executor:
         future = executor.submit(set_process_name_and_run, function_name, **kwargs)
@@ -1114,7 +1109,6 @@ def main():
         system_buttons_list['shutdown_button'].when_held = shutdown
 
     if bool(config['use_cpu_sensor']) is True:
-        #threading_function_cf(get_cputemp_data, **cputemp_config, **config)
         threading_function(get_cputemp_data, **cputemp_config, **config)
 
     if bool(config['use_bme280_sensor']) is True:
