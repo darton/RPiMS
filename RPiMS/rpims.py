@@ -915,11 +915,6 @@ def multiprocessing_function(function_name, **kwargs):
     p.start()
 
 
-def threading_function_cf(function_name, **kwargs):
-    with ThreadPoolExecutor() as executor:
-        future = executor.submit(function_name, **kwargs)
-
-
 def multiprocessing_function_cf(function_name, **kwargs):
     with ProcessPoolExecutor() as executor:
         future = executor.submit(set_process_name_and_run, function_name, **kwargs)
