@@ -31,7 +31,7 @@ Video stream will be turned on automaticly when use picamera sensor are set to e
 
 ### Installing operating system images 
 
-Download the image [Raspberry Pi OS (Legacy, 32-bit) Lite - a port of Debian Bullseye](https://downloads.raspberrypi.com/raspios_oldstable_lite_armhf/images/raspios_oldstable_lite_armhf-2024-03-12/2024-03-12-raspios-bullseye-armhf-lite.img.xz).
+Download the image [Raspberry Pi OS Lite - a port of Debian Trixie](https://downloads.raspberrypi.com/raspios_lite_arm64/images/raspios_lite_arm64-2025-12-04/2025-12-04-raspios-trixie-arm64-lite.img.xz).
 
 To writing an image to the SD card, use [Imager](https://www.raspberrypi.org/downloads/).
 
@@ -41,12 +41,12 @@ To writing an image to the SD card, use [Imager](https://www.raspberrypi.org/dow
 
 Running the following command will download and run the script.
 ```
-curl -sS https://raw.githubusercontent.com/darton/RPiMS/flask/install.sh | sudo bash
+curl -sS https://raw.githubusercontent.com/darton/RPiMS/v4/install.sh | sudo bash
 
 ```
 or
 ```
-curl -sSL https://github.com/darton/RPiMS/raw/flask/install.sh | sudo bash
+curl -sSL https://github.com/darton/RPiMS/raw/v4/install.sh | sudo bash
 ```
 
 ### Setup
