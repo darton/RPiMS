@@ -6,7 +6,7 @@ Supports sensor like door/window sensor, motion sensor, water sensor, smoke sens
 
 Suppports I2C temperature, humidity and preassure BME280 sensors, and 1-wire DS18B20 temperature sensors.
 
-Supports UV4L Video Streaming Server and video recording from picamera.
+Supports Video Streaming Server and video recording from picamera.
 
 Supports wind speed meter, wind direction meter, rainfall meter.
 
