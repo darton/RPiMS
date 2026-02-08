@@ -1,0 +1,38 @@
+---
+- name: Walidacja konfiguracji I2C
+  command: raspi-config nonint get_i2c
+  register: i2c_state
+  changed_when: false
+
+- name: Walidacja konfiguracji SPI
+  command: raspi-config nonint get_spi
+  register: spi_state
+  changed_when: false
+
+- name: Walidacja konfiguracji 1-Wire
+  command: raspi-config nonint get_onewire
+  register: onewire_state
+  changed_when: false
+
+- name: Walidacja timezone
+  command: timedatectl show -p Timezone --value
+  register: tz_state
+  changed_when: false
+
+- name: Generowanie raportu walidacji
+  copy:
+    dest: "{{ validation_report_path }}"
+    content: |
+      RAPORT WALIDACJI RASPBERRY PI
+      =============================
+
+      I2C:        {{ 'OK' if i2c_state.stdout == '0' else 'NIEAKTYWNE' }}
+      SPI:        {{ 'OK' if spi_state.stdout == '0' else 'NIEAKTYWNE' }}
+      1-Wire:     {{ 'OK' if onewire_state.stdout == '0' else 'NIEAKTYWNE' }}
+      Timezone:   {{ tz_state.stdout }}
+
+      Data:       {{ ansible_date_time.iso8601 }}
+
+- name: Reboot jeśli wymagany
+  reboot:
+  when: need_reboot | default(false)

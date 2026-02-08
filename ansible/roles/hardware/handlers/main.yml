@@ -1,0 +1,4 @@
+- name: reboot_required
+  reboot:
+    msg: "Reboot required by hardware role"
+    reboot_timeout: 300

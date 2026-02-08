@@ -1,0 +1,7 @@
+---
+timezone_name: "Europe/Warsaw"
+raspi_hostname: "rpims.example.com"
+raspi_hosts_ip: "127.0.1.2"
+disable_swap_service: true
+vc_lib_path: "/opt/vc/lib/"
+vc_conf_file: "/etc/ld.so.conf.d/vc.conf"

@@ -1,0 +1,5 @@
+---
+- name: Instalacja pakietów APT
+  apt:
+    name: "{{ apt_packages }}"
+    state: present

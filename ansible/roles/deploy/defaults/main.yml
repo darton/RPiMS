@@ -1,0 +1,13 @@
+---
+rpi_repo_zip_url: "https://github.com/darton/RPiMS/archive/refs/heads/master.zip"
+rpi_repo_tmp_dir: "/tmp"
+rpi_repo_extract_dir: "/tmp/RPiMS-master"
+rpi_repo_zip_file: "/tmp/RPiMS-master.zip"
+
+# zmienne dla skryptu bash
+installdir: "/home/pi/scripts/RPiMS"
+wwwdir: "/var/www/html"
+systemddir: "/lib/systemd/system"
+
+# skrypt instalacyjny
+rpi_repo_install_script: "/tmp/RPiMS-master/install.sh"

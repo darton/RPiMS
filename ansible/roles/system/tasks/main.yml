@@ -1,0 +1,36 @@
+---
+- name: Aktualizacja listy pakietów
+  apt:
+    update_cache: yes
+
+- name: Pełny upgrade systemu
+  apt:
+    upgrade: dist
+
+- name: Autoremove zbędnych pakietów
+  apt:
+    autoremove: yes
+
+- name: Ustawienie strefy czasowej
+  timezone:
+    name: "{{ timezone_name }}"
+
+- name: Ustawienie hostname
+  hostname:
+    name: "{{ raspi_hostname }}"
+
+- name: Dodanie nowego wpisu hostname do /etc/hosts
+  lineinfile:
+    path: /etc/hosts
+    line: "{{ raspi_hosts_ip }}   {{ raspi_hostname }}"
+    state: present
+
+- name: Dodanie /opt/vc/lib do ld.so.conf.d
+  lineinfile:
+    path: "{{ vc_conf_file }}"
+    line: "{{ vc_lib_path }}"
+    create: yes
+    state: present
+
+- name: Przeładowanie konfiguracji linker-a (ldconfig)
+  command: ldconfig

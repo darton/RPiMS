@@ -1,0 +1,32 @@
+---
+- name: Pobranie archiwum RPiMS z GitHub
+  get_url:
+    url: "{{ rpi_repo_zip_url }}"
+    dest: "{{ rpi_repo_zip_file }}"
+    mode: '0644'
+
+- name: Usunięcie starego katalogu jeśli istnieje
+  file:
+    path: "{{ rpi_repo_extract_dir }}"
+    state: absent
+
+- name: Rozpakowanie archiwum do /tmp
+  unarchive:
+    src: "{{ rpi_repo_zip_file }}"
+    dest: "{{ rpi_repo_tmp_dir }}"
+    remote_src: yes
+
+- name: Nadanie praw wykonywalnych dla skryptu instalacyjnego
+  file:
+    path: "{{ rpi_repo_install_script }}"
+    mode: '0755'
+    state: file
+
+- name: Uruchomienie skryptu instalacyjnego z przekazaniem zmiennych
+  command: "{{ rpi_repo_install_script }}"
+  args:
+    chdir: "{{ rpi_repo_extract_dir }}"
+  environment:
+    INSTALLDIR: "{{ installdir }}"
+    WWWDIR: "{{ wwwdir }}"
+    SYSTEMDDIR: "{{ systemddir }}"

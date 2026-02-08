@@ -1,0 +1,21 @@
+---
+pip_packages:
+  - RPi.bme280
+  - smbus2
+  - w1thermsensor
+  - "redis[hiredis]"
+  - pid
+  - PyYAML
+  - luma.oled
+  - luma.lcd
+  - adafruit-circuitpython-ads1x15
+  - rshell
+  - pyusb
+  - adafruit-circuitpython-dht
+  - setproctitle
+  - flask
+  - automationhat
+  - packaging
+
+grove_repo_url: "https://github.com/Seeed-Studio/grove.py"
+grove_repo_dest: "/tmp/grove.py"
