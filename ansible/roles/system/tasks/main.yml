@@ -25,12 +25,3 @@
     line: "{{ raspi_hosts_ip }}   {{ raspi_hostname }}"
     state: present
 
-- name: Dodanie /opt/vc/lib do ld.so.conf.d
-  lineinfile:
-    path: "{{ vc_conf_file }}"
-    line: "{{ vc_lib_path }}"
-    create: yes
-    state: present
-
-- name: Przeładowanie konfiguracji linker-a (ldconfig)
-  command: ldconfig
