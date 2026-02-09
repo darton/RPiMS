@@ -1,0 +1,28 @@
+server {
+        listen 80;
+        listen [::]:80;
+
+        server_name _;
+
+        access_log /var/log/nginx/rpims.access.log;
+        error_log /var/log/nginx/rpims.error.log;
+
+        location / {
+                include proxy_params;
+                proxy_pass http://unix:/var/www/rpims.sock;
+                add_header Cache-Control "no-cache";
+                add_header X-Content-Type-Options "nosniff" always;
+        }
+
+        location ^~ /static/  {
+                include  /etc/nginx/mime.types;
+                alias /var/www/html/static/;
+        	add_header Cache-Control "public,max-age=31536000,immutable";
+        	add_header X-Content-Type-Options "nosniff" always;
+        }
+
+        location ~* \.(js|css|png|jpg|jpeg|gif|svg|ico)$ {
+            add_header Cache-Control "public,max-age=31536000,immutable";
+            add_header X-Content-Type-Options "nosniff" always;
+        }
+}
