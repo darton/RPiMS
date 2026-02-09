@@ -976,7 +976,7 @@ def multiprocessing_function(function_name, **kwargs):
 
 def db_connect(dbhost, dbnum):
     try:
-        redis_db = redis.StrictRedis(host=dbhost, port=6379, db=str(dbnum), charset="utf-8", decode_responses=True)
+        redis_db = redis.StrictRedis(host=dbhost, port=6379, db=str(dbnum), decode_responses=True)
         redis_db.ping()
         return redis_db
     except Exception as err:
