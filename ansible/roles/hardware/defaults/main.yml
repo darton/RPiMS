@@ -1,5 +1,4 @@
 ---
-config_file: "/boot/config.txt"
 
 enable_i2c: true
 enable_spi: true

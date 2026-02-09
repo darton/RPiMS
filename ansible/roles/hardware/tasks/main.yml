@@ -1,52 +1,17 @@
 ---
-- name: Tworzenie kopii zapasowej config.txt
-  copy:
-    src: "{{ config_file }}"
-    dest: "{{ config_file }}.bak_{{ ansible_date_time.iso8601 }}"
-    remote_src: yes
+- name: Enabling I2C
+  command: raspi-config nonint do_i2c 0
+  register: i2c
 
-- name: Włączenie I2C
-  lineinfile:
-    path: "{{ config_file }}"
-    regexp: "^dtparam=i2c_"
-    line: "dtparam=i2c_arm={{ 'on' if enable_i2c else 'off' }}"
-  when: enable_i2c
-  notify: reboot_required
+- name: Enabling SPI
+  command: raspi-config nonint do_spi 0
+  register: spi
 
-- name: Włączenie SPI
-  lineinfile:
-    path: "{{ config_file }}"
-    regexp: "^dtparam=spi"
-    line: "dtparam=spi={{ 'on' if enable_spi else 'off' }}"
-  when: enable_spi
-  notify: reboot_required
+- name: Enabling 1-Wire
+  command: raspi-config nonint do_onewire 0
+  register: w1
 
-- name: Włączenie 1-Wire
-  lineinfile:
-    path: "{{ config_file }}"
-    regexp: "^dtoverlay=w1-gpio"
-    line: "dtoverlay=w1-gpio"
-  when: enable_onewire
-  notify: reboot_required
-
-- name: Wyłączenie auto-detekcji kamery
-  lineinfile:
-    path: "{{ config_file }}"
-    regexp: "^camera_auto_detect="
-    line: "camera_auto_detect={{ '0' if enable_legacy_camera else '1' }}"
-  when: enable_legacy_camera
-  notify: reboot_required
-
-- name: Włączenie legacy camera (start_x=1)
-  lineinfile:
-    path: "{{ config_file }}"
-    regexp: "^start_x="
-    line: "start_x={{ '1' if enable_legacy_camera else '0' }}"
-    insertafter: EOF
-  when: enable_legacy_camera
-  notify: reboot_required
-
-- name: Ustawienie faktu reboot_required
+- name: Set fact reboot_required
   set_fact:
     need_reboot: true
   when: need_reboot is not defined
