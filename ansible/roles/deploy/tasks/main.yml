@@ -4,9 +4,44 @@
     name: "{{ rpims_user }}"
     system: yes
 
-- name: Clone RPiMS repo
-  git:
-    repo: "{{ rpims_repo_url }}"
-    dest: "{{ rpims_repo_tmp_dir }}"
-    version: "{{ rpims_repo_version }}"
-    force: yes
+- name: Copy web file to /var/www/html
+  copy: 
+    src: "{{ rpims_repo_dir }}/www/"
+    dest: "/var/www/html"
+    owner: "{{ rpims_user }}"
+    group: "{{ rpims_user }}"
+    mode: '0644'
+
+- name: Copy RPiMS files to /opt
+  copy:
+    src: "{{ rpims_repo_dir }}/RPiMS/"
+    dest: "{{ rpims_install_dir }}"
+    owner: "{{ rpims_user }}"
+    group: "{{ rpims_user }}"
+    mode: '0644'
+
+- name: Deploy nginx config files
+  copy: 
+    src: "{{ rpims_repo_dir }}/etc/nginx/"
+    dest: "/etc/nginx/"
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Restart nginx
+  become: true
+
+- name: Deploy systemd files
+  copy:
+    src: "{{ rpims_repo_dir }}/etc/systemd/"
+    dest: "/etc/systemd/system/"
+    owner: root
+    group: root
+  notify: Reload systemd
+  become: true
+
+
+#- name: Clean temperary directory
+#  file:
+#    path: "{{ rpims_repo_temp_dir }}"
+#    state: absent
+

@@ -1,7 +1,4 @@
 ---
-rpims_repo_url: "https://github.com/darton/RPiMS.git"
-rpims_repo_version: "v4"
-rpims_repo_tmp_dir: "/tmp"
-rpims_repo_install_dir: "/opt/RPiMS"
+rpims_repo_dir: "~/RPiMS"
+rpims_install_dir: "/opt/RPiMS"
 rpims_user: "rpims"
-

@@ -1,0 +1,148 @@
+---
+setup:
+  verbose: false
+  show_sys_info: true
+  use_zabbix_sender: false
+  use_picamera: false
+  use_picamera_recording: false
+  use_door_sensor: false
+  use_motion_sensor: false
+  use_system_buttons: false
+  use_door_led_indicator: true
+  use_motion_led_indicator: true
+  use_cpu_sensor: true
+  use_bme280_sensor: false
+  use_ds18b20_sensor: false
+  use_dht_sensor: false
+  use_weather_station: false
+  use_serial_display: false
+  serial_display_type: lcd_st7735
+  serial_type: spi
+  serial_display_rotate: 0
+  serial_display_refresh_rate: 10
+sensors:
+  CPU:
+    temp:
+      read_interval: 1
+  PICAMERA:
+    rotation: 0
+    mode: 6
+    fps: 25
+  BME280:
+    id1:
+      id: id1
+      name: Room 1
+      use: true
+      read_interval: 2
+      interface: i2c
+      i2c_address: 118
+    id2:
+      id: id2
+      name: Room 2
+      use: true
+      read_interval: 2
+      interface: serial
+      serial_port: USB1
+    id3:
+      id: id3
+      name: Room 3
+      use: true
+      read_interval: 6
+      interface: serial
+      serial_port: USB2
+  ONE_WIRE:
+    DS18B20:
+      read_interval: 5
+      addresses:
+        3c01d075ef79:
+          name: ""
+        3c01d607fcdc:
+          name: ""
+  DHT:
+    name: Outoor
+    read_interval: 60
+    type: DHT22
+    pin: "17"
+  WEATHER:
+    WIND:
+      SPEED:
+        use: false
+        sensor_pin: 23
+        acquisition_time: 6
+        agregation_time: 3600
+      DIRECTION:
+        use: false
+        acquisition_time: 6
+        adc_type: AutomationPhat
+        adc_input: 1
+        reference_voltage_adc_input: 2
+    RAINFALL:
+      use: false
+      sensor_pin: 22
+      acquisition_time: 60
+      agregation_time: 3600
+gpio:
+  GPIO_5:
+    pin: "5"
+    type: MotionSensor
+    name: motion sensor in room 1
+    hold_time: "1"
+  GPIO_6:
+    pin: "6"
+    type: MotionSensor
+    name: motion sensor in room 2
+    hold_time: "1"
+  GPIO_12:
+    pin: "12"
+    type: door_led
+    name: door led
+    hold_time: ""
+  GPIO_13:
+    pin: "13"
+    type: MotionSensor
+    name: motion sensor in room 3
+    hold_time: "1"
+  GPIO_16:
+    pin: "16"
+    type: DoorSensor
+    name: door in room 1
+    hold_time: "1"
+  GPIO_18:
+    pin: "18"
+    type: motion_led
+    name: motion led
+    hold_time: ""
+  GPIO_19:
+    pin: "19"
+    type: DoorSensor
+    name: door in room 2
+    hold_time: "1"
+  GPIO_20:
+    pin: "20"
+    type: DoorSensor
+    name: door in room 3
+    hold_time: "1"
+  GPIO_21:
+    pin: "21"
+    type: Reserved
+    name: not used
+    hold_time: "1"
+  GPIO_26:
+    pin: "26"
+    type: Reserved
+    name: not used
+    hold_time: "1"
+zabbix_agent:
+  zabbix_server: zabbix.home
+  zabbix_server_active: zabbix.home
+  location: My Home
+  hostname: rpims.home
+  chassis: embedded
+  deployment: RPiMS
+  TLSPSKIdentity: 610e655e89ce433e
+  TLSConnect: psk
+  TLSAccept: psk
+  TLSPSK: 8d49cd81b1fcb06fe4b218743122ce3f3cd595b044cc942e53d161369
+  TLSPSKFile: /var/www/html/conf/zabbix_agentd.psk
+  Timeout: 3
+...
