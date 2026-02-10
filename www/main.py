@@ -15,7 +15,7 @@ app.config["DEBUG"] = True
 app.config["JSON_AS_ASCII"] = False
 app.config["JSONIFY_MIMETYPE"] = "application/json; charset=utf-8"
 
-redis_db = redis.StrictRedis(host="localhost", port=6379, db=0, charset="utf-8", decode_responses=True)
+redis_db = redis.StrictRedis(host="localhost", port=6379, db=0, decode_responses=True)
 
 
 def get_data():
