@@ -1,9 +1,0 @@
-[Unit]
-Description="Monitor the /var/www/html/conf/rpims.yaml file for changes"
-
-[Path]
-PathModified=/var/www/html/conf/rpims.yaml
-Unit=rpims-watcher.service
-
-[Install]
-WantedBy=multi-user.target
