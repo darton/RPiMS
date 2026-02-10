@@ -17,3 +17,8 @@
     chdir: "{{ grove_repo_dest }}"
     executable: pip3
     extra_args: "--break-system-packages"
+
+- name: Usuwanie repozytorium
+  file:
+    path: "{{ grove_repo_dest }}"
+    state: absent

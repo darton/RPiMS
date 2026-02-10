@@ -18,7 +18,7 @@
     dest: "{{ rpims_install_dir }}"
     owner: "{{ rpims_user }}"
     group: "{{ rpims_user }}"
-    mode: '0644'
+    mode: '0755'
 
 - name: Deploy nginx config files
   copy: 
@@ -30,14 +30,16 @@
   notify: Restart nginx
   become: true
 
-- name: Deploy systemd files
-  copy:
-    src: "{{ rpims_repo_dir }}/etc/systemd/"
-    dest: "/etc/systemd/system/"
+- name: Render and deploy systemd files
+  template:
+    src: "{{ item }}"
+    dest: "/etc/systemd/system/{{ item | basename | regex_replace('.j2$', '') }}"
     owner: root
     group: root
   notify: Reload systemd
   become: true
+  with_fileglob:
+    - "systemd/*.j2"
 
 
 #- name: Clean temperary directory

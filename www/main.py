@@ -295,12 +295,12 @@ def setup():
         zabbix_config.append(f'TLSConnect={zabbix_agent.get("TLSConnect")}')
         zabbix_config.append(f'TLSAccept={zabbix_agent.get("TLSAccept")}')
         zabbix_config.append(f'Timeout={zabbix_agent.get("Timeout")}')
-        with open('conf/zabbix_agentd.conf', 'w', encoding='utf-8') as f:
+        with open('conf/zabbix_rpims.conf', 'w', encoding='utf-8') as f:
             f.write('\n'.join(zabbix_config))
 
-        with open('conf/zabbix_agentd.psk', 'w', encoding='utf-8') as f:
+        with open('conf/zabbix_rpims.psk', 'w', encoding='utf-8') as f:
             f.write(zabbix_agent.get("TLSPSK"))
-
+        """
         uv4l_raspicam_config = []
         uv4l_raspicam_config.append('# uv4l core options')
         uv4l_raspicam_config.append('driver = raspicam')
@@ -316,6 +316,7 @@ def setup():
         uv4l_raspicam_config.append(f'framerate = {int(flask.request.form.get("picamera_fps"))}')
         with open('conf/uv4l-raspicam.conf', 'w', encoding='utf-8') as f:
             f.write('\n'.join(uv4l_raspicam_config))
+        """
 
         redis_db.set('rpims', json.dumps(_rpims))
         with open('conf/rpims.yaml', 'w') as f:

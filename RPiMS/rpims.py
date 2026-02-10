@@ -142,14 +142,14 @@ def detect_no_alarms(**kwargs):
 
 
 def av_stream(state):
-    # _cmd = '/home/pi/scripts/RPiMS/videostreamer.sh' + " " + state
+    # _cmd = '/opt/RPiMS/videostreamer.sh' + " " + state
     # _cmd = f'sudo systemctl {state} rpims-stream.service'
     _cmd = f'sudo systemctl {state} uv4l_raspicam.service'
     subprocess.call(_cmd, shell=True)
 
 
 def av_recording():
-    _cmd = '/home/pi/scripts/RPiMS/videorecorder.sh'
+    _cmd = '/opt/RPiMS/videorecorder.sh'
     subprocess.Popen([_cmd],
                      stdout=subprocess.PIPE,
                      stderr=subprocess.PIPE,
@@ -157,7 +157,7 @@ def av_recording():
 
 
 def zabbix_sender_call(message, sensor_id):
-    _cmd = '/home/pi/scripts/RPiMS/zabbix_sender.sh ' + message + " " + str(sensor_id)
+    _cmd = '/opt/RPiMS/zabbix_sender.sh ' + message + " " + str(sensor_id)
     subprocess.Popen([_cmd],
                      stdout=subprocess.PIPE,
                      stderr=subprocess.PIPE,
@@ -174,7 +174,7 @@ def hostnamectl_sh(**kwargs):
 
 
 def get_hostip():
-    _cmd = 'sudo /home/pi/scripts/RPiMS/gethostinfo.sh'
+    _cmd = 'sudo /opt/RPiMS/gethostinfo.sh'
     subprocess.call(_cmd, shell=True)
 
 

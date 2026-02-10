@@ -4,7 +4,6 @@ apt_packages:
   - nginx
   - redis
   - redis-server
-  - git
   - ffmpeg
   - libfreetype6-dev
   - libopenjp2-7
