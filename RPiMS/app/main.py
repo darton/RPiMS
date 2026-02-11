@@ -165,7 +165,7 @@ def setup():
         zabbix_agent['TLSAccept'] = 'psk'
         zabbix_agent['TLSConnect'] = 'psk'
         zabbix_agent['TLSPSK'] = flask.request.form.get('TLSPSK')
-        zabbix_agent['TLSPSKFile'] = '/opt/RPiMS/config/zabbix_agentd.psk'
+        zabbix_agent['TLSPSKFile'] = '/opt/RPiMS/config/zabbix_rpims.psk'
         zabbix_agent['TLSPSKIdentity'] = flask.request.form.get('TLSPSKIdentity')
         zabbix_agent['Timeout'] = int(flask.request.form.get('Timeout'))
         zabbix_agent['hostname'] = flask.request.form.get('hostname')
