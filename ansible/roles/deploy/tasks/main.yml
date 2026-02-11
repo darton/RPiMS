@@ -102,6 +102,17 @@
   tags:
     - systemd
 
+- name: Enable all RPiMS systemd services
+  systemd:
+    name: "{{ item | basename | regex_replace('.j2$', '') }}"
+    enabled: true
+    state: started
+  become: true
+  with_fileglob:
+    - "{{ role_path }}/templates/systemd/*.j2"
+  tags:
+    - systemd
+
 #- name: Clean temperary directory
 #  file:
 #    path: "{{ rpims_repo_temp_dir }}"
