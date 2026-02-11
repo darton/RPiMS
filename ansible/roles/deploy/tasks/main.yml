@@ -3,6 +3,8 @@
   user:
     name: "{{ rpims_user }}"
     system: yes
+  tags:
+    - adduser
 
 - name: Copy static web files to "{{ rpims_install_dir }}/static"
   copy: 
@@ -11,6 +13,8 @@
     owner: "{{ rpims_user }}"
     group: "{{ rpims_user }}"
     mode: '0644'
+  tags:
+    - static
 
 - name: Copy flask app files to "{{ rpims_install_dir }}"
   copy: 
@@ -19,6 +23,8 @@
     owner: "{{ rpims_user }}"
     group: "{{ rpims_user }}"
     mode: '0644'
+  tags:
+    - app
 
 - name: Copy config files to "{{ rpims_install_dir }}"
   copy: 
@@ -27,6 +33,8 @@
     owner: "{{ rpims_user }}"
     group: "{{ rpims_user }}"
     mode: '0644'
+  tags:
+    - config
 
 - name: Copy scripts files to "{{ rpims_install_dir }}"
   copy: 
@@ -35,6 +43,8 @@
     owner: "{{ rpims_user }}"
     group: "{{ rpims_user }}"
     mode: '0644'
+  tags:
+    - scripts
 
 - name: Copy RPiMS daemon files to "{{ rpims_install_dir }}"
   copy:
@@ -43,8 +53,10 @@
     owner: "{{ rpims_user }}"
     group: "{{ rpims_user }}"
     mode: '0755'
+  tags:
+    - daemon
 
-- name: Deploy nginx defaul config file
+- name: Deploy nginx default config file
   template: 
     src: "nginx/default.j2"
     dest: "/etc/nginx/sites-available/default"
@@ -53,15 +65,16 @@
     mode: '0644'
   notify: Restart nginx
   become: true
+  tags:
+    - nginx
 
-- name: Enable nginx site "default"
+- name: Enable nginx site default
   file:
     src: /etc/nginx/sites-available/default
     dest: /etc/nginx/sites-enabled/default
     state: link
   become: true
   tags:
-    - nginx-default
     - nginx
 
 - name: Deploy nginx.conf file
@@ -74,7 +87,6 @@
   notify: Restart nginx
   become: true
   tags:
-    - nginx-conf
     - nginx
 
 - name: Render and deploy systemd files
