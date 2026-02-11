@@ -101,6 +101,60 @@
   tags:
     - daemon
 
+- name: Generate TLSPSKIdentity
+  set_fact:
+    TLSPSKIdentity: "{{ lookup('password', '/dev/null', length=16, chars='abcdef0123456789') }}"
+  tags:
+    - tlspski
+
+- debug: 
+    var: TLSPSKIdentity
+  tags:
+    - tlspski
+
+- name: Update TLSPSKIdentity in rpims.yaml
+  lineinfile:
+    path: "{{ rpims_install_dir }}/config/rpims.yaml"
+    regexp: '^[ ]*TLSPSKIdentity:'
+    line: "  TLSPSKIdentity: {{ TLSPSKIdentity }}"
+  tags:
+    - tlspski
+
+- name: Update TLSPSKIdentity in zabbix_agentd.conf
+  lineinfile:
+    path: "{{ rpims_install_dir }}/config/zabbix_rpims.conf"
+    regexp: '^TLSPSKIdentity='
+    line: "TLSPSKIdentity={{ TLSPSKIdentity }}"
+  tags:
+    - tlspski
+
+- name: Generate TLSPSK
+  set_fact:
+    TLSPSK: "{{ lookup('password', '/dev/null', length=64, chars='abcdef0123456789') }}"
+  tags:
+    - tlspsk
+
+- debug: 
+    var: TLSPSK
+  tags:
+    - tlspsk
+
+- name: Update TLSPSK in rpims.yaml
+  lineinfile:
+    path: "{{ rpims_install_dir }}/config/rpims.yaml"
+    regexp: '^[ ]*TLSPSK:'
+    line: "  TLSPSK: {{ TLSPSK }}"
+  tags:
+    - tlspsk
+
+- name: Write TLSPSK to zabbix_rpims.psk
+  copy:
+    dest: "{{ rpims_install_dir }}/config/zabbix_rpims.psk"
+    content: "{{ TLSPSK }}"
+    mode: '0640'
+  tags:
+    - tlspsk
+
 - name: Deploy nginx default config file
   template: 
     src: "nginx/default.j2"
