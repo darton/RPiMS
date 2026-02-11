@@ -6,10 +6,11 @@ Documentation=https://github.com/darton/RPiMS
 
 [Service]
 Type=simple
-User= {{ rpims_user }}
-Group= {{ rpims_user }}
-ExecStart=/usr/bin/python3 /opt/RPiMS/daemon/rpims.py
+User={{ rpims_user }}
+Group={{ rpims_user }}
+ExecStart=/usr/bin/python3 /opt/{{ rpims_install_dir }}/daemon/rpims.py
 StandardInput=tty-force
+WorkingDirectory=/opt/{{ rpims_install_dir }}/daemon
 
 [Install]
 WantedBy=multi-user.target

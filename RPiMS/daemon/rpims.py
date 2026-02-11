@@ -145,7 +145,7 @@ def av_stream(state):
     # _cmd = '/opt/RPiMS/scripts/videostreamer.sh' + " " + state
     # _cmd = f'sudo systemctl {state} rpims-stream.service'
     #_cmd = f'sudo systemctl {state} uv4l_raspicam.service'
-    _cmd = f'echo video not deployed yet '
+    _cmd = f'echo video not deployed yet'
     subprocess.call(_cmd, shell=True)
 
 
