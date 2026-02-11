@@ -3,6 +3,12 @@
     name: nginx
     state: restarted
 
+- name: Restart zabbix
+  service:
+    name: zabbix-agent
+    state: restarted
+
+
 - name: Reload systemd
   systemd:
     daemon_reload: yes

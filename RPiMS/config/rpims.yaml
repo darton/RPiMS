@@ -139,10 +139,10 @@ zabbix_agent:
   hostname: rpims.home
   chassis: embedded
   deployment: RPiMS
-  TLSPSKIdentity: 610e655e89ce433e
+  TLSPSKIdentity:
   TLSConnect: psk
   TLSAccept: psk
-  TLSPSK: 8d49cd81b1fcb06fe4b218743122ce3f3cd595b044cc942e53d161369
-  TLSPSKFile: /opt/RPiMS/config/zabbix_rpims.psk
+  TLSPSK:
+  TLSPSKFile: config/zabbix_rpims.psk
   Timeout: 3
 ...

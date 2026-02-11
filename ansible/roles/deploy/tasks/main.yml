@@ -29,6 +29,16 @@
   tags:
     - users
 
+- name: Add existing "{{ zabbix_user }}" user to rpims group 
+  user:
+    name: "{{ zabbix_user }}"
+    groups: 
+      - "{{ rpims_user }}"
+    append: yes
+  become: true
+  tags:
+    - users
+
 - name: Allow rpims to use sudo without password
   copy:
     dest: /etc/sudoers.d/rpims
@@ -106,11 +116,13 @@
     TLSPSKIdentity: "{{ lookup('password', '/dev/null', length=16, chars='abcdef0123456789') }}"
   tags:
     - tlspski
+    - zabbix
 
 - debug: 
     var: TLSPSKIdentity
   tags:
     - tlspski
+    - zabbix
 
 - name: Update TLSPSKIdentity in rpims.yaml
   lineinfile:
@@ -119,6 +131,7 @@
     line: "  TLSPSKIdentity: {{ TLSPSKIdentity }}"
   tags:
     - tlspski
+    - zabbix
 
 - name: Update TLSPSKIdentity in zabbix_agentd.conf
   lineinfile:
@@ -127,17 +140,20 @@
     line: "TLSPSKIdentity={{ TLSPSKIdentity }}"
   tags:
     - tlspski
+    - zabbix
 
 - name: Generate TLSPSK
   set_fact:
     TLSPSK: "{{ lookup('password', '/dev/null', length=64, chars='abcdef0123456789') }}"
   tags:
     - tlspsk
+    - zabbix
 
 - debug: 
     var: TLSPSK
   tags:
     - tlspsk
+    - zabbix
 
 - name: Update TLSPSK in rpims.yaml
   lineinfile:
@@ -146,6 +162,7 @@
     line: "  TLSPSK: {{ TLSPSK }}"
   tags:
     - tlspsk
+    - zabbix
 
 - name: Write TLSPSK to zabbix_rpims.psk
   copy:
@@ -154,6 +171,31 @@
     mode: '0640'
   tags:
     - tlspsk
+    - zabbix
+
+- name: Write zabbix-agent config file
+  template: 
+    src: "zabbix/zabbix_agentd.conf.j2"
+    dest: "/etc/zabbix/zabbix_agentd.conf.d/zabbix_agentd.conf"
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Restart zabbix
+  become: true
+  tags:
+    - zabbix
+
+- name: Write zabbix_rpims_userparameter.conf config file
+  template: 
+    src: "zabbix/zabbix_rpims_userparameter.conf.j2"
+    dest: "/etc/zabbix/zabbix_agentd.conf.d/zabbix_rpims_userparameter.conf"
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Restart zabbix
+  become: true
+  tags:
+    - zabbix
 
 - name: Deploy nginx default config file
   template: 
