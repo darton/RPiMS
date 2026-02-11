@@ -174,7 +174,7 @@ def hostnamectl_sh(**kwargs):
 
 
 def get_hostip():
-    _cmd = 'sudo /opt/RPiMS/sripts/gethostinfo.sh'
+    _cmd = 'sudo /opt/RPiMS/scripts/gethostinfo.sh'
     subprocess.call(_cmd, shell=True)
 
 
