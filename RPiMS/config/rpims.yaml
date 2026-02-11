@@ -143,6 +143,6 @@ zabbix_agent:
   TLSConnect: psk
   TLSAccept: psk
   TLSPSK: 8d49cd81b1fcb06fe4b218743122ce3f3cd595b044cc942e53d161369
-  TLSPSKFile: /var/www/html/conf/zabbix_rpims.psk
+  TLSPSKFile: /opt/RPiMS/config/zabbix_rpims.psk
   Timeout: 3
 ...

@@ -15,7 +15,7 @@
 
 location=$(redis-cli get zabbix_agent |awk -F, '{print $4}' |awk -F\" '{print $4}')
 zabbix_server=$(redis-cli get zabbix_agent |awk -F, '{print $1}' |awk -F\" '{print $4}')
-psk=$(echo "--tls-connect=psk --tls-psk-identity="$(awk -F\= '/TLSPSKIdentity/ {print $2}' /var/www/html/conf/zabbix_agentd.conf)" --tls-psk-file=/var/www/html/conf/zabbix_agentd.psk")
+psk=$(echo "--tls-connect=psk --tls-psk-identity="$(awk -F\= '/TLSPSKIdentity/ {print $2}' /opt/RPiMS/config/zabbix_agentd.conf)" --tls-psk-file=/opt/RPiMS/config/zabbix_agentd.psk")
 
 case "$1" in
 

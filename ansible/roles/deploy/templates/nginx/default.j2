@@ -1,0 +1,26 @@
+server {
+        listen 80;
+        listen [::]:80;
+
+        server_name _;
+
+        access_log off;
+        error_log /dev/null crit;
+
+        location / {
+                include proxy_params;
+                proxy_pass http://127.0.0.1:8000;
+        }
+
+        location ^~ /static/  {
+                include  /etc/nginx/mime.types;
+                alias /opt/RPiMS/static/;
+                add_header Cache-Control "public,max-age=31536000,immutable";
+                add_header X-Content-Type-Options "nosniff" always;
+        }
+
+        location ~* \.(js|css|png|jpg|jpeg|gif|svg|ico)$ {
+            add_header Cache-Control "public,max-age=31536000,immutable";
+            add_header X-Content-Type-Options "nosniff" always;
+        }
+}

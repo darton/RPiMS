@@ -13,10 +13,10 @@
 
 now=$(date +%H%M%S_%m_%d_%Y)
 
-video_dir=/home/pi/Videos
+video_dir=/opt/RPiMS/Videos
 video_file=pivideo_$now
 
-[[ -d $video_dir ]] || mkdir $video_dir;chown pi.pi $video_dir
+[[ -d $video_dir ]] || mkdir $video_dir;chown rpims:rpims $video_dir
 
 
 ffmpeg_pid=$(pidof ffmpeg)

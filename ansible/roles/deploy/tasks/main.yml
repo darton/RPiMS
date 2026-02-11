@@ -4,26 +4,60 @@
     name: "{{ rpims_user }}"
     system: yes
 
-- name: Copy web file to /var/www/html
+- name: Copy static web files to "{{ rpims_install_dir }}/static"
   copy: 
-    src: "{{ rpims_repo_dir }}/www/"
-    dest: "/var/www/html"
+    src: "{{ rpims_repo_dir }}/static"
+    dest: "{{ rpims_install_dir }}"
     owner: "{{ rpims_user }}"
     group: "{{ rpims_user }}"
     mode: '0644'
 
-- name: Copy RPiMS files to /opt
+- name: Copy flask app files to "{{ rpims_install_dir }}"
+  copy: 
+    src: "{{ rpims_repo_dir }}/app"
+    dest: "{{ rpims_install_dir }}"
+    owner: "{{ rpims_user }}"
+    group: "{{ rpims_user }}"
+    mode: '0644'
+
+- name: Copy config files to "{{ rpims_install_dir }}"
+  copy: 
+    src: "{{ rpims_repo_dir }}/config"
+    dest: "{{ rpims_install_dir }}"
+    owner: "{{ rpims_user }}"
+    group: "{{ rpims_user }}"
+    mode: '0644'
+
+- name: Copy scripts files to "{{ rpims_install_dir }}"
+  copy: 
+    src: "{{ rpims_repo_dir }}/scripts"
+    dest: "{{ rpims_install_dir }}"
+    owner: "{{ rpims_user }}"
+    group: "{{ rpims_user }}"
+    mode: '0644'
+
+- name: Copy RPiMS daemon files to "{{ rpims_install_dir }}"
   copy:
-    src: "{{ rpims_repo_dir }}/RPiMS/"
+    src: "{{ rpims_repo_dir }}/daemon"
     dest: "{{ rpims_install_dir }}"
     owner: "{{ rpims_user }}"
     group: "{{ rpims_user }}"
     mode: '0755'
 
-- name: Deploy nginx config files
-  copy: 
-    src: "{{ rpims_repo_dir }}/etc/nginx/"
-    dest: "/etc/nginx/"
+- name: Deploy nginx defaul config file
+  template: 
+    src: "nginx/default.j2"
+    dest: "/etc/nginx/sites-available/default"
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Restart nginx
+  become: true
+
+- name: Deploy nginx.conf file
+  template: 
+    src: "nginx/nginx.conf.j2"
+    dest: "/etc/nginx/nginx.conf"
     owner: root
     group: root
     mode: '0644'
@@ -32,14 +66,14 @@
 
 - name: Render and deploy systemd files
   template:
-    src: "{{ item }}"
+    src: "systemd/{{ item | basename }}"
     dest: "/etc/systemd/system/{{ item | basename | regex_replace('.j2$', '') }}"
     owner: root
     group: root
   notify: Reload systemd
   become: true
   with_fileglob:
-    - "systemd/*.j2"
+    - "{{ role_path }}/templates/systemd/*.j2"
 
 
 #- name: Clean temperary directory
