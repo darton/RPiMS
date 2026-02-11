@@ -781,7 +781,7 @@ def serial_displays(**kwargs):
         # Move left to right keeping track of the current x position for drawing shapes.
         x = 0
 
-        logging.basicConfig(filename='/tmp/rpims_serial_display.log',
+        logging.basicConfig(filename='/opt/RPiMS/daemon/rpims_serial_display.log',
                             level=logging.DEBUG, format='%(asctime)s %(levelname)s %(name)s %(message)s')
         logger = logging.getLogger(__name__)
 
@@ -864,7 +864,7 @@ def serial_displays(**kwargs):
     # Move left to right keeping track of the current x position for drawing shapes.
         x = 0
 
-        logging.basicConfig(filename='/tmp/rpims_serial_display.log',
+        logging.basicConfig(filename='/opt/RPiMS/daemon/rpims_serial_display.log',
                             level=logging.DEBUG, format='%(asctime)s %(levelname)s %(name)s %(message)s')
         logger = logging.getLogger(__name__)
         display_rotate = kwargs['serial_display_rotate']
@@ -999,7 +999,7 @@ def config_load(path_to_config):
 
 
 def use_logger():
-    logging.basicConfig(filename='/tmp/rpims.log', level=logging.DEBUG, format='%(asctime)s %(levelname)s %(name)s %(message)s')
+    logging.basicConfig(filename='/opt/RPiMS/daemon/rpims.log', level=logging.DEBUG, format='%(asctime)s %(levelname)s %(name)s %(message)s')
     global logger
     logger = logging.getLogger(__name__)
 
@@ -1012,7 +1012,7 @@ def main():
     global redis_db
     redis_db = db_connect('localhost', 0)
 
-    config_yaml = config_load('/var/www/html/conf/rpims.yaml')
+    config_yaml = config_load('/opt/RPiMS/config/rpims.yaml')
 
     gpio = config_yaml.get("gpio")
     config = config_yaml.get("setup")
