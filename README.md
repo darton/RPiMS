@@ -41,7 +41,7 @@ To writing an image to the SD card, use [Imager](https://www.raspberrypi.org/dow
 
 Run the following command to clone repo.
 ```
-git clone -b v4 https://github.com/darton/RPiMS.git
+git clone --branch v4 https://github.com/darton/RPiMS.git
 
 cd RPiMS
 ```
