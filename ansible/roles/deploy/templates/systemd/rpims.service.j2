@@ -11,10 +11,13 @@ Group={{ rpims_user }}
 ExecStart={{ rpims_install_dir }}/daemon/rpims.py
 StandardInput=tty-force
 WorkingDirectory={{ rpims_install_dir }}
-
 RuntimeDirectory=rpims
 RuntimeDirectoryMode=0755
 PIDFile=/run/{{ rpims_user }}/rpims.pid
+StandardOutput=journal
+StandardError=journal
+Environment=PYTHONUNBUFFERED=1
+
 
 [Install]
 WantedBy=multi-user.target

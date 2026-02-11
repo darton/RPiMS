@@ -9,7 +9,21 @@
 - name: Add existing user to sudo group
   user:
     name: "{{ rpims_user }}"
-    groups: sudo
+    groups: 
+      - sudo
+      - adm
+      - video
+      - plugdev
+      - users
+      - input
+      - render
+      - netdev
+      - spi
+      - i2c
+      - gpio
+      - audio
+      - cdrom
+      - dialout
     append: yes
   become: true
   tags:
