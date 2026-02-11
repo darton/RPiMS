@@ -4,7 +4,27 @@
     name: "{{ rpims_user }}"
     system: yes
   tags:
-    - adduser
+    - users
+
+- name: Add existing user to sudo group
+  user:
+    name: "{{ rpims_user }}"
+    groups: sudo
+    append: yes
+  become: true
+  tags:
+    - users
+
+- name: Allow rpims to use sudo without password
+  copy:
+    dest: /etc/sudoers.d/rpims
+    content: "{{ rpims_user }} ALL=(ALL) NOPASSWD:ALL"
+    owner: root
+    group: root
+    mode: '0440'
+  become: true
+  tags:
+    - users
 
 - name: Copy static web files to "{{ rpims_install_dir }}/static"
   copy: 
