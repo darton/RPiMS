@@ -39,17 +39,27 @@ To writing an image to the SD card, use [Imager](https://www.raspberrypi.org/dow
 
 ### Run installation script
 
-Running the following command will download and run the script.
+Run the following command to clone repo.
 ```
-curl -sS https://raw.githubusercontent.com/darton/RPiMS/v4/tools/install.sh | sudo bash
+git clone -b v4 https://github.com/darton/RPiMS.git
 
-```
-or
-```
-curl -sSL https://github.com/darton/RPiMS/raw/v4/tools/install.sh | sudo bash
+cd RPiMS
 ```
 
-### Setup
+### Modify Ansible inventory file 
+```
+nano ansible/inventory/hosts.ini
+
+```
+
+### Run Ansible playbook
+
+```
+ansible-playbook ansible/playbook.yml
+
+```
+
+### Setup RPiMS
 
 ```
 http://rpiipaddress/setup
