@@ -54,6 +54,16 @@
   notify: Restart nginx
   become: true
 
+- name: Enable nginx site "default"
+  file:
+    src: /etc/nginx/sites-available/default
+    dest: /etc/nginx/sites-enabled/default
+    state: link
+  become: true
+  tags:
+    - nginx-default
+    - nginx
+
 - name: Deploy nginx.conf file
   template: 
     src: "nginx/nginx.conf.j2"
@@ -63,6 +73,9 @@
     mode: '0644'
   notify: Restart nginx
   become: true
+  tags:
+    - nginx-conf
+    - nginx
 
 - name: Render and deploy systemd files
   template:
@@ -74,7 +87,8 @@
   become: true
   with_fileglob:
     - "{{ role_path }}/templates/systemd/*.j2"
-
+  tags:
+    - systemd
 
 #- name: Clean temperary directory
 #  file:
