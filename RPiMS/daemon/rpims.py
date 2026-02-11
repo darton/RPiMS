@@ -1145,7 +1145,7 @@ def main():
 # --- Main program ---
 if __name__ == '__main__':
     try:
-        with pid.PidFile('/opt/RPiMS/daemon/rpims.pid'):
+        with pid.PidFile('/run/rpims/rpims.pid'):
             main()
     except KeyboardInterrupt:
         print('')
