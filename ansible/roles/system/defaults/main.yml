@@ -1,5 +1,5 @@
 ---
 timezone_name: "Europe/Warsaw"
-raspi_hostname: "rpims.local"
+raspi_hostname: "rpims.home"
 raspi_hosts_ip: "127.0.1.2"
 disable_swap_service: true

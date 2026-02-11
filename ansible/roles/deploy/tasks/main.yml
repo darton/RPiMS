@@ -32,7 +32,7 @@
 - name: Allow rpims to use sudo without password
   copy:
     dest: /etc/sudoers.d/rpims
-    content: "{{ rpims_user }} ALL=(ALL) NOPASSWD:ALL"
+    content: "{{ rpims_user }} ALL=(ALL) NOPASSWD:ALL\n"
     owner: root
     group: root
     mode: '0440'
@@ -43,7 +43,7 @@
 - name: Allow zabbix to use sudo without password
   copy:
     dest: /etc/sudoers.d/zabbix
-    content: "{{ zabbix_user }} ALL=(ALL) NOPASSWD:ALL"
+    content: "{{ zabbix_user }} ALL=(ALL) NOPASSWD: {{ rpims_install_dir }}/scripts/redis-get-data.py\n"
     owner: root
     group: root
     mode: '0440'
@@ -51,7 +51,7 @@
   tags:
     - users
 
-- name: Copy static web files to "{{ rpims_install_dir }}/static"
+- name: Copy static web files to "{{ rpims_install_dir }}"
   copy: 
     src: "{{ rpims_repo_dir }}/static"
     dest: "{{ rpims_install_dir }}"
@@ -133,6 +133,28 @@
   become: true
   tags:
     - nginx
+
+- name: Deploy crond file
+  template: 
+    src: "cron.j2"
+    dest: "/etc/cron.d/rpims"
+    owner: root
+    group: root
+    mode: '0644'
+  become: true
+  tags:
+    - crond
+
+- name: Deploy motd file
+  template: 
+    src: "motd.j2"
+    dest: "/etc/update-motd.d/20-rpims"
+    owner: root
+    group: root
+    mode: '0755'
+  become: true
+  tags:
+    - motd
 
 - name: Render and deploy systemd files
   template:
