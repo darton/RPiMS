@@ -8,9 +8,9 @@ Documentation=https://github.com/darton/RPiMS
 Type=simple
 User={{ rpims_user }}
 Group={{ rpims_user }}
-ExecStart=/usr/bin/python3 /opt/{{ rpims_install_dir }}/daemon/rpims.py
+ExecStart=/usr/bin/python3 {{ rpims_install_dir }}/daemon/rpims.py
 StandardInput=tty-force
-WorkingDirectory=/opt/{{ rpims_install_dir }}/daemon
+WorkingDirectory={{ rpims_install_dir }}/daemon
 
 [Install]
 WantedBy=multi-user.target
