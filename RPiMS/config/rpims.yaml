@@ -143,6 +143,6 @@ zabbix_agent:
   TLSConnect: psk
   TLSAccept: psk
   TLSPSK:
-  TLSPSKFile: config/zabbix_rpims.psk
+  TLSPSKFile:
   Timeout: 3
 ...
