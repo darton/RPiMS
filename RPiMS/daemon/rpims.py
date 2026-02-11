@@ -13,7 +13,7 @@
 #  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #  GNU General Public License for more details.
 
-
+import os
 import adafruit_dht
 import adafruit_ads1x15.ads1115 as ADS
 import automationhat
@@ -51,6 +51,7 @@ from systemd import journal
 from time import time, sleep
 from w1thermsensor import W1ThermSensor
 
+BASE_DIR = os.environ.get("RPIMS_DIR", os.getcwd())
 
 # --- Functions ---
 def door_action_closed(door_id, **kwargs):
@@ -142,7 +143,7 @@ def detect_no_alarms(**kwargs):
 
 
 def av_stream(state):
-    # _cmd = '/opt/RPiMS/scripts/videostreamer.sh' + " " + state
+    # _cmd = f'{BASE_DIR}/scripts/videostreamer.sh' + " " + state
     # _cmd = f'sudo systemctl {state} rpims-stream.service'
     #_cmd = f'sudo systemctl {state} uv4l_raspicam.service'
     _cmd = f'echo video not deployed yet'
@@ -150,7 +151,7 @@ def av_stream(state):
 
 
 def av_recording():
-    _cmd = '/opt/RPiMS/scripts/videorecorder.sh'
+    _cmd = f'{BASE_DIR}/scripts/videorecorder.sh'
     subprocess.Popen([_cmd],
                      stdout=subprocess.PIPE,
                      stderr=subprocess.PIPE,
@@ -158,7 +159,7 @@ def av_recording():
 
 
 def zabbix_sender_call(message, sensor_id):
-    _cmd = '/opt/RPiMS/scripts/zabbix_sender.sh ' + message + " " + str(sensor_id)
+    _cmd = f'{BASE_DIR}/scripts/zabbix_sender.sh ' + message + " " + str(sensor_id)
     subprocess.Popen([_cmd],
                      stdout=subprocess.PIPE,
                      stderr=subprocess.PIPE,
@@ -175,7 +176,7 @@ def hostnamectl_sh(**kwargs):
 
 
 def get_hostip():
-    _cmd = 'sudo /opt/RPiMS/scripts/gethostinfo.sh'
+    _cmd = 'sudo f"{BASE_DIR}/scripts/gethostinfo.sh"'
     subprocess.call(_cmd, shell=True)
 
 
@@ -782,7 +783,7 @@ def serial_displays(**kwargs):
         # Move left to right keeping track of the current x position for drawing shapes.
         x = 0
 
-        logging.basicConfig(filename='/opt/RPiMS/daemon/rpims_serial_display.log',
+        logging.basicConfig(filename=f'{BASE_DIR}/daemon/rpims_serial_display.log',
                             level=logging.DEBUG, format='%(asctime)s %(levelname)s %(name)s %(message)s')
         logger = logging.getLogger(__name__)
 
@@ -865,7 +866,7 @@ def serial_displays(**kwargs):
     # Move left to right keeping track of the current x position for drawing shapes.
         x = 0
 
-        logging.basicConfig(filename='/opt/RPiMS/daemon/rpims_serial_display.log',
+        logging.basicConfig(filename=f'{BASE_DIR}/daemon/rpims_serial_display.log',
                             level=logging.DEBUG, format='%(asctime)s %(levelname)s %(name)s %(message)s')
         logger = logging.getLogger(__name__)
         display_rotate = kwargs['serial_display_rotate']
@@ -1000,7 +1001,7 @@ def config_load(path_to_config):
 
 
 def use_logger():
-    logging.basicConfig(filename='/opt/RPiMS/daemon/rpims.log', level=logging.DEBUG, format='%(asctime)s %(levelname)s %(name)s %(message)s')
+    logging.basicConfig(filename=f'{BASE_DIR}/daemon/rpims.log', level=logging.DEBUG, format='%(asctime)s %(levelname)s %(name)s %(message)s')
     global logger
     logger = logging.getLogger(__name__)
 
@@ -1013,7 +1014,7 @@ def main():
     global redis_db
     redis_db = db_connect('localhost', 0)
 
-    config_yaml = config_load('/opt/RPiMS/config/rpims.yaml')
+    config_yaml = config_load(f'{BASE_DIR}/config/rpims.yaml')
 
     gpio = config_yaml.get("gpio")
     config = config_yaml.get("setup")

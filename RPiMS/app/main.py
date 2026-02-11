@@ -1,13 +1,16 @@
-# import os
-# import yaml
+import os
+import yaml
 import flask
 import redis
 import json
+from systemd import journal
 # import requests
 # from time import sleep
 # from flask_wtf import FlaskForm
 # from wtforms import StringField, TextAreaField, SubmitField
 # from wtforms.validators import DataRequired, Email
+
+BASE_DIR = os.environ.get("RPIMS_DIR", os.getcwd())
 
 app = flask.Flask(__name__)
 app.config["SECRET_KEY"] = 'b8f475757df5dc1cabfed8aee1ca84a6'
@@ -126,11 +129,8 @@ def api_types_json(type):
 @app.route('/setup/', methods=['GET', 'POST'])
 def setup():
     try:
-        # import sys
-        import yaml
-        from systemd import journal
         config = {}
-        path_to_config = '/opt/RPiMS/config/rpims.yaml'
+        path_to_config = f"{BASE_DIR}/config/rpims.yaml"
         with open(path_to_config, 'r') as f:
             config = yaml.full_load(f)
     except Exception as error:
@@ -138,7 +138,6 @@ def setup():
         journal.send(error)
 
     if flask.request.method == "POST":
-
         setup = {}
         setup['verbose'] = bool(flask.request.form.get('verbose'))
         setup['show_sys_info'] = bool(flask.request.form.get('show_sys_info'))
@@ -165,7 +164,7 @@ def setup():
         zabbix_agent['TLSAccept'] = 'psk'
         zabbix_agent['TLSConnect'] = 'psk'
         zabbix_agent['TLSPSK'] = flask.request.form.get('TLSPSK')
-        zabbix_agent['TLSPSKFile'] = '/opt/RPiMS/config/zabbix_rpims.psk'
+        zabbix_agent['TLSPSKFile'] = f"{BASE_DIR}/config/zabbix_rpims.psk"
         zabbix_agent['TLSPSKIdentity'] = flask.request.form.get('TLSPSKIdentity')
         zabbix_agent['Timeout'] = int(flask.request.form.get('Timeout'))
         zabbix_agent['hostname'] = flask.request.form.get('hostname')
@@ -295,10 +294,10 @@ def setup():
         zabbix_config.append(f'TLSConnect={zabbix_agent.get("TLSConnect")}')
         zabbix_config.append(f'TLSAccept={zabbix_agent.get("TLSAccept")}')
         zabbix_config.append(f'Timeout={zabbix_agent.get("Timeout")}')
-        with open('/opt/RPiMS/config/zabbix_rpims.conf', 'w', encoding='utf-8') as f:
+        with open(f"{BASE_DIR}/config/zabbix_rpims.conf", 'w', encoding='utf-8') as f:
             f.write('\n'.join(zabbix_config))
 
-        with open('/opt/RPiMS/config/zabbix_rpims.psk', 'w', encoding='utf-8') as f:
+        with open(f"{BASE_DIR}/config/zabbix_rpims.psk", 'w', encoding='utf-8') as f:
             f.write(zabbix_agent.get("TLSPSK"))
         """
         uv4l_raspicam_config = []
@@ -319,7 +318,7 @@ def setup():
         """
 
         redis_db.set('rpims', json.dumps(_rpims))
-        with open('/opt/RPiMS/config/rpims.yaml', 'w') as f:
+        with open(f"{BASE_DIR}/config/rpims.yaml", 'w') as f:
             yaml.dump(_rpims, f, default_flow_style=False, sort_keys=False, explicit_start=True)
         # return flask.jsonify(_rpims)
 
