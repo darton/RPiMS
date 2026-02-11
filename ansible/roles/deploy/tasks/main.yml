@@ -62,7 +62,7 @@
     dest: "{{ rpims_install_dir }}"
     owner: "{{ rpims_user }}"
     group: "{{ rpims_user }}"
-    mode: '0644'
+    mode: '0755'
   tags:
     - scripts
 
