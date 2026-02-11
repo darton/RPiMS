@@ -14,7 +14,7 @@ server {
 
         location ^~ /static/  {
                 include  /etc/nginx/mime.types;
-                alias /opt/RPiMS/static/;
+                alias {{ rpims_install_dir }}/static/;
                 add_header Cache-Control "public,max-age=31536000,immutable";
                 add_header X-Content-Type-Options "nosniff" always;
         }

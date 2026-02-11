@@ -6,7 +6,7 @@
   tags:
     - users
 
-- name: Add existing user to sudo group
+- name: Add existing "{{ rpims_user }}" user to groups
   user:
     name: "{{ rpims_user }}"
     groups: 
@@ -33,6 +33,17 @@
   copy:
     dest: /etc/sudoers.d/rpims
     content: "{{ rpims_user }} ALL=(ALL) NOPASSWD:ALL"
+    owner: root
+    group: root
+    mode: '0440'
+  become: true
+  tags:
+    - users
+
+- name: Allow zabbix to use sudo without password
+  copy:
+    dest: /etc/sudoers.d/zabbix
+    content: "{{ zabbix_user }} ALL=(ALL) NOPASSWD:ALL"
     owner: root
     group: root
     mode: '0440'

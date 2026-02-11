@@ -1,8 +1,8 @@
 [Unit]
-Description="Monitor the /opt/RPiMS/config/rpims.yaml file for changes"
+Description="Monitor the {{ rpims_install_dir }}/config/rpims.yaml file for changes"
 
 [Path]
-PathModified=/opt/RPiMS/config/rpims.yaml
+PathModified={{ rpims_install_dir }}/config/rpims.yaml
 Unit=rpims-watcher.service
 
 [Install]

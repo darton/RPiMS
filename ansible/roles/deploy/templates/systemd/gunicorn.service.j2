@@ -6,7 +6,7 @@ Documentation=https://github.com/darton/RPiMS
 [Service]
 User={{ rpims_user }}
 Group={{ rpims_user }}
-WorkingDirectory=/opt/RPiMS/app/
+WorkingDirectory={{ rpims_install_dir }}/app/
 ExecStart=/usr/bin/gunicorn --workers 1 wsgi:app --bind 127.0.0.1:8000
  
 [Install]
