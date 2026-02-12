@@ -1,0 +1,35 @@
+---
+- name: Deploy nginx default config file
+  template: 
+    src: "nginx/default.j2"
+    dest: "/etc/nginx/sites-available/default"
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Restart nginx
+  become: true
+  tags:
+    - nginx
+
+- name: Enable nginx site default
+  file:
+    src: /etc/nginx/sites-available/default
+    dest: /etc/nginx/sites-enabled/default
+    state: link
+  become: true
+  tags:
+    - nginx
+
+- name: Deploy nginx.conf file
+  template: 
+    src: "nginx/nginx.conf.j2"
+    dest: "/etc/nginx/nginx.conf"
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Restart nginx
+  become: true
+  tags:
+    - nginx
+
+

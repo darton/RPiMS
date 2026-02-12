@@ -1,0 +1,13 @@
+---
+- name: Deploy motd file
+  template: 
+    src: "motd.j2"
+    dest: "/etc/update-motd.d/20-rpims"
+    owner: root
+    group: root
+    mode: '0755'
+  become: true
+  tags:
+    - motd
+
+

@@ -1,0 +1,52 @@
+---
+- name: Copy static web files to "{{ rpims_install_dir }}"
+  copy: 
+    src: "{{ rpims_repo_dir }}/static"
+    dest: "{{ rpims_install_dir }}"
+    owner: "{{ rpims_user }}"
+    group: "{{ rpims_user }}"
+    mode: '0644'
+  tags:
+    - static
+
+- name: Copy flask app files to "{{ rpims_install_dir }}"
+  copy: 
+    src: "{{ rpims_repo_dir }}/app"
+    dest: "{{ rpims_install_dir }}"
+    owner: "{{ rpims_user }}"
+    group: "{{ rpims_user }}"
+    mode: '0644'
+  tags:
+    - app
+
+- name: Copy config files to "{{ rpims_install_dir }}"
+  copy: 
+    src: "{{ rpims_repo_dir }}/config"
+    dest: "{{ rpims_install_dir }}"
+    owner: "{{ rpims_user }}"
+    group: "{{ rpims_user }}"
+    mode: '0644'
+  tags:
+    - config
+
+- name: Copy scripts files to "{{ rpims_install_dir }}"
+  copy: 
+    src: "{{ rpims_repo_dir }}/scripts"
+    dest: "{{ rpims_install_dir }}"
+    owner: "{{ rpims_user }}"
+    group: "{{ rpims_user }}"
+    mode: '0755'
+  tags:
+    - scripts
+
+- name: Copy RPiMS daemon files to "{{ rpims_install_dir }}"
+  copy:
+    src: "{{ rpims_repo_dir }}/daemon"
+    dest: "{{ rpims_install_dir }}"
+    owner: "{{ rpims_user }}"
+    group: "{{ rpims_user }}"
+    mode: '0755'
+  tags:
+    - daemon
+
+

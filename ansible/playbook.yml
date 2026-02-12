@@ -8,6 +8,6 @@
     - { role: packages,   tags: ['packages'] }
     - { role: python,     tags: ['python'] }
     - { role: redis,      tags: ['redis'] }
-    - { role: deploy,     tags: ['deploy'] }
     - { role: hardware,   tags: ['hardware'] }
+    - { role: deploy,     tags: ['deploy'] }
     - { role: validation, tags: ['validation'] }

@@ -1,0 +1,13 @@
+---
+- name: Deploy crond file
+  template: 
+    src: "cron.j2"
+    dest: "/etc/cron.d/rpims"
+    owner: root
+    group: root
+    mode: '0644'
+  become: true
+  tags:
+    - crond
+
+
