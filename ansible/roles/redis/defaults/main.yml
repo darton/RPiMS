@@ -1,7 +1,0 @@
----
-redis_sysctl:
-  vm.overcommit_memory: 1
-  net.core.somaxconn: 512
-
-redis_config_file: "/etc/redis/redis.conf"
-redis_maxmemory: "100mb"

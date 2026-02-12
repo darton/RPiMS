@@ -9,9 +9,9 @@
 
 - name: Set maxmemory for Redis
   lineinfile:
-    path: "{{ redis_config_file }}"
+    path: /etc/redis/redis.conf
     regexp: "^maxmemory "
-    line: "maxmemory {{ redis_maxmemory }}"
+    line: "maxmemory 100mb"
     insertafter: EOF
 
 - name: Enabling redis-server service

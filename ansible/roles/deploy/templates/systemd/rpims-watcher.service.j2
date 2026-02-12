@@ -4,7 +4,7 @@ After=network.target
 
 [Service]
 Type=oneshot
-#ExecStart=/usr/bin/systemctl restart uv4l_raspicam.service
+ExecStart=/usr/bin/systemctl restart mediamtx.service
 ExecStart=/usr/bin/systemctl restart rpims.service
 ExecStart=/usr/bin/systemctl restart zabbix-agent.service
 

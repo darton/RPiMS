@@ -1,0 +1,123 @@
+---
+# ---------------------------------------
+# ARCHITEKTURA
+# ---------------------------------------
+
+- name: Detect system architecture
+  set_fact:
+    mediamtx_arch: "{{ 
+      'linux_arm64' if ansible_architecture in ['aarch64','arm64']
+      else 'linux_armv7' if ansible_architecture in ['armv7l','armhf']
+      else 'linux_amd64' if ansible_architecture in ['x86_64','amd64']
+      else 'unsupported'
+    }}"
+
+- name: Fail if architecture is unsupported
+  fail:
+    msg: "Unsupported architecture: {{ ansible_architecture }}"
+  when: mediamtx_arch == "unsupported"
+
+# ---------------------------------------
+# WYKRYWANIE TMPFS
+# ---------------------------------------
+
+- name: Set tmp path
+  set_fact:
+    tmp_path: "/tmp"
+
+- name: Find mount for /tmp
+  set_fact:
+    tmp_mount: "{{ item }}"
+  loop: "{{ ansible_mounts }}"
+  when: tmp_path.startswith(item.mount | string)
+  loop_control:
+    label: "{{ item.mount }}"
+
+- name: Detect if /tmp is tmpfs
+  set_fact:
+    tmp_is_tmpfs: "{{ tmp_mount.fstype == 'tmpfs' }}"
+
+- name: Select working temp directory
+  set_fact:
+    mediamtx_tmp_dir: "{{ '/var/tmp/mediamtx' if tmp_is_tmpfs else '/tmp/mediamtx' }}"
+
+- name: Create working temp directory
+  file:
+    path: "{{ mediamtx_tmp_dir }}"
+    state: directory
+    mode: "0755"
+
+# ---------------------------------------
+# CACHE
+# ---------------------------------------
+
+- name: Create cache directory
+  file:
+    path: "{{ mediamtx_cache_dir }}"
+    state: directory
+    mode: "0755"
+
+- name: Define cached archive path
+  set_fact:
+    mediamtx_cached_archive: "{{ mediamtx_cache_dir }}/mediamtx_v{{ mediamtx_version }}_{{ mediamtx_arch }}.tar.gz"
+
+- name: Download MediaMTX release only if not cached
+  get_url:
+    url: "https://github.com/bluenviron/mediamtx/releases/download/v{{ mediamtx_version }}/mediamtx_v{{ mediamtx_version }}_{{ mediamtx_arch }}.tar.gz"
+    dest: "{{ mediamtx_cached_archive }}"
+    mode: "0644"
+  when: not lookup('ansible.builtin.fileglob', mediamtx_cached_archive)
+
+# ---------------------------------------
+# INSTALACJA
+# ---------------------------------------
+
+- name: Extract MediaMTX
+  unarchive:
+    src: "{{ mediamtx_cached_archive }}"
+    dest: "{{ mediamtx_tmp_dir }}"
+    remote_src: yes
+
+- name: Install MediaMTX binary
+  copy:
+    src: "{{ mediamtx_tmp_dir }}/mediamtx"
+    dest: "{{ mediamtx_install_dir }}/mediamtx"
+    mode: "0755"
+    remote_src: yes
+
+- name: Create config directory
+  file:
+    path: "{{ mediamtx_config_dir }}"
+    state: directory
+    mode: "0755"
+
+- name: Deploy MediaMTX config
+  copy:
+    src: "mediamtx.yml"
+    dest: "{{ mediamtx_config_dir }}/mediamtx.yml"
+    mode: "0644"
+
+- name: Install systemd service
+  template:
+    src: "mediamtx.service.j2"
+    dest: "/etc/systemd/system/{{ mediamtx_service_name }}.service"
+    mode: "0644"
+
+- name: Reload systemd
+  systemd:
+    daemon_reload: yes
+
+- name: Enable and start MediaMTX
+  systemd:
+    name: "{{ mediamtx_service_name }}"
+    enabled: yes
+    state: started
+
+# ---------------------------------------
+# SPRZĄTANIE
+# ---------------------------------------
+
+- name: Remove temporary directory
+  file:
+    path: "{{ mediamtx_tmp_dir }}"
+    state: absent

@@ -1,0 +1,14 @@
+[Unit]
+Description=MediaMTX Streaming Server
+After=network.target
+
+[Service]
+Type=simple
+ExecStart={{ mediamtx_install_dir }}/mediamtx {{ mediamtx_config_dir }}/mediamtx.yml
+Restart=on-failure
+User=root
+Group=root
+WorkingDirectory={{ mediamtx_config_dir }}
+
+[Install]
+WantedBy=multi-user.target

@@ -2,3 +2,7 @@
 rpims_repo_dir: "~/RPiMS/RPiMS"
 rpims_install_dir: "/opt/RPiMS"
 
+redis_sysctl:
+  vm.overcommit_memory: 1
+  net.core.somaxconn: 512
+

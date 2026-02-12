@@ -1,4 +1,5 @@
 ---
+- import_tasks: redis.yml
 - import_tasks: users.yml
 - import_tasks: files.yml
 - import_tasks: zabbix.yml

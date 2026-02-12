@@ -7,7 +7,7 @@
     - { role: system,     tags: ['system'] }
     - { role: packages,   tags: ['packages'] }
     - { role: python,     tags: ['python'] }
-    - { role: redis,      tags: ['redis'] }
+    - { role: mediamtx,   tags: ['mediamtx'] }
     - { role: hardware,   tags: ['hardware'] }
     - { role: deploy,     tags: ['deploy'] }
     - { role: validation, tags: ['validation'] }
