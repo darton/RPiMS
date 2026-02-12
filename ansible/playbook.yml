@@ -1,5 +1,5 @@
 ---
-- name: Konfiguracja Raspberry Pi
+- name: RPiMS deploying
   hosts: rpims
   become: yes
 

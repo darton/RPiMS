@@ -1,5 +1,5 @@
 ---
-- name: Ustawienie parametrów sysctl dla Redis
+- name: Set Redis sysctl parameters
   sysctl:
     name: "{{ item.key }}"
     value: "{{ item.value }}"
@@ -7,19 +7,19 @@
     reload: yes
   loop: "{{ redis_sysctl | dict2items }}"
 
-- name: Ustawienie maxmemory w redis.conf
+- name: Set maxmemory for Redis
   lineinfile:
     path: "{{ redis_config_file }}"
     regexp: "^maxmemory "
     line: "maxmemory {{ redis_maxmemory }}"
     insertafter: EOF
 
-- name: Włączenie redis-server przy starcie
+- name: Enabling redis-server service
   systemd:
     name: redis-server
     enabled: yes
 
-- name: Restart redis-server po zmianach
+- name: Restarting redis-server
   systemd:
     name: redis-server
     state: restarted

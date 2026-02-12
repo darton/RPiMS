@@ -1,24 +1,24 @@
 ---
-- name: Instalacja pakietów pip
+- name: pip packages installation
   pip:
     name: "{{ pip_packages }}"
     executable: pip3
     extra_args: "--break-system-packages"
 
-- name: Klonowanie repozytorium grove.py
+- name: Clonning grove.py repository
   git:
     repo: "{{ grove_repo_url }}"
     dest: "{{ grove_repo_dest }}"
     version: master
 
-- name: Instalacja grove.py przez pip3
+- name: Installation grove.py by pip3
   pip:
     name: .
     chdir: "{{ grove_repo_dest }}"
     executable: pip3
     extra_args: "--break-system-packages"
 
-- name: Usuwanie repozytorium
+- name: Remove grove.py repository
   file:
     path: "{{ grove_repo_dest }}"
     state: absent

@@ -27,4 +27,3 @@
 #  file:
 #    path: "{{ rpims_repo_temp_dir }}"
 #    state: absent
-

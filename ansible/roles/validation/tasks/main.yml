@@ -1,29 +1,29 @@
 ---
-- name: Walidacja konfiguracji I2C
+- name: Configuration validation for I2C
   command: raspi-config nonint get_i2c
   register: i2c_state
   changed_when: false
 
-- name: Walidacja konfiguracji SPI
+- name: Configuration validation for SPI
   command: raspi-config nonint get_spi
   register: spi_state
   changed_when: false
 
-- name: Walidacja konfiguracji 1-Wire
+- name: Configuration validation for 1-Wire
   command: raspi-config nonint get_onewire
   register: onewire_state
   changed_when: false
 
-- name: Walidacja timezone
+- name: Configuration validation for timezone
   command: timedatectl show -p Timezone --value
   register: tz_state
   changed_when: false
 
-- name: Generowanie raportu walidacji
+- name: Generating a validation report
   copy:
     dest: "{{ validation_report_path }}"
     content: |
-      RAPORT WALIDACJI RASPBERRY PI
+      RPiMS VALIDATION REPORT
       =============================
 
       I2C:        {{ 'OK' if i2c_state.stdout == '0' else 'NIEAKTYWNE' }}

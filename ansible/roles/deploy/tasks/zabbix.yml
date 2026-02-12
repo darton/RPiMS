@@ -98,5 +98,3 @@
   become: true
   tags:
     - zabbix
-
-

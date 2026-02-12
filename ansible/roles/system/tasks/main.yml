@@ -1,25 +1,25 @@
 ---
-- name: Aktualizacja listy pakietów
+- name: System packet update
   apt:
     update_cache: yes
 
-- name: Pełny upgrade systemu
+- name: System packet upgrade
   apt:
     upgrade: dist
 
-- name: Autoremove zbędnych pakietów
+- name: System packet autoremove 
   apt:
     autoremove: yes
 
-- name: Ustawienie strefy czasowej
+- name: Setting time/zone
   timezone:
     name: "{{ timezone_name }}"
 
-- name: Ustawienie hostname
+- name: Setting the hostname
   hostname:
     name: "{{ raspi_hostname }}"
 
-- name: Dodanie nowego wpisu hostname do /etc/hosts
+- name: Adding a new hostname to /etc/hosts
   lineinfile:
     path: /etc/hosts
     line: "{{ raspi_hosts_ip }}   {{ raspi_hostname }}"
