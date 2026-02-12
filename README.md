@@ -60,6 +60,11 @@ ansible-playbook ansible/playbook.yml
 ```
 
 ### Setup RPiMS
+![RPiMS setup](https://github.com/darton/RPiMS/blob/v4/documentation/RPiMS_SETUP.png)
+
+login: admin
+
+password: admin
 
 ```
 http://rpiipaddress/setup
