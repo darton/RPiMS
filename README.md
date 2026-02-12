@@ -242,8 +242,6 @@ Optional
 
 * [GPIOZERO Docs](https://gpiozero.readthedocs.io/en/stable/)
 
-* [UV4L Tutorials](https://www.linux-projects.org/uv4l/tutorials/)
-
 * [HWclock tutorial](https://thepihut.com/blogs/raspberry-pi-tutorials/17209332-adding-a-real-time-clock-to-your-raspberry-pi)
 
 * [BME280 Tutorial](https://pypi.org/project/RPi.bme280/)
@@ -290,9 +288,7 @@ Optional
 
 * [8-Channel 12-Bit ADC, Seeed Studio](https://pl.rs-online.com/web/p/products/1887099/)
  
-* [Setup Camera with V4L2, FFMPEG, and PiCamera](https://www.codeinsideout.com/posts/raspberrypi/setup_camera/)
-
-* [A Raspberry Pi Streaming Camera using MPEG-DASH, HLS or RTSP](https://codecalamity.com/a-raspberry-pi-streaming-camera-using-mpeg-dash-hls-or-rtsp/)
+* [A Raspberry Pi Streaming Camera](https://github.com/bluenviron/mediamtx/releases)
 
 * [RPi Pico - rshell](https://www.mfitzp.com/using-micropython-raspberry-pico/)
 
