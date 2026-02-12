@@ -1,4 +1,4 @@
-# RPiMSv4
+# RPiMSv4 - with an installer based on Ansible
 
 RPiMS is Raspberry Pi based Monitoring System.
 
