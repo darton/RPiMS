@@ -6,6 +6,7 @@ pip_packages:
   - "redis[hiredis]"
   - pid
   - PyYAML
+  - ruamel.yaml
   - luma.oled
   - luma.lcd
   - adafruit-circuitpython-ads1x15

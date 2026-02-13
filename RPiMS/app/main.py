@@ -4,6 +4,8 @@ import flask
 import redis
 import json
 from systemd import journal
+from ruamel.yaml import YAML
+
 # import requests
 # from time import sleep
 # from flask_wtf import FlaskForm
@@ -19,7 +21,6 @@ app.config["JSON_AS_ASCII"] = False
 app.config["JSONIFY_MIMETYPE"] = "application/json; charset=utf-8"
 
 redis_db = redis.StrictRedis(host="localhost", port=6379, db=0, decode_responses=True)
-
 
 def get_data():
     rpims = json.loads(redis_db.get('rpims'))
@@ -58,6 +59,23 @@ def get_data():
     data['system']['location'] = rpims['zabbix_agent']['location']
     data['sensors'] = SENSORS
     return data
+
+
+def update_mediamtx_config(picamera_width,picamera_height,picamera_fps):
+    yaml = YAML()
+    yaml.preserve_quotes = True
+
+    config_path = "/etc/mediamtx/mediamtx.yml"
+
+    with open(config_path, "r", encoding="utf-8") as f:
+        config = yaml.load(f)
+
+    config['pathDefaults']['rpiCameraWidth'] = picamera_width
+    config['pathDefaults']['rpiCameraHeight'] = picamera_height
+    config['pathDefaults']['rpiCameraFPS'] = picamera_fps
+
+    with open(config_path, "w", encoding="utf-8") as f:
+        yaml.dump(config, f)
 
 
 @app.route('/', methods=['GET'])
@@ -230,8 +248,11 @@ def setup():
             6: [1280, 720],
             7: [640, 480],
         }
+        picamera_fps = int(flask.request.form.get('picamera_fps'))
         picamera_width = picamera_modes[picamera_mode][0]
         picamera_height = picamera_modes[picamera_mode][1]
+        update_mediamtx_config(picamera_width,picamera_height,picamera_fps)
+
         PICAMERA['vr'] = picamera_height
         PICAMERA['hr'] = picamera_width
 
@@ -296,20 +317,6 @@ def setup():
         zabbix_config.append(f'Timeout={zabbix_agent.get("Timeout")}')
         with open(f"{BASE_DIR}/config/zabbix_rpims.conf", 'w', encoding='utf-8') as f:
             f.write('\n'.join(zabbix_config))
-
-        with open(f"{BASE_DIR}/config/zabbix_rpims.psk", 'w', encoding='utf-8') as f:
-            f.write(zabbix_agent.get("TLSPSK"))
-
-
-        with open('/etc/mediamtx/mediamtx.yml', 'r', encoding='utf-8') as f:
-            config = yaml.safe_load(f)
-
-        config['rpiCameraWidth'] = int(request.form.get("picamera_width"))
-        config['rpiCameraHeight'] = int(request.form.get("picamera_height"))
-        config['rpiCameraFPS'] = int(request.form.get("picamera_fps"))
-
-        with open('/etc/mediamtx/mediamtx.yml', 'w', encoding='utf-8') as f:
-            yaml.dump(config, f)
 
         redis_db.set('rpims', json.dumps(_rpims))
         with open(f"{BASE_DIR}/config/rpims.yaml", 'w') as f:

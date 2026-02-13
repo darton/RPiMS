@@ -89,13 +89,15 @@
   file:
     path: "{{ mediamtx_config_dir }}"
     state: directory
-    mode: "0755"
+    mode: "0775"
 
 - name: Deploy MediaMTX config
-  copy:
-    src: "mediamtx.yml"
+  template:
+    src: "mediamtx.yml.j2"
     dest: "{{ mediamtx_config_dir }}/mediamtx.yml"
-    mode: "0644"
+    owner: root
+    group: "{{ rpims_user }}"
+    mode: "0664"
 
 - name: Install systemd service
   template:

@@ -294,7 +294,7 @@ rtspAuthMethods: [basic]
 # Global settings -> RTMP server
 
 # Enable publishing and reading streams with the RTMP protocol.
-rtmp: yes
+rtmp: {{ rtpm_enable }}
 # Use the secure protocol variant (RTMP).
 # Available values are "no", "strict", "optional".
 rtmpEncryption: "no"
@@ -314,7 +314,7 @@ rtmpServerCert: server.crt
 # Global settings -> HLS server
 
 # Enable reading streams with the HLS protocol.
-hls: yes
+hls: {{ hls_enable }}
 # Address of the HLS listener.
 hlsAddress: :8888
 # Enable HTTPS on the HLS server.
@@ -373,7 +373,7 @@ hlsMuxerCloseAfter: 60s
 # Global settings -> WebRTC server
 
 # Enable publishing and reading streams with the WebRTC protocol.
-webrtc: yes
+webrtc: {{ webrtc_enable }}
 # Address of the WebRTC HTTP listener.
 webrtcAddress: :8889
 # Enable HTTPS on the WebRTC server.
@@ -428,7 +428,7 @@ webrtcSTUNGatherTimeout: 5s
 # Global settings -> SRT server
 
 # Enable publishing and reading streams with the SRT protocol.
-srt: yes
+srt: {{ srt_enable }}
 # Address of the SRT listener.
 srtAddress: :8890
 
@@ -467,7 +467,7 @@ pathDefaults:
   # * $MTX_QUERY: query parameters (passed by first reader)
   # * $G1, $G2, ...: regular expression groups, if path name is
   #   a regular expression.
-  source: publisher
+  source: {{ stream_source }}
   # If the source is a URL, and the source TLS certificate is self-signed
   # or invalid, you can provide the fingerprint of the certificate in order to
   # validate it anyway. It can be obtained by running:
@@ -476,7 +476,7 @@ pathDefaults:
   sourceFingerprint:
   # If the source is a URL, it will be pulled only when at least
   # one reader is connected, saving bandwidth.
-  sourceOnDemand: no
+  sourceOnDemand: {{ sourceOnDemand }}
   # If sourceOnDemand is "yes", readers will be put on hold until the source is
   # ready or until this amount of time has passed.
   sourceOnDemandStartTimeout: 10s
