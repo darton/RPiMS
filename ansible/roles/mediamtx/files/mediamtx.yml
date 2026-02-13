@@ -200,8 +200,8 @@ pathDefaults:
 
   rpiCameraCamID: 0
   rpiCameraSecondary: false
-  rpiCameraWidth: 1920
-  rpiCameraHeight: 1080
+  rpiCameraWidth: 640
+  rpiCameraHeight: 480
   rpiCameraHFlip: false
   rpiCameraVFlip: false
   rpiCameraBrightness: 0

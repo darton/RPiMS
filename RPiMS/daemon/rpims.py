@@ -144,9 +144,7 @@ def detect_no_alarms(**kwargs):
 
 def av_stream(state):
     # _cmd = f'{BASE_DIR}/scripts/videostreamer.sh' + " " + state
-    # _cmd = f'sudo systemctl {state} rpims-stream.service'
-    #_cmd = f'sudo systemctl {state} uv4l_raspicam.service'
-    _cmd = f'echo video not deployed yet'
+    _cmd = f'sudo systemctl {state} mediamtx.service'
     subprocess.call(_cmd, shell=True)
 
 
@@ -964,16 +962,16 @@ def set_process_name_and_run(function_name, **kwargs):
 
 def threading_function(function_name, **kwargs):
     import threading
-    t = threading.Thread(target=function_name, name=function_name, kwargs=kwargs)
-    t.daemon = True
-    t.start()
+    tf = threading.Thread(target=function_name, name=function_name, kwargs=kwargs)
+    tf.daemon = True
+    tf.start()
 
 
 def multiprocessing_function(function_name, **kwargs):
     import multiprocessing
-    p = multiprocessing.Process(target=function_name, name=function_name, kwargs=kwargs)
-    t.daemon = True
-    p.start()
+    mf = multiprocessing.Process(target=function_name, name=function_name, kwargs=kwargs)
+    mf.daemon = True
+    mf.start()
 
 
 def db_connect(dbhost, dbnum):
