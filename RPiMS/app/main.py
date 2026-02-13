@@ -22,6 +22,9 @@ app.config["JSONIFY_MIMETYPE"] = "application/json; charset=utf-8"
 
 redis_db = redis.StrictRedis(host="localhost", port=6379, db=0, decode_responses=True)
 
+def bool_to_yesno(value): 
+    return "yes" if value else "no"
+
 def get_data():
     rpims = json.loads(redis_db.get('rpims'))
     SENSORS = {}
@@ -61,7 +64,7 @@ def get_data():
     return data
 
 
-def update_mediamtx_config(picamera_width,picamera_height,picamera_fps):
+def update_mediamtx_config(picamera_width,picamera_height,picamera_fps,picamera_recording):
     yaml = YAML()
     yaml.preserve_quotes = True
 
@@ -73,6 +76,7 @@ def update_mediamtx_config(picamera_width,picamera_height,picamera_fps):
     config['pathDefaults']['rpiCameraWidth'] = picamera_width
     config['pathDefaults']['rpiCameraHeight'] = picamera_height
     config['pathDefaults']['rpiCameraFPS'] = picamera_fps
+    config['pathDefaults']['record'] = bool_to_yesno(picamera_recording)
 
     with open(config_path, "w", encoding="utf-8") as f:
         yaml.dump(config, f)
@@ -247,11 +251,12 @@ def setup():
             1: [1920, 1080],
             6: [1280, 720],
             7: [640, 480],
-        }
+            }
         picamera_fps = int(flask.request.form.get('picamera_fps'))
         picamera_width = picamera_modes[picamera_mode][0]
         picamera_height = picamera_modes[picamera_mode][1]
-        update_mediamtx_config(picamera_width,picamera_height,picamera_fps)
+        picamera_recording = setup['use_picamera_recording']
+        update_mediamtx_config(picamera_width,picamera_height,picamera_fps,picamera_recording)
 
         PICAMERA['vr'] = picamera_height
         PICAMERA['hr'] = picamera_width
