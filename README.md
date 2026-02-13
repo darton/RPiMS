@@ -332,7 +332,7 @@ Optional
 
 * [8-Channel 12-Bit ADC, Seeed Studio](https://pl.rs-online.com/web/p/products/1887099/)
  
-* [A Raspberry Pi Streaming Camera](https://github.com/bluenviron/mediamtx/releases)
+* [MediaMTX](https://github.com/bluenviron/mediamtx/releases)
 
 * [RPi Pico - rshell](https://www.mfitzp.com/using-micropython-raspberry-pico/)
 
