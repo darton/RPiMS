@@ -134,21 +134,21 @@
                         <input id="use_picamera" name="use_picamera" type="checkbox" {{'checked="checked"' if config.setup.use_picamera else ""}} class="w3-check" id="use_picamera" value="true">
                         <label for="use_picamera">Use Picamera</label>
                     </div>
-                    <div class="w3-half w3-container w3-margin-top w3-margin-bottom">
-                        <input id="use_picamera_recording" name="use_picamera_recording" type="checkbox"  {{'checked="checked"' if config.setup.use_picamera_recording else ""}} class="w3-check" value="true">
-                        <label for="use_picamera_recording">Use picamera recording</label>
-
-                    </div>
                 </div>
                 <div id="picamera" class="w3-row w3-2020-green-sheen">
                     <div class="w3-third w3-container w3-margin-top">
-                        <label for="picamera_rotation">Rotation:</label>
-                        <select id="picamera_rotation" name="picamera_rotation" class="w3-select">
-                            <option value="0" {% if config.sensors.PICAMERA.rotation == 0 %} selected="selected" {% endif %}>0</option>
-                            <option value="90" {% if config.sensors.PICAMERA.rotation == 90 %} selected="selected" {% endif %}>90</option>
-                            <option value="180" {% if config.sensors.PICAMERA.rotation == 180 %} selected="selected" {% endif %}>180</option>
-                            <option value="270" {% if config.sensors.PICAMERA.rotation == 270 %} selected="selected" {% endif %}>270</option>
-                        </select>
+                      <div class="w3-third w3-container w3-margin-top">
+                        <input id="use_picamera_recording" name="use_picamera_recording" type="checkbox"  {{'checked="checked"' if config.setup.use_picamera_recording else ""}} class="w3-check" value="true">
+                        <label for="use_picamera_recording">Record</label>
+                      </div>
+                      <div class="w3-third w3-container w3-margin-top">
+                        <input id="picamera_vflip" name="picamera_vflip" type="checkbox"  {{'checked="checked"' if config.sensors.PICAMERA.vflip  else ""}} class="w3-check" value="true">
+                        <label for="picamera_vflip">VFlip</label>
+                      </div>
+                      <div class="w3-third w3-container w3-margin-top">
+                        <input id="picamera_hflip" name="picamera_hflip" type="checkbox"  {{'checked="checked"' if config.sensors.PICAMERA.hflip  else ""}} class="w3-check" value="true">
+                        <label for="picamera_hflip">HFlip</label>
+                      </div>
                     </div>
                     <div class="w3-third w3-container w3-margin-top">
                         <label for="picamera_mode">Mode:</label>

@@ -64,7 +64,7 @@ def get_data():
     return data
 
 
-def update_mediamtx_config(picamera_width,picamera_height,picamera_fps,picamera_recording):
+def update_mediamtx_config(picamera_width,picamera_height,picamera_fps,picamera_recording,picamera_vflip,picamera_hflip):
     yaml = YAML()
     yaml.preserve_quotes = True
 
@@ -77,6 +77,8 @@ def update_mediamtx_config(picamera_width,picamera_height,picamera_fps,picamera_
     config['pathDefaults']['rpiCameraHeight'] = picamera_height
     config['pathDefaults']['rpiCameraFPS'] = picamera_fps
     config['pathDefaults']['record'] = bool_to_yesno(picamera_recording)
+    config['pathDefaults']['rpiCameraVFlip'] = bool_to_yesno(picamera_vflip)
+    config['pathDefaults']['rpiCameraHFlip'] = bool_to_yesno(picamera_hflip)
 
     with open(config_path, "w", encoding="utf-8") as f:
         yaml.dump(config, f)
@@ -244,8 +246,8 @@ def setup():
         PICAMERA = {}
         PICAMERA['fps'] = int(flask.request.form.get('picamera_fps'))
         PICAMERA['mode'] = int(flask.request.form.get('picamera_mode'))
-        PICAMERA['rotation'] = int(flask.request.form.get('picamera_rotation'))
-
+        PICAMERA['vflip'] = bool(flask.request.form.get('picamera_vflip'))
+        PICAMERA['hflip'] = bool(flask.request.form.get('picamera_hflip'))
         picamera_mode = int(flask.request.form.get('picamera_mode'))
         picamera_modes = {
             1: [1920, 1080],
@@ -256,7 +258,9 @@ def setup():
         picamera_width = picamera_modes[picamera_mode][0]
         picamera_height = picamera_modes[picamera_mode][1]
         picamera_recording = setup['use_picamera_recording']
-        update_mediamtx_config(picamera_width,picamera_height,picamera_fps,picamera_recording)
+        picamera_vflip = PICAMERA['vflip']
+        picamera_hflip = PICAMERA['hflip']
+        update_mediamtx_config(picamera_width,picamera_height,picamera_fps,picamera_recording,picamera_vflip,picamera_hflip)
 
         PICAMERA['vr'] = picamera_height
         PICAMERA['hr'] = picamera_width
