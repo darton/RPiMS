@@ -299,23 +299,17 @@ def setup():
 
         with open(f"{BASE_DIR}/config/zabbix_rpims.psk", 'w', encoding='utf-8') as f:
             f.write(zabbix_agent.get("TLSPSK"))
-        """
-        uv4l_raspicam_config = []
-        uv4l_raspicam_config.append('# uv4l core options')
-        uv4l_raspicam_config.append('driver = raspicam')
-        uv4l_raspicam_config.append('auto-video_nr = yes')
-        uv4l_raspicam_config.append('frame-buffers = 4')
-        uv4l_raspicam_config.append('encoding = mjpeg')
-        uv4l_raspicam_config.append('nopreview = yes')
-        uv4l_raspicam_config.append('video-denoise = no')
-        uv4l_raspicam_config.append('server-option = --www-webrtc-signaling-path=/webrtc')
-        uv4l_raspicam_config.append(f'rotation = {int(flask.request.form.get("picamera_rotation"))}')
-        uv4l_raspicam_config.append(f'width = {picamera_width}')
-        uv4l_raspicam_config.append(f'height = {picamera_height}')
-        uv4l_raspicam_config.append(f'framerate = {int(flask.request.form.get("picamera_fps"))}')
-        with open('conf/uv4l-raspicam.conf', 'w', encoding='utf-8') as f:
-            f.write('\n'.join(uv4l_raspicam_config))
-        """
+
+
+        with open('/etc/mediamtx/mediamtx.yml', 'r', encoding='utf-8') as f:
+            config = yaml.safe_load(f)
+
+        config['rpiCameraWidth'] = int(request.form.get("picamera_width"))
+        config['rpiCameraHeight'] = int(request.form.get("picamera_height"))
+        config['rpiCameraFPS'] = int(request.form.get("picamera_fps"))
+
+        with open('/etc/mediamtx/mediamtx.yml', 'w', encoding='utf-8') as f:
+            yaml.dump(config, f)
 
         redis_db.set('rpims', json.dumps(_rpims))
         with open(f"{BASE_DIR}/config/rpims.yaml", 'w') as f:
