@@ -1,18 +1,17 @@
 # RPiMSv4 - with an installer based on Ansible
 
+## Description
 RPiMS is Raspberry Pi based Monitoring System.
 
-Supports sensor like door/window sensor, motion sensor, water sensor, smoke sensor, light sensors.
+Supports sensors like door/window, motion, water, smoke and light sensors.
 
-Suppports I2C temperature, humidity and preassure BME280 sensors, and 1-wire DS18B20 temperature sensors.
+Suppports I2C temperature, humidity and preassure BME280 sensors and 1-wire DS18B20 temperature sensors.
 
 Supports for live video streaming from the Raspberry Pi camera, using MediaMTX as the streaming backend.
 
 Supports wind speed meter, wind direction meter, rainfall meter.
 
-![RPiMS](https://github.com/darton/RPiMS/blob/v4/documentation/RPiMS_MAIN.png)
-## Description
-
+## Details
 Sensors are polled and measured values are saved to Redis database periodically.
 
 The Zabbix Agent periodicaly pull temperature,humidity and pressure sensor data from redis db and send to Zabbix Server. 
@@ -21,10 +20,7 @@ When any of the doors sensors opens or closed then a message will be sent to the
 
 When the motion sensor detects motion a message will be sent to Zabbix server.
 
-When any of the doors senors is opened, a video sequence will be recorded.
-
 Video stream will be turned on automaticly when use picamera sensor are set to enable in setup.
- 
 
 
 ## Installing
@@ -136,6 +132,8 @@ RPiMS (rpims.py) uses zabbix_sender.sh to activate the appropriate triggers in z
 ```
 http://rpiipaddress
 ```
+![RPiMS](https://github.com/darton/RPiMS/blob/v4/documentation/RPiMS_MAIN.png)
+
 
 ## Known issues
 * After changing "RPiMS hostname" it is necessary to reboot Raspberry Pi OS for proper operation of zabbix-agent.
