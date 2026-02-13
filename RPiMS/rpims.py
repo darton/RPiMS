@@ -962,16 +962,16 @@ def set_process_name_and_run(function_name, **kwargs):
 
 def threading_function(function_name, **kwargs):
     import threading
-    t = threading.Thread(target=function_name, name=function_name, kwargs=kwargs)
-    t.daemon = True
-    t.start()
+    tf = threading.Thread(target=function_name, name=function_name, kwargs=kwargs)
+    tf.daemon = True
+    tf.start()
 
 
 def multiprocessing_function(function_name, **kwargs):
     import multiprocessing
-    p = multiprocessing.Process(target=function_name, name=function_name, kwargs=kwargs)
-    t.daemon = True
-    p.start()
+    mf = multiprocessing.Process(target=function_name, name=function_name, kwargs=kwargs)
+    mf.daemon = True
+    mf.start()
 
 
 def db_connect(dbhost, dbnum):
