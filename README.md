@@ -37,27 +37,75 @@ To writing an image to the SD card, use [Imager](https://www.raspberrypi.org/dow
 
 
 
-### Run installation script
+Here’s a clean, expanded **English version** of your README section.  
+It clearly explains that Ansible must be run **on your local computer**, which then installs RPiMS **remotely** on the Raspberry Pi devices listed in the inventory.
 
-Run the following command to clone repo.
-```
+---
+
+## Installing RPiMS Using Ansible
+
+The following steps must be performed **on the computer where Ansible is installed** (Linux, macOS, or Windows with WSL).  
+This machine acts as the **Ansible control node**, which will remotely install RPiMS on the Raspberry Pi devices defined in the inventory file.
+
+---
+
+### 1. Clone the repository
+
+```bash
 git clone --branch v4 https://github.com/darton/RPiMS.git
-
 cd RPiMS
 ```
 
-### Modify Ansible inventory file 
-```
+---
+
+### 2. Edit the Ansible inventory file
+
+Open the inventory file that defines the Raspberry Pi devices where RPiMS will be installed:
+
+```bash
 nano ansible/inventory/hosts.ini
-
 ```
 
-### Run Ansible playbook
+In this file, list the IP addresses and SSH credentials of your Raspberry Pi devices.  
+Example:
 
+```ini
+[rpims]
+192.168.1.50 ansible_user=pi
+192.168.1.51 ansible_user=pi
 ```
+
+**Important:**  
+Your control machine must be able to connect to each Raspberry Pi via SSH.
+
+---
+
+### 3. Run the Ansible playbook
+
+Once the inventory is configured, start the installation:
+
+```bash
 ansible-playbook ansible/playbook.yml
-
 ```
+
+The playbook will:
+
+- connect to each Raspberry Pi listed in `hosts.ini`,
+- install all required packages,
+- configure services,
+- deploy RPiMS automatically.
+
+---
+
+## Summary
+
+- You run Ansible **on your local computer**, not on the Raspberry Pi.  
+- Raspberry Pi devices must be reachable over the network (SSH).  
+- All target devices must be listed in `ansible/inventory/hosts.ini`.  
+- The playbook handles the entire installation process automatically.
+
+---
+
 
 ### Setup RPiMS
 ![RPiMS setup](https://github.com/darton/RPiMS/blob/v4/documentation/RPiMS_SETUP.png)
