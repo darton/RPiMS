@@ -11,6 +11,11 @@ Supports for live video streaming from the Raspberry Pi camera, using MediaMTX a
 
 Supports wind speed meter, wind direction meter, rainfall meter.
 
+RPiMS supports BME280 sensors via a Raspberry Pico running the
+[BME280USB](https://github.com/darton/BME280USB) firmware.  
+The Pico reads the sensor over I²C and sends measurements to RPIMS over USB,
+allowing the BME280 to be placed farther from the Raspberry Pi using a standard USB cable.
+
 ## Details
 Sensors are polled and measured values are saved to Redis database periodically.
 
