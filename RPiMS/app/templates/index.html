@@ -45,9 +45,9 @@
         <a class="sensors" href="http://{{request.host.split(':')[0]}}:8889/cam">Camera Stream</a>
     </div>
     <div>
-        <iframe src="http://{{request.host.split(':')[0]}}:8889/cam" title="Camera Stream"></iframe>
+        <iframe src="http://{{request.host.split(':')[0]}}:8889/cam" style="width: 100%; aspect-ratio: 16 / 9; border: none;" allow="autoplay">
+        </iframe>
     </div>
-
   </div>
 {% endif %}
 {% if data.config.setup.use_door_sensor: %}
