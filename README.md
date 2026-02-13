@@ -108,15 +108,11 @@ The playbook will:
 
 
 ### Setup RPiMS
-![RPiMS setup](https://github.com/darton/RPiMS/blob/v4/documentation/RPiMS_SETUP.png)
-
-login: admin
-
-password: admin
-
 ```
 http://rpiipaddress/setup
 ```
+
+![RPiMS setup](https://github.com/darton/RPiMS/blob/v4/documentation/RPiMS_SETUP.png)
 
 ### Start/Stop RPiMS
 
