@@ -1,7 +1,6 @@
 ---
 apt_packages:
   - git
-  - apache2-utils
   - nginx
   - redis
   - redis-server
@@ -26,3 +25,5 @@ apt_packages:
   - libgpiod-dev
   - zabbix-agent
   - gunicorn
+  - udiskie
+

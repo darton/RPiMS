@@ -1,11 +1,11 @@
 ---
 # ---------------------------------------
-# DISCOVERING CPU ARCHITECTURE
+# DETECT CPU ARCHITECTURE
 # ---------------------------------------
 
 - name: Detect system architecture
   set_fact:
-    mediamtx_arch: "{{ 
+    mediamtx_arch: "{{
       'linux_arm64' if ansible_architecture in ['aarch64','arm64']
       else 'linux_armv7' if ansible_architecture in ['armv7l','armhf']
       else 'linux_amd64' if ansible_architecture in ['x86_64','amd64']
@@ -18,7 +18,7 @@
   when: mediamtx_arch == "unsupported"
 
 # ---------------------------------------
-# DISCOVERING TMPFS
+# TMPFS DETECTION
 # ---------------------------------------
 
 - name: Set tmp path
@@ -48,25 +48,45 @@
     mode: "0755"
 
 # ---------------------------------------
-# CACHE
+# CACHE (LOCAL DOWNLOAD)
 # ---------------------------------------
 
-- name: Create cache directory
+- name: Create local cache directory
   file:
     path: "{{ mediamtx_cache_dir }}"
     state: directory
     mode: "0755"
+  delegate_to: localhost
+  run_once: true
+  become: false
 
 - name: Define cached archive path
   set_fact:
     mediamtx_cached_archive: "{{ mediamtx_cache_dir }}/mediamtx_v{{ mediamtx_version }}_{{ mediamtx_arch }}.tar.gz"
 
-- name: Download MediaMTX release only if not cached
+- name: Check if cached archive exists locally
+  stat:
+    path: "{{ mediamtx_cached_archive }}"
+  register: mediamtx_cache_stat
+  delegate_to: localhost
+  run_once: true
+  become: false
+
+- name: Download MediaMTX release only if not cached (local)
   get_url:
     url: "https://github.com/bluenviron/mediamtx/releases/download/v{{ mediamtx_version }}/mediamtx_v{{ mediamtx_version }}_{{ mediamtx_arch }}.tar.gz"
     dest: "{{ mediamtx_cached_archive }}"
     mode: "0644"
-  when: not lookup('ansible.builtin.fileglob', mediamtx_cached_archive)
+  when: not mediamtx_cache_stat.stat.exists
+  delegate_to: localhost
+  run_once: true
+  become: false
+
+- name: Copy cached archive to remote host
+  copy:
+    src: "{{ mediamtx_cached_archive }}"
+    dest: "{{ mediamtx_tmp_dir }}/mediamtx.tar.gz"
+    mode: "0644"
 
 # ---------------------------------------
 # INSTALLATION
@@ -74,7 +94,7 @@
 
 - name: Extract MediaMTX
   unarchive:
-    src: "{{ mediamtx_cached_archive }}"
+    src: "{{ mediamtx_tmp_dir }}/mediamtx.tar.gz"
     dest: "{{ mediamtx_tmp_dir }}"
     remote_src: yes
 
@@ -116,10 +136,11 @@
     state: started
 
 # ---------------------------------------
-# CLEANING
+# CLEANUP
 # ---------------------------------------
 
 - name: Remove temporary directory
   file:
     path: "{{ mediamtx_tmp_dir }}"
     state: absent
+
