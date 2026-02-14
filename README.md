@@ -36,11 +36,6 @@ Download the image [Raspberry Pi OS Lite - a port of Debian Trixie](https://down
 
 To writing an image to the SD card, use [Imager](https://www.raspberrypi.org/downloads/).
 
-
-
-Here’s a clean, expanded **English version** of your README section.  
-It clearly explains that Ansible must be run **on your local computer**, which then installs RPiMS **remotely** on the Raspberry Pi devices listed in the inventory.
-
 ---
 
 ## Installing RPiMS Using Ansible
