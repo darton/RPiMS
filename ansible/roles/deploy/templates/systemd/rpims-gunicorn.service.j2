@@ -8,7 +8,7 @@ User={{ rpims_user }}
 Group={{ rpims_user }}
 Environment="RPIMS_DIR={{ rpims_install_dir }}"
 WorkingDirectory={{ rpims_install_dir }}/app/
-ExecStart=/usr/bin/gunicorn --workers 1 wsgi:app --bind 127.0.0.1:8000
+ExecStart={{ rpims_user_homedir }}/.venv/bin/gunicorn --workers 1 wsgi:app --bind 127.0.0.1:8000
  
 [Install]
 WantedBy=multi-user.target

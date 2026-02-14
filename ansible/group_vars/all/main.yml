@@ -1,3 +1,4 @@
 ---
 rpims_user: "rpims"
+rpims_user_homedir: "/home/rpims"
 zabbix_user: "zabbix"

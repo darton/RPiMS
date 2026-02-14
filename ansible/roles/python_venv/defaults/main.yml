@@ -1,0 +1,35 @@
+---
+
+python_user_venv_user: "{{ rpims_user }}"
+python_user_venv_path: "/home/{{ rpims_user }}/.venv"
+python_user_venv_python: "/usr/bin/python3"
+
+python_user_venv_packages:
+  - pip
+  - wheel
+  - setuptools
+  - RPi.bme280
+  - smbus2
+  - w1thermsensor
+  - gpiozero
+  - "redis[hiredis]"
+  - pid
+  - PyYAML
+  - ruamel.yaml
+  - luma.oled
+  - luma.lcd
+  - systemd
+  - numpy
+  - adafruit-circuitpython-ads1x15
+  - rshell
+  - pyusb
+  - picamera2
+  - adafruit-circuitpython-dht
+  - setproctitle
+  - flask
+  - gunicorn
+  - automationhat
+  - packaging
+
+grove_repo_url: "https://github.com/Seeed-Studio/grove.py"
+grove_repo_dest: "~/tmp/grove.py"

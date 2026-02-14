@@ -8,7 +8,7 @@ Documentation=https://github.com/darton/RPiMS
 Type=simple
 User={{ rpims_user }}
 Group={{ rpims_user }}
-ExecStart={{ rpims_install_dir }}/daemon/rpims.py
+ExecStart={{ rpims_user_homedir }}/.venv/bin/python {{ rpims_install_dir }}/daemon/rpims.py
 StandardInput=tty-force
 Environment="RPIMS_DIR={{ rpims_install_dir }}"
 WorkingDirectory={{ rpims_install_dir }}/daemon

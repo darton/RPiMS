@@ -7,7 +7,7 @@
     - { role: system,     tags: ['system'] }
     - { role: usb_automount,   tags: ['usb_automount'] }
     - { role: packages,   tags: ['packages'] }
-    - { role: python,     tags: ['python'] }
+    - { role: python_venv,     tags: ['python_venv'] }
     - { role: mediamtx,   tags: ['mediamtx'] }
     - { role: hardware,   tags: ['hardware'] }
     - { role: deploy,     tags: ['deploy'] }
