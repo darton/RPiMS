@@ -262,23 +262,23 @@ rtspAddress: :8554
 # Address of the TCP/RTSPS listener. This is needed only when encryption is "strict" or "optional".
 rtspsAddress: :8322
 # Address of the UDP/RTP listener. This is needed only when "udp" is in rtspTransports and encryption is "no" or "optional".
-rtpAddress: :8000
+rtpAddress: :10000
 # Address of the UDP/RTCP listener. This is needed only when "udp" is in rtspTransports and encryption is "no" or "optional".
-rtcpAddress: :8001
+rtcpAddress: :10001
 # IP range of all UDP-multicast listeners. This is needed only when "multicast" is in rtspTransports and encryption is "no" or "optional".
 multicastIPRange: 224.1.0.0/16
 # Port of all UDP-multicast/RTP listeners. This is needed only when "multicast" is in rtspTransports and encryption is "no" or "optional".
-multicastRTPPort: 8002
+multicastRTPPort: 10002
 # Port of all UDP-multicast/RTCP listeners. This is needed only when "multicast" is in rtspTransports and encryption is "no" or "optional".
-multicastRTCPPort: 8003
+multicastRTCPPort: 10003
 # Address of the UDP/SRTP listener. This is needed only when "udp" is in rtspTransports and encryption is "strict" or "optional".
-srtpAddress: :8004
+srtpAddress: :10004
 # Address of the UDP/SRTCP listener. This is needed only when "udp" is in rtspTransports and encryption is "strict" or "optional".
-srtcpAddress: :8005
+srtcpAddress: :10005
 # Port of all UDP-multicast/SRTP listeners. This is needed only when "multicast" is in rtspTransports and encryption is "strict" or "optional".
-multicastSRTPPort: 8006
+multicastSRTPPort: 10006
 # Port of all UDP-multicast/SRTCP listeners. This is needed only when "multicast" is in rtspTransports and encryption is "strict" or "optional".
-multicastSRTCPPort: 8007
+multicastSRTCPPort: 10007
 # Path to the server key. This is needed only when encryption is "strict" or "optional".
 # This can be generated with:
 # openssl genrsa -out server.key 2048

@@ -1,6 +1,6 @@
 ---
 # ---------------------------------------
-# ARCHITEKTURA
+# DISCOVERING CPU ARCHITECTURE
 # ---------------------------------------
 
 - name: Detect system architecture
@@ -18,7 +18,7 @@
   when: mediamtx_arch == "unsupported"
 
 # ---------------------------------------
-# WYKRYWANIE TMPFS
+# DISCOVERING TMPFS
 # ---------------------------------------
 
 - name: Set tmp path
@@ -69,7 +69,7 @@
   when: not lookup('ansible.builtin.fileglob', mediamtx_cached_archive)
 
 # ---------------------------------------
-# INSTALACJA
+# INSTALLATION
 # ---------------------------------------
 
 - name: Extract MediaMTX
@@ -116,7 +116,7 @@
     state: started
 
 # ---------------------------------------
-# SPRZĄTANIE
+# CLEANING
 # ---------------------------------------
 
 - name: Remove temporary directory
