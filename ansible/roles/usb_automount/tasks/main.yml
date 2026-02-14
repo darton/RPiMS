@@ -1,0 +1,57 @@
+---
+- name: Ensure base mount directory exists
+  file:
+    path: /mnt/media
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Install udev rule for USB automount
+  template:
+    src: 99-usb-automount.rules.j2
+    dest: /etc/udev/rules.d/99-usb-automount.rules
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Install systemd unit for USB automount
+  template:
+    src: usb-mount@.service.j2
+    dest: /etc/systemd/system/usb-mount@.service
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Install usb-mount-helper script
+  copy:
+    src: usb-mount-helper
+    dest: /usr/local/bin/usb-mount-helper
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Install usb-link-manager script
+  copy:
+    src: usb-link-manager
+    dest: /usr/local/bin/usb-link-manager
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Install tmpfiles config
+  template:
+    src: usb-automount.conf.j2
+    dest: /etc/tmpfiles.d/usb-automount.conf
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Reload udev rules
+  command: udevadm control --reload-rules
+
+- name: Trigger udev
+  command: udevadm trigger
+
+- name: Reload systemd units
+  command: systemctl daemon-reload

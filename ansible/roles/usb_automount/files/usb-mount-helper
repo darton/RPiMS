@@ -1,0 +1,62 @@
+#!/bin/sh
+
+ACTION="$1"
+DEVICE="$2"
+DEVPATH="/dev/$DEVICE"
+MOUNTPOINT="/mnt/media/$DEVICE"
+LOGGER_TAG="usb-automount"
+
+log() {
+    logger -t "$LOGGER_TAG" "$@"
+}
+
+if [ "$ACTION" = "remove" ]; then
+    log "Unmounting $DEVPATH"
+    umount "$MOUNTPOINT" 2>/dev/null
+    rmdir "$MOUNTPOINT" 2>/dev/null
+
+    # Update symlink
+    /usr/local/bin/usb-link-manager
+
+    exit 0
+fi
+
+log "Mounting $DEVPATH"
+
+# Ensure /mnt/media is clean
+if mountpoint -q /mnt/media; then
+    log "/mnt/media is mounted — unmounting"
+    umount -f /mnt/media 2>/dev/null
+fi
+
+# Repair corrupted directory
+if ! mkdir -p /mnt/media/testdir 2>/dev/null; then
+    log "/mnt/media is corrupted — recreating"
+    rm -rf /mnt/media
+    mkdir -p /mnt/media
+fi
+rm -rf /mnt/media/testdir 2>/dev/null
+
+mkdir -p "$MOUNTPOINT"
+
+FSTYPE="$(blkid -o value -s TYPE "$DEVPATH")"
+
+if [ -z "$FSTYPE" ]; then
+    log "Cannot detect filesystem type for $DEVPATH"
+    exit 1
+fi
+
+log "Detected filesystem: $FSTYPE"
+
+mount -t "$FSTYPE" -o umask=000 "$DEVPATH" "$MOUNTPOINT"
+
+if [ $? -eq 0 ]; then
+    log "Mounted $DEVPATH at $MOUNTPOINT"
+
+    # Update symlink
+    /usr/local/bin/usb-link-manager
+else
+    log "Mount failed for $DEVPATH"
+    rmdir "$MOUNTPOINT"
+    exit 1
+fi

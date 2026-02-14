@@ -5,6 +5,7 @@ mediamtx_install_dir: "/usr/local/bin"
 mediamtx_config_dir: "/etc/mediamtx"
 mediamtx_service_name: "mediamtx"
 mediamtx_cache_dir: "~/.cache/mediamtx"
+mediamtx_recording_dir: "/mnt/usb"
 
 stream_source: "rpiCamera"
 sourceOnDemand: true

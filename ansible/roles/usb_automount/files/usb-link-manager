@@ -1,0 +1,26 @@
+#!/bin/sh
+
+LOGGER_TAG="usb-automount-link"
+
+log() {
+    logger -t "$LOGGER_TAG" "$@"
+}
+
+BASE="/mnt/media"
+LINK="/mnt/usb"
+
+# Find first mounted device
+NEXT="$(ls -1 "$BASE" 2>/dev/null | head -n 1)"
+
+if [ -z "$NEXT" ]; then
+    if [ -L "$LINK" ]; then
+        rm -f "$LINK"
+        log "Removed symlink $LINK (no devices available)"
+    fi
+    exit 0
+fi
+
+TARGET="$BASE/$NEXT"
+
+ln -sfn "$TARGET" "$LINK"
+log "Updated symlink $LINK -> $TARGET"

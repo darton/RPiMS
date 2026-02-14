@@ -1,0 +1,16 @@
+[Unit]
+Description=USB automount for %I
+After=local-fs.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/usb-mount-helper add %I
+ExecStop=/usr/local/bin/usb-mount-helper remove %I
+RemainAfterExit=yes
+
+CapabilityBoundingSet=CAP_SYS_ADMIN
+AmbientCapabilities=CAP_SYS_ADMIN
+PrivateDevices=no
+ProtectSystem=off
+ProtectHome=off
+NoNewPrivileges=no

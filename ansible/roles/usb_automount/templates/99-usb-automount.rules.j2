@@ -1,0 +1,14 @@
+# Ignore system disk (root filesystem)
+ENV{ID_DRIVE_SYSTEM}=="1", GOTO="usb_automount_end"
+
+# Handle USB partitions only
+ACTION=="add", SUBSYSTEM=="block", KERNEL=="sd[a-z][0-9]", \
+    ENV{ID_BUS}=="usb", \
+    ENV{ID_FS_TYPE}!="", \
+    RUN+="/usr/bin/systemctl start usb-mount@%k.service"
+
+ACTION=="remove", SUBSYSTEM=="block", KERNEL=="sd[a-z][0-9]", \
+    ENV{ID_BUS}=="usb", \
+    RUN+="/usr/bin/systemctl stop usb-mount@%k.service"
+
+LABEL="usb_automount_end"
