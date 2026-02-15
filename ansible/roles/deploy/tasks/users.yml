@@ -32,16 +32,6 @@
   tags:
     - users
 
-- name: Add existing "{{ zabbix_user }}" user to rpims group 
-  user:
-    name: "{{ zabbix_user }}"
-    groups: 
-      - "{{ rpims_user }}"
-    append: yes
-  become: true
-  tags:
-    - users
-
 - name: Allow rpims to use sudo without password
   copy:
     dest: /etc/sudoers.d/rpims
@@ -49,6 +39,16 @@
     owner: root
     group: root
     mode: '0440'
+  become: true
+  tags:
+    - users
+
+- name: Add existing "{{ zabbix_user }}" user to rpims group 
+  user:
+    name: "{{ zabbix_user }}"
+    groups: 
+      - "{{ rpims_user }}"
+    append: yes
   become: true
   tags:
     - users
