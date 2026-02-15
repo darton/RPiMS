@@ -6,6 +6,8 @@ apt_packages:
   - redis
   - redis-server
   - zabbix-agent
+  - zabbix-sender
+  - libmodbus5
   - ffmpeg
   - libcap-dev
   - libfreetype6-dev

@@ -1,4 +1,13 @@
 ---
+- name: Ensure /opt/RPiMS exists with correct ownership
+  file:
+    path: "{{ rpims_install_dir }}"
+    state: directory
+    owner: "{{ rpims_user }}"
+    group: "{{ rpims_user }}"
+    mode: "0755"
+  become: true
+
 - name: Copy static web files to "{{ rpims_install_dir }}"
   copy: 
     src: "{{ rpims_repo_dir }}/static"
