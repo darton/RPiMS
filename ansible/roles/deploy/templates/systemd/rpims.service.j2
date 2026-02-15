@@ -8,13 +8,15 @@ Documentation=https://github.com/darton/RPiMS
 User={{ rpims_user }}
 Group={{ rpims_user }}
 ExecStart={{ rpims_user_homedir }}/.venv/bin/python {{ rpims_install_dir }}/daemon/rpims.py
-Environment="RPIMS_DIR={{ rpims_install_dir }}"
 WorkingDirectory={{ rpims_install_dir }}/daemon
+
 RuntimeDirectory={{ rpims_user }}
 RuntimeDirectoryMode=0755
-StandardInput=tty-force
+
 StandardOutput=journal
 StandardError=journal
+
+Environment="RPIMS_DIR={{ rpims_install_dir }}"
 Environment=PYTHONUNBUFFERED=1
 
 
