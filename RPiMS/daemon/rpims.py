@@ -174,7 +174,7 @@ def hostnamectl_sh(**kwargs):
 
 
 def get_hostip():
-    _cmd = 'sudo f"{BASE_DIR}/scripts/gethostinfo.sh"'
+    _cmd = f'sudo {BASE_DIR}/scripts/gethostinfo.sh'
     subprocess.call(_cmd, shell=True)
 
 

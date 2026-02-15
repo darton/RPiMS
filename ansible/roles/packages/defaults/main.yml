@@ -4,6 +4,7 @@ apt_packages:
   - nginx
   - redis
   - redis-server
+  - zabbix-agent
   - ffmpeg
   - libcap-dev
   - libfreetype6-dev
@@ -22,7 +23,12 @@ apt_packages:
   - python3-setuptools
   - python3-numpy
   - python3-gpiozero
+  - python3-lgpio
+  - python3-rpi-lgpio
   - python3-picamera2
   - python3-systemd
-  - zabbix-agent
-  - gunicorn
+  - python3-smbus 
+  - libi2c-dev
+  - i2c-tools
+  - libi2c0
+  - read-edid

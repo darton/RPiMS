@@ -11,7 +11,6 @@ python_user_venv_packages:
   - RPi.bme280
   - smbus2
   - w1thermsensor
-  - gpiozero
   - "redis[hiredis]"
   - pid
   - PyYAML
@@ -19,16 +18,14 @@ python_user_venv_packages:
   - luma.oled
   - luma.lcd
   - systemd
-  - numpy
   - adafruit-circuitpython-ads1x15
+  - adafruit-circuitpython-dht
+  - automationhat
+  - setproctitle
   - rshell
   - pyusb
-  - picamera2
-  - adafruit-circuitpython-dht
-  - setproctitle
   - flask
   - gunicorn
-  - automationhat
   - packaging
 
 grove_repo_url: "https://github.com/Seeed-Studio/grove.py"

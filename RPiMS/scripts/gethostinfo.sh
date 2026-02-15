@@ -7,7 +7,7 @@ if [[ $(id -u) -ne 0 ]]; then
   exit 1
 fi
 
-_IP=$(ip route get 1.1.1.1 | awk '{print $7}')
+_IP=$(ip route get 1.1.1.1 | awk '/1.1.1.1/{print $7}')
 
 if [ "$_IP" ]; then
     $redis_cmd set hostip "$_IP" 2>&1 > /dev/null

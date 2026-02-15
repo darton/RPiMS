@@ -9,7 +9,7 @@
     mode: "0755"
 
 - name: Create virtual environment for user
-  command: "{{ python_user_venv_python }} -m venv {{ python_user_venv_path }}"
+  command: "{{ python_user_venv_python }} -m venv --system-site-packages {{ python_user_venv_path }}"
   args:
     creates: "{{ python_user_venv_path }}/bin/activate"
   become: true
