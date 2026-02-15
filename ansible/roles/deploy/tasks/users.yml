@@ -2,6 +2,7 @@
 - name: Create rpims user
   user:
     name: "{{ rpims_user }}"
+    group: "{{ rpims_user }}"
     shell: /bin/bash
     create_home: yes
     system: no
