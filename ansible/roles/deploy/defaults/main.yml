@@ -6,3 +6,48 @@ redis_sysctl:
   vm.overcommit_memory: 1
   net.core.somaxconn: 512
 
+mediamtx_version: "1.16.1"
+mediamtx_install_dir: "/usr/local/bin"
+mediamtx_config_dir: "/etc/mediamtx"
+mediamtx_service_name: "mediamtx"
+mediamtx_cache_dir: "~/.cache/mediamtx"
+mediamtx_recording_dir: "/mnt/usb"
+stream_source: "rpiCamera"
+sourceOnDemand: true
+rtsp_enable: "no"
+rtpm_enable: "no"
+hls_enable: "no"
+webrtc_enable: "yes"
+srt_enable: "no"
+
+python_user_venv_user: "{{ rpims_user }}"
+python_user_venv_path: "/home/{{ rpims_user }}/.venv"
+python_user_venv_python: "/usr/bin/python3"
+
+grove_repo_url: "https://github.com/Seeed-Studio/grove.py"
+grove_repo_dest: "~/tmp/grove.py"
+
+python_user_venv_packages:
+  - pip
+  - wheel
+  - setuptools
+  - RPi.bme280
+  - smbus2
+  - w1thermsensor
+  - "redis[hiredis]"
+  - pid
+  - PyYAML
+  - ruamel.yaml
+  - luma.oled
+  - luma.lcd
+  - systemd
+  - adafruit-circuitpython-ads1x15
+  - adafruit-circuitpython-dht
+  - automationhat
+  - setproctitle
+  - rshell
+  - pyusb
+  - flask
+  - gunicorn
+  - packaging
+

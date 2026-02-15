@@ -4,6 +4,8 @@
 - import_tasks: files.yml
 - import_tasks: zabbix.yml
 - import_tasks: nginx.yml
+- import_tasks: mediamtx.yml
 - import_tasks: cron.yml
 - import_tasks: motd.yml
 - import_tasks: systemd.yml
+- import_tasks: python_venv.yml
