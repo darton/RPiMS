@@ -5,16 +5,14 @@ Conflicts=getty@tty1.service
 Documentation=https://github.com/darton/RPiMS
 
 [Service]
-Type=simple
 User={{ rpims_user }}
 Group={{ rpims_user }}
 ExecStart={{ rpims_user_homedir }}/.venv/bin/python {{ rpims_install_dir }}/daemon/rpims.py
-StandardInput=tty-force
 Environment="RPIMS_DIR={{ rpims_install_dir }}"
 WorkingDirectory={{ rpims_install_dir }}/daemon
 RuntimeDirectory={{ rpims_user }}
 RuntimeDirectoryMode=0755
-PIDFile=/run/{{ rpims_user }}/rpims.pid
+StandardInput=tty-force
 StandardOutput=journal
 StandardError=journal
 Environment=PYTHONUNBUFFERED=1
