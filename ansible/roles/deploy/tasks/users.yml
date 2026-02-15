@@ -1,8 +1,10 @@
 ---
-- name: Create service user
+- name: Create rpims user
   user:
     name: "{{ rpims_user }}"
-    system: yes
+    shell: /bin/bash
+    create_home: yes
+    system: no
   tags:
     - users
 

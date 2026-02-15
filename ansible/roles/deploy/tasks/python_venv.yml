@@ -30,6 +30,15 @@
   become: true
   become_user: "{{ python_user_venv_user }}"
 
+- name: Ensure grove temp directory exists
+  file:
+    path: "{{ grove_repo_dest | dirname }}"
+    state: directory
+    owner: "{{ python_user_venv_user }}"
+    group: "{{ python_user_venv_user }}"
+    mode: "0755"
+  become: true
+
 - name: Clonning grove.py repository
   git:
     repo: "{{ grove_repo_url }}"
