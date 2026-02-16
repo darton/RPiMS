@@ -4,8 +4,8 @@
     src: "zabbix/zabbix_rpims.conf.j2"
     dest: "{{ rpims_install_dir }}/config/zabbix_rpims.conf"
     owner: "{{ rpims_user }}"
-    group: "{{ rpims_user }}"
-    mode: '0644'
+    group: zabbix
+    mode: '0640'
   notify: Restart zabbix
   become: true
   tags:
@@ -70,7 +70,7 @@
     content: "{{ TLSPSK }}"
     mode: '0640'
     owner: "{{ rpims_user }}"
-    group: "{{ rpims_user }}"
+    group: zabbix
   tags:
     - tlspsk
     - zabbix
@@ -80,8 +80,8 @@
     src: "zabbix/zabbix_agentd.conf.j2"
     dest: "/etc/zabbix/zabbix_agentd.conf.d/zabbix_agentd.conf"
     owner: root
-    group: root
-    mode: '0644'
+    group: zabbix
+    mode: '0640'
   notify: Restart zabbix
   become: true
   tags:
@@ -92,8 +92,8 @@
     src: "zabbix/zabbix_rpims_userparameter.conf.j2"
     dest: "/etc/zabbix/zabbix_agentd.conf.d/zabbix_rpims_userparameter.conf"
     owner: root
-    group: root
-    mode: '0644'
+    group: zabbix
+    mode: '0640'
   notify: Restart zabbix
   become: true
   tags:

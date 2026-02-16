@@ -327,6 +327,9 @@ def setup():
         with open(f"{BASE_DIR}/config/zabbix_rpims.conf", 'w', encoding='utf-8') as f:
             f.write('\n'.join(zabbix_config))
 
+        with open(f"{BASE_DIR}/config/zabbix_rpims.psk", 'w', encoding='utf-8') as f:
+            f.write(zabbix_agent.get("TLSPSK"))
+
         redis_db.set('rpims', json.dumps(_rpims))
         with open(f"{BASE_DIR}/config/rpims.yaml", 'w') as f:
             yaml.dump(_rpims, f, default_flow_style=False, sort_keys=False, explicit_start=True)
