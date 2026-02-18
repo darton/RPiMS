@@ -4,6 +4,7 @@ Refactored Flask application (Step 1)
 This version keeps everything in a single file, but reorganizes the code
 to be cleaner, more maintainable, and ready for future modularization
 (blueprints, services, config modules, etc.).
+Includes improved error handling and logging.
 """
 
 # ============================
@@ -69,12 +70,41 @@ def bool_to_yesno(value: bool) -> str:
     return "yes" if value else "no"
 
 
+def json_response(payload, status=200):
+    """Return a JSON response with optional status code."""
+    return flask.jsonify(payload), status
+
+
+def error_response(message, status=400):
+    """Return a standardized JSON error response."""
+    return flask.jsonify({
+        "status": "error",
+        "error": message
+    }), status
+
+
+# ============================
+# Global exception handler
+# ============================
+
+@app.errorhandler(Exception)
+def handle_exception(e):
+    """Catch-all for unexpected exceptions."""
+    journal.send(f"Unhandled exception: {str(e)}")
+
+    # If it's an HTTPException, return its own response
+    if isinstance(e, flask.exceptions.HTTPException):
+        return error_response(e.description, e.code)
+
+    # Otherwise return generic 500
+    return error_response("Unexpected server error", 500)
+
+
 # ============================
 # Sensor loading helpers
 # ============================
 
 def load_cpu_sensor(redis_db, config):
-    """Load CPU temperature sensor data."""
     if not config["setup"]["use_cpu_sensor"]:
         return None
     return {"temperature": redis_db.get("CPU_Temperature")}
@@ -83,7 +113,7 @@ def load_cpu_sensor(redis_db, config):
 def load_dht_sensor(redis_db, config):
     if not config["setup"]["use_dht_sensor"]:
         return None
-    return redis_db.hgetall("DHT")
+    return redis_db.hgetall("DDHT")
 
 
 def load_door_sensor(redis_db, config):
@@ -126,7 +156,6 @@ def load_weather_station(redis_db, config):
 
 
 def get_sensors(redis_db, config):
-    """Load all sensors based on configuration flags."""
     sensors = {}
 
     if (cpu := load_cpu_sensor(redis_db, config)):
@@ -158,7 +187,6 @@ def get_sensors(redis_db, config):
 # ============================
 
 def get_data():
-    """Aggregate all system, config and sensor data into a single structure."""
     rpims = json.loads(redis_db.get("rpims"))
 
     system_info = redis_db.hgetall("SYSTEM")
@@ -177,7 +205,6 @@ def get_data():
 # ============================
 
 def update_mediamtx_config(width, height, fps, recording, vflip, hflip):
-    """Update MediaMTX YAML configuration for PiCamera."""
     yaml_loader = YAML()
     yaml_loader.preserve_quotes = True
 
@@ -193,15 +220,6 @@ def update_mediamtx_config(width, height, fps, recording, vflip, hflip):
 
     with open(MEDIAMTX_CONFIG, "w", encoding="utf-8") as f:
         yaml_loader.dump(config, f)
-
-
-# ============================
-# JSON response helper
-# ============================
-
-def json_response(payload, status=200):
-    """Return a JSON response with optional status code."""
-    return flask.jsonify(payload), status
 
 
 # ============================
@@ -223,7 +241,6 @@ def api_json():
     return json_response(get_data())
 
 
-# Mapping sensor types to config flags and extractors
 SENSOR_MAP = {
     "cpu": ("use_cpu_sensor", lambda d: d["sensors"]["cpu"]),
     "bme280": ("use_bme280_sensor", lambda d: d["sensors"]["bme280"]),
@@ -243,11 +260,11 @@ def api_sensors_json(sensor_type):
         return json_response(data["sensors"])
 
     if sensor_type not in SENSOR_MAP:
-        flask.abort(404)
+        return error_response("Unknown sensor type", 404)
 
     flag, extractor = SENSOR_MAP[sensor_type]
     if not data["config"]["setup"].get(flag):
-        flask.abort(404)
+        return error_response("Sensor disabled", 404)
 
     return json_response(extractor(data))
 
@@ -257,7 +274,7 @@ def api_types_json(data_type):
     data = get_data()
 
     if data_type not in ("config", "system", "sensors"):
-        flask.abort(404)
+        return error_response("Unknown data type", 404)
 
     return json_response(data[data_type])
 
@@ -265,12 +282,9 @@ def api_types_json(data_type):
 # ============================
 # Setup route (large form handler)
 # ============================
-# NOTE: This function is still large, but now structured and ready
-# for extraction into service modules in Step 2.
 
 @app.route("/setup/", methods=["GET", "POST"])
 def setup():
-    """Render or update the RPiMS configuration."""
     try:
         with open(CONFIG_PATH, "r") as f:
             config = yaml.full_load(f)
@@ -477,8 +491,21 @@ def setup():
 # ============================
 
 @app.errorhandler(404)
-def not_found(error):
-    return json_response({"error": "404 Not Found"}, 404)
+def handle_404(error):
+    journal.send(f"404 Not Found: {flask.request.path}")
+    return error_response("Resource not found", 404)
+
+
+@app.errorhandler(400)
+def handle_400(error):
+    journal.send(f"400 Bad Request: {flask.request.path}")
+    return error_response("Bad request", 400)
+
+
+@app.errorhandler(500)
+def handle_500(error):
+    journal.send(f"500 Internal Server Error: {error}")
+    return error_response("Internal server error", 500)
 
 
 # ============================
