@@ -1,12 +1,3 @@
-"""
-Refactored Flask application (Step 1)
--------------------------------------
-This version keeps everything in a single file, but reorganizes the code
-to be cleaner, more maintainable, and ready for future modularization
-(blueprints, services, config modules, etc.).
-Includes improved error handling and logging.
-"""
-
 # ============================
 # Imports
 # ============================
