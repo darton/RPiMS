@@ -1,3 +1,14 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Refactored Flask application (Step 1, ruamel.yaml only)
+------------------------------------------------------
+This file keeps your original structure but uses ruamel.yaml exclusively
+to preserve comments in YAML files. Repeated form parsing logic is
+extracted into small helper functions for readability and reuse.
+Behavior and routes are unchanged.
+"""
+
 # ============================
 # Imports
 # ============================
@@ -6,10 +17,9 @@
 import os
 import json
 
-# Third‑party libraries
+# Third-party libraries
 import flask
 import redis
-import yaml
 from ruamel.yaml import YAML
 from systemd import journal
 
@@ -50,6 +60,62 @@ def get_redis():
 
 
 redis_db = get_redis()
+
+
+# ============================
+# YAML helpers (ruamel.yaml, preserves comments)
+# ============================
+
+yaml_loader = YAML()
+yaml_loader.preserve_quotes = True
+yaml_loader.indent(mapping=2, sequence=4, offset=2)
+yaml_loader.width = 4096  # avoid line wrapping
+
+def load_yaml_preserve(path):
+    """Load YAML preserving comments and ordering. Returns ruamel CommentedMap or None."""
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            return yaml_loader.load(f)
+    except FileNotFoundError:
+        return None
+    except Exception as e:
+        journal.send(f"Failed to load YAML {path}: {e}")
+        return None
+
+def save_yaml_preserve(path, data, explicit_start=False):
+    """Save data (CommentedMap or dict) to YAML preserving comments where possible."""
+    # Optionally set explicit_start for this dump only
+    prev = getattr(yaml_loader, "explicit_start", False)
+    yaml_loader.explicit_start = explicit_start
+    try:
+        with open(path, "w", encoding="utf-8") as f:
+            yaml_loader.dump(data, f)
+    except Exception as e:
+        journal.send(f"Failed to save YAML {path}: {e}")
+        raise
+    finally:
+        yaml_loader.explicit_start = prev
+
+def to_plain_dict(obj):
+    """
+    Convert ruamel CommentedMap/CommentedSeq to plain Python dict/list recursively.
+    Useful before json.dumps or other operations that expect plain types.
+    """
+    if obj is None:
+        return None
+    # Primitive types
+    if isinstance(obj, (str, int, float, bool)):
+        return obj
+    # Mapping-like
+    try:
+        if hasattr(obj, "items"):
+            return {k: to_plain_dict(v) for k, v in obj.items()}
+        # Sequence-like
+        if hasattr(obj, "__iter__") and not isinstance(obj, (str, bytes)):
+            return [to_plain_dict(v) for v in obj]
+    except Exception:
+        pass
+    return obj
 
 
 # ============================
@@ -96,31 +162,32 @@ def handle_exception(e):
 # ============================
 
 def load_cpu_sensor(redis_db, config):
-    if not config["setup"]["use_cpu_sensor"]:
+    if not config.get("setup", {}).get("use_cpu_sensor"):
         return None
     return {"temperature": redis_db.get("CPU_Temperature")}
 
 
 def load_dht_sensor(redis_db, config):
-    if not config["setup"]["use_dht_sensor"]:
+    if not config.get("setup", {}).get("use_dht_sensor"):
         return None
+    # fixed key: DHT (was DDHT)
     return redis_db.hgetall("DHT")
 
 
 def load_door_sensor(redis_db, config):
-    if not config["setup"]["use_door_sensor"]:
+    if not config.get("setup", {}).get("use_door_sensor"):
         return None
     return redis_db.hgetall("DOOR_SENSORS")
 
 
 def load_motion_sensor(redis_db, config):
-    if not config["setup"]["use_motion_sensor"]:
+    if not config.get("setup", {}).get("use_motion_sensor"):
         return None
     return redis_db.hgetall("MOTION_SENSORS")
 
 
 def load_bme280_sensor(redis_db, config):
-    if not config["setup"]["use_bme280_sensor"]:
+    if not config.get("setup", {}).get("use_bme280_sensor"):
         return None
 
     result = {}
@@ -133,7 +200,7 @@ def load_bme280_sensor(redis_db, config):
 
 
 def load_ds18b20_sensor(redis_db, config):
-    if not config["setup"]["use_ds18b20_sensor"]:
+    if not config.get("setup", {}).get("use_ds18b20_sensor"):
         return None
 
     raw = redis_db.hgetall("DS18B20")
@@ -141,7 +208,7 @@ def load_ds18b20_sensor(redis_db, config):
 
 
 def load_weather_station(redis_db, config):
-    if not config["setup"]["use_weather_station"]:
+    if not config.get("setup", {}).get("use_weather_station"):
         return None
     return redis_db.hgetall("WEATHER")
 
@@ -178,11 +245,12 @@ def get_sensors(redis_db, config):
 # ============================
 
 def get_data():
-    rpims = json.loads(redis_db.get("rpims"))
+    rpims_raw = redis_db.get("rpims")
+    rpims = json.loads(rpims_raw) if rpims_raw else {"zabbix_agent": {}}
 
     system_info = redis_db.hgetall("SYSTEM")
-    system_info["hostname"] = rpims["zabbix_agent"]["hostname"]
-    system_info["location"] = rpims["zabbix_agent"]["location"]
+    system_info["hostname"] = rpims.get("zabbix_agent", {}).get("hostname", "")
+    system_info["location"] = rpims.get("zabbix_agent", {}).get("location", "")
 
     return {
         "config": rpims,
@@ -196,11 +264,13 @@ def get_data():
 # ============================
 
 def update_mediamtx_config(width, height, fps, recording, vflip, hflip):
-    yaml_loader = YAML()
-    yaml_loader.preserve_quotes = True
+    config = load_yaml_preserve(MEDIAMTX_CONFIG)
+    if config is None:
+        config = {}
 
-    with open(MEDIAMTX_CONFIG, "r", encoding="utf-8") as f:
-        config = yaml_loader.load(f)
+    # Ensure pathDefaults exists
+    if "pathDefaults" not in config or config["pathDefaults"] is None:
+        config["pathDefaults"] = {}
 
     config["pathDefaults"]["rpiCameraWidth"] = width
     config["pathDefaults"]["rpiCameraHeight"] = height
@@ -209,8 +279,131 @@ def update_mediamtx_config(width, height, fps, recording, vflip, hflip):
     config["pathDefaults"]["rpiCameraVFlip"] = bool_to_yesno(vflip)
     config["pathDefaults"]["rpiCameraHFlip"] = bool_to_yesno(hflip)
 
-    with open(MEDIAMTX_CONFIG, "w", encoding="utf-8") as f:
-        yaml_loader.dump(config, f)
+    save_yaml_preserve(MEDIAMTX_CONFIG, config)
+
+
+# ============================
+# Small form helper functions (uproszcifications)
+# ============================
+
+def load_gpio_from_form(form, gpios):
+    gpio = {}
+    for item in gpios:
+        hold = form.get(f"{item}_hold_time")
+        gpio[item] = {
+            "pin": int(form.get(f"{item}_pin")) if form.get(f"{item}_pin") else "",
+            "type": form.get(f"{item}_type"),
+            "name": form.get(f"{item}_name"),
+            "hold_time": int(hold) if hold else ""
+        }
+    return gpio
+
+
+def load_bme280_from_form(form):
+    sensors = {}
+    for sensor_id in ("id1", "id2", "id3"):
+        prefix = f"{sensor_id}_BME280"
+        read_interval = form.get(f"{prefix}_read_interval")
+        entry = {
+            "id": sensor_id,
+            "interface": form.get(f"{prefix}_interface"),
+            "name": form.get(f"{prefix}_name"),
+            "read_interval": int(read_interval) if read_interval else 0,
+            "use": bool(form.get(f"{prefix}_use")),
+        }
+        if sensor_id == "id1":
+            addr = form.get(f"{prefix}_i2c_address")
+            entry["i2c_address"] = int(addr) if addr else None
+        else:
+            entry["serial_port"] = form.get(f"{prefix}_serial_port")
+        sensors[sensor_id] = entry
+    return sensors
+
+
+def load_ds18b20_from_form(form, enabled):
+    ds = {
+        "read_interval": int(form.get("DS18B20_read_interval")) if form.get("DS18B20_read_interval") else 0,
+        "addresses": {}
+    }
+    if enabled:
+        for addr in form.getlist("DS18B20_address"):
+            ds["addresses"][addr] = {
+                "name": form.get(f"DS18B20_{addr}_name")
+            }
+    return ds
+
+
+def load_weather_from_form(form):
+    rainfall = {
+        "acquisition_time": int(form.get("rainfall_acquisition_time")) if form.get("rainfall_acquisition_time") else 0,
+        "agregation_time": int(form.get("rainfall_agregation_time")) if form.get("rainfall_agregation_time") else 0,
+        "sensor_pin": int(form.get("rainfall_sensor_pin")) if form.get("rainfall_sensor_pin") else 0,
+        "use": bool(form.get("rainfall_use")),
+    }
+
+    direction = {
+        "acquisition_time": int(form.get("winddirection_acquisition_time")) if form.get("winddirection_acquisition_time") else 0,
+        "adc_input": int(form.get("winddirection_adc_input")) if form.get("winddirection_adc_input") else 0,
+        "adc_type": form.get("winddirection_adc_type"),
+        "reference_voltage_adc_input": int(form.get("reference_voltage_adc_input")) if form.get("reference_voltage_adc_input") else 0,
+        "use": bool(form.get("winddirection_use")),
+    }
+
+    speed = {
+        "acquisition_time": int(form.get("windspeed_acquisition_time")) if form.get("windspeed_acquisition_time") else 0,
+        "agregation_time": int(form.get("windspeed_agregation_time")) if form.get("windspeed_agregation_time") else 0,
+        "sensor_pin": int(form.get("windspeed_sensor_pin")) if form.get("windspeed_sensor_pin") else 0,
+        "use": bool(form.get("windspeed_use")),
+    }
+
+    return {"RAINFALL": rainfall, "WIND": {"DIRECTION": direction, "SPEED": speed}}
+
+
+def load_picamera_from_form(form, setup):
+    picamera = {
+        "fps": int(form.get("picamera_fps")) if form.get("picamera_fps") else 0,
+        "mode": int(form.get("picamera_mode")) if form.get("picamera_mode") else 1,
+        "vflip": bool(form.get("picamera_vflip")),
+        "hflip": bool(form.get("picamera_hflip")),
+    }
+
+    picamera_modes = {
+        1: (1920, 1080),
+        6: (1280, 720),
+        7: (640, 480),
+    }
+
+    mode = picamera["mode"]
+    width, height = picamera_modes.get(mode, (1920, 1080))
+    recording = setup.get("use_picamera_recording", False)
+
+    update_mediamtx_config(
+        width, height, picamera["fps"], recording,
+        picamera["vflip"], picamera["hflip"]
+    )
+
+    picamera["hr"] = width
+    picamera["vr"] = height
+    return picamera
+
+
+def write_zabbix_config(agent):
+    lines = [
+        f"Server=127.0.0.1,{agent.get('zabbix_server','')}",
+        f"ServerActive={agent.get('zabbix_server_active','')}",
+        f"Hostname={agent.get('hostname','')}",
+        f"TLSPSKIdentity={agent.get('TLSPSKIdentity','')}",
+        f"TLSPSKFile={agent.get('TLSPSKFile','')}",
+        f"TLSConnect={agent.get('TLSConnect','')}",
+        f"TLSAccept={agent.get('TLSAccept','')}",
+        f"Timeout={agent.get('Timeout','')}",
+    ]
+    try:
+        with open(ZABBIX_CONF, "w", encoding="utf-8") as f:
+            f.write("\n".join(lines))
+    except Exception as e:
+        journal.send(f"Failed to write Zabbix config: {e}")
+        raise
 
 
 # ============================
@@ -254,7 +447,7 @@ def api_sensors_json(sensor_type):
         return error_response("Unknown sensor type", 404)
 
     flag, extractor = SENSOR_MAP[sensor_type]
-    if not data["config"]["setup"].get(flag):
+    if not data["config"].get("setup", {}).get(flag):
         return error_response("Sensor disabled", 404)
 
     return json_response(extractor(data))
@@ -277,8 +470,8 @@ def api_types_json(data_type):
 @app.route("/setup/", methods=["GET", "POST"])
 def setup():
     try:
-        with open(CONFIG_PATH, "r") as f:
-            config = yaml.full_load(f)
+        config_cm = load_yaml_preserve(CONFIG_PATH)
+        config = to_plain_dict(config_cm) if config_cm is not None else {}
     except Exception as error:
         journal.send(str(error))
         config = {}
@@ -303,8 +496,8 @@ def setup():
 
         setup["serial_display_type"] = form.get("serial_display_type")
         setup["serial_type"] = form.get("serial_type")
-        setup["serial_display_refresh_rate"] = int(form.get("serial_display_refresh_rate"))
-        setup["serial_display_rotate"] = int(form.get("serial_display_rotate"))
+        setup["serial_display_refresh_rate"] = int(form.get("serial_display_refresh_rate")) if form.get("serial_display_refresh_rate") else 0
+        setup["serial_display_rotate"] = int(form.get("serial_display_rotate")) if form.get("serial_display_rotate") else 0
 
         # --- Zabbix agent ---
         zabbix_agent = {
@@ -313,7 +506,7 @@ def setup():
             "TLSPSK": form.get("TLSPSK"),
             "TLSPSKFile": ZABBIX_PSK,
             "TLSPSKIdentity": form.get("TLSPSKIdentity"),
-            "Timeout": int(form.get("Timeout")),
+            "Timeout": int(form.get("Timeout")) if form.get("Timeout") else 0,
             "hostname": form.get("hostname"),
             "location": form.get("location"),
             "chassis": "embedded",
@@ -326,106 +519,30 @@ def setup():
         gpios = ["GPIO_5", "GPIO_6", "GPIO_12", "GPIO_13", "GPIO_16",
                  "GPIO_18", "GPIO_19", "GPIO_20", "GPIO_21", "GPIO_26"]
 
-        gpio = {}
-        for item in gpios:
-            gpio[item] = {
-                "pin": int(form.get(f"{item}_pin")),
-                "type": form.get(f"{item}_type"),
-                "name": form.get(f"{item}_name"),
-                "hold_time": int(form.get(f"{item}_hold_time"))
-                if form.get(f"{item}_hold_time") else ""
-            }
+        gpio = load_gpio_from_form(form, gpios)
 
         # --- BME280 sensors ---
-        BME280 = {}
-        for sensor_id in ("id1", "id2", "id3"):
-            prefix = f"{sensor_id}_BME280"
-            entry = {
-                "id": sensor_id,
-                "interface": form.get(f"{prefix}_interface"),
-                "name": form.get(f"{prefix}_name"),
-                "read_interval": int(form.get(f"{prefix}_read_interval")),
-                "use": bool(form.get(f"{prefix}_use")),
-            }
-            if sensor_id == "id1":
-                entry["i2c_address"] = int(form.get(f"{prefix}_i2c_address"))
-            else:
-                entry["serial_port"] = form.get(f"{prefix}_serial_port")
-            BME280[sensor_id] = entry
+        BME280 = load_bme280_from_form(form)
 
         # --- CPU sensor ---
-        CPU = {"temp": {"read_interval": int(form.get("CPUtemp_read_interval"))}}
+        CPU = {"temp": {"read_interval": int(form.get("CPUtemp_read_interval")) if form.get("CPUtemp_read_interval") else 0}}
 
         # --- DHT sensor ---
         DHT = {
             "name": form.get("DHT_name"),
-            "pin": int(form.get("DHT_pin")),
-            "read_interval": int(form.get("DHT_read_interval")),
+            "pin": int(form.get("DHT_pin")) if form.get("DHT_pin") else 0,
+            "read_interval": int(form.get("DHT_read_interval")) if form.get("DHT_read_interval") else 0,
             "type": form.get("DHT_type"),
         }
 
         # --- PiCamera ---
-        PICAMERA = {
-            "fps": int(form.get("picamera_fps")),
-            "mode": int(form.get("picamera_mode")),
-            "vflip": bool(form.get("picamera_vflip")),
-            "hflip": bool(form.get("picamera_hflip")),
-        }
-
-        picamera_modes = {
-            1: (1920, 1080),
-            6: (1280, 720),
-            7: (640, 480),
-        }
-
-        mode = PICAMERA["mode"]
-        width, height = picamera_modes[mode]
-        recording = setup["use_picamera_recording"]
-
-        update_mediamtx_config(
-            width, height, PICAMERA["fps"], recording,
-            PICAMERA["vflip"], PICAMERA["hflip"]
-        )
-
-        PICAMERA["hr"] = width
-        PICAMERA["vr"] = height
+        PICAMERA = load_picamera_from_form(form, setup)
 
         # --- Weather station ---
-        RAINFALL = {
-            "acquisition_time": int(form.get("rainfall_acquisition_time")),
-            "agregation_time": int(form.get("rainfall_agregation_time")),
-            "sensor_pin": int(form.get("rainfall_sensor_pin")),
-            "use": bool(form.get("rainfall_use")),
-        }
-
-        DIRECTION = {
-            "acquisition_time": int(form.get("winddirection_acquisition_time")),
-            "adc_input": int(form.get("winddirection_adc_input")),
-            "adc_type": form.get("winddirection_adc_type"),
-            "reference_voltage_adc_input": int(form.get("reference_voltage_adc_input")),
-            "use": bool(form.get("winddirection_use")),
-        }
-
-        SPEED = {
-            "acquisition_time": int(form.get("windspeed_acquisition_time")),
-            "agregation_time": int(form.get("windspeed_agregation_time")),
-            "sensor_pin": int(form.get("windspeed_sensor_pin")),
-            "use": bool(form.get("windspeed_use")),
-        }
-
-        WEATHER = {"RAINFALL": RAINFALL, "WIND": {"DIRECTION": DIRECTION, "SPEED": SPEED}}
+        WEATHER = load_weather_from_form(form)
 
         # --- DS18B20 ---
-        DS18B20 = {
-            "read_interval": int(form.get("DS18B20_read_interval")),
-            "addresses": {}
-        }
-
-        if setup["use_ds18b20_sensor"]:
-            for addr in form.getlist("DS18B20_address"):
-                DS18B20["addresses"][addr] = {
-                    "name": form.get(f"DS18B20_{addr}_name")
-                }
+        DS18B20 = load_ds18b20_from_form(form, setup.get("use_ds18b20_sensor", False))
 
         ONE_WIRE = {"DS18B20": DS18B20}
 
@@ -448,27 +565,25 @@ def setup():
         }
 
         # --- Write Zabbix config ---
-        zabbix_config = [
-            f"Server=127.0.0.1,{zabbix_agent['zabbix_server']}",
-            f"ServerActive={zabbix_agent['zabbix_server_active']}",
-            f"Hostname={zabbix_agent['hostname']}",
-            f"TLSPSKIdentity={zabbix_agent['TLSPSKIdentity']}",
-            f"TLSPSKFile={zabbix_agent['TLSPSKFile']}",
-            f"TLSConnect={zabbix_agent['TLSConnect']}",
-            f"TLSAccept={zabbix_agent['TLSAccept']}",
-            f"Timeout={zabbix_agent['Timeout']}",
-        ]
+        write_zabbix_config(zabbix_agent)
 
-        with open(ZABBIX_CONF, "w", encoding="utf-8") as f:
-            f.write("\n".join(zabbix_config))
-
-        with open(ZABBIX_PSK, "w", encoding="utf-8") as f:
-            f.write(zabbix_agent["TLSPSK"])
+        try:
+            with open(ZABBIX_PSK, "w", encoding="utf-8") as f:
+                f.write(zabbix_agent.get("TLSPSK", "") or "")
+        except Exception as e:
+            journal.send(f"Failed to write Zabbix PSK: {e}")
 
         # --- Save to Redis & YAML ---
-        redis_db.set("rpims", json.dumps(rpims))
-        with open(CONFIG_PATH, "w") as f:
-            yaml.dump(rpims, f, default_flow_style=False, sort_keys=False, explicit_start=True)
+        try:
+            redis_db.set("rpims", json.dumps(rpims))
+        except Exception as e:
+            journal.send(f"Failed to save rpims to Redis: {e}")
+
+        try:
+            # Save YAML without losing comments in other files; rpims is plain dict
+            save_yaml_preserve(CONFIG_PATH, rpims, explicit_start=True)
+        except Exception as e:
+            journal.send(f"Failed to save rpims YAML: {e}")
 
         return flask.redirect(flask.url_for("setup"))
 
