@@ -104,7 +104,7 @@ def load_cpu_sensor(redis_db, config):
 def load_dht_sensor(redis_db, config):
     if not config["setup"]["use_dht_sensor"]:
         return None
-    return redis_db.hgetall("DDHT")
+    return redis_db.hgetall("DHT")
 
 
 def load_door_sensor(redis_db, config):
