@@ -1155,9 +1155,7 @@ if __name__ == '__main__':
     try:
         main()
     except KeyboardInterrupt:
-        logger.error('# RPiMS is stopped #')
-    except pid.PidFileError:
-        logger.error('Another instance of RPiMS is already running. RPiMS will now close.')
+        logger.info('# RPiMS is stopped #')
     except Exception as err:
         logger.error(err)
         sys.exit(err)
