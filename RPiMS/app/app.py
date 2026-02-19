@@ -1,18 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Refactored Flask application (Step 1, ruamel.yaml only)
-------------------------------------------------------
-This file keeps your original structure but uses ruamel.yaml exclusively
-to preserve comments in YAML files. Repeated form parsing logic is
-extracted into small helper functions for readability and reuse.
-Behavior and routes are unchanged.
-"""
-
-# ============================
-# Imports
-# ============================
-
 # Standard library
 import os
 import json
@@ -24,9 +9,9 @@ from ruamel.yaml import YAML
 from systemd import journal
 
 
-# ============================
+# =========================
 # Configuration & Constants
-# ============================
+# =========================
 
 BASE_DIR = os.environ.get("RPIMS_DIR", os.getcwd())
 
@@ -45,9 +30,9 @@ app.config.update(
 )
 
 
-# ============================
+# ============
 # Redis helper
-# ============================
+# ============
 
 def get_redis():
     """Return a Redis connection instance."""
@@ -62,9 +47,9 @@ def get_redis():
 redis_db = get_redis()
 
 
-# ============================
+# ==============================================
 # YAML helpers (ruamel.yaml, preserves comments)
-# ============================
+# ==============================================
 
 yaml_loader = YAML()
 yaml_loader.preserve_quotes = True
@@ -118,9 +103,9 @@ def to_plain_dict(obj):
     return obj
 
 
-# ============================
+# =================
 # Utility functions
-# ============================
+# =================
 
 def bool_to_yesno(value: bool) -> str:
     """Convert boolean to 'yes'/'no' string."""
@@ -140,9 +125,9 @@ def error_response(message, status=400):
     }), status
 
 
-# ============================
+# ========================
 # Global exception handler
-# ============================
+# ========================
 
 @app.errorhandler(Exception)
 def handle_exception(e):
@@ -157,9 +142,9 @@ def handle_exception(e):
     return error_response("Unexpected server error", 500)
 
 
-# ============================
+# ======================
 # Sensor loading helpers
-# ============================
+# ======================
 
 def load_cpu_sensor(redis_db, config):
     if not config.get("setup", {}).get("use_cpu_sensor"):
@@ -240,9 +225,9 @@ def get_sensors(redis_db, config):
     return sensors
 
 
-# ============================
+# ================
 # Data aggregation
-# ============================
+# ================
 
 def get_data():
     rpims_raw = redis_db.get("rpims")
@@ -259,9 +244,9 @@ def get_data():
     }
 
 
-# ============================
+# =============================
 # MediaMTX configuration update
-# ============================
+# =============================
 
 def update_mediamtx_config(width, height, fps, recording, vflip, hflip):
     config = load_yaml_preserve(MEDIAMTX_CONFIG)
@@ -282,9 +267,9 @@ def update_mediamtx_config(width, height, fps, recording, vflip, hflip):
     save_yaml_preserve(MEDIAMTX_CONFIG, config)
 
 
-# ============================
-# Small form helper functions (uproszcifications)
-# ============================
+# ===========================
+# Small form helper functions
+# ===========================
 
 def load_gpio_from_form(form, gpios):
     gpio = {}
@@ -406,9 +391,9 @@ def write_zabbix_config(agent):
         raise
 
 
-# ============================
+# ======
 # Routes
-# ============================
+# ======
 
 @app.route("/")
 def home():
@@ -463,9 +448,9 @@ def api_types_json(data_type):
     return json_response(data[data_type])
 
 
-# ============================
-# Setup route (large form handler)
-# ============================
+# ===========
+# Setup route
+# ===========
 
 @app.route("/setup/", methods=["GET", "POST"])
 def setup():
@@ -592,9 +577,9 @@ def setup():
     return flask.render_template("setup.html", config=config, _DS18B20=DS18B20)
 
 
-# ============================
+# ==============
 # Error handlers
-# ============================
+# ==============
 
 @app.errorhandler(404)
 def handle_404(error):
@@ -614,9 +599,9 @@ def handle_500(error):
     return error_response("Internal server error", 500)
 
 
-# ============================
+# ================
 # Main entry point
-# ============================
+# ================
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0")
