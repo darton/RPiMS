@@ -1,14 +1,21 @@
 [Unit]
 Description=gunicorn.service - RPiMS Flask application launched from Gunicorn.
-After=network.target
 Documentation=https://github.com/darton/RPiMS
+After=network.target redis.service
+Requires=redis.service
+Wants=network-online.target
+
 
 [Service]
+Type=notify
 User={{ rpims_user }}
 Group={{ rpims_user }}
 Environment="RPIMS_DIR={{ rpims_install_dir }}"
 WorkingDirectory={{ rpims_install_dir }}/app/
-ExecStart={{ rpims_user_homedir }}/.venv/bin/gunicorn --workers 1 wsgi:app --bind 127.0.0.1:8000
- 
+ExecStart={{ rpims_user_homedir }}/.venv/bin/gunicorn --workers 4 wsgi:app --bind 127.0.0.1:8000
+KillSignal=SIGTERM
+TimeoutStopSec=5
+SendSIGKILL=yes
+
 [Install]
 WantedBy=multi-user.target

@@ -14,6 +14,7 @@
 #  GNU General Public License for more details.
 
 import os
+import sys
 import adafruit_dht
 import adafruit_ads1x15.ads1115 as ADS
 import automationhat
@@ -47,9 +48,19 @@ from luma.lcd.device import st7735
 from PIL import ImageFont
 from serial.serialutil import SerialException
 from signal import pause
-from systemd import journal
 from time import time, sleep
 from w1thermsensor import W1ThermSensor
+
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="RPiMS-collector: %(levelname)s: %(message)s",
+    stream=sys.stdout
+)
+
+logger = logging.getLogger("RPiMS-collector")
+
+
 
 BASE_DIR = os.environ.get("RPIMS_DIR", os.getcwd())
 
@@ -59,7 +70,7 @@ def door_action_closed(door_id, **kwargs):
     redis_db.hset('GPIO', str(door_id), 'close')
     redis_db.hset('DOOR_SENSORS', str(door_id), 'close')
     if bool(kwargs['verbose']) is True:
-        print(f'The {door_id} has been closed!')
+        logger.info(f'The {door_id} has been closed!')
     if bool(kwargs['use_zabbix_sender']) is True:
         zabbix_sender_call('info_when_door_has_been_closed', door_id)
 
@@ -69,7 +80,7 @@ def door_action_opened(door_id, **kwargs):
     redis_db.hset('GPIO', str(door_id), 'open')
     redis_db.hset('DOOR_SENSORS', str(door_id), 'open')
     if bool(kwargs['verbose']) is True:
-        print(f'The {door_id} has been opened!')
+        logger.info(f'The {door_id} has been opened!')
     if bool(kwargs['use_zabbix_sender']) is True:
         zabbix_sender_call('info_when_door_has_been_opened', door_id)
     if bool(kwargs['use_picamera']) is True:
@@ -82,7 +93,7 @@ def door_status_open(door_id, **kwargs):
     redis_db.hset('GPIO', str(door_id), 'open')
     redis_db.hset('DOOR_SENSORS', str(door_id), 'open')
     if bool(kwargs['verbose']) is True:
-        print(f'The {door_id} is opened!')
+        logger.info(f'The {door_id} is opened!')
     if bool(kwargs['use_zabbix_sender']) is True:
         zabbix_sender_call('info_when_door_is_opened', door_id)
 
@@ -92,7 +103,7 @@ def door_status_close(door_id, **kwargs):
     redis_db.hset('GPIO', str(door_id), 'close')
     redis_db.hset('DOOR_SENSORS', str(door_id), 'close')
     if bool(kwargs['verbose']) is True:
-        print(f'The {door_id} is closed!')
+        logger.info(f'The {door_id} is closed!')
     if bool(kwargs['use_zabbix_sender']) is True:
         zabbix_sender_call('info_when_door_is_closed', door_id)
 
@@ -102,7 +113,7 @@ def motion_sensor_when_motion(ms_id, **kwargs):
     redis_db.hset('GPIO', str(ms_id), 'motion')
     redis_db.hset('MOTION_SENSORS', str(ms_id), 'motion')
     if bool(kwargs['verbose']) is True:
-        print(f'The {ms_id} : motion was detected!')
+        logger.info(f'The {ms_id} : motion was detected!')
     if bool(kwargs['use_zabbix_sender']) is True:
         zabbix_sender_call('info_when_motion', ms_id)
     if bool(kwargs['use_picamera']) is True:
@@ -115,7 +126,7 @@ def motion_sensor_when_no_motion(ms_id, **kwargs):
     redis_db.hset('GPIO', str(ms_id), 'nomotion')
     redis_db.hset('MOTION_SENSORS', str(ms_id), 'nomotion')
     if bool(kwargs['verbose']) is True:
-        print(f'The {ms_id} : no motion')
+        logger.info(f'The {ms_id} : no motion')
 
 
 def detect_no_alarms(**kwargs):
@@ -143,13 +154,13 @@ def detect_no_alarms(**kwargs):
 
 
 def av_stream(state):
-    # _cmd = f'{BASE_DIR}/scripts/videostreamer.sh' + " " + state
+    # _cmd = '../scripts/videostreamer.sh' + " " + state
     _cmd = f'sudo systemctl {state} mediamtx.service'
     subprocess.call(_cmd, shell=True)
 
 
 def av_recording():
-    _cmd = f'{BASE_DIR}/scripts/videorecorder.sh'
+    _cmd = '../scripts/videorecorder.sh'
     subprocess.Popen([_cmd],
                      stdout=subprocess.PIPE,
                      stderr=subprocess.PIPE,
@@ -157,7 +168,7 @@ def av_recording():
 
 
 def zabbix_sender_call(message, sensor_id):
-    _cmd = f'{BASE_DIR}/scripts/zabbix_sender.sh ' + message + " " + str(sensor_id)
+    _cmd = '../scripts/zabbix_sender.sh ' + message + " " + str(sensor_id)
     subprocess.Popen([_cmd],
                      stdout=subprocess.PIPE,
                      stderr=subprocess.PIPE,
@@ -174,7 +185,7 @@ def hostnamectl_sh(**kwargs):
 
 
 def get_hostip():
-    _cmd = f'sudo {BASE_DIR}/scripts/gethostinfo.sh'
+    _cmd = 'sudo ../scripts/gethostinfo.sh'
     subprocess.call(_cmd, shell=True)
 
 
@@ -191,11 +202,10 @@ def get_cputemp_data(**kwargs):
             redis_db.set('CPU_Temperature', data.temperature)
             redis_db.expire('CPU_Temperature', read_interval*2)
             if bool(verbose) is True:
-                print('')
-                print('CPU temperature: {0:0.1f}'.format(data.temperature), chr(176)+'C', sep='')
+                logger.info('CPU temperature: {0:0.1f}'.format(data.temperature), chr(176)+'C', sep='')
             sleep(read_interval)
     except Exception as err:
-        print(f'Problem with CPU sensor: {err}')
+        logger.info(f'Problem with CPU sensor: {err}')
 
 
 def get_bme280_data(**kwargs):
@@ -224,17 +234,16 @@ def get_bme280_data(**kwargs):
                     redis_db.expire(f'{sid}_BME280', read_interval*2)
 
                     if bool(verbose) is True:
-                        print('')
-                        print(f'{sid}_BME280: Temperature: {temperature} °C, Humidity: {humidity} %, Pressure: {pressure} hPa')
+                        logger.info(f'{sid}_BME280: Temperature: {temperature} °C, Humidity: {humidity} %, Pressure: {pressure} hPa')
                     sleep(read_interval)
                 except (KeyboardInterrupt, SystemExit):
                     break
                 except Exception as err:
-                    print(f'Problem with sensor BME280: {err}')
+                    logger.info(f'Problem with sensor BME280: {err}')
                     sleep(1)
                     continue
         except Exception as err:
-            print(f'Problem with BME280 sensor: {err}')
+            logger.info(f'Problem with BME280 sensor: {err}')
 
     if interface_type == 'serial':
         usbport = kwargs['serial_port']
@@ -272,7 +281,7 @@ def get_bme280_data(**kwargs):
             devices = usb.core.find(find_all=True)
             for item in devices:
                 if hex(item.idVendor) == '0x2e8a':
-                    # print(hex(item.idVendor), item.bus, item.address)
+                    # logger.info(hex(item.idVendor), item.bus, item.address)
                     item.reset()
 
         def find_serial_device(port, baudrate):
@@ -289,16 +298,15 @@ def get_bme280_data(**kwargs):
                         rtscts=False,
                         dsrdtr=True,
                         timeout=1)
-                    print('Serial device finded')
+                    logger.info('Serial device finded')
                     return ser
                     break
                 except SerialException as err:
-                    print(f"BME280PicoUSB serial device not conneted to port {kwargs['serial_port']}")
+                    logger.info(f"BME280PicoUSB serial device not conneted to port {kwargs['serial_port']}")
                     sleep(2)
                 except Exception as err:
-                    print(f"Resseting USB port - BME280PicoUSB serial device not respond on port {kwargs['serial_port']}")
-                    print("")
-                    print(err)
+                    logger.info(f"Resseting USB port - BME280PicoUSB serial device not respond on port {kwargs['serial_port']}")
+                    logger.error(err)
                     reset_usbdevice()
                     sleep(10)
 
@@ -315,10 +323,10 @@ def get_bme280_data(**kwargs):
                         rtscts=False,
                         dsrdtr=True,
                         timeout=1)
-                    print('Serial device finded')
+                    logger.info('Serial device finded')
                     break
                 except Exception as err:
-                    print(f"Could not open BME280PicoUSB serial device on port {kwargs['serial_port']}")
+                    logger.info(f"Could not open BME280PicoUSB serial device on port {kwargs['serial_port']}")
                     #reset_usbdevice()
                     sleep(1)
 
@@ -348,13 +356,13 @@ def get_bme280_data(**kwargs):
                         ser.flushInput()
                         response = ser.readline()
                         # ser.flushInput()
-                        # print(response)
+                        # logger.info(response)
                         yield response
                     else:
                         sleep(0.5)
                 # except (OSError, serial.serialutil.SerialException):
                 except Exception as err:
-                    print(f"Lost connection with BME280PicoUSB serial device on port {kwargs['serial_port']}")
+                    logger.info(f"Lost connection with BME280PicoUSB serial device on port {kwargs['serial_port']}")
                     find_serial_device(port, baudrate)
                     sleep(2)
 
@@ -367,7 +375,7 @@ def get_bme280_data(**kwargs):
             ser.timeout=None
             while True:
                 response = ser.readline()
-                print(response)
+                logger.info(response)
                 yield ser.readline()
                 #print(response)
         '''
@@ -403,8 +411,7 @@ def get_bme280_data(**kwargs):
                 redis_db.expire(f'{sid}_BME280', expire_time)
 
                 if bool(verbose) is True:
-                    print('')
-                    print(f'{sid}_BME280: Temperature: {temperature}°C, Humidity: {humidity}%, Pressure: {pressure}hPa')
+                    logger.info(f'{sid}_BME280: Temperature: {temperature}°C, Humidity: {humidity}%, Pressure: {pressure}hPa')
             else:
                 necounter += 1
                 redis_db.set('NECOUNTER', necounter)
@@ -421,8 +428,7 @@ def get_ds18b20_data(**kwargs):
             for sensor in data:
                 redis_db.hset('DS18B20', sensor.id, sensor.get_temperature())
                 if bool(verbose) is True:
-                    print('')
-                    print("Sensor %s temperature %.2f" % (sensor.id, sensor.get_temperature()), "\xb0C")
+                    logger.info("Sensor %s temperature %.2f" % (sensor.id, sensor.get_temperature()), "\xb0C")
             if read_interval < 5:
                 expire_time = 10
             else:
@@ -430,7 +436,7 @@ def get_ds18b20_data(**kwargs):
             redis_db.expire('DS18B20', expire_time)
             sleep(read_interval)
     except Exception as err:
-        print(f'Problem with sensor DS18B20: {err}')
+        logger.info(f'Problem with sensor DS18B20: {err}')
 
 
 def get_dht_data(**kwargs):
@@ -455,26 +461,25 @@ def get_dht_data(**kwargs):
             redis_db.hset('DHT', 'humidity', humidity)
             redis_db.expire('DHT', read_interval*3)
             if bool(verbose) is True:
-                print('')
-                print(dht_type + " Temperature: {:.1f}°C ".format(temperature))
-                print(dht_type + " Humidity: {}% ".format(humidity))
+                logger.info(dht_type + " Temperature: {:.1f}°C ".format(temperature))
+                logger.info(dht_type + " Humidity: {}% ".format(humidity))
             delay -= 1
             if delay < 0:
                 delay = 0
         except OverflowError as err:
             if debug == 'yes':
-                print(f'Problem with DHT sensor: {err}')
+                logger.info(f'Problem with DHT sensor: {err}')
             delay += 1
         except RuntimeError as err:
             if debug == 'yes':
-                print(f'Problem with DHT sensor - {err}')
+                logger.info(f'Problem with DHT sensor - {err}')
             delay += 1
         except Exception as err:
             dht_device.exit()
             raise err
         finally:
             if debug == 'yes':
-                print(f'DHT delay: {delay}')
+                logger.info(f'DHT delay: {delay}')
             redis_db.set('DHT_delay', delay)
             sleep(read_interval+delay)
 
@@ -516,7 +521,7 @@ def rainfall(**kwargs):
             rainfalls.append(calculate_rainfall())
         daily_rainfall = round(math.fsum(rainfalls), 1)
         if bool(kwargs['verbose']) is True:
-            print(f'Rainfall: {rainfall}mm, Daily rainfall: {daily_rainfall}mm')
+            logger.info(f'Rainfall: {rainfall}mm, Daily rainfall: {daily_rainfall}mm')
         redis_db.hset('WEATHER', 'daily_rainfall', daily_rainfall)
         redis_db.hset('WEATHER', 'rainfall', rainfall)
 
@@ -578,7 +583,7 @@ def wind_speed(**kwargs):
         daily_average_wind_speed = round(statistics.mean(average_wind_speeds), 1)
         redis_db.hset('WEATHER', 'daily_average_wind_speed', daily_average_wind_speed)
         if bool(kwargs['verbose']) is True:
-            print(f'Wind speed:{wind_speed}km/h, \
+            logger.info(f'Wind speed:{wind_speed}km/h, \
                   Wind gust:{wind_gust}km/h, \
                   Daily wind gust:{daily_wind_gust}km/h, \
                   Average wind speed:{average_wind_speed}km/h, \
@@ -626,7 +631,7 @@ def adc_automationphat():
                              automationhat.analog.three.read()]
         return adc_inputs_values
     except Exception as err:
-        print(err)
+        logger.error(err)
         return [0, 0, 0]
         sys.exit('automationphat is not detected')
 
@@ -744,7 +749,7 @@ def wind_direction(**kwargs):
 
             if uin != uout and uin != 0:
                 r2 = int(r1/(1 - uout/uin))
-                # print(r2,uin,uout)
+                # logger.info(r2,uin,uout)
             '''else:
                 print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
                 print(f'Uin = {uin}')
@@ -759,7 +764,7 @@ def wind_direction(**kwargs):
         if len(angles) != 0:
             average_wind_direction = int(round(get_average(angles), 0))
             if bool(kwargs['verbose']) is True:
-                print(f'Average Wind Direction: {average_wind_direction}')
+                logger.info(f'Average Wind Direction: {average_wind_direction}')
             redis_db.hset('WEATHER', 'wind_direction', item)
             redis_db.hset('WEATHER', 'average_wind_direction', average_wind_direction)
 
@@ -780,10 +785,6 @@ def serial_displays(**kwargs):
         display_rotate = kwargs['serial_display_rotate']
         # Move left to right keeping track of the current x position for drawing shapes.
         x = 0
-
-        logging.basicConfig(filename=f'{BASE_DIR}/daemon/rpims_serial_display.log',
-                            level=logging.DEBUG, format='%(asctime)s %(levelname)s %(name)s %(message)s')
-        logger = logging.getLogger(__name__)
 
         serial_type = kwargs['serial_type']
 
@@ -864,9 +865,6 @@ def serial_displays(**kwargs):
     # Move left to right keeping track of the current x position for drawing shapes.
         x = 0
 
-        logging.basicConfig(filename=f'{BASE_DIR}/daemon/rpims_serial_display.log',
-                            level=logging.DEBUG, format='%(asctime)s %(levelname)s %(name)s %(message)s')
-        logger = logging.getLogger(__name__)
         display_rotate = kwargs['serial_display_rotate']
         serial = spi(device=0, port=0, bus_speed_hz=8000000, transfer_size=4096, gpio_DC=25, gpio_RST=27)
 
@@ -980,9 +978,9 @@ def db_connect(dbhost, dbnum):
         redis_db.ping()
         return redis_db
     except Exception as err:
-        print(err)
+        logger.error(err)
         error = f"Can't connect to RedisDB host: {dbhost}"
-        journal.send(error)
+        logger.error(error)
         sys.exit(error)
 
 
@@ -992,27 +990,21 @@ def config_load(path_to_config):
             config_yaml = yaml.full_load(file)
         return config_yaml
     except Exception as err:
-        print(err)
+        loger.error(err)
         error = f"Can't load RPiMS config file: {path_to_config}"
-        journal.send(error)
+        logger.error(error)
         sys.exit(error)
 
 
-def use_logger():
-    logging.basicConfig(filename=f'{BASE_DIR}/daemon/rpims.log', level=logging.DEBUG, format='%(asctime)s %(levelname)s %(name)s %(message)s')
-    global logger
-    logger = logging.getLogger(__name__)
-
-
 def main():
-    print('')
-    print('# RPiMS is running #')
-    print('')
+    logger.info('')
+    logger.info('# RPiMS is running #')
+    logger.info('')
 
     global redis_db
     redis_db = db_connect('localhost', 0)
 
-    config_yaml = config_load(f'{BASE_DIR}/config/rpims.yaml')
+    config_yaml = config_load('../config/rpims.yaml')
 
     gpio = config_yaml.get("gpio")
     config = config_yaml.get("setup")
@@ -1040,10 +1032,10 @@ def main():
 
     if bool(config['verbose']) is True:
         for k, v in config.items():
-            print(f'{k} = {v}')
+            logger.info(f'{k} = {v}')
         for k, v in zabbix_agent.items():
-            print(f'{k} = {v}')
-        print('')
+            logger.info(f'{k} = {v}')
+        logger.info('')
 
     if bool(config['use_door_sensor']) is True:
         global door_sensors_list
@@ -1147,11 +1139,11 @@ if __name__ == '__main__':
         with pid.PidFile('/run/rpims/rpims.pid'):
             main()
     except KeyboardInterrupt:
-        print('')
-        print('# RPiMS is stopped #')
+        logger.error('')
+        logger.error('# RPiMS is stopped #')
     except pid.PidFileError:
-        print('')
-        print('Another instance of RPiMS is already running. RPiMS will now close.')
+        logger.error('')
+        logger.error('Another instance of RPiMS is already running. RPiMS will now close.')
     except Exception as err:
-        print(err)
+        logger.error(err)
         sys.exit(err)

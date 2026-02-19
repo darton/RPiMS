@@ -1,12 +1,21 @@
 # Standard library
 import os
 import json
+import logging
 
 # Third-party libraries
 import flask
 import redis
 from ruamel.yaml import YAML
-from systemd import journal
+
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="RPiMS: %(levelname)s: %(message)s"
+)
+
+app = flask.Flask("RPiMS")
+logger = app.logger
 
 
 # =========================
@@ -15,9 +24,9 @@ from systemd import journal
 
 BASE_DIR = os.environ.get("RPIMS_DIR", os.getcwd())
 
-CONFIG_PATH = f"{BASE_DIR}/config/rpims.yaml"
-ZABBIX_CONF = f"{BASE_DIR}/config/zabbix_rpims.conf"
-ZABBIX_PSK = f"{BASE_DIR}/config/zabbix_rpims.psk"
+CONFIG_PATH = "../config/rpims.yaml"
+ZABBIX_CONF = "../config/zabbix_rpims.conf"
+ZABBIX_PSK = "../config/zabbix_rpims.psk"
 MEDIAMTX_CONFIG = "/etc/mediamtx/mediamtx.yml"
 
 # Flask app initialization
@@ -64,7 +73,7 @@ def load_yaml_preserve(path):
     except FileNotFoundError:
         return None
     except Exception as e:
-        journal.send(f"Failed to load YAML {path}: {e}")
+        logger.error(f"Failed to load YAML {path}: {e}")
         return None
 
 def save_yaml_preserve(path, data, explicit_start=False):
@@ -76,7 +85,7 @@ def save_yaml_preserve(path, data, explicit_start=False):
         with open(path, "w", encoding="utf-8") as f:
             yaml_loader.dump(data, f)
     except Exception as e:
-        journal.send(f"Failed to save YAML {path}: {e}")
+        logger.error(f"Failed to save YAML {path}: {e}")
         raise
     finally:
         yaml_loader.explicit_start = prev
@@ -132,7 +141,7 @@ def error_response(message, status=400):
 @app.errorhandler(Exception)
 def handle_exception(e):
     """Catch-all for unexpected exceptions."""
-    journal.send(f"Unhandled exception: {str(e)}")
+    logger.error(f"Unhandled exception: {str(e)}")
 
     # If it's an HTTPException, return its own response
     if isinstance(e, flask.exceptions.HTTPException):
@@ -387,7 +396,7 @@ def write_zabbix_config(agent):
         with open(ZABBIX_CONF, "w", encoding="utf-8") as f:
             f.write("\n".join(lines))
     except Exception as e:
-        journal.send(f"Failed to write Zabbix config: {e}")
+        logger.error(f"Failed to write Zabbix config: {e}")
         raise
 
 
@@ -458,7 +467,7 @@ def setup():
         config_cm = load_yaml_preserve(CONFIG_PATH)
         config = to_plain_dict(config_cm) if config_cm is not None else {}
     except Exception as error:
-        journal.send(str(error))
+        logger.error(str(error))
         config = {}
 
     if flask.request.method == "POST":
@@ -556,19 +565,19 @@ def setup():
             with open(ZABBIX_PSK, "w", encoding="utf-8") as f:
                 f.write(zabbix_agent.get("TLSPSK", "") or "")
         except Exception as e:
-            journal.send(f"Failed to write Zabbix PSK: {e}")
+            logger.error(f"Failed to write Zabbix PSK: {e}")
 
         # --- Save to Redis & YAML ---
         try:
             redis_db.set("rpims", json.dumps(rpims))
         except Exception as e:
-            journal.send(f"Failed to save rpims to Redis: {e}")
+            logger.error(f"Failed to save rpims to Redis: {e}")
 
         try:
             # Save YAML without losing comments in other files; rpims is plain dict
             save_yaml_preserve(CONFIG_PATH, rpims, explicit_start=True)
         except Exception as e:
-            journal.send(f"Failed to save rpims YAML: {e}")
+            logger.error(f"Failed to save rpims YAML: {e}")
 
         return flask.redirect(flask.url_for("setup"))
 
@@ -583,19 +592,19 @@ def setup():
 
 @app.errorhandler(404)
 def handle_404(error):
-    journal.send(f"404 Not Found: {flask.request.path}")
+    logger.error(f"404 Not Found: {flask.request.path}")
     return error_response("Resource not found", 404)
 
 
 @app.errorhandler(400)
 def handle_400(error):
-    journal.send(f"400 Bad Request: {flask.request.path}")
+    logger.error(f"400 Bad Request: {flask.request.path}")
     return error_response("Bad request", 400)
 
 
 @app.errorhandler(500)
 def handle_500(error):
-    journal.send(f"500 Internal Server Error: {error}")
+    logger.error(f"500 Internal Server Error: {error}")
     return error_response("Internal server error", 500)
 
 
