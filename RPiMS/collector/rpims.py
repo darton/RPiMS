@@ -26,7 +26,7 @@ import json
 import logging
 import math
 import multiprocessing
-import pid
+import fcntl
 import redis
 import smbus2
 import subprocess
@@ -62,9 +62,25 @@ logger = logging.getLogger("RPiMS-collector")
 
 
 
-BASE_DIR = os.environ.get("RPIMS_DIR", os.getcwd())
+#BASE_DIR = os.environ.get("RPIMS_DIR", os.getcwd())
 
 # --- Functions ---
+def acquire_lock(lock_path="/run/lock/rpims.lock"):
+    try:
+        fp = open(lock_path, "w")
+    except PermissionError:
+        logger.error(f"Cannot open lock file {lock_path}. Check permissions.")
+        sys.exit(1)
+
+    try:
+        fcntl.flock(fp, fcntl.LOCK_EX | fcntl.LOCK_NB)
+    except BlockingIOError:
+        logger.error("Another instance of RPiMS is already running. Exiting.")
+        sys.exit(1)
+
+    return fp  # keep file descriptor open!
+
+
 def door_action_closed(door_id, **kwargs):
     # lconfig = dict(kwargs)
     redis_db.hset('GPIO', str(door_id), 'close')
@@ -1135,14 +1151,12 @@ def main():
 
 # --- Main program ---
 if __name__ == '__main__':
+    lock = acquire_lock()
     try:
-        with pid.PidFile('/run/rpims/rpims.pid'):
-            main()
+        main()
     except KeyboardInterrupt:
-        logger.error('')
         logger.error('# RPiMS is stopped #')
     except pid.PidFileError:
-        logger.error('')
         logger.error('Another instance of RPiMS is already running. RPiMS will now close.')
     except Exception as err:
         logger.error(err)
