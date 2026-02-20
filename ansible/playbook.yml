@@ -4,10 +4,11 @@
   become: yes
 
   roles:
-    - { role: system,     tags: ['system'] }
+    - { role: system,          tags: ['system'] }
     - { role: usb_automount,   tags: ['usb_automount'] }
-    - { role: packages,   tags: ['packages'] }
-    - { role: mediamtx,   tags: ['mediamtx'] }
-    - { role: hardware,   tags: ['hardware'] }
-    - { role: deploy,     tags: ['deploy'] }
-    - { role: validation, tags: ['validation'] }
+    - { role: packages,        tags: ['packages'] }
+    - { role: python,          tags: ['python'] }
+    - { role: mediamtx,        tags: ['mediamtx'] }
+    - { role: hardware,        tags: ['hardware'] }
+    - { role: deploy,          tags: ['deploy'] }
+    - { role: validation,      tags: ['validation'] }

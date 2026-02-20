@@ -1,22 +1,50 @@
 ---
-- name: pip packages installation
+
+- name: Ensure venv directory exists
+  file:
+    path: "{{ python_user_venv_path }}"
+    state: directory
+    owner: "{{ python_user_venv_user }}"
+    group: "{{ python_user_venv_user }}"
+    mode: "0755"
+
+- name: Create virtual environment for user
+  command: "{{ python_user_venv_python }} -m venv --system-site-packages {{ python_user_venv_path }}"
+  args:
+    creates: "{{ python_user_venv_path }}/bin/activate"
+  become: true
+  become_user: "{{ python_user_venv_user }}"
+
+- name: Upgrade pip inside venv
   pip:
-    name: "{{ pip_packages }}"
-    executable: pip3
-    extra_args: "--break-system-packages"
+    name: pip
+    state: latest
+    virtualenv: "{{ python_user_venv_path }}"
+  become: true
+  become_user: "{{ python_user_venv_user }}"
+
+- name: Install Python packages in user venv
+  pip:
+    name: "{{ python_user_venv_packages }}"
+    virtualenv: "{{ python_user_venv_path }}"
+  become: true
+  become_user: "{{ python_user_venv_user }}"
 
 - name: Clonning grove.py repository
   git:
     repo: "{{ grove_repo_url }}"
     dest: "{{ grove_repo_dest }}"
     version: master
+  become: true
+  become_user: "{{ python_user_venv_user }}"
 
-- name: Installation grove.py by pip3
+- name: Install grove.py into venv
   pip:
     name: .
     chdir: "{{ grove_repo_dest }}"
-    executable: pip3
-    extra_args: "--break-system-packages"
+    virtualenv: "{{ python_user_venv_path }}"
+  become: true
+  become_user: "{{ python_user_venv_user }}"
 
 - name: Remove grove.py repository
   file:
