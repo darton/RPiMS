@@ -1,48 +1,4 @@
 ---
-- name: Create rpims user
-  user:
-    name: "{{ rpims_user }}"
-    group: "{{ rpims_user }}"
-    shell: /bin/bash
-    create_home: yes
-    system: no
-  tags:
-    - users
-
-- name: Add existing "{{ rpims_user }}" user to groups
-  user:
-    name: "{{ rpims_user }}"
-    groups: 
-      - sudo
-      - adm
-      - video
-      - plugdev
-      - users
-      - input
-      - render
-      - netdev
-      - spi
-      - i2c
-      - gpio
-      - audio
-      - cdrom
-      - dialout
-    append: yes
-  become: true
-  tags:
-    - users
-
-- name: Allow rpims to use sudo without password
-  copy:
-    dest: /etc/sudoers.d/rpims
-    content: "{{ rpims_user }} ALL=(ALL) NOPASSWD:ALL\n"
-    owner: root
-    group: root
-    mode: '0440'
-  become: true
-  tags:
-    - users
-
 - name: Add existing "{{ zabbix_user }}" user to rpims group 
   user:
     name: "{{ zabbix_user }}"
@@ -51,7 +7,7 @@
     append: yes
   become: true
   tags:
-    - users
+    - zabbix
 
 - name: Allow zabbix to use sudo without password
   copy:
@@ -62,4 +18,4 @@
     mode: '0440'
   become: true
   tags:
-    - users
+    - zabbix

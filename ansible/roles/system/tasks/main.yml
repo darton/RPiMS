@@ -25,3 +25,4 @@
     line: "{{ raspi_hosts_ip }}   {{ raspi_hostname }}"
     state: present
 
+- import_tasks: users.yml
