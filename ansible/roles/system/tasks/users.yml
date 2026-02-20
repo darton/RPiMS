@@ -1,11 +1,37 @@
 ---
-- name: Create rpims user
+- name: Ensure rpims group exists
+  group:
+    name: "{{ rpims_user }}"
+  tags:
+    - users
+
+- name: Ensure rpims user exists
   user:
     name: "{{ rpims_user }}"
     group: "{{ rpims_user }}"
     shell: /bin/bash
     create_home: yes
     system: no
+  tags:
+    - users
+
+- name: Ensure home directory permissions for rpims
+  file:
+    path: "/home/{{ rpims_user }}"
+    state: directory
+    owner: "{{ rpims_user }}"
+    group: "{{ rpims_user }}"
+    mode: '0755'
+  tags:
+    - users
+
+- name: Ensure .ansible directory exists for rpims
+  file:
+    path: "/home/{{ rpims_user }}/.ansible"
+    state: directory
+    owner: "{{ rpims_user }}"
+    group: "{{ rpims_user }}"
+    mode: '0700'
   tags:
     - users
 
