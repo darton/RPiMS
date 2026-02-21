@@ -21,7 +21,7 @@ webrtc_enable: "yes"
 srt_enable: "no"
 
 python_user_venv_user: "{{ rpims_user }}"
-python_user_venv_path: "/home/{{ rpims_user }}/.venv"
+python_user_venv_path: "/home/{{ rpims_user }}/.env"
 python_user_venv_python: "/usr/bin/python3"
 
 grove_repo_url: "https://github.com/Seeed-Studio/grove.py"
@@ -35,12 +35,10 @@ python_user_venv_packages:
   - smbus2
   - w1thermsensor
   - "redis[hiredis]"
-  - pid
   - PyYAML
   - ruamel.yaml
   - luma.oled
   - luma.lcd
-  - systemd
   - adafruit-circuitpython-ads1x15
   - adafruit-circuitpython-dht
   - automationhat
