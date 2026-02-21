@@ -30,7 +30,7 @@ apt_packages:
   - python3-rpi-lgpio
   - python3-picamera2
   - python3-systemd
-  - python3-smbus 
+  - python3-smbus
   - libi2c-dev
   - i2c-tools
   - libi2c0

@@ -1,6 +1,6 @@
 ---
 - name: Deploy nginx default config file
-  template: 
+  template:
     src: "nginx/default.j2"
     dest: "/etc/nginx/sites-available/default"
     owner: root
@@ -21,7 +21,7 @@
     - nginx
 
 - name: Deploy nginx.conf file
-  template: 
+  template:
     src: "nginx/nginx.conf.j2"
     dest: "/etc/nginx/nginx.conf"
     owner: root
@@ -29,5 +29,13 @@
     mode: '0644'
   notify: Restart nginx
   become: true
+  tags:
+    - nginx
+
+- name: Ensure nginx is enabled and running
+  service:
+    name: nginx
+    state: started
+    enabled: true
   tags:
     - nginx
