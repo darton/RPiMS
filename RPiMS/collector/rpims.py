@@ -218,7 +218,7 @@ def get_cputemp_data(**kwargs):
             redis_db.set('CPU_Temperature', data.temperature)
             redis_db.expire('CPU_Temperature', read_interval*2)
             if bool(verbose) is True:
-                logger.info('CPU temperature: {0:0.1f}'.format(data.temperature), chr(176)+'C', sep='')
+                logger.info(f"CPU temperature: {data.temperature:0.1f}{chr(176)}C")
             sleep(read_interval)
     except Exception as err:
         logger.info(f'Problem with CPU sensor: {err}')
