@@ -393,7 +393,6 @@ def get_bme280_data(**kwargs):
                 response = ser.readline()
                 logger.info(response)
                 yield ser.readline()
-                #print(response)
         '''
 
         msg = []
@@ -767,12 +766,12 @@ def wind_direction(**kwargs):
                 r2 = int(r1/(1 - uout/uin))
                 # logger.info(r2,uin,uout)
             '''else:
-                print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
-                print(f'Uin = {uin}')
-                print(f'Uout = {uout}')
-                print('Check sensor connections to ADC')
-                print('Wind Direction Meter program was terminated')
-                print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+                logger.info('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+                logger.info(f'Uin = {uin}')
+                logger.info(f'Uout = {uout}')
+                logger.info('Check sensor connections to ADC')
+                logger.info('Wind Direction Meter program was terminated')
+                logger.info('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
                 quit()'''
             for item in direction_mapr:
                 if (r2 <= direction_mapr.get(item) * 1.005) and (r2 >= direction_mapr.get(item) * 0.995):
@@ -1006,7 +1005,7 @@ def config_load(path_to_config):
             config_yaml = yaml.full_load(file)
         return config_yaml
     except Exception as err:
-        loger.error(err)
+        logger.error(err)
         error = f"Can't load RPiMS config file: {path_to_config}"
         logger.error(error)
         sys.exit(error)
