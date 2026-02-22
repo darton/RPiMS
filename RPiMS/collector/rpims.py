@@ -256,12 +256,24 @@ def zabbix_sender_call(message, sensor_id):
 
 
 def hostnamectl_sh(**kwargs):
-    hctldict = {"location": "set-location", "chassis": "set-chassis", "deployment": "set-deployment", }
-    _cmd = 'sudo raspi-config nonint do_hostname' + ' "' + kwargs['hostname'] + '"'
-    subprocess.call(_cmd, shell=True)
-    for item in hctldict:
-        _cmd = 'sudo /usr/bin/hostnamectl ' + hctldict[item] + ' "' + kwargs[item] + '"'
-        subprocess.call(_cmd, shell=True)
+    hctldict = {
+        "location": "set-location",
+        "chassis": "set-chassis",
+        "deployment": "set-deployment",
+    }
+
+    # set hostname
+    hostname = kwargs.get('hostname')
+    if hostname:
+        cmd = f'sudo raspi-config nonint do_hostname {hostname}'
+        subprocess.call(cmd, shell=True)
+
+    # use hostnamectl
+    for key, action in hctldict.items():
+        value = kwargs.get(key)
+        if value:
+            cmd = f'sudo /usr/bin/hostnamectl {action} {value}'
+            subprocess.call(cmd, shell=True)
 
 
 def get_hostip():
