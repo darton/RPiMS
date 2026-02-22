@@ -219,17 +219,17 @@ def detect_no_alarms(ctx):
         motion_values = [int(not sensor.value) for sensor in ctx.motion_sensors.values()]
         return all(door_values) and all(motion_values)
 
-    # tylko door sensors
+    # only door sensors
     if use_door and not use_motion:
         door_values = [sensor.value for sensor in ctx.door_sensors.values()]
         return all(door_values)
 
-    # tylko motion sensors
+    # only motion sensors
     if not use_door and use_motion:
         motion_values = [int(not sensor.value) for sensor in ctx.motion_sensors.values()]
         return all(motion_values)
 
-    # brak sensorów = brak alarmów
+    # no sensors = no alarms
     return True
 
 
@@ -528,7 +528,7 @@ def get_ds18b20_data(ctx):
                 if verbose:
                     logger.info(f"Sensor {sensor.id} temperature {temperature:.2f}{chr(176)}C")
 
-            # ustawienie czasu wygaśnięcia danych
+            # data expiration time setting
             expire_time = 10 if read_interval < 5 else read_interval * 2
             ctx.redis_db.expire('DS18B20', expire_time)
 
@@ -547,7 +547,7 @@ def get_dht_data(ctx):
     debug = "no"
     delay = 0
 
-    # wybór modelu DHT
+    # selection of DHT model
     if dht_type == "DHT11":
         dht_device = adafruit_dht.DHT11(pin)
     else:
@@ -591,17 +591,17 @@ def get_dht_data(ctx):
 
 
 def rainfall(ctx):
-    # konfiguracja
+    # configuration
     verbose = ctx.config.get('verbose')
     sensor_pin = ctx.rainfall_config.get('sensor_pin')
     acquisition_time = ctx.rainfall_config.get('acquisition_time')
     aggregation_time = ctx.rainfall_config.get('agregation_time')
 
-    BUCKET_SIZE = 0.2794  # mm na jedno przechylenie
+    BUCKET_SIZE = 0.2794  # mm per tilt
     bucket_counter = 0
     rainfalls = []
 
-    # funkcje pomocnicze
+    # helper functions
     def bucket_tipped():
         nonlocal bucket_counter
         bucket_counter += 1
@@ -613,15 +613,15 @@ def rainfall(ctx):
     def calculate_rainfall():
         return round(bucket_counter * BUCKET_SIZE, 0)
 
-    # inicjalizacja sensora
+    # sensor initialisation
     rain_sensor = Button(sensor_pin)
     rain_sensor.when_pressed = bucket_tipped
 
-    # ustawienie wartości początkowych w Redis
+    # setting initial values in Redis
     ctx.redis_db.hset('WEATHER', 'daily_rainfall', 0)
     ctx.redis_db.hset('WEATHER', 'rainfall', 0)
 
-    # główna pętla
+    # main loop
     while True:
         start_time = time()
 
@@ -631,7 +631,7 @@ def rainfall(ctx):
 
             rainfall_value = calculate_rainfall()
 
-            # ograniczenie długości listy
+            # limit on the list length
             if len(rainfalls) == (aggregation_time / acquisition_time):
                 rainfalls.clear()
 
@@ -660,7 +660,7 @@ def wind_speed(ctx):
     average_wind_speeds = []
     daily_wind_gusts = []
 
-    # funkcje pomocnicze
+    # helper functions
     def anemometer_pulse_counter():
         nonlocal anemometer_pulse
         anemometer_pulse += 1
@@ -673,11 +673,11 @@ def wind_speed(ctx):
         rotations = anemometer_pulse / 2
         return round(ANEMOMETER_FACTOR * rotations * 2.4 / acquisition_time, 1)
 
-    # inicjalizacja sensora
+    # sensors initialisation
     wind_speed_sensor = Button(sensor_pin)
     wind_speed_sensor.when_pressed = anemometer_pulse_counter
 
-    # wartości początkowe
+    # initial values
     init_values = {
         'wind_speed': 0,
         'wind_gust': 0,
@@ -687,7 +687,7 @@ def wind_speed(ctx):
     }
     ctx.redis_db.hset('WEATHER', mapping=init_values)
 
-    # główna pętla
+    # main loop
     while True:
         start_time = time()
 
@@ -698,17 +698,17 @@ def wind_speed(ctx):
             speed = calculate_speed()
             ctx.redis_db.hset('WEATHER', 'wind_speed', speed)
 
-            # agregacja krótkoterminowa
+            # short-term aggregation
             if len(wind_speeds) == (aggregation_time / acquisition_time):
                 wind_speeds.pop(0)
 
             wind_speeds.append(speed)
 
-        # poryw wiatru
+        # widn gust
         wind_gust = max(wind_speeds)
         ctx.redis_db.hset('WEATHER', 'wind_gust', wind_gust)
 
-        # poryw dobowy
+        # daily wind gust
         if len(daily_wind_gusts) == (86400 / acquisition_time):
             daily_wind_gusts.pop(0)
 
@@ -716,11 +716,11 @@ def wind_speed(ctx):
         daily_gust = max(daily_wind_gusts)
         ctx.redis_db.hset('WEATHER', 'daily_wind_gust', daily_gust)
 
-        # średnia prędkość
+        # average speed
         avg_speed = round(statistics.mean(wind_speeds), 1)
         ctx.redis_db.hset('WEATHER', 'average_wind_speed', avg_speed)
 
-        # średnia dobowa
+        # average daily wind speed
         if len(average_wind_speeds) == (86400 / aggregation_time):
             average_wind_speeds.pop(0)
 
@@ -798,18 +798,18 @@ def adc_ads1115():
 
 
 def wind_direction(ctx):
-    # konfiguracja
+    # configuration
     verbose = ctx.config.get('verbose')
     acquisition_time = ctx.winddirection_config.get('acquisition_time')
     adc_type = ctx.winddirection_config.get('adc_type')
     adc_input = ctx.winddirection_config.get('adc_input')
     reference_input = ctx.winddirection_config.get('reference_voltage_adc_input')
 
-    # wartości początkowe
+    # initial values
     ctx.redis_db.hset('WEATHER', 'wind_direction', 0)
     ctx.redis_db.hset('WEATHER', 'average_wind_direction', 0)
 
-    # mapy rezystancji i kątów
+    # resistance and angle maps
     direction_mapr = {
         "N": 5080, "NNE": 5188, "NE": 6417, "ENE": 6253,
         "E": 17419, "ESE": 9380, "SE": 11613, "SSE": 6968,
@@ -824,12 +824,12 @@ def wind_direction(ctx):
         "NW": 315, "NNW": 337.5,
     }
 
-    # stałe
+    # constant values
     r1 = 4690
     uin = 5.2
     uout = 0
 
-    # pomocnicza funkcja liczenia średniej kierunku
+    # auxiliary function for calculating the average direction
     def get_average(angles):
         sin_sum = sum(math.sin(math.radians(a)) for a in angles)
         cos_sum = sum(math.cos(math.radians(a)) for a in angles)
@@ -850,14 +850,14 @@ def wind_direction(ctx):
 
         return 0 if avg == 360 else avg
 
-    # główna pętla
+    # main loop
     while True:
         start_time = time()
         angles = []
 
         while time() - start_time <= acquisition_time:
 
-            # wybór ADC
+            # ADC selection
             if adc_type == 'AutomationPhat':
                 adc_values = adc_automationphat()
             elif adc_type == 'STM32F030':
@@ -869,22 +869,22 @@ def wind_direction(ctx):
                 sleep(1)
                 continue
 
-            # wybór kanału pomiarowego
+            # selection of the measurement channel
             uout = round(adc_values[adc_input - 1], 1)
             uin = round(adc_values[reference_input - 1], 1)
 
-            # obliczenie rezystancji R2
+            # calculation of resistance R2
             if uin != uout and uin != 0:
                 r2 = int(r1 / (1 - uout / uin))
             else:
                 continue
 
-            # dopasowanie rezystancji do kierunku
+            # matching resistance to direction
             for key, ref_r in direction_mapr.items():
                 if ref_r * 0.995 <= r2 <= ref_r * 1.005:
                     angles.append(direction_mapa[key])
 
-        # obliczenie średniego kierunku
+        # calculation of the average direction
         if angles:
             avg_dir = int(round(get_average(angles), 0))
 
@@ -906,7 +906,7 @@ def serial_displays(ctx):
     top = padding
     x = 0
 
-    # wybór interfejsu
+    # interface selection
     if serial_type == 'i2c':
         serial = i2c(port=1, address=0x3c)
     else:
@@ -920,7 +920,7 @@ def serial_displays(ctx):
         )
 
     try:
-        # wybór urządzenia
+        # device selection
         if display_type == 'oled_sh1106':
             device = sh1106(serial, rotate=rotate)
 
@@ -940,11 +940,11 @@ def serial_displays(ctx):
             logger.error(f"Unknown serial display type: {display_type}")
             return
 
-        # główna pętla wyświetlacza
+        # main display loop 
         while True:
             sid = 'id3'
 
-            # odczyt danych z Redis
+            # reading data from Redis
             t = ctx.redis_db.hget(f'{sid}_BME280', 'Temperature')
             h = ctx.redis_db.hget(f'{sid}_BME280', 'Humidity')
             p = ctx.redis_db.hget(f'{sid}_BME280', 'Pressure')
@@ -956,7 +956,7 @@ def serial_displays(ctx):
                 humidity = int(round(float(h), 1))
                 pressure = int(round(float(p), 1))
 
-            # drzwi i ruch
+            # door and motion
             values = ctx.redis_db.hgetall('GPIO')
             doors_opened = any(v == 'open' for v in values.values())
             motion_detected = any(v == 'motion' for v in values.values())
@@ -972,7 +972,7 @@ def serial_displays(ctx):
             hostip = ctx.redis_db.hget('SYSTEM', 'hostip')
             hostip = hostip if hostip else '---.---.---.---'
 
-            # rysowanie
+            # drawing
             with canvas(device) as draw:
                 if display_type == 'oled_sh1106':
                     draw.text((x, top),       f'IP:{hostip}', font=font, fill=255)
@@ -1097,13 +1097,13 @@ def main():
             logger.info(f'{k} = {v}')
         logger.info('')
 
-    # inicjalizacja sprzętu
+    # hardware initialization
     ctx.door_sensors = init_door_sensors(ctx)
     ctx.motion_sensors = init_motion_sensors(ctx)
     ctx.system_buttons = init_system_buttons(ctx)
     ctx.led_indicators = init_led_indicators(ctx)
 
-    # door sensors – stan początkowy + callbacki
+    # door sensors – initial state + callbacks
     if ctx.config.get('use_door_sensor'):
         for name, sensor in ctx.door_sensors.items():
             if sensor.value == 0:
