@@ -81,7 +81,7 @@ def acquire_lock(lock_path="/run/lock/rpims.lock"):
     return fp  # keep file descriptor open!
 
 
-def door_action_closed(door_id, **kwargs):
+def door_action_closed(redis_db, door_id, **kwargs):
     # lconfig = dict(kwargs)
     redis_db.hset('GPIO', str(door_id), 'close')
     redis_db.hset('DOOR_SENSORS', str(door_id), 'close')
@@ -91,7 +91,7 @@ def door_action_closed(door_id, **kwargs):
         zabbix_sender_call('info_when_door_has_been_closed', door_id)
 
 
-def door_action_opened(door_id, **kwargs):
+def door_action_opened(redis_db, door_id, **kwargs):
     # lconfig = dict(kwargs)
     redis_db.hset('GPIO', str(door_id), 'open')
     redis_db.hset('DOOR_SENSORS', str(door_id), 'open')
@@ -104,7 +104,7 @@ def door_action_opened(door_id, **kwargs):
             av_recording()
 
 
-def door_status_open(door_id, **kwargs):
+def door_status_open(redis_db, door_id, **kwargs):
     # lconfig = dict(kwargs)
     redis_db.hset('GPIO', str(door_id), 'open')
     redis_db.hset('DOOR_SENSORS', str(door_id), 'open')
@@ -114,7 +114,7 @@ def door_status_open(door_id, **kwargs):
         zabbix_sender_call('info_when_door_is_opened', door_id)
 
 
-def door_status_close(door_id, **kwargs):
+def door_status_close(redis_db, door_id, **kwargs):
     # lconfig = dict(kwargs)
     redis_db.hset('GPIO', str(door_id), 'close')
     redis_db.hset('DOOR_SENSORS', str(door_id), 'close')
@@ -124,7 +124,7 @@ def door_status_close(door_id, **kwargs):
         zabbix_sender_call('info_when_door_is_closed', door_id)
 
 
-def motion_sensor_when_motion(ms_id, **kwargs):
+def motion_sensor_when_motion(redis_db, ms_id, **kwargs):
     # lconfig = dict(kwargs)
     redis_db.hset('GPIO', str(ms_id), 'motion')
     redis_db.hset('MOTION_SENSORS', str(ms_id), 'motion')
@@ -137,7 +137,7 @@ def motion_sensor_when_motion(ms_id, **kwargs):
             av_recording()
 
 
-def motion_sensor_when_no_motion(ms_id, **kwargs):
+def motion_sensor_when_no_motion(redis_db, ms_id, **kwargs):
     # lconfig = dict(kwargs)
     redis_db.hset('GPIO', str(ms_id), 'nomotion')
     redis_db.hset('MOTION_SENSORS', str(ms_id), 'nomotion')
@@ -209,7 +209,7 @@ def shutdown():
     subprocess.check_call(['sudo', 'poweroff'])
 
 
-def get_cputemp_data(**kwargs):
+def get_cputemp_data(redis_db, **kwargs):
     verbose = kwargs['verbose']
     read_interval = kwargs['read_interval']
     try:
@@ -224,7 +224,7 @@ def get_cputemp_data(**kwargs):
         logger.info(f'Problem with CPU sensor: {err}')
 
 
-def get_bme280_data(**kwargs):
+def get_bme280_data(redis_db, **kwargs):
     verbose = kwargs['verbose']
     read_interval = kwargs['read_interval']
     interface_type = kwargs['interface']
@@ -433,7 +433,7 @@ def get_bme280_data(**kwargs):
             sleep(read_interval)
 
 
-def get_ds18b20_data(**kwargs):
+def get_ds18b20_data(redis_db, **kwargs):
     verbose = kwargs['verbose']
     read_interval = kwargs['read_interval']
     try:
@@ -454,7 +454,7 @@ def get_ds18b20_data(**kwargs):
         logger.info(f'Problem with sensor DS18B20: {err}')
 
 
-def get_dht_data(**kwargs):
+def get_dht_data(redis_db, **kwargs):
     verbose = kwargs['verbose']
     read_interval = kwargs['read_interval']
     dht_type = kwargs['type']
@@ -499,7 +499,7 @@ def get_dht_data(**kwargs):
             sleep(read_interval+delay)
 
 
-def rainfall(**kwargs):
+def rainfall(redis_db, **kwargs):
     def bucket_tipped():
         nonlocal bucket_counter
         bucket_counter += 1
@@ -541,7 +541,7 @@ def rainfall(**kwargs):
         redis_db.hset('WEATHER', 'rainfall', rainfall)
 
 
-def wind_speed(**kwargs):
+def wind_speed(redis_db, **kwargs):
     def anemometer_pulse_counter():
         nonlocal anemometer_pulse
         anemometer_pulse += 1
@@ -664,7 +664,7 @@ def adc_ads1115():
     return adc_inputs_values
 
 
-def wind_direction(**kwargs):
+def wind_direction(redis_db, **kwargs):
     redis_db.hset('WEATHER', 'wind_direction', 0)
     redis_db.hset('WEATHER', 'average_wind_direction', 0)
 
@@ -784,7 +784,7 @@ def wind_direction(**kwargs):
             redis_db.hset('WEATHER', 'average_wind_direction', average_wind_direction)
 
 
-def serial_displays(**kwargs):
+def serial_displays(redis_db, **kwargs):
     if kwargs['serial_display_type'] == 'oled_sh1106':
         # Load default font.
         font = ImageFont.load_default()
@@ -973,16 +973,16 @@ def set_process_name_and_run(function_name, **kwargs):
     function_name(**kwargs)
 
 
-def threading_function(function_name, **kwargs):
+def threading_function(function_name,redis_db, **kwargs):
     import threading
-    tf = threading.Thread(target=function_name, name=function_name, kwargs=kwargs)
+    tf = threading.Thread(target=function_name, name=function_name, kwargs={'redis_db': redis_db, **kwargs})
     tf.daemon = True
     tf.start()
 
 
-def multiprocessing_function(function_name, **kwargs):
+def multiprocessing_function(function_name,redis_db, **kwargs):
     import multiprocessing
-    mf = multiprocessing.Process(target=function_name, name=function_name, kwargs=kwargs)
+    mf = multiprocessing.Process(target=function_name, name=function_name, kwargs={'redis_db': redis_db, **kwargs})
     mf.daemon = True
     mf.start()
 
@@ -1016,7 +1016,6 @@ def main():
     logger.info('# RPiMS is running #')
     logger.info('')
 
-    global redis_db
     redis_db = db_connect('localhost', 0)
 
     config_yaml = config_load('../config/rpims.yaml')
@@ -1086,24 +1085,24 @@ def main():
     if bool(config['use_door_sensor']) is True:
         for k, v in door_sensors_list.items():
             if v.value == 0:
-                door_status_open(k, **config)
+                door_status_open(redis_db, k, **config)
             else:
-                door_status_close(k, **config)
+                door_status_close(redis_db, k, **config)
         for k, v in door_sensors_list.items():
-            v.when_held = lambda s=k: door_action_closed(s, **config)
-            v.when_released = lambda s=k: door_action_opened(s, **config)
+            v.when_held = lambda s=k: door_action_closed(redis_db, s, **config)
+            v.when_released = lambda s=k: door_action_opened(redis_db, s, **config)
         if bool(config['use_door_led_indicator']) is True:
             led_indicators_list['door_led'].source = all_values(*door_sensors_list.values())
 
     if bool(config['use_motion_sensor']) is True:
         for k, v in motion_sensors_list.items():
             if v.value == 0:
-                motion_sensor_when_no_motion(k, **config)
+                motion_sensor_when_no_motion(redis_db, k, **config)
             else:
-                motion_sensor_when_motion(k, **config)
+                motion_sensor_when_motion(redis_db, k, **config)
         for k, v in motion_sensors_list.items():
-            v.when_motion = lambda s=k: motion_sensor_when_motion(s, **config)
-            v.when_no_motion = lambda s=k: motion_sensor_when_no_motion(s, **config)
+            v.when_motion = lambda s=k: motion_sensor_when_motion(redis_db, s, **config)
+            v.when_no_motion = lambda s=k: motion_sensor_when_no_motion(redis_db, s, **config)
         if bool(config['use_motion_led_indicator']) is True:
             led_indicators_list['motion_led'].source = any_values(*motion_sensors_list.values())
 
@@ -1111,30 +1110,30 @@ def main():
         system_buttons_list['shutdown_button'].when_held = shutdown
 
     if bool(config['use_cpu_sensor']) is True:
-        threading_function(get_cputemp_data, **cputemp_config, **config)
+        threading_function(get_cputemp_data, redis_db, **cputemp_config, **config)
 
     if bool(config['use_bme280_sensor']) is True:
         for item in bme280_config:
             bme280 = bme280_config[item]
             if bool(bme280_config[item]['use']) is True:
-                multiprocessing_function(get_bme280_data, **bme280, **config)
+                multiprocessing_function(get_bme280_data, redis_db, **bme280, **config)
 
     if bool(config['use_ds18b20_sensor']) is True:
-        threading_function(get_ds18b20_data, **ds18b20_config, **config)
+        threading_function(get_ds18b20_data, redis_db, **ds18b20_config, **config)
 
     if bool(config['use_dht_sensor']) is True:
-        threading_function(get_dht_data, **dht_config, **config)
+        threading_function(get_dht_data, redis_db, **dht_config, **config)
 
     if bool(config['use_weather_station']) is True:
         if bool(rainfall_config['use']) is True:
-            threading_function(rainfall, **rainfall_config, **config)
+            threading_function(rainfall, redis_db, **rainfall_config, **config)
         if bool(windspeed_config['use']) is True:
-            threading_function(wind_speed, **windspeed_config, **config)
+            threading_function(wind_speed, redis_db, **windspeed_config, **config)
         if bool(winddirection_config['use']) is True:
-            threading_function(wind_direction, **winddirection_config, **config)
+            threading_function(wind_direction, redis_db, **winddirection_config, **config)
 
     if bool(config['use_serial_display']) is True:
-        threading_function(serial_displays, **config)
+        threading_function(serial_displays, redis_db, **config)
 
     # if bool(config['use_picamera']) is True and bool(config['use_picamera_recording']) is False and bool(config['use_door_sensor']) is False \
     # and bool(config['use_motion_sensor']) is False:

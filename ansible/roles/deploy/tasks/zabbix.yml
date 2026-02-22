@@ -1,6 +1,6 @@
 ---
 - name: Write zabbix-rpims.conf file
-  template: 
+  template:
     src: "zabbix/zabbix_rpims.conf.j2"
     dest: "{{ rpims_install_dir }}/config/zabbix_rpims.conf"
     owner: "{{ rpims_user }}"
@@ -18,7 +18,7 @@
     - tlspski
     - zabbix
 
-- debug: 
+- debug:
     var: TLSPSKIdentity
   tags:
     - tlspski
@@ -49,7 +49,7 @@
     - tlspsk
     - zabbix
 
-- debug: 
+- debug:
     var: TLSPSK
   tags:
     - tlspsk
@@ -76,7 +76,7 @@
     - zabbix
 
 - name: Write zabbix-agent config file
-  template: 
+  template:
     src: "zabbix/zabbix_agentd.conf.j2"
     dest: "/etc/zabbix/zabbix_agentd.conf.d/zabbix_agentd.conf"
     owner: root
@@ -88,7 +88,7 @@
     - zabbix
 
 - name: Write zabbix_rpims_userparameter.conf config file
-  template: 
+  template:
     src: "zabbix/zabbix_rpims_userparameter.conf.j2"
     dest: "/etc/zabbix/zabbix_agentd.conf.d/zabbix_rpims_userparameter.conf"
     owner: root

@@ -9,7 +9,7 @@
   become: true
 
 - name: Copy static web files to "{{ rpims_install_dir }}"
-  copy: 
+  copy:
     src: "{{ rpims_repo_dir }}/static"
     dest: "{{ rpims_install_dir }}"
     owner: "{{ rpims_user }}"
@@ -19,7 +19,7 @@
     - static
 
 - name: Copy flask app files to "{{ rpims_install_dir }}"
-  copy: 
+  copy:
     src: "{{ rpims_repo_dir }}/app"
     dest: "{{ rpims_install_dir }}"
     owner: "{{ rpims_user }}"
@@ -29,7 +29,7 @@
     - app
 
 - name: Copy config files to "{{ rpims_install_dir }}"
-  copy: 
+  copy:
     src: "{{ rpims_repo_dir }}/config"
     dest: "{{ rpims_install_dir }}"
     owner: "{{ rpims_user }}"
@@ -39,7 +39,7 @@
     - config
 
 - name: Copy scripts files to "{{ rpims_install_dir }}"
-  copy: 
+  copy:
     src: "{{ rpims_repo_dir }}/scripts"
     dest: "{{ rpims_install_dir }}"
     owner: "{{ rpims_user }}"
