@@ -983,7 +983,7 @@ def serial_displays(ctx):
             cputemp = '-----' if cputemp is None else round(float(cputemp), 1)
 
             # IP
-            hostip = ctx.redis_db.hget('SYSTEM', 'hostip')
+            hostip = ctx.redis_db.get('hostip')
             hostip = hostip if hostip else '---.---.---.---'
 
             # drawing
