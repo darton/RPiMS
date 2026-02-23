@@ -90,7 +90,6 @@ class SensorContext:
         self.app = app_context          # global AppContext
         self.name = sensor_name         # for example "id3"
         self.config = sensor_config     # config specific sensor
-        self.redis_db = app_context.redis_db
 
 
 # --- Functions ---
@@ -316,11 +315,12 @@ def get_cputemp_data(ctx):
 
 def get_bme280_data(sensor_ctx):
     app = sensor_ctx.app
-    redis_db = sensor_ctx.redis_db
+    redis_db = app.redis_db
+    verbose = app.config.get('verbose')
+
     sid = sensor_ctx.name
     cfg = sensor_ctx.config
 
-    verbose = app.config.get('verbose')
     read_interval = cfg.get('read_interval')
     interface_type = cfg.get('interface')
     
@@ -921,6 +921,34 @@ def wind_direction(ctx):
             ctx.redis_db.hset('WEATHER', 'average_wind_direction', avg_dir)
 
 
+def read_bme280(ctx, sid, default=None):
+    raw = ctx.redis_db.hgetall(f"{sid}_BME280")
+    #logger.info(f'{raw}')
+
+    if not raw:
+        return {
+            "temperature": default,
+            "humidity": default,
+            "pressure": default
+        }
+
+    def to_float(v):
+        try:
+            return float(v)
+        except:
+            return default
+
+    temp = to_float(raw.get("temperature"))
+    hum  = to_float(raw.get("humidity"))
+    pres = to_float(raw.get("pressure"))
+
+    return {
+        "temperature": round(temp, 1) if temp is not None else default,
+        "humidity":    round(hum)     if hum  is not None else default,
+        "pressure":    round(pres)    if pres is not None else default,
+    }
+
+
 def serial_displays(ctx):
     display_type = ctx.config.get('serial_display_type')
     rotate = ctx.config.get('serial_display_rotate')
@@ -966,48 +994,73 @@ def serial_displays(ctx):
             logger.error(f"Unknown serial display type: {display_type}")
             return
 
+        data_refresh_rate = 1
+        last_fetch = 0
         # main display loop 
         while True:
-            sid = 'id3'
+            now = time()
+            if now - last_fetch >= 1/data_refresh_rate: 
+                sid = 'id3'
 
-            # reading data from Redis
-            t = ctx.redis_db.hget(f'{sid}_BME280', 'Temperature')
-            h = ctx.redis_db.hget(f'{sid}_BME280', 'Humidity')
-            p = ctx.redis_db.hget(f'{sid}_BME280', 'Pressure')
+                # reading data from Redis
+                bme280 = read_bme280(ctx,sid)
+                t,h,p = bme280["temperature"],bme280["humidity"],bme280["pressure"]
+                #logger.info(f'{bme280}')
+                # door and motion
+                values = ctx.redis_db.hgetall('GPIO')
+                doors_opened = any(v == 'open' for v in values.values())
+                motion_detected = any(v == 'motion' for v in values.values())
 
-            if not t or not h or not p:
-                temperature = humidity = pressure = '--.--'
-            else:
-                temperature = round(float(t), 1)
-                humidity = int(round(float(h), 1))
-                pressure = int(round(float(p), 1))
+                door_sensors = 'opened' if doors_opened else 'closed'
+                motion_sensors = 'yes' if motion_detected else 'no'
 
-            # door and motion
-            values = ctx.redis_db.hgetall('GPIO')
-            doors_opened = any(v == 'open' for v in values.values())
-            motion_detected = any(v == 'motion' for v in values.values())
+                # CPU temp
+                cputemp = ctx.redis_db.get('CPU_Temperature')
+                cputemp = '----' if cputemp is None else round(float(cputemp), 1)
 
-            door_sensors = 'opened' if doors_opened else 'closed'
-            motion_sensors = 'yes' if motion_detected else 'no'
-
-            # CPU temp
-            cputemp = ctx.redis_db.get('CPU_Temperature')
-            cputemp = '-----' if cputemp is None else round(float(cputemp), 1)
-
-            # IP
-            hostip = ctx.redis_db.get('hostip')
-            hostip = hostip if hostip else '---.---.---.---'
+                # IP
+                hostip = ctx.redis_db.get('hostip')
+                hostip = hostip if hostip else '---.---.---.---'
+                last_fetch = now
 
             # drawing
+            """
             with canvas(device) as draw:
                 if display_type == 'oled_sh1106':
                     draw.text((x, top),       f'IP:{hostip}', font=font, fill=255)
-                    draw.text((x, top+9),     f'Temperature..{temperature}°C', font=font, fill=255)
-                    draw.text((x, top+18),    f'Humidity.....{humidity}%', font=font, fill=255)
-                    draw.text((x, top+27),    f'Pressure.....{pressure}hPa', font=font, fill=255)
+                    draw.text((x, top+9),     f'Temperature..{t}°C', font=font, fill=255)
+                    draw.text((x, top+18),    f'Humidity.....{h}%', font=font, fill=255)
+                    draw.text((x, top+27),    f'Pressure.....{p}hPa', font=font, fill=255)
                     draw.text((x, top+36),    f'Door.........{door_sensors}', font=font, fill=255)
                     draw.text((x, top+45),    f'Motion.......{motion_sensors}', font=font, fill=255)
                     draw.text((x, top+54),    f'CpuTemp......{cputemp}°C', font=font, fill=255)
+            """
+            label_x = 0
+            value_x = 77
+
+            with canvas(device) as draw:
+                if display_type == 'oled_sh1106':
+                    draw.text((label_x, top),     "IP:", font=font, fill=255)
+                    draw.text((15, top),     hostip, font=font, fill=255)
+
+                    draw.text((label_x, top+9),   "Temperature:", font=font, fill=255)
+                    draw.text((value_x, top+9),   f"{t}°C", font=font, fill=255)
+
+                    draw.text((label_x, top+18),  "Humidity:", font=font, fill=255)
+                    draw.text((value_x, top+18),  f"{h}%", font=font, fill=255)
+
+                    draw.text((label_x, top+27),  "Pressure:", font=font, fill=255)
+                    draw.text((value_x, top+27),  f"{p}hPa", font=font, fill=255)
+
+                    draw.text((label_x, top+36),  "Door:", font=font, fill=255)
+                    draw.text((value_x, top+36),  door_sensors, font=font, fill=255)
+
+                    draw.text((label_x, top+45),  "Motion:", font=font, fill=255)
+                    draw.text((value_x, top+45),  motion_sensors, font=font, fill=255)
+
+                    draw.text((label_x, top+54),  "CpuTemp:", font=font, fill=255)
+                    draw.text((value_x, top+54),  f"{cputemp}°C", font=font, fill=255)
+
 
                 elif display_type == 'lcd_st7735':
                     now = datetime.datetime.now()
