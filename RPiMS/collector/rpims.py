@@ -85,6 +85,14 @@ class AppContext:
         self.led_indicators = {}
 
 
+class SensorContext:
+    def __init__(self, app_context, sensor_name, sensor_config):
+        self.app = app_context          # global AppContext
+        self.name = sensor_name         # for example "id3"
+        self.config = sensor_config     # config specific sensor
+        self.redis_db = app_context.redis_db
+
+
 # --- Functions ---
 def acquire_lock(lock_path="/run/lock/rpims.lock"):
     try:
@@ -306,17 +314,21 @@ def get_cputemp_data(ctx):
         logger.info(f'Problem with CPU sensor: {err}')
 
 
-def get_bme280_data(ctx):
-    verbose = ctx.config.get('verbose')
-    read_interval = ctx.bme280_config.get('read_interval')
-    interface_type = ctx.bme280_config.get('interface')
-    sid = ctx.bme280_config.get('id')
+def get_bme280_data(sensor_ctx):
+    app = sensor_ctx.app
+    redis_db = sensor_ctx.redis_db
+    sid = sensor_ctx.name
+    cfg = sensor_ctx.config
 
+    verbose = app.config.get('verbose')
+    read_interval = cfg.get('read_interval')
+    interface_type = cfg.get('interface')
+    
     # --- I2C MODE ---
     if interface_type == 'i2c':
         try:
             port = 1
-            address = ctx.bme280_config.get('i2c_address')
+            address = cfg.get('i2c_address')
             bus = smbus2.SMBus(port)
             calibration_params = bme280.load_calibration_params(bus, address)
 
@@ -329,10 +341,10 @@ def get_bme280_data(ctx):
                     pressure = round(data.pressure, 3)
 
                     key = f'{sid}_BME280'
-                    ctx.redis_db.hset(key, 'temperature', temperature)
-                    ctx.redis_db.hset(key, 'humidity', humidity)
-                    ctx.redis_db.hset(key, 'pressure', pressure)
-                    ctx.redis_db.expire(key, read_interval * 2)
+                    redis_db.hset(key, 'temperature', temperature)
+                    redis_db.hset(key, 'humidity', humidity)
+                    redis_db.hset(key, 'pressure', pressure)
+                    redis_db.expire(key, read_interval * 2)
 
                     if verbose:
                         logger.info(
@@ -353,7 +365,7 @@ def get_bme280_data(ctx):
             logger.info(f'Problem initializing BME280 I2C: {err}')
     # --- SERIAL MODE ---
     if interface_type == 'serial':
-        usbport = ctx.bme280_config.get('serial_port')
+        usbport = cfg.get('serial_port')
 
         # detect RPi model
         devicetree = subprocess.check_output(
@@ -508,12 +520,12 @@ def get_bme280_data(ctx):
                 pressure = int(p) / 1000
 
                 key = f'{sid}_BME280'
-                ctx.redis_db.hset(key, 'temperature', temperature)
-                ctx.redis_db.hset(key, 'humidity', humidity)
-                ctx.redis_db.hset(key, 'pressure', pressure)
+                redis_db.hset(key, 'temperature', temperature)
+                redis_db.hset(key, 'humidity', humidity)
+                redis_db.hset(key, 'pressure', pressure)
 
                 expire_time = 10 if read_interval < 10 else read_interval * 2
-                ctx.redis_db.expire(key, expire_time)
+                redis_db.expire(key, expire_time)
 
                 if verbose:
                     logger.info(
@@ -522,7 +534,7 @@ def get_bme280_data(ctx):
                     )
             else:
                 necounter += 1
-                ctx.redis_db.set('NECOUNTER', necounter)
+                redis_db.set('NECOUNTER', necounter)
 
             sleep(read_interval)
 
@@ -1159,7 +1171,8 @@ def main():
     if ctx.config.get('use_bme280_sensor'):
         for name, bme280 in ctx.bme280_config.items():
             if bme280.get('use'):
-                multiprocessing_function(get_bme280_data, ctx)
+                sensor_ctx = SensorContext(ctx, name, bme280)
+                multiprocessing_function(get_bme280_data, sensor_ctx)
 
     # DS18B20
     if ctx.config.get('use_ds18b20_sensor'):
