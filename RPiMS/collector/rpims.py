@@ -69,7 +69,7 @@ class AppContext:
         self.sensors = sensors
         self.redis_db = redis_db
 
-        # podzbiory sensors:
+        # sensors subset:
         self.bme280_config = sensors['BME280']
         self.dht_config = sensors['DHT']
         self.cputemp_config = sensors['CPU']['temp']
@@ -78,7 +78,7 @@ class AppContext:
         self.windspeed_config = sensors['WEATHER']['WIND']['SPEED']
         self.winddirection_config = sensors['WEATHER']['WIND']['DIRECTION']
 
-        # dynamiczny stan
+        # gpio supsets
         self.door_sensors = {}
         self.motion_sensors = {}
         self.system_buttons = {}
@@ -213,7 +213,7 @@ def detect_no_alarms(ctx):
     use_door = ctx.config.get('use_door_sensor')
     use_motion = ctx.config.get('use_motion_sensor')
 
-    # oba typy sensorów aktywne
+    # both type door and motion sensors are active
     if use_door and use_motion:
         door_values = [sensor.value for sensor in ctx.door_sensors.values()]
         motion_values = [int(not sensor.value) for sensor in ctx.motion_sensors.values()]
@@ -265,15 +265,17 @@ def hostnamectl_sh(**kwargs):
     # set hostname
     hostname = kwargs.get('hostname')
     if hostname:
-        cmd = f'sudo raspi-config nonint do_hostname {hostname}'
-        subprocess.call(cmd, shell=True)
+        subprocess.call([
+            'sudo', 'raspi-config', 'nonint', 'do_hostname', hostname
+        ])
 
     # use hostnamectl
     for key, action in hctldict.items():
         value = kwargs.get(key)
         if value:
-            cmd = f'sudo /usr/bin/hostnamectl {action} {value}'
-            subprocess.call(cmd, shell=True)
+            subprocess.call([
+                'sudo', '/usr/bin/hostnamectl', action, value
+            ])
 
 
 def get_hostip():
