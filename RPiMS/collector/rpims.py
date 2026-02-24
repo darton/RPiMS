@@ -310,7 +310,6 @@ def get_bme280_data(sensor_ctx):
     if interface_type == 'i2c':
         try:
             # pylint: disable=import-outside-toplevel
-            from grove.i2c import Bus
             import smbus2
             port = 1
             address = cfg.get('i2c_address')
@@ -772,6 +771,7 @@ def wind_speed(ctx):
 
 
 def adc_stm32f030():
+    from grove.i2c import Bus
     ADC_DEFAULT_IIC_ADDR = 0X04
     ADC_CHAN_NUM = 8
 
