@@ -446,6 +446,7 @@ $ i2cdetect -y 1
   70: -- -- -- -- -- -- 76 --
   ```
 
+
 ## Configuration testing picamera
 ```
 sudo systemctl stop rpims
