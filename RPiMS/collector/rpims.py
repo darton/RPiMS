@@ -13,8 +13,8 @@
 #  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #  GNU General Public License for more details.
 
-
 import logging
+import fcntl
 #import os
 import sys
 import datetime
@@ -82,7 +82,7 @@ def acquire_lock(lock_path="/run/lock/rpims.lock"):
         sys.exit(1)
 
     try:
-        import fcntl
+
         fcntl.flock(fp, fcntl.LOCK_EX | fcntl.LOCK_NB)
     except BlockingIOError:
         logger.error("Another instance of RPiMS is already running. Exiting.")
@@ -294,6 +294,7 @@ def get_cputemp_data(ctx):
 
 
 def get_bme280_data(sensor_ctx):
+    # pylint: disable=import-outside-toplevel
     import bme280
     app = sensor_ctx.app
     redis_db = app.redis_db
@@ -308,6 +309,7 @@ def get_bme280_data(sensor_ctx):
     # --- I2C MODE ---
     if interface_type == 'i2c':
         try:
+            # pylint: disable=import-outside-toplevel
             from grove.i2c import Bus
             import smbus2
             port = 1
@@ -351,6 +353,7 @@ def get_bme280_data(sensor_ctx):
             logger.info('Problem initializing BME280 I2C: %s', err)
     # --- SERIAL MODE ---
     if interface_type == 'serial':
+        # pylint: disable=import-outside-toplevel
         import serial
         from serial.serialutil import SerialException
         usbport = cfg.get('serial_port')
@@ -406,6 +409,7 @@ def get_bme280_data(sensor_ctx):
 
         # --- USB reset helper ---
         def reset_usbdevice():
+            # pylint: disable=import-outside-toplevel
             import usb.core
             devices = usb.core.find(find_all=True)
             for item in devices:
@@ -534,6 +538,7 @@ def get_bme280_data(sensor_ctx):
 
 
 def get_ds18b20_data(ctx):
+    # pylint: disable=import-outside-toplevel
     from w1thermsensor import W1ThermSensor
     verbose = ctx.config.get('verbose')
     read_interval = ctx.ds18b20_config.get('read_interval')
@@ -560,6 +565,7 @@ def get_ds18b20_data(ctx):
 
 
 def get_dht_data(ctx):
+    # pylint: disable=import-outside-toplevel
     import adafruit_dht
     verbose = ctx.config.get('verbose')
     read_interval = ctx.dht_config.get('read_interval')
@@ -799,6 +805,7 @@ def adc_stm32f030():
 
 
 def adc_automationphat():
+    # pylint: disable=import-outside-toplevel
     import automationhat
     sleep(0.1)  # Delay for automationhat
     return [automationhat.analog.one.read(), automationhat.analog.two.read(),
@@ -806,6 +813,7 @@ def adc_automationphat():
 
 
 def adc_ads1115():
+    # pylint: disable=import-outside-toplevel
     import adafruit_ads1x15.ads1115 as ADS
     from adafruit_ads1x15.analog_in import AnalogIn
     import busio
@@ -954,6 +962,7 @@ def read_bme280(ctx, sid, default=None):
 
 
 def serial_displays(ctx):
+    # pylint: disable=import-outside-toplevel
     from luma.core.interface.serial import i2c, spi
     from luma.core.render import canvas
     from luma.oled.device import sh1106
@@ -1097,6 +1106,7 @@ def serial_displays(ctx):
 
 
 def set_process_name_and_run(function_name, **kwargs):
+    # pylint: disable=import-outside-toplevel
     import setproctitle
     process_name = function_name.__name__
     setproctitle.setproctitle(process_name)
@@ -1104,6 +1114,7 @@ def set_process_name_and_run(function_name, **kwargs):
 
 
 def threading_function(function_name, ctx):
+    # pylint: disable=import-outside-toplevel
     import threading
     tf = threading.Thread(
         target=function_name,
@@ -1115,6 +1126,7 @@ def threading_function(function_name, ctx):
 
 
 def multiprocessing_function(function_name, ctx):
+    # pylint: disable=import-outside-toplevel
     import multiprocessing
     mf = multiprocessing.Process(
         target=function_name,
