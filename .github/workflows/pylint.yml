@@ -10,24 +10,18 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: Debug workspace
-      run: |
-        echo "Workspace: ${{ github.workspace }}"
-        ls -la ${{ github.workspace }}
-
     - name: Create virtual environment
       run: |
         python3 -m venv ${{ github.workspace }}/.venv --system-site-packages
-        ${{ github.workspace }}/.venv/bin/pip install --upgrade pip
-        ${{ github.workspace }}/.venv/bin/pip install -r .github/workflows/requirements.txt
-        ${{ github.workspace }}/.venv/bin/pip install pylint
+        ${{ github.workspace }}/.venv/bin/python -m pip install --upgrade pip
+        ${{ github.workspace }}/.venv/bin/python -m pip install -r .github/workflows/requirements.txt
+        ${{ github.workspace }}/.venv/bin/python -m pip install pylint
 
     - name: Verify venv
       run: |
-        ls -la ${{ github.workspace }}/.venv
         ls -la ${{ github.workspace }}/.venv/bin
 
     - name: Run pylint
       run: |
-        ${{ github.workspace }}/.venv/bin/pylint $(git ls-files '*.py')
+        ${{ github.workspace }}/.venv/bin/python -m pylint $(git ls-files '*.py')
 
