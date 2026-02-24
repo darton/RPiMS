@@ -13,30 +13,32 @@
 #  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #  GNU General Public License for more details.
 
+import fcntl
+import logging
 import os
 import sys
+import datetime
+import math
+import multiprocessing
+import threading
+import setproctitle
+import statistics
+import redis
+import smbus2
+import subprocess
+from signal import pause
+from time import time, sleep
+import json
+import yaml
+import serial
+from serial.serialutil import SerialException
+import usb.core
+import board
+import busio
 import adafruit_dht
 import adafruit_ads1x15.ads1115 as ADS
 import automationhat
 import bme280
-import board
-import busio
-import datetime
-import json
-import logging
-import math
-import multiprocessing
-import fcntl
-import redis
-import smbus2
-import subprocess
-import sys
-import serial
-import setproctitle
-import statistics
-import threading
-import usb.core
-import yaml
 from adafruit_ads1x15.analog_in import AnalogIn
 from gpiozero import LED, Button, MotionSensor, CPUTemperature
 from gpiozero.tools import all_values, any_values
@@ -46,9 +48,6 @@ from luma.core.render import canvas
 from luma.oled.device import sh1106
 from luma.lcd.device import st7735
 from PIL import ImageFont
-from serial.serialutil import SerialException
-from signal import pause
-from time import time, sleep
 from w1thermsensor import W1ThermSensor
 
 
