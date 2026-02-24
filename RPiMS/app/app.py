@@ -11,6 +11,8 @@
 #  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #  GNU General Public License for more details.
 
+"""Flask App"""
+
 # Standard library
 import os
 import json
