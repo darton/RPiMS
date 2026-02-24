@@ -1,0 +1,17 @@
+RPi.bme280
+smbus2
+w1thermsensor
+"redis[hiredis]"
+PyYAML
+ruamel.yaml
+luma.oled
+luma.lcd
+adafruit-circuitpython-ads1x15
+adafruit-circuitpython-dht
+automationhat
+setproctitle
+rshell
+pyusb
+flask
+gunicorn
+packaging
