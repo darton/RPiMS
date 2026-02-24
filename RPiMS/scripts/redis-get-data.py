@@ -47,10 +47,12 @@ if len(sys.argv) > 1:
                     temperature = _bme280['temperature']
                     humidity = _bme280['humidity']
                     pressure = _bme280['pressure']
-                    logger.info('Temperature={0:0.2f}; \
-                          Humidity={1:0.2f}; \
-                          Pressure={2:0.2f};'
-                          .format(float(temperature), float(humidity), float(pressure)))
+                    logger.info(
+                        "Temperature=%.2f; Humidity=%.2f; Pressure=%.2f;",
+                        float(temperature),
+                        float(humidity),
+                        float(pressure),
+                        )
             else:
                 print_help()
 
@@ -58,8 +60,7 @@ if len(sys.argv) > 1:
         if config['use_ds18b20_sensor'] is True:
             ds18b20_sensors = redis_db.hgetall('DS18B20')
             for sensor_id, sensor_value in ds18b20_sensors.items():
-                logger.info(sensor_id + '={0:0.2f}'.format(float(sensor_value)), end=';')
-
+                logger.info("%s=%.2f", sensor_id, float(sensor_value))
     elif sys.argv[1] == 'ds18b20':
         if config['use_ds18b20_sensor'] is True:
             if len(sys.argv) == 3:
@@ -76,12 +77,15 @@ if len(sys.argv) > 1:
                 dht = redis_db.hgetall('DHT')
                 temperature = dht['temperature']
                 humidity = dht['humidity']
-                logger.info('Temperature={0:0.2f};Humidity={1:0.2f};'.format(float(temperature), float(humidity)))
+                logger.info("Temperature=%.2f; Humidity=%.2f;",
+                            float(temperature),
+                            float(humidity),
+                           )
 
     elif sys.argv[1] == 'CPUTEMP':
         if config['use_cpu_sensor'] is True:
             if redis_db.exists('CPU_Temperature'):
                 temperature = redis_db.get('CPU_Temperature')
-                logger.info('CPUTemperature' + '={0:0.2f};'.format(float(temperature)))
+                logger.info("CPUTemperature=%.2f;", float(temperature))
 else:
     print_help()
