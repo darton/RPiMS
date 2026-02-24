@@ -13,6 +13,10 @@
 #  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #  GNU General Public License for more details.
 
+"""
+Scripts get specific sensors data from redis, for zabbix-agent.
+"""
+
 import logging
 import sys
 import json

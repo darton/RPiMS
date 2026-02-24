@@ -344,13 +344,13 @@ def get_bme280_data(sensor_ctx):
                     redis_db.expire(key, read_interval * 2)
 
                     if verbose:
-		 	logger.info(
-    				"%s_BME280: Temperature: %.1f °C, Humidity: %.1f %%, Pressure: %.1f hPa",
-    				sid,
-    				temperature,
-    				humidity,
-    				pressure,
-				)
+                        logger.info(
+                            "%s_BME280: Temperature: %.1f °C, Humidity: %.1f %%, Pressure: %.1f hPa",
+                             sid,
+                             temperature,
+                             humidity,
+                             pressure,
+                             )
 
                     sleep(read_interval)
 
