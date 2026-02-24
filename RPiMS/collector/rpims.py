@@ -13,42 +13,23 @@
 #  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #  GNU General Public License for more details.
 
-import fcntl
+
 import logging
-import os
+#import os
 import sys
 import datetime
 import math
 import json
-#import multiprocessing
-import threading
-import setproctitle
 import statistics
 import subprocess
 from signal import pause
 from time import time, sleep
+
 import yaml
 import redis
-import smbus2
-import serial
-from serial.serialutil import SerialException
-import usb.core
-import board
-import busio
-import adafruit_dht
-import adafruit_ads1x15.ads1115 as ADS
-import automationhat
-import bme280
-from adafruit_ads1x15.analog_in import AnalogIn
+
 from gpiozero import LED, Button, MotionSensor, CPUTemperature
 from gpiozero.tools import all_values, any_values
-from grove.i2c import Bus
-from luma.core.interface.serial import i2c, spi
-from luma.core.render import canvas
-from luma.oled.device import sh1106
-from luma.lcd.device import st7735
-from PIL import ImageFont
-from w1thermsensor import W1ThermSensor
 
 
 logging.basicConfig(
@@ -101,6 +82,7 @@ def acquire_lock(lock_path="/run/lock/rpims.lock"):
         sys.exit(1)
 
     try:
+        import fcntl
         fcntl.flock(fp, fcntl.LOCK_EX | fcntl.LOCK_NB)
     except BlockingIOError:
         logger.error("Another instance of RPiMS is already running. Exiting.")
@@ -312,6 +294,7 @@ def get_cputemp_data(ctx):
 
 
 def get_bme280_data(sensor_ctx):
+    import bme280
     app = sensor_ctx.app
     redis_db = app.redis_db
     verbose = app.config.get('verbose')
@@ -321,10 +304,12 @@ def get_bme280_data(sensor_ctx):
 
     read_interval = cfg.get('read_interval')
     interface_type = cfg.get('interface')
-    
+
     # --- I2C MODE ---
     if interface_type == 'i2c':
         try:
+            from grove.i2c import Bus
+            import smbus2
             port = 1
             address = cfg.get('i2c_address')
             bus = smbus2.SMBus(port)
@@ -366,6 +351,8 @@ def get_bme280_data(sensor_ctx):
             logger.info('Problem initializing BME280 I2C: %s', err)
     # --- SERIAL MODE ---
     if interface_type == 'serial':
+        import serial
+        from serial.serialutil import SerialException
         usbport = cfg.get('serial_port')
 
         # detect RPi model
@@ -419,6 +406,7 @@ def get_bme280_data(sensor_ctx):
 
         # --- USB reset helper ---
         def reset_usbdevice():
+            import usb.core
             devices = usb.core.find(find_all=True)
             for item in devices:
                 if hex(item.idVendor) == '0x2e8a':
@@ -546,6 +534,7 @@ def get_bme280_data(sensor_ctx):
 
 
 def get_ds18b20_data(ctx):
+    from w1thermsensor import W1ThermSensor
     verbose = ctx.config.get('verbose')
     read_interval = ctx.ds18b20_config.get('read_interval')
 
@@ -571,6 +560,7 @@ def get_ds18b20_data(ctx):
 
 
 def get_dht_data(ctx):
+    import adafruit_dht
     verbose = ctx.config.get('verbose')
     read_interval = ctx.dht_config.get('read_interval')
     dht_type = ctx.dht_config.get('type')
@@ -809,12 +799,18 @@ def adc_stm32f030():
 
 
 def adc_automationphat():
+    import automationhat
     sleep(0.1)  # Delay for automationhat
     return [automationhat.analog.one.read(), automationhat.analog.two.read(),
             automationhat.analog.three.read()]
 
 
 def adc_ads1115():
+    import adafruit_ads1x15.ads1115 as ADS
+    from adafruit_ads1x15.analog_in import AnalogIn
+    import busio
+    import board
+
     # Create the I2C bus
     i2c = busio.I2C(board.SCL, board.SDA)
     # Create the ADC object using the I2C bus
@@ -958,6 +954,12 @@ def read_bme280(ctx, sid, default=None):
 
 
 def serial_displays(ctx):
+    from luma.core.interface.serial import i2c, spi
+    from luma.core.render import canvas
+    from luma.oled.device import sh1106
+    from luma.lcd.device import st7735
+    from PIL import ImageFont
+
     display_type = ctx.config.get('serial_display_type')
     rotate = ctx.config.get('serial_display_rotate')
     refresh_rate = ctx.config.get('serial_display_refresh_rate')
@@ -1095,6 +1097,7 @@ def serial_displays(ctx):
 
 
 def set_process_name_and_run(function_name, **kwargs):
+    import setproctitle
     process_name = function_name.__name__
     setproctitle.setproctitle(process_name)
     function_name(**kwargs)
