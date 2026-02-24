@@ -12,7 +12,7 @@ Supports for live video streaming from the Raspberry Pi camera, using MediaMTX a
 Supports wind speed meter, wind direction meter, rainfall meter.
 
 RPiMS supports BME280 sensors via a Raspberry Pico running the
-[BME280USB](https://github.com/darton/BME280USB) firmware.  
+[BME280USB](https://github.com/darton/BME280USB) firmware.
 The Pico reads the sensor over I²C and sends measurements to RPIMS over USB,
 allowing the BME280 to be placed farther from the Raspberry Pi using a standard USB cable.
 
@@ -40,7 +40,7 @@ To writing an image to the SD card, use [Imager](https://www.raspberrypi.org/dow
 
 ## Installing RPiMS Using Ansible
 
-The following steps must be performed **on the computer where Ansible is installed** (Linux, macOS, or Windows with WSL).  
+The following steps must be performed **on the computer where Ansible is installed** (Linux, macOS, or Windows with WSL). 
 This machine acts as the **Ansible control node**, which will remotely install RPiMS on the Raspberry Pi devices defined in the inventory file.
 
 ---
@@ -62,7 +62,7 @@ Open the inventory file that defines the Raspberry Pi devices where RPiMS will b
 nano ansible/inventory/hosts.ini
 ```
 
-In this file, list the IP addresses and SSH credentials of your Raspberry Pi devices.  
+In this file, list the IP addresses and SSH credentials of your Raspberry Pi devices.
 Example:
 
 ```ini
@@ -71,7 +71,7 @@ Example:
 192.168.1.51 ansible_user=pi
 ```
 
-**Important:**  
+**Important:**
 Your control machine must be able to connect to each Raspberry Pi via SSH.
 
 ---
@@ -95,9 +95,9 @@ The playbook will:
 
 ## Summary
 
-- You run Ansible **on your local computer**, not on the Raspberry Pi.  
-- Raspberry Pi devices must be reachable over the network (SSH).  
-- All target devices must be listed in `ansible/inventory/hosts.ini`.  
+- You run Ansible **on your local computer**, not on the Raspberry Pi.
+- Raspberry Pi devices must be reachable over the network (SSH).
+- All target devices must be listed in `ansible/inventory/hosts.ini`.
 - The playbook handles the entire installation process automatically.
 
 ---
