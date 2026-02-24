@@ -12,7 +12,7 @@ jobs:
 
     - name: Create virtual environment
       run: |
-        python3 -m venv venv --system-site-packages
+        python3 -m venv .venv --system-site-packages
         source .venv/bin/activate
         pip install --upgrade pip
         pip install -r .github/workflows/requirements.txt
