@@ -15,8 +15,8 @@ jobs:
 
     - name: Install dependencies
       run: |
-        sudo apt update
-        xargs -a .github/apt-packages.txt sudo apt install -y
+        #sudo apt update
+        #xargs -a .github/apt-packages.txt sudo apt install -y
         pip install -r requirements.txt
         pip install pylint
 
