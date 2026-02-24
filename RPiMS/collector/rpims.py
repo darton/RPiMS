@@ -798,36 +798,23 @@ def adc_stm32f030():
     return adc_inputs_values
 
 
-
 def adc_automationphat():
-    try:
-        sleep(0.1)  # Delay for automationhat
-        adc_inputs_values = [automationhat.analog.one.read(), automationhat.analog.two.read(),
-                             automationhat.analog.three.read()]
-        return adc_inputs_values
-    except Exception as err:
-        logger.error(err)
-        logger.error('automationphat is not detected')
-        sys.exit(1)
+    sleep(0.1)  # Delay for automationhat
+    return [automationhat.analog.one.read(), automationhat.analog.two.read(),
+            automationhat.analog.three.read()]
 
 
 def adc_ads1115():
-    try:
-        # Create the I2C bus
-        i2c = busio.I2C(board.SCL, board.SDA)
-        # Create the ADC object using the I2C bus
-        ads = ADS.ADS1115(i2c)
-        chan1 = AnalogIn(ads, ADS.P0)
-        chan2 = AnalogIn(ads, ADS.P1)
-        chan3 = AnalogIn(ads, ADS.P2)
-        chan4 = AnalogIn(ads, ADS.P3)
-        adc_inputs_values = [chan1.voltage, chan2.voltage, chan3.voltage, chan4.voltage]
-        return adc_inputs_values
-    except Exception as err:
-        logger.error(err)
-        logger.error('adc_ads1115 is not detected')
-        sys.exit(1)
-
+    # Create the I2C bus
+    i2c = busio.I2C(board.SCL, board.SDA)
+    # Create the ADC object using the I2C bus
+    ads = ADS.ADS1115(i2c)
+    chan1 = AnalogIn(ads, ADS.P0)
+    chan2 = AnalogIn(ads, ADS.P1)
+    chan3 = AnalogIn(ads, ADS.P2)
+    chan4 = AnalogIn(ads, ADS.P3)
+    adc_inputs_values = [chan1.voltage, chan2.voltage, chan3.voltage, chan4.voltage]
+    return adc_inputs_values
 
 
 def wind_direction(ctx):
@@ -889,18 +876,22 @@ def wind_direction(ctx):
         angles = []
 
         while time() - start_time <= acquisition_time:
-
-            # ADC selection
-            if adc_type == 'AutomationPhat':
-                adc_values = adc_automationphat()
-            elif adc_type == 'STM32F030':
-                adc_values = adc_stm32f030()
-            elif adc_type == 'ADS1115':
-                adc_values = adc_ads1115()
-            else:
-                logger.error(f"Unknown ADC type: {adc_type}")
-                sleep(1)
-                continue
+            try:
+                # ADC selection
+                if adc_type == 'AutomationPhat':
+                    adc_values = adc_automationphat()
+                elif adc_type == 'STM32F030':
+                    adc_values = adc_stm32f030()
+                elif adc_type == 'ADS1115':
+                    adc_values = adc_ads1115()
+                else:
+                    logger.error(f"Unknown ADC type: {adc_type}")
+                    sleep(1)
+                    continue
+            except Exception as err:
+                logger.error(err)
+                logger.error('ADC not detected')
+                sys.exit(1)
 
             # selection of the measurement channel
             uout = round(adc_values[adc_input - 1], 1)
