@@ -13,9 +13,9 @@
 #  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #  GNU General Public License for more details.
 
+import sys
 import redis
 import json
-import sys
 
 redis_db = redis.StrictRedis(host="localhost", port=6379, db=0, decode_responses=True)
 
