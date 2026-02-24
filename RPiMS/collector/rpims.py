@@ -96,7 +96,7 @@ def acquire_lock(lock_path="/run/lock/rpims.lock"):
     try:
         fp = open(lock_path, "w")
     except PermissionError:
-        logger.error(f"Cannot open lock file {lock_path}. Check permissions.")
+        logger.error("Cannot open lock file %s. Check permissions.", lock_path)
         sys.exit(1)
 
     try:
@@ -152,7 +152,7 @@ def door_action_closed(ctx, door_id):
     ctx.redis_db.hset('DOOR_SENSORS', str(door_id), 'close')
 
     if ctx.config.get('verbose'):
-        logger.info(f'The {door_id} has been closed!')
+        logger.info('The %s has been closed!', door_id)
 
     if ctx.config.get('use_zabbix_sender'):
         zabbix_sender_call('info_when_door_has_been_closed', door_id)
@@ -162,7 +162,7 @@ def door_action_opened(ctx, door_id):
     ctx.redis_db.hset('DOOR_SENSORS', str(door_id), 'open')
 
     if ctx.config.get('verbose'):
-        logger.info(f'The {door_id} has been opened!')
+        logger.info('The %s has been opened!', door_id)
 
     if ctx.config.get('use_zabbix_sender'):
         zabbix_sender_call('info_when_door_has_been_opened', door_id)
@@ -176,7 +176,7 @@ def door_status_open(ctx, door_id):
     ctx.redis_db.hset('DOOR_SENSORS', str(door_id), 'open')
 
     if ctx.config.get('verbose'):
-        logger.info(f'The {door_id} is opened!')
+        logger.info('The %s is opened!', door_id)
 
     if ctx.config.get('use_zabbix_sender'):
         zabbix_sender_call('info_when_door_is_opened', door_id)
@@ -187,7 +187,7 @@ def door_status_close(ctx, door_id):
     ctx.redis_db.hset('DOOR_SENSORS', str(door_id), 'close')
 
     if ctx.config.get('verbose'):
-        logger.info(f'The {door_id} is closed!')
+        logger.info('The %s is closed!', door_id)
 
     if ctx.config.get('use_zabbix_sender'):
         zabbix_sender_call('info_when_door_is_closed', door_id)
@@ -197,7 +197,7 @@ def motion_sensor_when_motion(ctx, ms_id):
     ctx.redis_db.hset('MOTION_SENSORS', str(ms_id), 'motion')
 
     if ctx.config.get('verbose'):
-        logger.info(f'The {ms_id} : motion was detected!')
+        logger.info('The %s: motion was detected!', ms_id)
 
     if ctx.config.get('use_zabbix_sender'):
         zabbix_sender_call('info_when_motion', ms_id)
@@ -212,7 +212,7 @@ def motion_sensor_when_no_motion(ctx, ms_id):
     ctx.redis_db.hset('MOTION_SENSORS', str(ms_id), 'nomotion')
 
     if ctx.config.get('verbose'):
-        logger.info(f'The {ms_id} : no motion')
+        logger.info('The %s: no motion', ms_id)
 
 
 def detect_no_alarms(ctx):
@@ -303,12 +303,11 @@ def get_cputemp_data(ctx):
             ctx.redis_db.expire('CPU_Temperature', read_interval * 2)
 
             if verbose:
-                logger.info(f"CPU temperature: {data.temperature:0.1f}{chr(176)}C")
-
+                logger.info("CPU temperature: %.1f%sC", data.temperature, chr(176))
             sleep(read_interval)
 
     except Exception as err:
-        logger.info(f'Problem with CPU sensor: {err}')
+        logger.info('Problem with CPU sensor: %s',err)
 
 
 def get_bme280_data(sensor_ctx):
@@ -345,10 +344,13 @@ def get_bme280_data(sensor_ctx):
                     redis_db.expire(key, read_interval * 2)
 
                     if verbose:
-                        logger.info(
-                            f'{sid}_BME280: Temperature: {temperature} °C, '
-                            f'Humidity: {humidity} %, Pressure: {pressure} hPa'
-                        )
+		 	logger.info(
+    				"%s_BME280: Temperature: %.1f °C, Humidity: %.1f %%, Pressure: %.1f hPa",
+    				sid,
+    				temperature,
+    				humidity,
+    				pressure,
+				)
 
                     sleep(read_interval)
 
@@ -356,11 +358,11 @@ def get_bme280_data(sensor_ctx):
                     break
 
                 except Exception as err:
-                    logger.info(f'Problem with sensor BME280: {err}')
+                    logger.info('Problem with sensor BME280: %s', err)
                     sleep(1)
 
         except Exception as err:
-            logger.info(f'Problem initializing BME280 I2C: {err}')
+            logger.info('Problem initializing BME280 I2C: %s', err)
     # --- SERIAL MODE ---
     if interface_type == 'serial':
         usbport = cfg.get('serial_port')
@@ -438,10 +440,10 @@ def get_bme280_data(sensor_ctx):
                     logger.info('Serial device found')
                     return ser
                 except SerialException:
-                    logger.info(f"BME280PicoUSB not connected to port {usbport}")
+                    logger.info("BME280PicoUSB not connected to port %s", usbport)
                     sleep(2)
                 except Exception as err:
-                    logger.info(f"Resetting USB port for BME280PicoUSB on {usbport}")
+                    logger.info("Resetting USB port for BME280PicoUSB on %s", usbport)
                     logger.error(err)
                     reset_usbdevice()
                     sleep(10)
@@ -463,7 +465,7 @@ def get_bme280_data(sensor_ctx):
                     logger.info('Serial device found')
                     break
                 except Exception:
-                    logger.info(f"Could not open BME280PicoUSB on port {usbport}")
+                    logger.info("Could not open BME280PicoUSB on port %s", usbport)
                     sleep(1)
 
             ser.flushInput()
@@ -495,7 +497,7 @@ def get_bme280_data(sensor_ctx):
                         sleep(0.5)
 
                 except Exception:
-                    logger.info(f"Lost connection with BME280PicoUSB on port {usbport}")
+                    logger.info("Lost connection with BME280PicoUSB on port %s", usbport)
                     find_serial_device(port, baudrate)
                     sleep(2)
 
@@ -528,9 +530,13 @@ def get_bme280_data(sensor_ctx):
 
                 if verbose:
                     logger.info(
-                        f'{sid}_BME280: Temperature: {temperature}°C, '
-                        f'Humidity: {humidity}%, Pressure: {pressure}hPa'
+                        "%s_BME280: Temperature: %s°C, Humidity: %s%%, Pressure: %shPa",
+                        sid,
+                        temperature,
+                        humidity,
+                        pressure,
                     )
+
             else:
                 necounter += 1
                 redis_db.set('NECOUNTER', necounter)
@@ -551,7 +557,7 @@ def get_ds18b20_data(ctx):
                 ctx.redis_db.hset('DS18B20', sensor.id, temperature)
 
                 if verbose:
-                    logger.info(f"Sensor {sensor.id} temperature {temperature:.2f}{chr(176)}C")
+                    logger.info("Sensor %s temperature %.2f°C",sensor.id,temperature,)
 
             # data expiration time setting
             expire_time = 10 if read_interval < 5 else read_interval * 2
@@ -560,7 +566,7 @@ def get_ds18b20_data(ctx):
             sleep(read_interval)
 
     except Exception as err:
-        logger.info(f'Problem with sensor DS18B20: {err}')
+        logger.info('Problem with sensor DS18B20: %s', err)
 
 
 def get_dht_data(ctx):
@@ -588,19 +594,19 @@ def get_dht_data(ctx):
             ctx.redis_db.expire('DHT', read_interval * 3)
 
             if verbose:
-                logger.info(f"{dht_type} Temperature: {temperature:.1f}°C")
-                logger.info(f"{dht_type} Humidity: {humidity}%")
+                logger.info("%s Temperature: %.1f°C", dht_type, temperature)
+                logger.info("%s Humidity: %s%%", dht_type, humidity)
 
             delay = max(delay - 1, 0)
 
         except OverflowError as err:
             if debug == 'yes':
-                logger.info(f'Problem with DHT sensor: {err}')
+                logger.info('Problem with DHT sensor: %s', err)
             delay += 1
 
         except RuntimeError as err:
             if debug == 'yes':
-                logger.info(f'Problem with DHT sensor - {err}')
+                logger.info('Problem with DHT sensor: %s', err)
             delay += 1
 
         except Exception as err:
@@ -609,7 +615,7 @@ def get_dht_data(ctx):
 
         finally:
             if debug == 'yes':
-                logger.info(f'DHT delay: {delay}')
+                logger.info('DHT delay: %s', delay)
 
             ctx.redis_db.set('DHT_delay', delay)
             sleep(read_interval + delay)
@@ -665,7 +671,7 @@ def rainfall(ctx):
         daily_rainfall = round(math.fsum(rainfalls), 1)
 
         if verbose:
-            logger.info(f'Rainfall: {rainfall_value}mm, Daily rainfall: {daily_rainfall}mm')
+            logger.info("Rainfall: %s mm, Daily rainfall: %s mm", rainfall_value, daily_rainfall)
 
         ctx.redis_db.hset('WEATHER', 'daily_rainfall', daily_rainfall)
         ctx.redis_db.hset('WEATHER', 'rainfall', rainfall_value)
@@ -755,11 +761,16 @@ def wind_speed(ctx):
 
         if verbose:
             logger.info(
-                f"Wind speed: {speed} km/h, "
-                f"Wind gust: {wind_gust} km/h, "
-                f"Daily wind gust: {daily_gust} km/h, "
-                f"Average wind speed: {avg_speed} km/h, "
-                f"Daily average wind speed: {daily_avg_speed} km/h"
+                "Wind speed: %s km/h, "
+                "Wind gust: %s km/h, "
+                "Daily wind gust: %s km/h, "
+                "Average wind speed: %s km/h, "
+                "Daily average wind speed: %s km/h",
+                speed,
+                wind_gust,
+                daily_gust,
+                avg_speed,
+                daily_avg_speed,
             )
 
 
@@ -883,7 +894,7 @@ def wind_direction(ctx):
                 elif adc_type == 'ADS1115':
                     adc_values = adc_ads1115()
                 else:
-                    logger.error(f"Unknown ADC type: {adc_type}")
+                    logger.error("Unknown ADC type: %s", adc_type)
                     sleep(1)
                     continue
             except Exception as err:
@@ -911,7 +922,7 @@ def wind_direction(ctx):
             avg_dir = int(round(get_average(angles), 0))
 
             if verbose:
-                logger.info(f'Average Wind Direction: {avg_dir}')
+                logger.info('Average Wind Direction: %s', avg_dir)
 
             ctx.redis_db.hset('WEATHER', 'wind_direction', key)
             ctx.redis_db.hset('WEATHER', 'average_wind_direction', avg_dir)
@@ -919,7 +930,7 @@ def wind_direction(ctx):
 
 def read_bme280(ctx, sid, default=None):
     raw = ctx.redis_db.hgetall(f"{sid}_BME280")
-    #logger.info(f'{raw}')
+    #logger.info('%s', raw)
 
     if not raw:
         return {
@@ -987,21 +998,22 @@ def serial_displays(ctx):
             )
 
         else:
-            logger.error(f"Unknown serial display type: {display_type}")
+            logger.error("Unknown serial display type: %s", display_type)
             return
 
         data_refresh_rate = 1
         last_fetch = 0
-        # main display loop 
+        # main display loop
         while True:
             now = time()
-            if now - last_fetch >= 1/data_refresh_rate: 
+            if now - last_fetch >= 1/data_refresh_rate:
                 sid = 'id3'
 
                 # reading data from Redis
                 bme280 = read_bme280(ctx,sid)
                 t,h,p = bme280["temperature"],bme280["humidity"],bme280["pressure"]
-                #logger.info(f'{bme280}')
+                #logger.info('%s',bme280)
+
                 # door and motion
                 values = ctx.redis_db.hgetall('GPIO')
                 doors_opened = any(v == 'open' for v in values.values())
@@ -1116,8 +1128,7 @@ def db_connect(dbhost, dbnum):
         return redis_db
     except Exception as err:
         logger.error(err)
-        error = f"Can't connect to RedisDB host: {dbhost}"
-        logger.error(error)
+        logger.error("Can't connect to RedisDB host: %s", dbhost)
         sys.exit(1)
 
 
@@ -1128,8 +1139,7 @@ def config_load(path_to_config):
         return config_yaml
     except Exception as err:
         logger.error(err)
-        error = f"Can't load RPiMS config file: {path_to_config}"
-        logger.error(error)
+        logger.error = ("Can't load RPiMS config file: %s", path_to_config)
         sys.exit(1)
 
 
@@ -1156,10 +1166,9 @@ def main():
 
     if ctx.config.get('verbose'):
         for k, v in ctx.config.items():
-            logger.info(f'{k} = {v}')
+            logger.info('%s = %s', k, v)
         for k, v in ctx.zabbix_agent.items():
-            logger.info(f'{k} = {v}')
-        logger.info('')
+            logger.info('%s = %s', k, v)
 
     # hardware initialization
     ctx.door_sensors = init_door_sensors(ctx)
