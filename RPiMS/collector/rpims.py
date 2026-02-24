@@ -241,7 +241,6 @@ def detect_no_alarms(ctx):
 
 
 def av_stream(state):
-    # _cmd = '../scripts/videostreamer.sh' + " " + state
     _cmd = f'sudo systemctl {state} mediamtx.service'
     subprocess.call(_cmd, shell=True)
 
