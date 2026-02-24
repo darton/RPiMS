@@ -410,7 +410,8 @@ def get_bme280_data(sensor_ctx):
         try:
             serial_port = rpi_serial_ports_by_path.get(rpimodel).get(usbport)
         except:
-            sys.exit('Unknown serial device')
+            logger.error('Unknown serial device')
+            sys.exit(1)
 
         lecounter = 0
         necounter = 0
@@ -806,21 +807,27 @@ def adc_automationphat():
         return adc_inputs_values
     except Exception as err:
         logger.error(err)
-        return [0, 0, 0]
-        sys.exit('automationphat is not detected')
+        logger.error('automationphat is not detected')
+        sys.exit(1)
 
 
 def adc_ads1115():
-    # Create the I2C bus
-    i2c = busio.I2C(board.SCL, board.SDA)
-    # Create the ADC object using the I2C bus
-    ads = ADS.ADS1115(i2c)
-    chan1 = AnalogIn(ads, ADS.P0)
-    chan2 = AnalogIn(ads, ADS.P1)
-    chan3 = AnalogIn(ads, ADS.P2)
-    chan4 = AnalogIn(ads, ADS.P3)
-    adc_inputs_values = [chan1.voltage, chan2.voltage, chan3.voltage, chan4.voltage]
-    return adc_inputs_values
+    try:
+        # Create the I2C bus
+        i2c = busio.I2C(board.SCL, board.SDA)
+        # Create the ADC object using the I2C bus
+        ads = ADS.ADS1115(i2c)
+        chan1 = AnalogIn(ads, ADS.P0)
+        chan2 = AnalogIn(ads, ADS.P1)
+        chan3 = AnalogIn(ads, ADS.P2)
+        chan4 = AnalogIn(ads, ADS.P3)
+        adc_inputs_values = [chan1.voltage, chan2.voltage, chan3.voltage, chan4.voltage]
+        return adc_inputs_values
+    except Exception as err:
+        logger.error(err)
+        logger.error('adc_ads1115 is not detected')
+        sys.exit(1)
+
 
 
 def wind_direction(ctx):
@@ -1024,17 +1031,6 @@ def serial_displays(ctx):
                 last_fetch = now
 
             # drawing
-            """
-            with canvas(device) as draw:
-                if display_type == 'oled_sh1106':
-                    draw.text((x, top),       f'IP:{hostip}', font=font, fill=255)
-                    draw.text((x, top+9),     f'Temperature..{t}°C', font=font, fill=255)
-                    draw.text((x, top+18),    f'Humidity.....{h}%', font=font, fill=255)
-                    draw.text((x, top+27),    f'Pressure.....{p}hPa', font=font, fill=255)
-                    draw.text((x, top+36),    f'Door.........{door_sensors}', font=font, fill=255)
-                    draw.text((x, top+45),    f'Motion.......{motion_sensors}', font=font, fill=255)
-                    draw.text((x, top+54),    f'CpuTemp......{cputemp}°C', font=font, fill=255)
-            """
             label_x = 0
             value_x = 77
 
@@ -1133,7 +1129,7 @@ def db_connect(dbhost, dbnum):
         logger.error(err)
         error = f"Can't connect to RedisDB host: {dbhost}"
         logger.error(error)
-        sys.exit(error)
+        sys.exit(1)
 
 
 def config_load(path_to_config):
@@ -1145,7 +1141,7 @@ def config_load(path_to_config):
         logger.error(err)
         error = f"Can't load RPiMS config file: {path_to_config}"
         logger.error(error)
-        sys.exit(error)
+        sys.exit(1)
 
 
 def main():
@@ -1266,4 +1262,4 @@ if __name__ == '__main__':
         logger.info('# RPiMS is stopped #')
     except Exception as err:
         logger.error(err)
-        sys.exit(err)
+        sys.exit(1)
