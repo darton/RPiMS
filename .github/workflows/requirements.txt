@@ -1,7 +1,7 @@
 RPi.bme280
 smbus2
 w1thermsensor
-"redis[hiredis]"
+redis[hiredis]
 PyYAML
 ruamel.yaml
 luma.oled
