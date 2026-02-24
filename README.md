@@ -48,7 +48,7 @@ This machine acts as the **Ansible control node**, which will remotely install R
 ### 1. Clone the repository
 
 ```bash
-git clone --branch v4 https://github.com/darton/RPiMS.git
+git clone https://github.com/darton/RPiMS.git
 cd RPiMS
 ```
 
@@ -108,7 +108,7 @@ The playbook will:
 http://rpiipaddress/setup
 ```
 
-![RPiMS setup](https://github.com/darton/RPiMS/blob/v4/documentation/RPiMS_SETUP.png)
+![RPiMS setup](https://github.com/darton/RPiMS/blob/main/documentation/RPiMS_SETUP.png)
 
 ### Start/Stop RPiMS
 
@@ -120,8 +120,8 @@ sudo systemclt stop rpims.service
 ### Zabbix
 
 You need to import this templates into Zabbix: 
-https://github.com/darton/RPiMS/blob/v4/templates/rpims_zabbix_host_template.xml
-https://github.com/darton/RPiMS/blob/v4/templates/rpims_zabbix_template.xml 
+https://github.com/darton/RPiMS/blob/main/templates/rpims_zabbix_host_template.xml
+https://github.com/darton/RPiMS/blob/main/templates/rpims_zabbix_template.xml 
 
 In rpims_zabbix_template.xml template, the appropriate zabbix triggers for the temperature, humidity and door sensors are configured.
 Door sensor triggering is pre-configured for GPIO_20, GPIO_21 only, if you need more, please do trigger clone.
@@ -132,7 +132,7 @@ RPiMS (rpims.py) uses zabbix_sender.sh to activate the appropriate triggers in z
 ```
 http://rpiipaddress
 ```
-![RPiMS](https://github.com/darton/RPiMS/blob/v4/documentation/RPiMS_MAIN.png)
+![RPiMS](https://github.com/darton/RPiMS/blob/main/documentation/RPiMS_MAIN.png)
 
 
 ## Known issues
@@ -152,7 +152,7 @@ RPi    [GND - Pin 9] ----------------------------- [GND]  BME280
 
 If you want to use BME280 sensor on long cable, copy two files
 
-[main.py](https://raw.githubusercontent.com/darton/RPiMS/v4/pico/BME280/main.py) and [bme280_float.py](https://raw.githubusercontent.com/darton/RPiMS/v4/pico/BME280/bme280_float.py) from pico directory, to RPi Pico.
+[main.py](https://raw.githubusercontent.com/darton/RPiMS/master/pico/BME280/main.py) and [bme280_float.py](https://raw.githubusercontent.com/darton/RPiMS/master/pico/BME280/bme280_float.py) from pico directory, to RPi Pico.
 
 Connect the BME280 sensor to the i2C RPi Pico port:
 
@@ -171,7 +171,7 @@ Connect the RPi with the RPi Pico together with the USB cable.
 BME280 [i2c] <-- 4 wire cable --> [i2C] Raspberry Pi Pico [USB] <-- USB cable -->  Raspberry Pi [USB]
 ```
 
-Select [USB port number](https://raw.githubusercontent.com/darton/RPiMS/v4/documentation/RPiMS-RPi-USB.png) in RPiMS configuration for the BME280 sensor.
+Select [USB port number](https://raw.githubusercontent.com/darton/RPiMS/main/documentation/RPiMS-RPi-USB.png) in RPiMS configuration for the BME280 sensor.
 
 
 - ### DS18B20 Temperature sensor
