@@ -947,7 +947,7 @@ def read_bme280(ctx, sid, default=None):
     def to_float(v):
         try:
             return float(v)
-        except:
+        except (ValueError, TypeError):
             return default
 
     temp = to_float(raw.get("temperature"))
