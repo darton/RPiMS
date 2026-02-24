@@ -605,13 +605,13 @@ def setup():
 
 @app.errorhandler(404)
 def handle_404(error):
-    logger.error("404 Not Found: %s", flask.request.path)
+    logger.error("404 Not Found: %s - %s", flask.request.path, error)
     return error_response("Resource not found", 404)
 
 
 @app.errorhandler(400)
 def handle_400(error):
-    logger.error("400 Bad Request: %s", flask.request.path)
+    logger.error("400 Bad Request: %s - %s", flask.request.path, error)
     return error_response("Bad request", 400)
 
 
