@@ -13,18 +13,28 @@
 #  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #  GNU General Public License for more details.
 
+import logging
 import sys
-import redis
 import json
+import redis
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="RPiMS-redis-get-data: %(levelname)s: %(message)s",
+    stream=sys.stdout
+)
+
+logger = logging.getLogger("RPiMS-redis-get-data")
 
 redis_db = redis.StrictRedis(host="localhost", port=6379, db=0, decode_responses=True)
 
 rpims = json.loads(redis_db.get('rpims'))
+
 config = rpims['setup']
 
 
 def print_help():
-    print('You must use one parameter from list BME280 id (where id is 1, 2 or 3), DHT, CPUTEMP, DS18B20, ds18b20 address')
+    logger.info('You must use one parameter from list BME280 id (where id is 1, 2 or 3), DHT, CPUTEMP, DS18B20, ds18b20 address')
 
 
 if len(sys.argv) > 1:
@@ -37,7 +47,7 @@ if len(sys.argv) > 1:
                     temperature = _bme280['temperature']
                     humidity = _bme280['humidity']
                     pressure = _bme280['pressure']
-                    print('Temperature={0:0.2f}; \
+                    logger.info('Temperature={0:0.2f}; \
                           Humidity={1:0.2f}; \
                           Pressure={2:0.2f};'
                           .format(float(temperature), float(humidity), float(pressure)))
@@ -48,7 +58,7 @@ if len(sys.argv) > 1:
         if config['use_ds18b20_sensor'] is True:
             ds18b20_sensors = redis_db.hgetall('DS18B20')
             for sensor_id, sensor_value in ds18b20_sensors.items():
-                print(sensor_id + '={0:0.2f}'.format(float(sensor_value)), end=';')
+                logger.info(sensor_id + '={0:0.2f}'.format(float(sensor_value)), end=';')
 
     elif sys.argv[1] == 'ds18b20':
         if config['use_ds18b20_sensor'] is True:
@@ -56,7 +66,7 @@ if len(sys.argv) > 1:
                 onewire_addr = sys.argv[2]
                 ds18b20_sensors = redis_db.hgetall('DS18B20')
                 if ds18b20_sensors[onewire_addr]:
-                    print(ds18b20_sensors[onewire_addr])
+                    logger.info(ds18b20_sensors[onewire_addr])
             else:
                 print_help()
 
@@ -66,12 +76,12 @@ if len(sys.argv) > 1:
                 dht = redis_db.hgetall('DHT')
                 temperature = dht['temperature']
                 humidity = dht['humidity']
-                print('Temperature={0:0.2f};Humidity={1:0.2f};'.format(float(temperature), float(humidity)))
+                logger.info('Temperature={0:0.2f};Humidity={1:0.2f};'.format(float(temperature), float(humidity)))
 
     elif sys.argv[1] == 'CPUTEMP':
         if config['use_cpu_sensor'] is True:
             if redis_db.exists('CPU_Temperature'):
                 temperature = redis_db.get('CPU_Temperature')
-                print('CPUTemperature' + '={0:0.2f};'.format(float(temperature)))
+                logger.info('CPUTemperature' + '={0:0.2f};'.format(float(temperature)))
 else:
     print_help()
