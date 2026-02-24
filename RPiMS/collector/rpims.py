@@ -19,14 +19,14 @@ import os
 import sys
 import datetime
 import math
-import multiprocessing
+import json
+#import multiprocessing
 import threading
 import setproctitle
 import statistics
 import subprocess
 from signal import pause
 from time import time, sleep
-import json
 import yaml
 import redis
 import smbus2
