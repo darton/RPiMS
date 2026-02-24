@@ -13,12 +13,11 @@ jobs:
     - name: Create virtual environment
       run: |
         python3 -m venv .venv --system-site-packages
-        source .venv/bin/activate
-        pip install --upgrade pip
-        pip install -r .github/workflows/requirements.txt
-        pip install pylint
+        .venv/bin/pip install --upgrade pip
+        .venv/bin/pip install -r .github/workflows/requirements.txt
+        .venv/bin/pip install pylint
 
     - name: Run pylint
       run: |
-        source .venv/bin/activate
-        pylint $(git ls-files '*.py')
+        .venv/bin/pylint $(git ls-files '*.py')
+
