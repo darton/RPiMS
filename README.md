@@ -152,7 +152,7 @@ RPi    [GND - Pin 9] ----------------------------- [GND]  BME280
 
 If you want to use BME280 sensor on long cable, copy two files
 
-[main.py](https://raw.githubusercontent.com/darton/RPiMS/master/pico/BME280/main.py) and [bme280_float.py](https://raw.githubusercontent.com/darton/RPiMS/master/pico/BME280/bme280_float.py) from pico directory, to RPi Pico.
+[main.py](https://raw.githubusercontent.com/darton/BME280USB/refs/heads/main/main.py) and [bme280_float.py](https://raw.githubusercontent.com/darton/BME280USB/refs/heads/main/bme280_float.py) from pico directory, to RPi Pico.
 
 Connect the BME280 sensor to the i2C RPi Pico port:
 
