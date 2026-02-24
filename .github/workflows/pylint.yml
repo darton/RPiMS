@@ -15,7 +15,7 @@ jobs:
         python3 -m venv .venv
         source .venv/bin/activate
         pip install --upgrade pip
-        pip install -r requirements.txt
+        pip install -r .github/workflows/requirements.txt
         pip install pylint
 
     - name: Run pylint
