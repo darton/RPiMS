@@ -23,13 +23,13 @@ import multiprocessing
 import threading
 import setproctitle
 import statistics
-import redis
-import smbus2
 import subprocess
 from signal import pause
 from time import time, sleep
 import json
 import yaml
+import redis
+import smbus2
 import serial
 from serial.serialutil import SerialException
 import usb.core
