@@ -22,27 +22,3 @@ jobs:
       run: |
         source .venv/bin/activate
         pylint $(git ls-files '*.py')
-name: Pylint
-
-on: [push]
-
-jobs:
-  build:
-    runs-on: [self-hosted, rpi, arm64]
-    if: github.actor == 'darton'
-
-    steps:
-    - uses: actions/checkout@v4
-
-    - name: Create virtual environment
-      run: |
-        python3 -m venv .venv
-        source .venv/bin/activate
-        pip install --upgrade pip
-        pip install -r requirements.txt
-        pip install pylint
-
-    - name: Run pylint
-      run: |
-        source .venv/bin/activate
-        pylint $(git ls-files '*.py')
