@@ -295,7 +295,7 @@ def get_cputemp_data(ctx):
 
 def get_bme280_data(sensor_ctx):
     # pylint: disable=import-outside-toplevel
-    import bme280
+    import bme280 # type: ignore
     app = sensor_ctx.app
     redis_db = app.redis_db
     verbose = app.config.get('verbose')
@@ -310,7 +310,7 @@ def get_bme280_data(sensor_ctx):
     if interface_type == 'i2c':
         try:
             # pylint: disable=import-outside-toplevel
-            import smbus2
+            import smbus2 # pyright: ignore[reportMissingImports]
             port = 1
             address = cfg.get('i2c_address')
             bus = smbus2.SMBus(port)
@@ -538,7 +538,7 @@ def get_bme280_data(sensor_ctx):
 
 def get_ds18b20_data(ctx):
     # pylint: disable=import-outside-toplevel
-    from w1thermsensor import W1ThermSensor
+    from w1thermsensor import W1ThermSensor # type: ignore
     verbose = ctx.config.get('verbose')
     read_interval = ctx.ds18b20_config.get('read_interval')
 
@@ -565,7 +565,7 @@ def get_ds18b20_data(ctx):
 
 def get_dht_data(ctx):
     # pylint: disable=import-outside-toplevel
-    import adafruit_dht
+    import adafruit_dht # type: ignore
     verbose = ctx.config.get('verbose')
     read_interval = ctx.dht_config.get('read_interval')
     dht_type = ctx.dht_config.get('type')
@@ -771,7 +771,7 @@ def wind_speed(ctx):
 
 
 def adc_stm32f030():
-    from grove.i2c import Bus
+    from grove.i2c import Bus # type: ignore
     ADC_DEFAULT_IIC_ADDR = 0X04
     ADC_CHAN_NUM = 8
 
@@ -806,7 +806,7 @@ def adc_stm32f030():
 
 def adc_automationphat():
     # pylint: disable=import-outside-toplevel
-    import automationhat
+    import automationhat # type: ignore
     sleep(0.1)  # Delay for automationhat
     return [automationhat.analog.one.read(), automationhat.analog.two.read(),
             automationhat.analog.three.read()]
@@ -814,19 +814,19 @@ def adc_automationphat():
 
 def adc_ads1115():
     # pylint: disable=import-outside-toplevel
-    import adafruit_ads1x15.ads1115 as ADS
-    from adafruit_ads1x15.analog_in import AnalogIn
-    import busio
-    import board
+    import adafruit_ads1x15.ads1115 as ADS # type: ignore
+    import adafruit_ads1x15.analog_in # type: ignore
+    import busio # type: ignore
+    import board # type: ignore
 
     # Create the I2C bus
     i2c = busio.I2C(board.SCL, board.SDA)
     # Create the ADC object using the I2C bus
     ads = ADS.ADS1115(i2c)
-    chan1 = AnalogIn(ads, ADS.P0)
-    chan2 = AnalogIn(ads, ADS.P1)
-    chan3 = AnalogIn(ads, ADS.P2)
-    chan4 = AnalogIn(ads, ADS.P3)
+    chan1 = adafruit_ads1x15.analog_in.AnalogIn(ads, ADS.P0)
+    chan2 = adafruit_ads1x15.analog_in.AnalogIn(ads, ADS.P1)
+    chan3 = adafruit_ads1x15.analog_in.AnalogIn(ads, ADS.P2)
+    chan4 = adafruit_ads1x15.analog_in.AnalogIn(ads, ADS.P3)
     adc_inputs_values = [chan1.voltage, chan2.voltage, chan3.voltage, chan4.voltage]
     return adc_inputs_values
 
@@ -963,11 +963,11 @@ def read_bme280(ctx, sid, default=None):
 
 def serial_displays(ctx):
     # pylint: disable=import-outside-toplevel
-    from luma.core.interface.serial import i2c, spi
-    from luma.core.render import canvas
-    from luma.oled.device import sh1106
-    from luma.lcd.device import st7735
-    from PIL import ImageFont
+    from luma.core.interface.serial import i2c, spi # type: ignore
+    from luma.core.render import canvas # type: ignore
+    from luma.oled.device import sh1106 # type: ignore
+    from luma.lcd.device import st7735 # type: ignore
+    from PIL import ImageFont # type: ignore
 
     display_type = ctx.config.get('serial_display_type')
     rotate = ctx.config.get('serial_display_rotate')
@@ -1077,13 +1077,13 @@ def serial_displays(ctx):
                     draw.text((x+35, top), 'R P i M S', font=font, fill="cyan")
 
                     draw.text((x, top+15), ' Temperature', font=font, fill="lime")
-                    draw.text((x+77, top+15), f'{temperature} *C', font=font, fill="lime")
+                    draw.text((x+77, top+15), f'{t} *C', font=font, fill="lime")
 
                     draw.text((x, top+28), ' Humidity', font=font, fill="lime")
-                    draw.text((x+77, top+28), f'{humidity} %', font=font, fill="lime")
+                    draw.text((x+77, top+28), f'{h} %', font=font, fill="lime")
 
                     draw.text((x, top+41), ' Pressure', font=font, fill="lime")
-                    draw.text((x+77, top+41), f'{pressure} hPa', font=font, fill="lime")
+                    draw.text((x+77, top+41), f'{p} hPa', font=font, fill="lime")
 
                     draw.text((x, top+57), ' Door', font=font, fill="yellow")
                     draw.text((x+77, top+57), door_sensors, font=font, fill="yellow")
@@ -1107,7 +1107,7 @@ def serial_displays(ctx):
 
 def set_process_name_and_run(function_name, **kwargs):
     # pylint: disable=import-outside-toplevel
-    import setproctitle
+    import setproctitle # type: ignore
     process_name = function_name.__name__
     setproctitle.setproctitle(process_name)
     function_name(**kwargs)
