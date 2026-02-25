@@ -27,6 +27,7 @@ apt_packages:
   - python3-numpy
   - python3-gpiozero
   - python3-lgpio
+  - python3-redis
   - python3-rpi-lgpio
   - python3-picamera2
   - python3-systemd
