@@ -29,10 +29,6 @@ logging.basicConfig(
     format="RPiMS: %(levelname)s: %(message)s"
 )
 
-app = flask.Flask("RPiMS")
-logger = app.logger
-
-
 # =========================
 # Configuration & Constants
 # =========================
@@ -52,7 +48,7 @@ app.config.update(
     JSON_AS_ASCII=False,
     JSONIFY_MIMETYPE="application/json; charset=utf-8",
 )
-
+logger = app.logger
 
 # ============
 # Redis helper
