@@ -48,23 +48,15 @@ app.config.update(
     JSON_AS_ASCII=False,
     JSONIFY_MIMETYPE="application/json; charset=utf-8",
 )
+
 logger = app.logger
 
-# ============
-# Redis helper
-# ============
-
-def get_redis():
-    """Return a Redis connection instance."""
-    return redis.StrictRedis(
-        host="localhost",
-        port=6379,
-        db=0,
-        decode_responses=True
-    )
-
-
-redis_db = get_redis()
+app.config["REDIS_DB"] = redis.StrictRedis(
+    host="localhost",
+    port=6379,
+    db=0,
+    decode_responses=True
+)
 
 
 # ==============================================
@@ -249,7 +241,7 @@ def get_sensors(redis_db, config):
 # Data aggregation
 # ================
 
-def get_data():
+def get_data(redis_db):
     rpims_raw = redis_db.get("rpims")
     rpims = json.loads(rpims_raw) if rpims_raw else {"zabbix_agent": {}}
 
@@ -417,7 +409,8 @@ def write_zabbix_config(agent):
 
 @app.route("/")
 def home():
-    return flask.render_template("index.html", data=get_data())
+    redis_db = flask.current_app.config["REDIS_DB"]
+    return flask.render_template("index.html", data=get_data(redis_db))
 
 
 @app.route("/api/")
@@ -427,7 +420,8 @@ def api():
 
 @app.route("/api/data/all")
 def api_json():
-    return json_response(get_data())
+    redis_db = flask.current_app.config["REDIS_DB"]
+    return json_response(get_data(redis_db))
 
 
 SENSOR_MAP = {
@@ -443,7 +437,8 @@ SENSOR_MAP = {
 
 @app.route("/api/data/sensors/<sensor_type>")
 def api_sensors_json(sensor_type):
-    data = get_data()
+    redis_db = flask.current_app.config["REDIS_DB"]
+    data = get_data(redis_db)
 
     if sensor_type == "all":
         return json_response(data["sensors"])
@@ -460,7 +455,8 @@ def api_sensors_json(sensor_type):
 
 @app.route("/api/data/<data_type>")
 def api_types_json(data_type):
-    data = get_data()
+    redis_db = flask.current_app.config["REDIS_DB"]
+    data = get_data(redis_db)
 
     if data_type not in ("config", "system", "sensors"):
         return error_response("Unknown data type", 404)
@@ -474,6 +470,7 @@ def api_types_json(data_type):
 
 @app.route("/setup/", methods=["GET", "POST"])
 def setup():
+    redis_db = flask.current_app.config["REDIS_DB"]
     try:
         config_cm = load_yaml_preserve(CONFIG_PATH)
         config = to_plain_dict(config_cm) if config_cm is not None else {}
@@ -571,7 +568,6 @@ def setup():
 
         # --- Write Zabbix config ---
         write_zabbix_config(zabbix_agent)
-
         try:
             with open(ZABBIX_PSK, "w", encoding="utf-8") as f:
                 f.write(zabbix_agent.get("TLSPSK", "") or "")
