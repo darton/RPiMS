@@ -813,22 +813,29 @@ def adc_automationphat():
 
 
 def adc_ads1115():
-    # pylint: disable=import-outside-toplevel
-    import adafruit_ads1x15.ads1115 as ADS # type: ignore
-    import adafruit_ads1x15.analog_in # type: ignore
-    import busio # type: ignore
-    import board # type: ignore
+    import board
+    import busio
+    from adafruit_ads1x15 import ADS1115, AnalogIn, ads1x15
 
-    # Create the I2C bus
+    # I2C bus
     i2c = busio.I2C(board.SCL, board.SDA)
-    # Create the ADC object using the I2C bus
-    ads = ADS.ADS1115(i2c)
-    chan1 = adafruit_ads1x15.analog_in.AnalogIn(ads, ADS.P0)
-    chan2 = adafruit_ads1x15.analog_in.AnalogIn(ads, ADS.P1)
-    chan3 = adafruit_ads1x15.analog_in.AnalogIn(ads, ADS.P2)
-    chan4 = adafruit_ads1x15.analog_in.AnalogIn(ads, ADS.P3)
-    adc_inputs_values = [chan1.voltage, chan2.voltage, chan3.voltage, chan4.voltage]
-    return adc_inputs_values
+
+    # ADC object
+    ads = ADS1115(i2c)
+    ads.gain = 1  # typical
+
+    # Channels A0–A3
+    chan0 = AnalogIn(ads, ads1x15.Pin.A0)
+    chan1 = AnalogIn(ads, ads1x15.Pin.A1)
+    chan2 = AnalogIn(ads, ads1x15.Pin.A2)
+    chan3 = AnalogIn(ads, ads1x15.Pin.A3)
+
+    return [
+        chan0.voltage,
+        chan1.voltage,
+        chan2.voltage,
+        chan3.voltage
+    ]
 
 
 def wind_direction(ctx):
