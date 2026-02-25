@@ -16,7 +16,8 @@ disable=
     too-many-return-statements,
     invalid-name,
     duplicate-code,
-    import-outside-toplevel
+    import-outside-toplevel,
+    suppressed-message
 
 [MESSAGES CONTROL]
 enable=all
