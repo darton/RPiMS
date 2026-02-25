@@ -42,12 +42,14 @@ MEDIAMTX_CONFIG = "/etc/mediamtx/mediamtx.yml"
 
 # Flask app initialization
 app = flask.Flask(__name__)
+
 app.config.update(
-    SECRET_KEY="b8f475757df5dc1cabfed8aee1ca84a6",
     DEBUG=True,
     JSON_AS_ASCII=False,
     JSONIFY_MIMETYPE="application/json; charset=utf-8",
 )
+
+app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY", "dev-key")
 
 logger = app.logger
 
@@ -57,7 +59,6 @@ app.config["REDIS_DB"] = redis.StrictRedis(
     db=0,
     decode_responses=True
 )
-
 
 # ==============================================
 # YAML helpers (ruamel.yaml, preserves comments)
