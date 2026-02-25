@@ -110,11 +110,17 @@ http://rpiipaddress/setup
 
 ![RPiMS setup](https://github.com/darton/RPiMS/blob/main/documentation/RPiMS_SETUP.png)
 
-### Start/Stop RPiMS
+### Main page
 
 ```
-sudo systemctl start rpims.service
-sudo systemclt stop rpims.service
+http://rpiipaddress
+```
+![RPiMS](https://github.com/darton/RPiMS/blob/main/documentation/RPiMS_MAIN.png)
+
+### Systemd services used:
+```
+rpims.service, rpims-gunicorn.service, rpims-watcher.service, rpims-watcher.path,
+redis.service, nginx.service, zabbix-agent
 ```
 
 ### Zabbix
@@ -126,13 +132,6 @@ https://github.com/darton/RPiMS/blob/main/templates/rpims_zabbix_template.xml
 In rpims_zabbix_template.xml template, the appropriate zabbix triggers for the temperature, humidity and door sensors are configured.
 Door sensor triggering is pre-configured for GPIO_20, GPIO_21 only, if you need more, please do trigger clone.
 RPiMS (rpims.py) uses zabbix_sender.sh to activate the appropriate triggers in zabbix for the door sensors.
-
-### Main page
-
-```
-http://rpiipaddress
-```
-![RPiMS](https://github.com/darton/RPiMS/blob/main/documentation/RPiMS_MAIN.png)
 
 
 ## Known issues
