@@ -1,8 +1,58 @@
 [MASTER]
+ignore=venv,tests,migrations
+jobs=2
+load-plugins=
+    pylint.extensions.docparams
+
 disable=
-    missing-function-docstring,
     missing-module-docstring,
-    missing-class-docstring
+    missing-class-docstring,
+    missing-function-docstring,
+    too-few-public-methods,
+    too-many-arguments,
+    too-many-locals,
+    too-many-branches,
+    too-many-statements,
+    too-many-return-statements,
+    invalid-name,
+    duplicate-code,
+    import-outside-toplevel
 
 [MESSAGES CONTROL]
 enable=all
+
+[FORMAT]
+max-line-length=120
+indent-string='    '
+max-module-lines=2000
+
+[BASIC]
+good-names=i,j,k,ex,db,app,_,id
+bad-names=foo,bar,baz
+
+[TYPECHECK]
+ignored-modules=flask,flask_sqlalchemy
+generated-members=flask.*,flask_sqlalchemy.*
+
+[DESIGN]
+max-args=10
+max-locals=25
+max-returns=10
+max-branches=20
+max-statements=80
+
+[REPORTS]
+reports=no
+output-format=text
+
+[LOGGING]
+logging-modules=logging
+
+[REFACTORING]
+max-nested-blocks=5
+
+[SIMILARITIES]
+min-similarity-lines=6
+ignore-comments=yes
+ignore-docstrings=yes
+ignore-imports=yes
