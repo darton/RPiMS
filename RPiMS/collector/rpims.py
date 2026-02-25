@@ -921,16 +921,14 @@ def wind_direction(ctx):
             for key, ref_r in direction_mapr.items():
                 if ref_r * 0.995 <= r2 <= ref_r * 1.005:
                     angles.append(direction_mapa[key])
+                    ctx.redis_db.hset('WEATHER', 'wind_direction', key)
 
         # calculation of the average direction
         if angles:
             avg_dir = int(round(get_average(angles), 0))
-
+            ctx.redis_db.hset('WEATHER', 'average_wind_direction', avg_dir)
             if verbose:
                 logger.info('Average Wind Direction: %s', avg_dir)
-
-            ctx.redis_db.hset('WEATHER', 'wind_direction', key)
-            ctx.redis_db.hset('WEATHER', 'average_wind_direction', avg_dir)
 
 
 def read_bme280(ctx, sid, default=None):
