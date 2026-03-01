@@ -8,21 +8,17 @@
     mode: '0640'
   notify: Restart zabbix-agent
   become: true
-  tags:
-    - zabbix
 
 - name: Generate TLSPSKIdentity
   set_fact:
     TLSPSKIdentity: "{{ lookup('password', '/dev/null', length=16, chars='abcdef0123456789') }}"
   tags:
     - tlspski
-    - zabbix
 
 - debug:
     var: TLSPSKIdentity
   tags:
     - tlspski
-    - zabbix
 
 - name: Update TLSPSKIdentity in rpims.yaml
   lineinfile:
@@ -31,7 +27,6 @@
     line: "  TLSPSKIdentity: {{ TLSPSKIdentity }}"
   tags:
     - tlspski
-    - zabbix
 
 - name: Update TLSPSKIdentity in zabbix_rpims.conf
   lineinfile:
@@ -40,20 +35,17 @@
     line: "TLSPSKIdentity={{ TLSPSKIdentity }}"
   tags:
     - tlspski
-    - zabbix
 
 - name: Generate TLSPSK
   set_fact:
     TLSPSK: "{{ lookup('password', '/dev/null', length=64, chars='abcdef0123456789') }}"
   tags:
     - tlspsk
-    - zabbix
 
 - debug:
     var: TLSPSK
   tags:
     - tlspsk
-    - zabbix
 
 - name: Update TLSPSK in rpims.yaml
   lineinfile:
@@ -62,7 +54,6 @@
     line: "  TLSPSK: {{ TLSPSK }}"
   tags:
     - tlspsk
-    - zabbix
 
 - name: Write TLSPSK to zabbix_rpims.psk
   copy:
@@ -73,7 +64,6 @@
     group: zabbix
   tags:
     - tlspsk
-    - zabbix
 
 - name: Write zabbix-agent config file
   template:
@@ -84,8 +74,6 @@
     mode: '0640'
   notify: Restart zabbix-agent
   become: true
-  tags:
-    - zabbix
 
 - name: Write zabbix_rpims_userparameter.conf config file
   template:
@@ -96,5 +84,3 @@
     mode: '0640'
   notify: Restart zabbix-agent
   become: true
-  tags:
-    - zabbix

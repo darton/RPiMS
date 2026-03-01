@@ -11,7 +11,7 @@ User={{ rpims_user }}
 Group={{ rpims_user }}
 
 WorkingDirectory={{ rpims_install_dir }}/collector
-ExecStart={{ rpims_user_homedir }}/.venv/bin/python {{ rpims_install_dir }}/collector/rpims.py
+ExecStart={{ rpims_user_homedir }}/.env/bin/python {{ rpims_install_dir }}/collector/rpims.py
 
 RuntimeDirectory={{ rpims_user }}
 RuntimeDirectoryMode=0755

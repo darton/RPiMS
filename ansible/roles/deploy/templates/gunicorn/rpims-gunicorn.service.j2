@@ -13,7 +13,7 @@ Group={{ rpims_user }}
 Environment="RPIMS_DIR={{ rpims_install_dir }}"
 Environment="SECRET_KEY={{ rpims_app_secret_key }}"
 WorkingDirectory={{ rpims_install_dir }}/app/
-ExecStart={{ rpims_user_homedir }}/.venv/bin/gunicorn --workers 4 wsgi:app --bind 127.0.0.1:8000
+ExecStart={{ rpims_user_homedir }}/.env/bin/gunicorn --workers 4 wsgi:app --bind 127.0.0.1:8000
 KillSignal=SIGTERM
 TimeoutStopSec=5
 SendSIGKILL=yes

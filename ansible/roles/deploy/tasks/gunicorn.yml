@@ -17,4 +17,3 @@
     - Reload systemd
     - Enable and start rpims-gunicorn.service
   become: true
-
