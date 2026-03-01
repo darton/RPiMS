@@ -119,21 +119,21 @@
     group: "{{ rpims_user }}"
     mode: "0664"
 
-#- name: Install systemd service
-#  template:
-#    src: "mediamtx.service.j2"
-#    dest: "/etc/systemd/system/{{ mediamtx_service_name }}.service"
-#    mode: "0644"
+- name: Install mediamtx.service
+  template:
+    src: "mediamtx/mediamtx.service.j2"
+    dest: "/etc/systemd/system/mediamtx.service"
+    mode: "0644"
 
-#- name: Reload systemd
-#  systemd:
-#    daemon_reload: yes
+- name: Reload systemd
+  systemd:
+    daemon_reload: yes
 
-#- name: Enable and start MediaMTX
-#  systemd:
-#    name: "{{ mediamtx_service_name }}"
-#    enabled: yes
-#    state: started
+- name: Enable and start MediaMTX
+  systemd:
+    name: "mediamtx.service"
+    enabled: yes
+    state: started
 
 # ---------------------------------------
 # CLEANUP

@@ -1,12 +1,23 @@
 ---
 - name: RPiMS deploying
   hosts: rpims
-  become: yes
+  become: true
 
   roles:
-    - { role: system,          tags: ['system'] }
-    - { role: packages,        tags: ['packages'] }
-    - { role: usb_automount,   tags: ['usb_automount'] }
-    - { role: hardware,        tags: ['hardware'] }
-    - { role: deploy,          tags: ['deploy'] }
-    - { role: validation,      tags: ['validation'] }
+    - role: system
+      tags: system
+
+    - role: packages
+      tags: packages
+
+    - role: hardware
+      tags: hardware
+
+    - role: validation
+      tags: validation
+
+    - role: usb_automount
+      tags: usb_automount
+
+    - role: deploy
+      tags: deploy

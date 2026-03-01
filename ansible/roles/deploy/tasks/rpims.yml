@@ -1,0 +1,21 @@
+---
+- name: Render rpims.service rpims-watcher.service rpims-watcher.path
+  template:
+    src: "rpims/{{ item | basename }}"
+    dest: "/etc/systemd/system/{{ item | basename | regex_replace('.j2$', '') }}"
+    owner: root
+    group: root
+  notify: Reload systemd
+  become: true
+  with_fileglob:
+    - "{{ role_path }}/templates/rpims/*.j2"
+
+
+- name: Enable and start rpims.service rpims-watcher.service rpims-watcher.path
+  systemd:
+    name: "{{ item | basename | regex_replace('.j2$', '') }}"
+    enabled: true
+    state: started
+  become: true
+  with_fileglob:
+    - "{{ role_path }}/templates/rpims/*.j2"

@@ -1,11 +1,44 @@
 ---
-- import_tasks: redis.yml
-- import_tasks: users.yml
-- import_tasks: files.yml
-- import_tasks: zabbix.yml
-- import_tasks: nginx.yml
-- import_tasks: mediamtx.yml
-- import_tasks: cron.yml
-- import_tasks: motd.yml
-- import_tasks: python_venv.yml
-- import_tasks: systemd.yml
+- name: users configuration
+  import_tasks: users.yml
+  tags: users
+
+- name: copy files and set correct ownership and permissions
+  import_tasks: files.yml
+  tags: files
+
+- name: redis configuration
+  import_tasks: redis.yml
+  tags: redis
+
+- name: zabbix-agents configuration
+  import_tasks: zabbix.yml
+  tags: zabbix
+
+- name : nginx configuration
+  import_tasks: nginx.yml
+  tags: nginx
+
+- name: crontab configuration
+  import_tasks: cron.yml
+  tags: crontab
+
+- name: motd configuration
+  import_tasks: motd.yml
+  tags: motd
+
+- name: mediamtx installation
+  import_tasks: mediamtx.yml
+  tags: mediamtx
+
+- name: python venv installation
+  import_tasks: python_venv.yml
+  tags: python-venv
+
+- name: rpims-unicorn.service installation
+  import_tasks: gunicorn.yml
+  tags: gunicorn
+
+- name: rpims.service, rpims-watcher.service, rpims-watcher.path installation
+  import_tasks: rpims.yml
+  tags: rpims

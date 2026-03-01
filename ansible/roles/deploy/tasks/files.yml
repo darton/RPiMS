@@ -7,6 +7,8 @@
     group: "{{ rpims_user }}"
     mode: "0755"
   become: true
+  tags:
+    - install_dir
 
 - name: Copy static web files to "{{ rpims_install_dir }}"
   copy:

@@ -1,3 +1,7 @@
+- name: Reload systemd
+  systemd:
+    daemon_reload: yes
+
 - name: Restart nginx
   service:
     name: nginx
@@ -8,7 +12,8 @@
     name: zabbix-agent
     state: restarted
 
-
-- name: Reload systemd
+- name: Enable and start rpims-gunicorn.service
   systemd:
-    daemon_reload: yes
+    name: rpims-gunicorn.service
+    enabled: yes
+    state: started

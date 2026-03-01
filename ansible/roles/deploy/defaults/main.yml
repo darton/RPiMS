@@ -2,8 +2,6 @@
 rpims_repo_dir: "~/RPiMS/RPiMS"
 rpims_install_dir: "/opt/RPiMS"
 
-rpims_app_secret_key: "c7a6c7ae2edc6ded69ef6d7c2f84e76af7db6d78ae810c5a735bbec5456e6ef6"
-
 redis_sysctl:
   vm.overcommit_memory: 1
   net.core.somaxconn: 512
@@ -50,4 +48,3 @@ python_user_venv_packages:
   - flask
   - gunicorn
   - packaging
-

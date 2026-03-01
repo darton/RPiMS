@@ -6,7 +6,7 @@
     owner: "{{ rpims_user }}"
     group: zabbix
     mode: '0640'
-  notify: Restart zabbix
+  notify: Restart zabbix-agent
   become: true
   tags:
     - zabbix
@@ -82,7 +82,7 @@
     owner: root
     group: zabbix
     mode: '0640'
-  notify: Restart zabbix
+  notify: Restart zabbix-agent
   become: true
   tags:
     - zabbix
@@ -94,7 +94,7 @@
     owner: root
     group: zabbix
     mode: '0640'
-  notify: Restart zabbix
+  notify: Restart zabbix-agent
   become: true
   tags:
     - zabbix

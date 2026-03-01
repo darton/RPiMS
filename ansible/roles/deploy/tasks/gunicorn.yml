@@ -1,0 +1,20 @@
+---
+- name: Generate rpims_app_secret_key
+  set_fact:
+    rpims_app_secret_key: "{{ lookup('password', '/dev/null', length=64, chars='abcdef0123456789') }}"
+
+- debug:
+    var: rpims_app_secret_key
+
+- name: Install rpims-gunicorn.service
+  template:
+    src: "gunicorn/rpims-gunicorn.service.j2"
+    dest: "/etc/systemd/system/rpims-gunicorn.service"
+    owner: root
+    group: root
+    mode: '0640'
+  notify:
+    - Reload systemd
+    - Enable and start rpims-gunicorn.service
+  become: true
+
