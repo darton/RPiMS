@@ -13,9 +13,13 @@
 #  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #  GNU General Public License for more details.
 
+"""
+The script retrieves sensor data from the Redis database for the Zabbix agent
+"""
+
 import sys
-import redis
 import json
+import redis
 
 redis_db = redis.StrictRedis(host="localhost", port=6379, db=0, decode_responses=True)
 
@@ -24,7 +28,13 @@ config = rpims['setup']
 
 
 def print_help():
-    print('You must use one parameter from list BME280 id (where id is 1, 2 or 3), DHT, CPUTEMP, DS18B20, ds18b20 address')
+    """ Helper function """
+    print('You must use one parameter from list:\
+           BME280 id (where id is 1, 2 or 3),\
+           DHT,\
+           CPUTEMP,\
+           DS18B20,\
+           ds18b20 address')
 
 
 if len(sys.argv) > 1:
@@ -37,8 +47,11 @@ if len(sys.argv) > 1:
                     temperature = _bme280['temperature']
                     humidity = _bme280['humidity']
                     pressure = _bme280['pressure']
-                    print('Temperature={0:0.2f};Humidity={1:0.2f};Pressure={2:0.2f};'
-                          .format(float(temperature), float(humidity), float(pressure)))
+                    print(
+                            f"Temperature={float(temperature):0.2f};"
+                            f"Humidity={float(humidity):0.2f};"
+                            f"Pressure={float(pressure):0.2f};"
+                         )
             else:
                 print_help()
 
@@ -46,7 +59,7 @@ if len(sys.argv) > 1:
         if config['use_ds18b20_sensor'] is True:
             ds18b20_sensors = redis_db.hgetall('DS18B20')
             for sensor_id, sensor_value in ds18b20_sensors.items():
-                print(sensor_id + '={0:0.2f}'.format(float(sensor_value)), end=';')
+                print(f"{sensor_id}={float(sensor_value):0.2f}", end=';')
 
     elif sys.argv[1] == 'ds18b20':
         if config['use_ds18b20_sensor'] is True:
@@ -64,12 +77,12 @@ if len(sys.argv) > 1:
                 dht = redis_db.hgetall('DHT')
                 temperature = dht['temperature']
                 humidity = dht['humidity']
-                print('Temperature={0:0.2f};Humidity={1:0.2f};'.format(float(temperature), float(humidity)))
+                print(f"Temperature={float(temperature):0.2f};Humidity={float(humidity):0.2f};")
 
     elif sys.argv[1] == 'CPUTEMP':
         if config['use_cpu_sensor'] is True:
             if redis_db.exists('CPU_Temperature'):
                 temperature = redis_db.get('CPU_Temperature')
-                print('CPUTemperature' + '={0:0.2f};'.format(float(temperature)))
+                print(f"CPUTemperature={float(temperature):0.2f};")
 else:
     print_help()
