@@ -18,6 +18,9 @@ from time import sleep
 import subprocess
 import smbus2
 import bme280
+import serial
+from serial.serialutil import SerialException
+import usb.core
 
 logger = logging.getLogger(__name__)
 
@@ -76,9 +79,6 @@ def get_bme280_data(sensor_ctx):
             logger.info('Problem initializing BME280 I2C: %s', err)
     # --- SERIAL MODE ---
     if interface_type == 'serial':
-        # pylint: disable=import-outside-toplevel
-        import serial
-        from serial.serialutil import SerialException
         usbport = cfg.get('serial_port')
 
         # detect RPi model
@@ -132,8 +132,7 @@ def get_bme280_data(sensor_ctx):
 
         # --- USB reset helper ---
         def reset_usbdevice():
-            # pylint: disable=import-outside-toplevel
-            import usb.core
+
             devices = usb.core.find(find_all=True)
             for item in devices:
                 if hex(item.idVendor) == '0x2e8a':
