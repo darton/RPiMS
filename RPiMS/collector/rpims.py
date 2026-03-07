@@ -499,7 +499,7 @@ def get_bme280_data(sensor_ctx):
 
             if len(msg) < 4:
                 lecounter += 1
-                ctx.redis_db.set('LECOUNTER', lecounter)
+                redis_db.set('LECOUNTER', lecounter)
                 continue
 
             if msg[0] != "BME280":
@@ -566,10 +566,13 @@ def get_ds18b20_data(ctx):
 def get_dht_data(ctx):
     # pylint: disable=import-outside-toplevel
     import adafruit_dht # type: ignore
+    import board # type: ignore
+
     verbose = ctx.config.get('verbose')
     read_interval = ctx.dht_config.get('read_interval')
     dht_type = ctx.dht_config.get('type')
     pin = ctx.dht_config.get('pin')
+    pin = getattr(board, f"D{pin}")
 
     debug = "no"
     delay = 0
