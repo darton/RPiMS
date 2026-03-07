@@ -284,6 +284,19 @@ def update_mediamtx_config(width, height, fps, recording, vflip, hflip):
 # Small form helper functions
 # ===========================
 
+def get_int(form, key):
+    value = form.get(key)
+    return int(value) if value else 0
+
+
+def get_bool(form, key):
+    return bool(form.get(key))
+
+
+def get_str(form, key):
+    return form.get(key)
+
+
 def load_gpio_from_form(form, gpios):
     gpio = {}
     for item in gpios:
@@ -333,28 +346,31 @@ def load_ds18b20_from_form(form, enabled):
 
 def load_weather_from_form(form):
     rainfall = {
-        "acquisition_time": int(form.get("rainfall_acquisition_time")) if form.get("rainfall_acquisition_time") else 0,
-        "agregation_time": int(form.get("rainfall_agregation_time")) if form.get("rainfall_agregation_time") else 0,
-        "sensor_pin": int(form.get("rainfall_sensor_pin")) if form.get("rainfall_sensor_pin") else 0,
-        "use": bool(form.get("rainfall_use")),
+        "acquisition_time": get_int(form, "rainfall_acquisition_time"),
+        "agregation_time": get_int(form, "rainfall_agregation_time"),
+        "sensor_pin": get_int(form, "rainfall_sensor_pin"),
+        "use": get_bool(form, "rainfall_use"),
     }
 
     direction = {
-        "acquisition_time": int(form.get("winddirection_acquisition_time")) if form.get("winddirection_acquisition_time") else 0,
-        "adc_input": int(form.get("winddirection_adc_input")) if form.get("winddirection_adc_input") else 0,
-        "adc_type": form.get("winddirection_adc_type"),
-        "reference_voltage_adc_input": int(form.get("reference_voltage_adc_input")) if form.get("reference_voltage_adc_input") else 0,
-        "use": bool(form.get("winddirection_use")),
+        "acquisition_time": get_int(form, "winddirection_acquisition_time"),
+        "adc_input": get_int(form, "winddirection_adc_input"),
+        "adc_type": get_str(form, "winddirection_adc_type"),
+        "reference_voltage_adc_input": get_int(form, "reference_voltage_adc_input"),
+        "use": get_bool(form, "winddirection_use"),
     }
 
     speed = {
-        "acquisition_time": int(form.get("windspeed_acquisition_time")) if form.get("windspeed_acquisition_time") else 0,
-        "agregation_time": int(form.get("windspeed_agregation_time")) if form.get("windspeed_agregation_time") else 0,
-        "sensor_pin": int(form.get("windspeed_sensor_pin")) if form.get("windspeed_sensor_pin") else 0,
-        "use": bool(form.get("windspeed_use")),
+        "acquisition_time": get_int(form, "windspeed_acquisition_time"),
+        "agregation_time": get_int(form, "windspeed_agregation_time"),
+        "sensor_pin": get_int(form, "windspeed_sensor_pin"),
+        "use": get_bool(form, "windspeed_use"),
     }
 
-    return {"RAINFALL": rainfall, "WIND": {"DIRECTION": direction, "SPEED": speed}}
+    return {
+        "RAINFALL": rainfall,
+        "WIND": {"DIRECTION": direction, "SPEED": speed},
+    }
 
 
 def load_picamera_from_form(form, setup):
