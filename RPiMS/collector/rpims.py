@@ -80,9 +80,8 @@ class SensorContext:
 
 # --- Functions ---
 def acquire_lock(lock_path="/run/lock/rpims.lock"):
-    # pylint: disable=consider-using-with
     try:
-        fp = open(lock_path, "w")
+        fp = open(lock_path, "w") # pylint: disable=consider-using-with
     except PermissionError:
         logger.error("Cannot open lock file %s. Check permissions.", lock_path)
         sys.exit(1)
