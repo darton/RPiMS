@@ -40,5 +40,3 @@ def read_bme280(ctx, sid, default=None):
         "humidity":    round(hum)     if hum  is not None else default,
         "pressure":    round(pres)    if pres is not None else default,
     }
-
-

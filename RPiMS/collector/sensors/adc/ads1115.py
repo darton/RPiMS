@@ -14,7 +14,6 @@
 #  GNU General Public License for more details.
 
 import logging
-from time import sleep
 import board
 import busio
 from adafruit_ads1x15 import ADS1115, AnalogIn, ads1x15

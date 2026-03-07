@@ -36,4 +36,3 @@ def get_cputemp_data(ctx):
 
     except Exception as err:
         logger.info('Problem with CPU sensor: %s',err)
-

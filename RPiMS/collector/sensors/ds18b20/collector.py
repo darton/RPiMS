@@ -43,4 +43,3 @@ def get_ds18b20_data(ctx):
 
     except Exception as err:
         logger.info('Problem with sensor DS18B20: %s', err)
-

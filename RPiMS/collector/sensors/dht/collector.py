@@ -72,5 +72,3 @@ def get_dht_data(ctx):
 
             ctx.redis_db.set('DHT_delay', delay)
             sleep(read_interval + delay)
-
-
