@@ -36,3 +36,4 @@ apt_packages:
   - i2c-tools
   - libi2c0
   - read-edid
+  - uhubctl

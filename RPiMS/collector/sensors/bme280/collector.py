@@ -25,6 +25,7 @@ import usb.core
 
 logger = logging.getLogger(__name__)
 
+
 def get_bme280_data(sensor_ctx):
     app = sensor_ctx.app
     redis_db = app.redis_db
@@ -80,8 +81,14 @@ def get_bme280_data(sensor_ctx):
             logger.info('Problem initializing BME280 I2C: %s', err)
     # --- SERIAL MODE ---
     if interface_type == 'serial':
-        usbport = cfg.get('serial_port')
+        def usb_power_cycle(delay=1):
+            # USB power off
+            subprocess.run(["sudo", "uhubctl", "-l", "1-1", "-a", "off"], check=True)
+            sleep(delay)
+            # USB power on
+            subprocess.run(["sudo", "uhubctl", "-l", "1-1", "-a", "on"], check=True)
 
+        usbport = cfg.get('serial_port')
         # detect RPi model
         devicetree = subprocess.check_output(
             ["cat /sys/firmware/devicetree/base/model"],
@@ -134,11 +141,20 @@ def get_bme280_data(sensor_ctx):
 
         # --- USB reset helper ---
         def reset_usbdevice():
-
             devices = usb.core.find(find_all=True)
             for item in devices:
                 if hex(item.idVendor) == '0x2e8a':
                     item.reset()
+
+
+        # --- USB power cycle helper ---
+        def power_cycle_usbdevice(delay=1):
+            # USB power off
+            subprocess.run(["sudo", "uhubctl", "-l", "1-1", "-a", "off"], check=True)
+            sleep(delay)
+            # USB power on
+            subprocess.run(["sudo", "uhubctl", "-l", "1-1", "-a", "on"], check=True)
+
 
         # --- find serial device ---
         def find_serial_device(port, baudrate):
@@ -160,9 +176,11 @@ def get_bme280_data(sensor_ctx):
                     logger.info("BME280PicoUSB not connected to port %s", usbport)
                     sleep(2)
                 except Exception as err:
-                    logger.info("Resetting USB port for BME280PicoUSB on %s", usbport)
+                    #logger.info("Resetting USB port for BME280PicoUSB on %s", usbport)
                     logger.error(err)
-                    reset_usbdevice()
+                    #reset_usbdevice()
+                    logger.info("Power cycle on USB")
+                    power_cycle_usbdevice(2)
                     sleep(10)
 
         # --- serial data generator ---
