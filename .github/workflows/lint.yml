@@ -1,3 +1,4 @@
+---
 name: linter
 
 on: [push]
@@ -8,7 +9,6 @@ jobs:
       - self-hosted
       - rpi
       - arm64
-    retention-days: 1
     if: github.actor == 'darton'
 
     steps:
