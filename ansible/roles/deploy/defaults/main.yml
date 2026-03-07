@@ -48,3 +48,4 @@ python_user_venv_packages:
   - flask
   - gunicorn
   - packaging
+  - pyserial

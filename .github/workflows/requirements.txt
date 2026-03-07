@@ -15,3 +15,4 @@ pyusb
 flask
 gunicorn
 packaging
+pyserial
