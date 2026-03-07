@@ -104,7 +104,7 @@ def wind_direction(ctx):
             uin = round(adc_values[reference_input - 1], 1)
 
             # calculation of resistance R2
-            if uin != uout and uin != 0:
+            if uin != uout and uin != 0.0:
                 r2 = int(r1 / (1 - uout / uin))
             else:
                 continue
