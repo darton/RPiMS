@@ -124,8 +124,9 @@ def get_bme280_data(sensor_ctx):
 
         try:
             serial_port = rpi_serial_ports_by_path.get(rpimodel).get(usbport)
-        except:
+        except Exception as err:
             logger.error('Unknown serial device')
+            logger.error(err)
             sys.exit(1)
 
         lecounter = 0
