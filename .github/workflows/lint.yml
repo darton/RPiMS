@@ -23,5 +23,5 @@ jobs:
 
     - name: Run linter
       run: |
-        ${{ github.workspace }}/.venv/bin/python -m ruff $(git ls-files '*.py')
+        ${{ github.workspace }}/.venv/bin/python -m ruff check .
 
