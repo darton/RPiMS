@@ -17,11 +17,9 @@ import logging
 import fcntl
 #import os
 import sys
-import datetime
 import json
 import subprocess
 from signal import pause
-from time import time, sleep
 
 import yaml
 import redis
