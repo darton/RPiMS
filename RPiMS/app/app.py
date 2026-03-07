@@ -229,7 +229,8 @@ def get_sensors(redis_db, config):
     if (bme := load_bme280_sensor(redis_db, config)):
         sensors["bme280"] = bme
 
-    if (ds := load_ds18b20_sensor(redis_db, config)):
+    ds = load_ds18b20_sensor(redis_db, config)
+    if ds is not None:
         sensors["one_wire"] = {"ds18b20": ds}
 
     if (weather := load_weather_station(redis_db, config)):

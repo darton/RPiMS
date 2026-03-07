@@ -81,13 +81,6 @@ def get_bme280_data(sensor_ctx):
             logger.info('Problem initializing BME280 I2C: %s', err)
     # --- SERIAL MODE ---
     if interface_type == 'serial':
-        def usb_power_cycle(delay=1):
-            # USB power off
-            subprocess.run(["sudo", "uhubctl", "-l", "1-1", "-a", "off"], check=True)
-            sleep(delay)
-            # USB power on
-            subprocess.run(["sudo", "uhubctl", "-l", "1-1", "-a", "on"], check=True)
-
         usbport = cfg.get('serial_port')
         # detect RPi model
         devicetree = subprocess.check_output(
