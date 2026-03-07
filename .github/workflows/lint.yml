@@ -4,7 +4,10 @@ on: [push]
 
 jobs:
   build:
-    runs-on: [self-hosted, rpi, arm64]
+    runs-on: 
+      - self-hosted
+      - rpi
+      - arm64
     retention-days: 1
     if: github.actor == 'darton'
 
