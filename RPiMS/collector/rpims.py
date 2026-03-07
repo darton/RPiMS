@@ -35,7 +35,7 @@ from sensors.rainfall import rainfall
 from sensors.windspeed import wind_speed
 from sensors.winddirection import wind_direction
 
-from displays.serial import serial_displays
+from displays import serial_displays
 
 
 logging.basicConfig(
