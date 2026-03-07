@@ -5,6 +5,7 @@ on: [push]
 jobs:
   build:
     runs-on: [self-hosted, rpi, arm64]
+    retention-days: 1
     if: github.actor == 'darton'
 
     steps:
@@ -24,4 +25,3 @@ jobs:
     - name: Run linter
       run: |
         ${{ github.workspace }}/.venv/bin/ruff check .
-
