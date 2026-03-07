@@ -87,7 +87,6 @@ def acquire_lock(lock_path="/run/lock/rpims.lock"):
         sys.exit(1)
 
     try:
-
         fcntl.flock(fp, fcntl.LOCK_EX | fcntl.LOCK_NB)
     except BlockingIOError:
         logger.error("Another instance of RPiMS is already running. Exiting.")
