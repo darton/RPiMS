@@ -223,7 +223,7 @@ def get_bme280_data(sensor_ctx):
 
             if len(msg) < 4:
                 lecounter += 1
-                ctx.redis_db.set('LECOUNTER', lecounter)
+                redis_db.set('LECOUNTER', lecounter)
                 continue
 
             if msg[0] != "BME280":
