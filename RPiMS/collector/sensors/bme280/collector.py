@@ -14,6 +14,7 @@
 #  GNU General Public License for more details.
 
 import logging
+import sys
 from time import sleep
 import subprocess
 import smbus2
