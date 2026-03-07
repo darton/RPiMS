@@ -1,4 +1,4 @@
-name: Pylint
+name: linter
 
 on: [push]
 
@@ -15,13 +15,13 @@ jobs:
         python3 -m venv ${{ github.workspace }}/.venv --system-site-packages
         ${{ github.workspace }}/.venv/bin/python -m pip install --upgrade pip
         ${{ github.workspace }}/.venv/bin/python -m pip install -r .github/workflows/requirements.txt
-        ${{ github.workspace }}/.venv/bin/python -m pip install pylint
+        ${{ github.workspace }}/.venv/bin/python -m pip install ruff
 
     - name: Verify venv
       run: |
         ls -la ${{ github.workspace }}/.venv/bin
 
-    - name: Run pylint
+    - name: Run linter
       run: |
-        ${{ github.workspace }}/.venv/bin/python -m pylint $(git ls-files '*.py')
+        ${{ github.workspace }}/.venv/bin/python -m ruff $(git ls-files '*.py')
 
