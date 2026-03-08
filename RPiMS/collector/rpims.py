@@ -379,7 +379,7 @@ def main():
         for name, bme280 in ctx.bme280_config.items():
             if bme280.get('use'):
                 sensor_ctx = SensorContext(ctx, name, bme280)
-                start_process(get_bme280_data, sensor_ctx)
+                start_thread(get_bme280_data, sensor_ctx)
 
     # DS18B20
     if ctx.config.get('use_ds18b20_sensor'):
