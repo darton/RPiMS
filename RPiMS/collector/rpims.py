@@ -37,6 +37,9 @@ from sensors.winddirection import wind_direction
 
 from displays import serial_displays
 
+from execution.processes import start_process
+from execution.threads import start_thread
+
 
 logging.basicConfig(
     level=logging.INFO,
@@ -277,38 +280,6 @@ def get_hostip():
 
 def shutdown():
     subprocess.check_call(['sudo', 'poweroff'])
-
-
-def set_process_name_and_run(function_name, **kwargs):
-    # pylint: disable=import-outside-toplevel
-    import setproctitle # type: ignore
-    process_name = function_name.__name__
-    setproctitle.setproctitle(process_name)
-    function_name(**kwargs)
-
-
-def threading_function(function_name, ctx):
-    # pylint: disable=import-outside-toplevel
-    import threading
-    tf = threading.Thread(
-        target=function_name,
-        name=function_name.__name__,
-        args=(ctx,)
-    )
-    tf.daemon = True
-    tf.start()
-
-
-def multiprocessing_function(function_name, ctx):
-    # pylint: disable=import-outside-toplevel
-    import multiprocessing
-    mf = multiprocessing.Process(
-        target=function_name,
-        name=function_name.__name__,
-        args=(ctx,)
-    )
-    mf.daemon = True
-    mf.start()
 
 
 def db_connect(dbhost, dbnum):
