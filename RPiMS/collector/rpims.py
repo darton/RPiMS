@@ -37,7 +37,7 @@ from sensors.winddirection import wind_direction
 
 from displays import serial_displays
 
-from execution import start_process, start_thread
+from execution import start_thread
 
 
 logging.basicConfig(
