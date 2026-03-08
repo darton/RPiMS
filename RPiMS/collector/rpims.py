@@ -372,35 +372,35 @@ def main():
 
     # CPU temp
     if ctx.config.get('use_cpu_sensor'):
-        threading_function(get_cputemp_data, ctx)
+        start_thread(get_cputemp_data, ctx)
 
     # BME280
     if ctx.config.get('use_bme280_sensor'):
         for name, bme280 in ctx.bme280_config.items():
             if bme280.get('use'):
                 sensor_ctx = SensorContext(ctx, name, bme280)
-                multiprocessing_function(get_bme280_data, sensor_ctx)
+                start_process(get_bme280_data, sensor_ctx)
 
     # DS18B20
     if ctx.config.get('use_ds18b20_sensor'):
-        threading_function(get_ds18b20_data, ctx)
+        start_thread(get_ds18b20_data, ctx)
 
     # DHT
     if ctx.config.get('use_dht_sensor'):
-        threading_function(get_dht_data, ctx)
+        start_thread(get_dht_data, ctx)
 
     # Weather station
     if ctx.config.get('use_weather_station'):
         if ctx.rainfall_config.get('use'):
-            threading_function(rainfall, ctx)
+            start_thread(rainfall, ctx)
         if ctx.windspeed_config.get('use'):
-            threading_function(wind_speed, ctx)
+            start_thread(wind_speed, ctx)
         if ctx.winddirection_config.get('use'):
-            threading_function(wind_direction, ctx)
+            start_thread(wind_direction, ctx)
 
     # Serial display
     if ctx.config.get('use_serial_display'):
-        threading_function(serial_displays, ctx)
+        start_thread(serial_displays, ctx)
 
     # Picamera
     if ctx.config.get('use_picamera'):
