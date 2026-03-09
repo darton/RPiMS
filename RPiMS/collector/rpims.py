@@ -24,7 +24,7 @@ from signal import pause
 import yaml
 import redis
 
-from gpiozero import LED, Button, MotionSensor
+#from gpiozero import LED, Button, MotionSensor
 from gpiozero.tools import all_values, any_values
 
 from sensors.bme280 import get_bme280_data
@@ -38,6 +38,11 @@ from sensors.winddirection import wind_direction
 from displays import serial_displays
 
 from execution import start_process
+
+from gpio.door import init_door_sensors, setup_door_callbacks
+from gpio.motion import init_motion_sensors, setup_motion_callbacks
+from gpio.buttons import init_system_buttons, setup_system_buttons_callbacks
+from gpio.leds import init_led_indicators
 
 
 logging.basicConfig(
@@ -97,113 +102,6 @@ def acquire_lock(lock_path="/run/lock/rpims.lock"):
     return fp  # keep file descriptor open!
 
 
-def init_door_sensors(ctx: AppContext):
-    sensors = {}
-    if ctx.config.get('use_door_sensor'):
-        for item, cfg in ctx.gpio.items():
-            if cfg['type'] == 'DoorSensor':
-                sensors[item] = Button(cfg['pin'], hold_time=int(cfg['hold_time']))
-    return sensors
-
-
-def init_motion_sensors(ctx: AppContext):
-    sensors = {}
-    if ctx.config.get('use_motion_sensor'):
-        for item, cfg in ctx.gpio.items():
-            if cfg['type'] == 'MotionSensor':
-                sensors[item] = MotionSensor(cfg['pin'])
-    return sensors
-
-
-def init_system_buttons(ctx: AppContext):
-    buttons = {}
-    if ctx.config.get('use_system_buttons'):
-        for item, cfg in ctx.gpio.items():
-            if cfg['type'] == 'ShutdownButton':
-                buttons['shutdown_button'] = Button(cfg['pin'], hold_time=int(cfg['hold_time']))
-    return buttons
-
-
-def init_led_indicators(ctx: AppContext):
-    leds = {}
-    for item, cfg in ctx.gpio.items():
-        if cfg['type'] == 'door_led':
-            leds['door_led'] = LED(cfg['pin'])
-        elif cfg['type'] == 'motion_led':
-            leds['motion_led'] = LED(cfg['pin'])
-        elif cfg['type'] == 'led':
-            leds['led'] = LED(cfg['pin'])
-    return leds
-
-
-def door_action_closed(ctx, door_id):
-    ctx.redis_db.hset('GPIO', str(door_id), 'close')
-    ctx.redis_db.hset('DOOR_SENSORS', str(door_id), 'close')
-
-    if ctx.config.get('verbose'):
-        logger.info('The %s has been closed!', door_id)
-
-    if ctx.config.get('use_zabbix_sender'):
-        zabbix_sender_call('info_when_door_has_been_closed', door_id)
-
-def door_action_opened(ctx, door_id):
-    ctx.redis_db.hset('GPIO', str(door_id), 'open')
-    ctx.redis_db.hset('DOOR_SENSORS', str(door_id), 'open')
-
-    if ctx.config.get('verbose'):
-        logger.info('The %s has been opened!', door_id)
-
-    if ctx.config.get('use_zabbix_sender'):
-        zabbix_sender_call('info_when_door_has_been_opened', door_id)
-
-    if ctx.config.get('use_picamera'):
-        if ctx.config.get('use_picamera_recording'):
-            av_recording()
-
-def door_status_open(ctx, door_id):
-    ctx.redis_db.hset('GPIO', str(door_id), 'open')
-    ctx.redis_db.hset('DOOR_SENSORS', str(door_id), 'open')
-
-    if ctx.config.get('verbose'):
-        logger.info('The %s is opened!', door_id)
-
-    if ctx.config.get('use_zabbix_sender'):
-        zabbix_sender_call('info_when_door_is_opened', door_id)
-
-
-def door_status_close(ctx, door_id):
-    ctx.redis_db.hset('GPIO', str(door_id), 'close')
-    ctx.redis_db.hset('DOOR_SENSORS', str(door_id), 'close')
-
-    if ctx.config.get('verbose'):
-        logger.info('The %s is closed!', door_id)
-
-    if ctx.config.get('use_zabbix_sender'):
-        zabbix_sender_call('info_when_door_is_closed', door_id)
-
-def motion_sensor_when_motion(ctx, ms_id):
-    ctx.redis_db.hset('GPIO', str(ms_id), 'motion')
-    ctx.redis_db.hset('MOTION_SENSORS', str(ms_id), 'motion')
-
-    if ctx.config.get('verbose'):
-        logger.info('The %s: motion was detected!', ms_id)
-
-    if ctx.config.get('use_zabbix_sender'):
-        zabbix_sender_call('info_when_motion', ms_id)
-
-    if ctx.config.get('use_picamera'):
-        if ctx.config.get('use_picamera_recording'):
-            av_recording()
-
-
-def motion_sensor_when_no_motion(ctx, ms_id):
-    ctx.redis_db.hset('GPIO', str(ms_id), 'nomotion')
-    ctx.redis_db.hset('MOTION_SENSORS', str(ms_id), 'nomotion')
-
-    if ctx.config.get('verbose'):
-        logger.info('The %s: no motion', ms_id)
-
-
 def detect_no_alarms(ctx):
     use_door = ctx.config.get('use_door_sensor')
     use_motion = ctx.config.get('use_motion_sensor')
@@ -233,22 +131,6 @@ def av_stream(state):
     subprocess.call(_cmd, shell=True)
 
 
-def av_recording():
-    _cmd = '../scripts/videorecorder.sh'
-    subprocess.Popen([_cmd],
-                     stdout=subprocess.PIPE,
-                     stderr=subprocess.PIPE,
-                     shell=True)
-
-
-def zabbix_sender_call(message, sensor_id):
-    _cmd = '../scripts/zabbix_sender.sh ' + message + " " + str(sensor_id)
-    subprocess.Popen([_cmd],
-                     stdout=subprocess.PIPE,
-                     stderr=subprocess.PIPE,
-                     shell=True)
-
-
 def hostnamectl_sh(**kwargs):
     hctldict = {
         "location": "set-location",
@@ -275,10 +157,6 @@ def hostnamectl_sh(**kwargs):
 def get_hostip():
     _cmd = 'sudo ../scripts/gethostinfo.sh'
     subprocess.call(_cmd, shell=True)
-
-
-def shutdown():
-    subprocess.check_call(['sudo', 'poweroff'])
 
 
 def db_connect(dbhost, dbnum):
@@ -330,71 +208,54 @@ def main():
         for k, v in ctx.zabbix_agent.items():
             logger.info('%s = %s', k, v)
 
-    # hardware initialization
-    ctx.door_sensors = init_door_sensors(ctx)
-    ctx.motion_sensors = init_motion_sensors(ctx)
-    ctx.system_buttons = init_system_buttons(ctx)
-    ctx.led_indicators = init_led_indicators(ctx)
-
+    ## hardware initialization
     # door sensors – initial state + callbacks
     if ctx.config.get('use_door_sensor'):
-        for name, sensor in ctx.door_sensors.items():
-            if sensor.value == 0:
-                door_status_open(ctx, name)
-            else:
-                door_status_close(ctx, name)
+        ctx.door_sensors = init_door_sensors(ctx)
+        setup_door_callbacks(ctx)
 
-        for name, sensor in ctx.door_sensors.items():
-            sensor.when_held = lambda s=name: door_action_closed(ctx, s)
-            sensor.when_released = lambda s=name: door_action_opened(ctx, s)
-
-        if ctx.config.get('use_door_led_indicator'):
-            ctx.led_indicators['door_led'].source = all_values(*ctx.door_sensors.values())
-
-    # motion sensors
+    # motion sensors – initial state + callbacks
     if ctx.config.get('use_motion_sensor'):
-        for name, sensor in ctx.motion_sensors.items():
-            if sensor.value == 0:
-                motion_sensor_when_no_motion(ctx, name)
-            else:
-                motion_sensor_when_motion(ctx, name)
-
-        for name, sensor in ctx.motion_sensors.items():
-            sensor.when_motion = lambda s=name: motion_sensor_when_motion(ctx, s)
-            sensor.when_no_motion = lambda s=name: motion_sensor_when_no_motion(ctx, s)
-
-        if ctx.config.get('use_motion_led_indicator'):
-            ctx.led_indicators['motion_led'].source = any_values(*ctx.motion_sensors.values())
+        ctx.motion_sensors = init_motion_sensors(ctx)
+        setup_motion_callbacks(ctx)
 
     # system buttons
     if ctx.config.get('use_system_buttons'):
-        ctx.system_buttons['shutdown_button'].when_held = shutdown
+        ctx.system_buttons = init_system_buttons(ctx)
+        setup_system_button_callbacks(ctx)
 
-    # CPU temp
+    # led indicators
+    if ctx.config.get('use_motion_led_indicator'):
+        ctx.led_indicators = init_led_indicators(ctx)
+
+    # CPU temperature sensor
     if ctx.config.get('use_cpu_sensor'):
         start_process(get_cputemp_data, ctx)
 
-    # BME280
+    # BME280 sensors
     if ctx.config.get('use_bme280_sensor'):
         for name, bme280 in ctx.bme280_config.items():
             if bme280.get('use'):
                 sensor_ctx = SensorContext(ctx, name, bme280)
                 start_process(get_bme280_data, sensor_ctx)
 
-    # DS18B20
+    # DS18B20 sensors
     if ctx.config.get('use_ds18b20_sensor'):
         start_process(get_ds18b20_data, ctx)
 
-    # DHT
+    # DHT sensors
     if ctx.config.get('use_dht_sensor'):
         start_process(get_dht_data, ctx)
 
     # Weather station
     if ctx.config.get('use_weather_station'):
+        # Rainfall meter
         if ctx.rainfall_config.get('use'):
             start_process(rainfall, ctx)
+        # Wind speed meter
         if ctx.windspeed_config.get('use'):
             start_process(wind_speed, ctx)
+        # Wind direction meter
         if ctx.winddirection_config.get('use'):
             start_process(wind_direction, ctx)
 
@@ -402,7 +263,7 @@ def main():
     if ctx.config.get('use_serial_display'):
         start_process(serial_displays, ctx)
 
-    # Picamera
+    # Picamera sensor
     if ctx.config.get('use_picamera'):
         av_stream('start')
     else:
