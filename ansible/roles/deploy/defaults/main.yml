@@ -14,7 +14,7 @@ mediamtx_cache_dir: "~/.cache/mediamtx"
 mediamtx_recording_dir: "/mnt/usb"
 stream_source: "rpiCamera"
 sourceOnDemand: true
-rtsp_enable: "no"
+rtsp_enable: "yes"
 rtpm_enable: "no"
 hls_enable: "no"
 webrtc_enable: "yes"
