@@ -219,7 +219,7 @@ def main():
     # system buttons
     if ctx.config.get('use_system_buttons'):
         ctx.system_buttons = init_system_buttons(ctx)
-        setup_system_button_callbacks(ctx)
+        setup_system_buttons_callbacks(ctx)
 
     # led indicators
     if ctx.config.get('use_motion_led_indicator'):
