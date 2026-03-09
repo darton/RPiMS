@@ -22,7 +22,7 @@ def get_hostip():
 
 
 def old_zabbix_sender_call(message, sensor_id):
-    _cmd = f'/opt/RPiMS/scripts/zabbix_sender.sh {message} {str(sensor_id)} {location}'
+    _cmd = f'/opt/RPiMS/scripts/zabbix_sender.sh {message} {str(sensor_id)}'
     subprocess.Popen([_cmd],shell=True)
 
 
