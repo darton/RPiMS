@@ -125,15 +125,26 @@
     dest: "/etc/systemd/system/mediamtx.service"
     mode: "0644"
 
+- name: Install mediamtx-keepalive.service
+  template:
+    src: "mediamtx/mediamtx-keepalive.service.j2"
+    dest: "/etc/systemd/system/mediamtx-keepalive.service"
+    mode: "0644"
+
 - name: Reload systemd
   systemd:
     daemon_reload: yes
 
-- name: Enable and start MediaMTX
+- name: Enable and start mediamtx.service
   systemd:
     name: "mediamtx.service"
     enabled: yes
     state: started
+
+- name: Enable mediamtx-keepalive.service
+  systemd:
+    name: "mediamtx-keepalive.service"
+    enabled: yes
 
 # ---------------------------------------
 # CLEANUP

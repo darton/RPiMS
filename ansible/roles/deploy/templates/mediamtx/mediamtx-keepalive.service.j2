@@ -1,0 +1,6 @@
+[Unit]
+Description=MediaMTX RTSP keepalive client
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/ffmpeg -nostats -loglevel quiet -rtsp_transport tcp -i rtsp://localhost:8554/cam -f null -
