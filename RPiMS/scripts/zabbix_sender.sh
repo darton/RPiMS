@@ -11,40 +11,47 @@
 #  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #  GNU General Public License for more details.
 
-#zabbix_server=$(awk -F= '/^ServerActive=/{print $2}' /etc/zabbix/zabbix_agentd.conf.d/zabbix-rpims.conf)
+config_file=/opt/RPiMS/config/zabbix_rpims.conf
+identity=$(awk -F= '/TLSPSKIdentity/ {print $2}' $config_file)
+psk="--tls-connect psk --tls-psk-identity $identity --tls-psk-file=\"/opt/RPiMS/config/zabbix_rpims.psk\""
+zabbix_server=$(awk -F= '/^ServerActive=/{print $2}' $config_file)
+timeout=2
+key="trap"
+value="$2"
+location="$3"
+option="$1"
 
-location=$(redis-cli get zabbix_agent |awk -F, '{print $4}' |awk -F\" '{print $4}')
-zabbix_server=$(redis-cli get zabbix_agent |awk -F, '{print $1}' |awk -F\" '{print $4}')
-psk=$(echo "--tls-connect=psk --tls-psk-identity="$(awk -F\= '/TLSPSKIdentity/ {print $2}' /opt/RPiMS/config/zabbix_agentd.conf)" --tls-psk-file=/opt/RPiMS/config/zabbix_agentd.psk")
+zabbix_sender_cmd="zabbix_sender -vv -c "$config_file" -t "$timeout" -s "$location" -k "$key" "
 
-case "$1" in
+case "$option" in
 
     'info_when_door_is_opened')
-        zabbix_sender -z $zabbix_server -p 10051 -s "$location" $psk -k trap -o "$2 is opened"
+        $zabbix_sender_cmd -o "\"$value is opened\""
     ;;
 
     'info_when_door_is_closed')
-        zabbix_sender -z $zabbix_server -p 10051 -s "$location" $psk -k trap -o "$2 is closed"
+        $zabbix_sender_cmd -o "\"$value is closed\""
     ;;
 
     'info_when_door_has_been_opened')
-        zabbix_sender -z $zabbix_server -p 10051 -s "$location" $psk -k trap -o "$2 has been opened"
+        $zabbix_sender_cmd -o "\"$value has been opened\""
     ;;
 
     'info_when_door_has_been_closed')
-        zabbix_sender -z $zabbix_server -p 10051 -s "$location" $psk -k trap -o "$2 has been closed"
+        $zabbix_sender_cmd -s "$location" -o "\"$value has been closed\""
     ;;
 
     'info_when_motion')
-        zabbix_sender -z $zabbix_server -p 10051 -s "$location" $psk -k trap -o "$2 motion was detected"
+        $zabbix_sender_cmd -o "\"$value motion was detected\""
     ;;
 
     'info_when_no_motion')
-        zabbix_sender -z $zabbix_server -p 10051 -s "$location" $psk -k trap -o "$2 no motion"
+        $zabbix_sender_cmd -o "\"$value no motion\""
     ;;
 
            *)
-        echo -e "\nUsage: zabbix_sender.sh info_when_door_is_opened|info_when_door_is_closed|info_when_door_has_been_opened|info_when_door_has_been_closed|info_when_motion|info_when_no_motion"
+        echo -e "\nUsage: zabbix_sender.sh key sensor_id location"
+        echo "key: info_when_door_is_opened |info_when_door_is_closed|info_when_door_has_been_opened|info_when_door_has_been_closed|info_when_motion|info_when_no_motion"
     ;;
 
 esac
