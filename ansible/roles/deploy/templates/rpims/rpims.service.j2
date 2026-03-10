@@ -22,6 +22,8 @@ StandardError=journal
 Environment=PYTHONUNBUFFERED=1
 Environment="RPIMS_DIR={{ rpims_install_dir }}"
 
+Restart=on-failure
+RestartPreventExitStatus=255
 
 [Install]
 WantedBy=multi-user.target

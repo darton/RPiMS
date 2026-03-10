@@ -88,13 +88,13 @@ def acquire_lock(lock_path="/run/lock/rpims.lock"):
         fp = open(lock_path, "w") # pylint: disable=consider-using-with
     except PermissionError:
         logger.error("Cannot open lock file %s. Check permissions.", lock_path)
-        sys.exit(1)
+        sys.exit(255)
 
     try:
         fcntl.flock(fp, fcntl.LOCK_EX | fcntl.LOCK_NB)
     except BlockingIOError:
         logger.error("Another instance of RPiMS is already running. Exiting.")
-        sys.exit(1)
+        sys.exit(255)
 
     return fp  # keep file descriptor open!
 
@@ -164,7 +164,7 @@ def db_connect(dbhost, dbnum):
     except Exception as err:
         logger.error(err)
         logger.error("Can't connect to RedisDB host: %s", dbhost)
-        sys.exit(1)
+        sys.exit(255)
 
 
 def config_load(path_to_config):
@@ -175,7 +175,7 @@ def config_load(path_to_config):
     except Exception as err:
         logger.error(err)
         logger.error = ("Can't load RPiMS config file: %s", path_to_config)
-        sys.exit(1)
+        sys.exit(255)
 
 
 def main():
