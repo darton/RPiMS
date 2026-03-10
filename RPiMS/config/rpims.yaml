@@ -1,19 +1,19 @@
 ---
 setup:
   verbose: false
-  show_sys_info: false
+  show_sys_info: true
   use_system_buttons: false
   use_door_led_indicator: false
   use_motion_led_indicator: false
   use_door_sensor: false
   use_motion_sensor: false
-  use_bme280_sensor: true
+  use_bme280_sensor: false
   use_ds18b20_sensor: false
   use_dht_sensor: false
   use_cpu_sensor: true
   use_weather_station: false
   use_zabbix_sender: false
-  use_picamera: true
+  use_picamera: false
   use_picamera_recording: false
   use_serial_display: false
   serial_display_type: lcd_st7735

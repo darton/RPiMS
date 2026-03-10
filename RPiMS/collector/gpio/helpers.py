@@ -1,3 +1,18 @@
+#!/usr/bin/env python3
+
+# -*- coding:utf-8 -*-
+#
+#  Author : Dariusz Kowalczyk
+#
+#  This program is free software; you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License Version 2 as
+#  published by the Free Software Foundation.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+
 import logging
 from system.actions import zabbix_sender_call, mediamtx_keepalive
 
@@ -23,9 +38,6 @@ def door_action_opened(ctx, door_id):
 
     if ctx.config.get('use_zabbix_sender'):
         zabbix_sender_call(ctx, 'info_when_door_has_been_opened', door_id)
-
-    if ctx.config.get('use_picamera') and ctx.config.get('use_picamera_recording'):
-        mediamtx_keepalive(ctx)
 
 
 def door_status_open(ctx, door_id):
@@ -59,9 +71,6 @@ def motion_sensor_when_motion(ctx, ms_id):
 
     if ctx.config.get('use_zabbix_sender'):
         zabbix_sender_call(ctx, 'info_when_motion', ms_id)
-
-    if ctx.config.get('use_picamera') and ctx.config.get('use_picamera_recording'):
-        mediamtx_keepalive(ctx)
 
 
 def motion_sensor_when_no_motion(ctx, ms_id):

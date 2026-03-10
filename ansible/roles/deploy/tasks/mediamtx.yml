@@ -138,8 +138,8 @@
 - name: Enable and start mediamtx.service
   systemd:
     name: "mediamtx.service"
-    enabled: yes
-    state: started
+    enabled: no
+    #state: started
 
 - name: Enable mediamtx-keepalive.service
   systemd:
