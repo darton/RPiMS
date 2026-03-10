@@ -70,3 +70,27 @@ def motion_sensor_when_no_motion(ctx, ms_id):
 
     if ctx.config.get('verbose'):
         logger.info('The %s: no motion', ms_id)
+
+
+def detect_no_alarms(ctx):
+    use_door = ctx.config.get('use_door_sensor')
+    use_motion = ctx.config.get('use_motion_sensor')
+
+    # both type door and motion sensors are active
+    if use_door and use_motion:
+        door_values = [sensor.value for sensor in ctx.door_sensors.values()]
+        motion_values = [int(not sensor.value) for sensor in ctx.motion_sensors.values()]
+        return all(door_values) and all(motion_values)
+
+    # only door sensors
+    if use_door and not use_motion:
+        door_values = [sensor.value for sensor in ctx.door_sensors.values()]
+        return all(door_values)
+
+    # only motion sensors
+    if not use_door and use_motion:
+        motion_values = [int(not sensor.value) for sensor in ctx.motion_sensors.values()]
+        return all(motion_values)
+
+    # no sensors = no alarms
+    return True
