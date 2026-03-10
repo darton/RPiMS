@@ -19,9 +19,10 @@ import json
 from config.loader import config_load
 from system.redis_db import db_connect
 from models.context import AppContext
-from system.services import get_hostip, hostnamectl_sh, av_stream
+from system.services import get_hostinfo, set_hostnamectl, video_service, zabbix_service
 from core.hardware_init import init_hardware
 from core.sensor_startup import start_sensors
+from core.display_startup import start_display
 
 logger = logging.getLogger("RPiMS-collector")
 
@@ -37,19 +38,24 @@ def run_collector():
         redis_db=redis_db
     )
 
-    redis_db.flushdb()
-    redis_db.set('rpims', json.dumps(config_yaml))
+    redis_db.flushdb() #init redis_db
+    redis_db.set('rpims', json.dumps(config_yaml)) #load config to redis_db in json format
 
-    get_hostip()
-    hostnamectl_sh(**ctx.zabbix_agent)
+    get_hostinfo()
+    set_hostnamectl(**ctx.zabbix_agent)
 
     init_hardware(ctx)
     start_sensors(ctx)
+    start_display(ctx)
 
     if ctx.config.get('use_picamera'):
-        av_stream('start')
+        video_service('restart')
     else:
-        av_stream('stop')
+        video_service('stop')
+
+    if ctx.config.get('use_zabbix_sender'):
+        zabbix_service('restart')
+    else:
+        zabbix_service('stop')
 
     pause()
-

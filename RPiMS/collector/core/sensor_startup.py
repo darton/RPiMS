@@ -21,7 +21,6 @@ from sensors.cputemp import get_cputemp_data
 from sensors.rainfall import rainfall
 from sensors.windspeed import wind_speed
 from sensors.winddirection import wind_direction
-from displays import serial_displays
 from models.context import SensorContext
 
 def start_sensors(ctx):
@@ -46,6 +45,3 @@ def start_sensors(ctx):
             start_process(wind_speed, ctx)
         if ctx.winddirection_config.get('use'):
             start_process(wind_direction, ctx)
-
-    if ctx.config.get('use_serial_display'):
-        start_process(serial_displays, ctx)

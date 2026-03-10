@@ -1,11 +1,34 @@
+#!/usr/bin/env python3
+
+# -*- coding:utf-8 -*-
+#
+#  Author : Dariusz Kowalczyk
+#
+#  This program is free software; you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License Version 2 as
+#  published by the Free Software Foundation.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+
 import subprocess
 
-def av_stream(state):
-    _cmd = f'sudo systemctl {state} mediamtx.service'
-    subprocess.Popen(_cmd, shell=True)
+
+def video_service(state):
+    subprocess.Popen([
+        'sudo', 'systemctl', state, 'mediamtx.service'
+    ])
 
 
-def hostnamectl_sh(**kwargs):
+def zabbix_service(state):
+    subprocess.Popen([
+        'sudo', 'systemctl', state, 'zabbix-agent.service'
+    ])
+
+
+def set_hostnamectl(**kwargs):
     hctldict = {
         "location": "set-location",
         "chassis": "set-chassis",
@@ -28,6 +51,6 @@ def hostnamectl_sh(**kwargs):
             ])
 
 
-def get_hostip():
+def get_hostinfo():
     _cmd = 'sudo ../scripts/gethostinfo.sh'
     subprocess.Popen(_cmd, shell=True)
