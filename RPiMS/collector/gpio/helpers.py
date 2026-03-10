@@ -14,7 +14,7 @@
 #  GNU General Public License for more details.
 
 import logging
-from system.actions import zabbix_sender_call, mediamtx_keepalive
+from system.actions import zabbix_sender_call
 
 logger = logging.getLogger(__name__)
 
