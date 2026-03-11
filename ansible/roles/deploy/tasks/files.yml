@@ -56,6 +56,6 @@
     dest: "{{ rpims_install_dir }}"
     owner: "{{ rpims_user }}"
     group: "{{ rpims_user }}"
-    mode: '0755'
+    mode: '0644'
   tags:
     - collector
