@@ -103,27 +103,27 @@
                     <div class="w3-quarter w3-container w3-margin-top">
                         <label for="serial_type">Serial type:</label>
                         <select id="serial_type" name="serial_type" class="w3-select">
-                            <option value="i2c" {% if config.setup.serial_type == "i2c" %} selected="selected" {% endif %}>i2c</option>
-                            <option value="spi" {% if config.setup.serial_type == "spi" %} selected="selected" {% endif %}>spi</option>
+                            <option value="i2c" {% if config.serial_bus_display.bus_display_type == "i2c" %} selected="selected" {% endif %}>i2c</option>
+                            <option value="spi" {% if config.serial_bus_display.bus_display_type == "spi" %} selected="selected" {% endif %}>spi</option>
                         </select>
                     </div>
                     <div class="w3-quarter w3-container w3-margin-top">
                         <label for="serial_display_type">Display type:</label>
                         <select id="serial_display_type" name="serial_display_type" class="w3-select">
-                            <option value="oled_sh1106" {% if config.setup.serial_display_type == "oled_sh1106" %} selected="selected" {% endif %}>oled_sh1106</option>
-                            <option value="lcd_st7735" {% if config.setup.serial_display_type == "lcd_st7735" %} selected="selected" {% endif %}>lcd_st7735</option>
+                            <option value="oled_sh1106" {% if config.serial_bus_display.display_type == "oled_sh1106" %} selected="selected" {% endif %}>oled_sh1106</option>
+                            <option value="lcd_st7735" {% if config.serial_bus_display.display_type == "lcd_st7735" %} selected="selected" {% endif %}>lcd_st7735</option>
                         </select>
                     </div>
                     <div class="w3-quarter w3-container w3-margin-top">
                         <label for="serial_display_rotate">Display rotate:</label>
                         <select id="serial_display_rotate" name="serial_display_rotate" class="w3-select">
-                            <option value="0" {% if config.setup.serial_display_rotate == 0 %} selected="selected" {% endif %}>0</option>
-                            <option value="2" {% if config.setup.serial_display_rotate == 2 %} selected="selected" {% endif %}>180</option>
+                            <option value="0" {% if config.serial_bus_display.display_rotate == 0 %} selected="selected" {% endif %}>0</option>
+                            <option value="2" {% if config.serial_bus_display.display_rotate == 2 %} selected="selected" {% endif %}>180</option>
                         </select>
                     </div>
                     <div class="w3-quarter w3-container w3-margin-top w3-margin-bottom">
                         <label for="serial_display_refresh_rate">Refresh rate:</label>
-                        <input id="serial_display_refresh_rate" name="serial_display_refresh_rate" class="w3-input" type="number" min="1" max="50" value="{{ config.setup.serial_display_refresh_rate }}" >
+                        <input id="serial_display_refresh_rate" name="serial_display_refresh_rate" class="w3-input" type="number" min="1" max="50" value="{{ config.serial_bus_display.display_refresh_rate }}" >
                     </div>
                 </div>
             </fieldset>

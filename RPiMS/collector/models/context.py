@@ -14,11 +14,12 @@
 #  GNU General Public License for more details.
 
 class AppContext:
-    def __init__(self, gpio, config, zabbix_agent, sensors, redis_db):
+    def __init__(self, gpio, config, zabbix_agent, sensors, serial_bus_display, redis_db):
         self.gpio = gpio
         self.config = config
         self.zabbix_agent = zabbix_agent
         self.sensors = sensors
+        self.serial_bus_display = serial_bus_display
         self.redis_db = redis_db
 
         # sensors subset:
@@ -42,6 +43,3 @@ class SensorContext:
         self.app = app_context          # global AppContext
         self.name = sensor_name         # for example "id3"
         self.config = sensor_config     # config specific sensor
-
-
-

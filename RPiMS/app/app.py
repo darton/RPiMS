@@ -36,6 +36,7 @@ logging.basicConfig(
 BASE_DIR = os.environ.get("RPIMS_DIR", os.getcwd())
 
 CONFIG_PATH = f"{BASE_DIR}/config/rpims.yaml"
+CONFIG_PATH2 = f"{BASE_DIR}/config/rpims2.yaml"
 ZABBIX_CONF = f"{BASE_DIR}/config/zabbix_rpims.conf"
 ZABBIX_PSK = f"{BASE_DIR}/config/zabbix_rpims.psk"
 MEDIAMTX_CONFIG = "/etc/mediamtx/mediamtx.yml"
@@ -439,7 +440,11 @@ def api():
 @app.route("/api/data/all")
 def api_json():
     redis_db = flask.current_app.config["REDIS_DB"]
-    return json_response(get_data(redis_db))
+    _all = get_data(redis_db)
+    _all["config"]["zabbix_agent"].pop("TLSPSK", None)
+    _all["config"]["zabbix_agent"].pop("TLSPSKIdentity", None)
+    _all["config"]["zabbix_agent"].pop("TLSPSKFile", None)
+    return json_response(_all)
 
 
 SENSOR_MAP = {
@@ -490,8 +495,8 @@ def api_types_json(data_type):
 def setup():
     redis_db = flask.current_app.config["REDIS_DB"]
     try:
-        config_cm = load_yaml_preserve(CONFIG_PATH)
-        config = to_plain_dict(config_cm) if config_cm is not None else {}
+        config = load_yaml_preserve(CONFIG_PATH)
+        #config = to_plain_dict(config) if config is not None else {}
     except Exception as error:
         logger.error(str(error))
         config = {}
@@ -513,39 +518,39 @@ def setup():
                 "use_serial_display"
             ]
         }
+        config["setup"] = setup
 
-        setup["serial_display_type"] = form.get("serial_display_type")
-        setup["serial_type"] = form.get("serial_type")
-        setup["serial_display_refresh_rate"] = int(form.get("serial_display_refresh_rate")) if form.get("serial_display_refresh_rate") else 0
-        setup["serial_display_rotate"] = int(form.get("serial_display_rotate")) if form.get("serial_display_rotate") else 0
+        # --- Serial bus display ---
+        config["serial_bus_display"]["bus_display_type"] = form.get("serial_type")
+        config["serial_bus_display"]["display_type"] = form.get("serial_display_type")
+        config["serial_bus_display"]["display_refresh_rate"] = int(form.get("serial_display_refresh_rate")) if form.get("serial_display_refresh_rate") else 0
+        config["serial_bus_display"]["display_rotate"] = int(form.get("serial_display_rotate")) if form.get("serial_display_rotate") else 0
 
         # --- Zabbix agent ---
-        zabbix_agent = {
-            "TLSAccept": "psk",
-            "TLSConnect": "psk",
-            "TLSPSK": form.get("TLSPSK"),
-            "TLSPSKFile": ZABBIX_PSK,
-            "TLSPSKIdentity": form.get("TLSPSKIdentity"),
-            "Timeout": int(form.get("Timeout")) if form.get("Timeout") else 0,
-            "hostname": form.get("hostname"),
-            "location": form.get("location"),
-            "chassis": "embedded",
-            "deployment": "RPiMS",
-            "zabbix_server": form.get("zabbix_server"),
-            "zabbix_server_active": form.get("zabbix_server_active"),
-        }
+        config["zabbix_agent"]["TLSPSKIdentity"] = form.get("TLSPSKIdentity")
+        config["zabbix_agent"]["Timeout"] = int(form.get("Timeout")) if form.get("Timeout") else 0
+        config["zabbix_agent"]["hostname"] = form.get("hostname")
+        config["zabbix_agent"]["location"] = form.get("location")
+        config["zabbix_agent"]["zabbix_server"] = form.get("zabbix_server")
+        config["zabbix_agent"]["zabbix_server_active"] = form.get("zabbix_server_active")
+        config["zabbix_agent"]["TLSPSK"] = form.get("TLSPSK")
 
         # --- GPIO configuration ---
         gpios = ["GPIO_5", "GPIO_6", "GPIO_12", "GPIO_13", "GPIO_16",
                  "GPIO_18", "GPIO_19", "GPIO_20", "GPIO_21", "GPIO_26"]
 
         gpio = load_gpio_from_form(form, gpios)
+        config["gpio"] = gpio
 
+
+        # --- sensors ---
         # --- BME280 sensors ---
         BME280 = load_bme280_from_form(form)
+        config["sensors"]["BME280"] = BME280
 
         # --- CPU sensor ---
         CPU = {"temp": {"read_interval": int(form.get("CPUtemp_read_interval")) if form.get("CPUtemp_read_interval") else 0}}
+        config["sensors"]["CPU"] = CPU
 
         # --- DHT sensor ---
         DHT = {
@@ -554,37 +559,23 @@ def setup():
             "read_interval": int(form.get("DHT_read_interval")) if form.get("DHT_read_interval") else 0,
             "type": form.get("DHT_type"),
         }
+        config["sensors"]["DHT"] = DHT
 
         # --- PiCamera ---
         PICAMERA = load_picamera_from_form(form, setup)
+        config["sensors"]["PICAMERA"] = PICAMERA
 
         # --- Weather station ---
         WEATHER = load_weather_from_form(form)
+        config["sensors"]["WEATHER"] = WEATHER
 
         # --- DS18B20 ---
         DS18B20 = load_ds18b20_from_form(form, setup.get("use_ds18b20_sensor", False))
-
         ONE_WIRE = {"DS18B20": DS18B20}
-
-        # --- Final sensors structure ---
-        sensors = {
-            "CPU": CPU,
-            "PICAMERA": PICAMERA,
-            "BME280": BME280,
-            "ONE_WIRE": ONE_WIRE,
-            "DHT": DHT,
-            "WEATHER": WEATHER,
-        }
-
-        # --- Final RPiMS structure ---
-        rpims = {
-            "setup": setup,
-            "zabbix_agent": zabbix_agent,
-            "gpio": gpio,
-            "sensors": sensors,
-        }
+        config["sensors"]["ONE_WIRE"] = ONE_WIRE
 
         # --- Write Zabbix config ---
+        zabbix_agent = config.get("zabbix_agent")
         write_zabbix_config(zabbix_agent)
         try:
             with open(ZABBIX_PSK, "w", encoding="utf-8") as f:
@@ -592,17 +583,20 @@ def setup():
         except Exception as e:
             logger.error("Failed to write Zabbix PSK: %s", e)
 
-        # --- Save to Redis & YAML ---
+
+        # --- Save config to Redis for RPiMS main page ---
         try:
-            redis_db.set("rpims", json.dumps(rpims))
+            redis_db.set("rpims", json.dumps(config))
         except Exception as e:
             logger.error("Failed to save rpims to Redis: %s", e)
 
+
+        # --- Save to YAML ---
         try:
-            # Save YAML without losing comments in other files; rpims is plain dict
-            save_yaml_preserve(CONFIG_PATH, rpims, explicit_start=True)
+            # Save YAML without losing comments in other files; config is plain dict
+            save_yaml_preserve(CONFIG_PATH, config, explicit_start=True)
         except Exception as e:
-            logger.error("Failed to save rpims YAML: %s", e)
+            logger.error("Failed to save config to %s: %s",CONFIG_PATH, e)
 
         return flask.redirect(flask.url_for("setup"))
 

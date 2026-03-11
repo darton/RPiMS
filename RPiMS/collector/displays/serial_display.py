@@ -26,13 +26,11 @@ from sensors.bme280 import read_bme280
 
 logger = logging.getLogger(__name__)
 
-
 def serial_displays(ctx):
-    display_type = ctx.config.get('serial_display_type')
-    rotate = ctx.config.get('serial_display_rotate')
-    refresh_rate = ctx.config.get('serial_display_refresh_rate')
-    serial_type = ctx.config.get('serial_type')
-
+    display_type = ctx.serial_bus_display.get('display_type')
+    rotate = ctx.serial_bus_display.get('display_rotate')
+    refresh_rate = ctx.serial_bus_display.get('display_refresh_rate')
+    serial_type = ctx.serial_bus_display.get('bus_display_type')
     font = ImageFont.load_default()
     padding = 0
     top = padding
@@ -162,5 +160,3 @@ def serial_displays(ctx):
 
     except Exception as err:
         logger.error(err)
-
-

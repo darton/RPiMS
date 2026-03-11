@@ -1,4 +1,5 @@
 ---
+####
 setup:
   verbose: false
   show_sys_info: true
@@ -16,16 +17,12 @@ setup:
   use_picamera: false
   use_picamera_recording: false
   use_serial_display: false
-  serial_display_type: lcd_st7735
-  serial_type: spi
-  serial_display_refresh_rate: 10
-  serial_display_rotate: 0
 zabbix_agent:
   TLSAccept: psk
   TLSConnect: psk
-  TLSPSK: a82a2481fb15458818139362a321c2abc1324cdd0cb3b76e386168fae8d2f964
+  TLSPSK: 1ced28e14216cdedd61aae296c272fd8a613d3871847dd6059c97a4926486642
   TLSPSKFile: /opt/RPiMS/config/zabbix_rpims.psk
-  TLSPSKIdentity: 697df0c2978b7338
+  TLSPSKIdentity: 2bcd8a9dae10f112
   Timeout: 3
   hostname: rpims.home
   location: My Home
@@ -33,6 +30,66 @@ zabbix_agent:
   deployment: RPiMS
   zabbix_server: zabbix.home
   zabbix_server_active: zabbix.home
+sensors:
+  CPU:
+    temp:
+      read_interval: 1
+  PICAMERA:
+    fps: 24
+    mode: 6
+    vflip: false
+    hflip: false
+    hr: 1280
+    vr: 720
+  BME280:
+    id1:
+      id: id1
+      interface: i2c
+      name: Room 1
+      read_interval: 2
+      use: false
+      i2c_address: 118
+    id2:
+      id: id2
+      interface: serial
+      name: Room 2
+      read_interval: 2
+      use: false
+      serial_port: USB1
+    id3:
+      id: id3
+      interface: serial
+      name: Room 3
+      read_interval: 6
+      use: true
+      serial_port: USB4
+  ONE_WIRE:
+    DS18B20:
+      read_interval: 5
+      addresses: {}
+  DHT:
+    name: Outoor
+    pin: 17
+    read_interval: 60
+    type: DHT11
+  WEATHER:
+    RAINFALL:
+      acquisition_time: 60
+      agregation_time: 3600
+      sensor_pin: 22
+      use: false
+    WIND:
+      DIRECTION:
+        acquisition_time: 6
+        adc_input: 1
+        adc_type: AutomationPhat
+        reference_voltage_adc_input: 2
+        use: false
+      SPEED:
+        acquisition_time: 6
+        agregation_time: 3600
+        sensor_pin: 23
+        use: false
 gpio:
   GPIO_5:
     pin: 5
@@ -84,63 +141,8 @@ gpio:
     type: Reserved
     name: not used
     hold_time: 1
-sensors:
-  CPU:
-    temp:
-      read_interval: 1
-  PICAMERA:
-    fps: 24
-    mode: 6
-    vflip: false
-    hflip: false
-    vr: 720
-    hr: 1280
-  BME280:
-    id1:
-      i2c_address: 118
-      interface: i2c
-      name: Room 1
-      read_interval: 2
-      use: false
-      id: id1
-    id2:
-      serial_port: USB1
-      interface: serial
-      name: Room 2
-      read_interval: 2
-      use: false
-      id: id2
-    id3:
-      serial_port: USB2
-      interface: serial
-      name: Room 3
-      read_interval: 6
-      use: true
-      id: id3
-  ONE_WIRE:
-    DS18B20:
-      addresses: {}
-      read_interval: 5
-  DHT:
-    name: Outoor
-    pin: 17
-    read_interval: 60
-    type: DHT11
-  WEATHER:
-    RAINFALL:
-      acquisition_time: 60
-      agregation_time: 3600
-      sensor_pin: 22
-      use: false
-    WIND:
-      DIRECTION:
-        acquisition_time: 6
-        adc_input: 1
-        adc_type: AutomationPhat
-        reference_voltage_adc_input: 2
-        use: false
-      SPEED:
-        acquisition_time: 6
-        agregation_time: 3600
-        sensor_pin: 23
-        use: false
+serial_bus_display:
+  bus_display_type: i2c
+  display_type: oled_sh1106
+  display_refresh_rate: 10
+  display_rotate: 0
