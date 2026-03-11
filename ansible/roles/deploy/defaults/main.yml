@@ -12,8 +12,8 @@ mediamtx_config_dir: "/etc/mediamtx"
 mediamtx_service_name: "mediamtx"
 mediamtx_cache_dir: "~/.cache/mediamtx"
 mediamtx_recording_dir: "/mnt/usb"
-stream_source: "rpiCamera"
-sourceOnDemand: true
+stream_source:
+sourceOnDemand: "no"
 rtsp_enable: "yes"
 rtpm_enable: "no"
 hls_enable: "no"

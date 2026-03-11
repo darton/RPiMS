@@ -144,7 +144,7 @@
 - name: Enable mediamtx-keepalive.service
   systemd:
     name: "mediamtx-keepalive.service"
-    enabled: yes
+    enabled: no
 
 # ---------------------------------------
 # CLEANUP

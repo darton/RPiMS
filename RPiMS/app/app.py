@@ -268,16 +268,22 @@ def update_mediamtx_config(width, height, fps, recording, vflip, hflip):
     if config is None:
         config = {}
 
-    # Ensure pathDefaults exists
-    if "pathDefaults" not in config or config["pathDefaults"] is None:
-        config["pathDefaults"] = {}
+    # Ensure paths exists
+    if "paths" not in config or config["paths"] is None:
+        config["paths"] = {}
 
-    config["pathDefaults"]["rpiCameraWidth"] = width
-    config["pathDefaults"]["rpiCameraHeight"] = height
-    config["pathDefaults"]["rpiCameraFPS"] = fps
-    config["pathDefaults"]["record"] = bool_to_yesno(recording)
-    config["pathDefaults"]["rpiCameraVFlip"] = bool_to_yesno(vflip)
-    config["pathDefaults"]["rpiCameraHFlip"] = bool_to_yesno(hflip)
+    # Ensure cam exists
+    if "cam" not in config or config["cam"] is None:
+        config["paths"]["cam"] = {}
+
+    config["paths"]["cam"]["source"] = 'rpiCamera'
+    config["paths"]["cam"]["sourceOnDemand"] = 'no'
+    config["paths"]["cam"]["record"] = bool_to_yesno(recording)
+    config["paths"]["cam"]["rpiCameraWidth"] = width
+    config["paths"]["cam"]["rpiCameraHeight"] = height
+    config["paths"]["cam"]["rpiCameraFPS"] = fps
+    config["paths"]["cam"]["rpiCameraVFlip"] = bool_to_yesno(vflip)
+    config["paths"]["cam"]["rpiCameraHFlip"] = bool_to_yesno(hflip)
 
     save_yaml_preserve(MEDIAMTX_CONFIG, config)
 
