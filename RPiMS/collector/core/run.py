@@ -20,9 +20,9 @@ from config.loader import config_load
 from system.redis_db import db_connect
 from models.context import AppContext
 from system.services import get_hostinfo, set_hostnamectl, video_service, zabbix_service
-from core.hardware_init import init_hardware
-from core.sensor_startup import start_sensors
-from core.display_startup import start_display
+from gpio.startup import start_gpio
+from sensors.startup import start_sensors
+from displays.startup import start_display
 
 logger = logging.getLogger("RPiMS-collector")
 
@@ -46,7 +46,7 @@ def run_collector():
     get_hostinfo()
     set_hostnamectl(**ctx.zabbix_agent)
 
-    init_hardware(ctx)
+    start_gpio(ctx)
     start_sensors(ctx)
     start_display(ctx)
 
