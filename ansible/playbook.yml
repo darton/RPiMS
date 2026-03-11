@@ -1,6 +1,7 @@
 ---
 - name: RPiMS deploying
   hosts: rpims
+  strategy: free
   become: true
 
   roles:
