@@ -120,8 +120,9 @@ http://rpiipaddress
 
 ### Endpoint list
 
+This endpoint returns a JSON dictionary of all enabled sensors: 
 ```
-This endpoint returns a JSON list of all enabled sensors: http://rpiaddress/api/data/sensors/all
+http://rpiaddress/api/data/sensors/all
 ```
 ![RPiMS](https://github.com/darton/RPiMS/blob/main/documentation/RPiMS_API_SENSORS.png)
 ### Systemd services used:
