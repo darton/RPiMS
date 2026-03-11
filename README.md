@@ -453,20 +453,6 @@ $ i2cdetect -y 1
   70: -- -- -- -- -- -- 76 --
   ```
 
-
-## Configuration testing picamera
-```
-sudo systemctl stop rpims
-
-raspivid -o test.h264
-
-raspistill -o test.jpg
-
-sudo systemctl start rpims
-
-http://rpiipaddress:8080/stream/video.mjpeg
-```
-
 ## Configuration testing zabbix-agent
 
 ```
