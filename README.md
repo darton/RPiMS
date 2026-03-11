@@ -399,33 +399,41 @@ Remove fake-hwclock
 
 ```
 sudo apt-get -y remove fake-hwclock
-
-sudo update-rc.d -f fake-hwclock remove
-
-sudo systemctl disable fake-hwclock 
-
-sudo update-rc.d hwclock.sh enable
-
-sudo nano /etc/rc.local
+sudo systemctl disable fake-hwclock
 ```
 
-Add the following lines to the file: `/etc/rc.local`
+Add the following lines to the file: `/etc/systemd/system/rtc-init.service`
 
 ```
-sudo nano /etc/rc.local 
-```
-Add this commnads
-```
-sudo hwclock -s
+[Unit]
+Description=RTC initialization
+After=multi-user.target
+After=hwclock.service
+Requires=hwclock.service
 
-date
-```
-Just before the `exit 0`
+[Service]
+Type=oneshot
+ExecStart=/usr/sbin/hwclock --hctosys
+ExecStart=/usr/sbin/hwclock --systz
 
+[Install]
+WantedBy=multi-user.target
+
+```
+Activate
+
+```
+sudo systemctl daemon-reload
+sudo systemctl enable rtc-init.service
+```
 Restart your Pi and check the I2C state again with `i2cdetect -y 1` to the RTC address is not UU anymore. 
 ```
 sudo sync
 sudo reboot
+```
+Check if it works
+```
+timedatectl
 ```
 
 ## Configuration testing I2C devices
