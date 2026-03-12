@@ -98,24 +98,29 @@
     dest: "{{ mediamtx_tmp_dir }}"
     remote_src: yes
 
+ name: Ensure "{{ mediamtx_install_dir }}" exists with correct ownership
+  file:
+    path: "{{ mediamtx_install_dir }}"
+    state: directory
+    owner: "{{ rpims_user }}"
+    group: "{{ rpims_user }}"
+    mode: "0755"
+  become: true
+
 - name: Install MediaMTX binary
   copy:
     src: "{{ mediamtx_tmp_dir }}/mediamtx"
-    dest: "{{ mediamtx_install_dir }}/mediamtx"
+    dest: "{{ mediamtx_install_dir }}/"
+    owner: "{{ rpims_user }}"
+    group: "{{ rpims_user }}"
     mode: "0755"
     remote_src: yes
-
-- name: Create config directory
-  file:
-    path: "{{ mediamtx_config_dir }}"
-    state: directory
-    mode: "0775"
 
 - name: Deploy MediaMTX config
   template:
     src: "mediamtx/mediamtx.yml.j2"
     dest: "{{ mediamtx_config_dir }}/mediamtx.yml"
-    owner: root
+    owner: "{{ rpims_user }}"
     group: "{{ rpims_user }}"
     mode: "0664"
 
@@ -143,4 +148,3 @@
   file:
     path: "{{ mediamtx_tmp_dir }}"
     state: absent
-

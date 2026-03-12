@@ -467,7 +467,7 @@ pathDefaults:
   # * $MTX_QUERY: query parameters (passed by first reader)
   # * $G1, $G2, ...: regular expression groups, if path name is
   #   a regular expression.
-  source: {{ stream_source }}
+  source: publisher
   # If the source is a URL, and the source TLS certificate is self-signed
   # or invalid, you can provide the fingerprint of the certificate in order to
   # validate it anyway. It can be obtained by running:
@@ -476,7 +476,7 @@ pathDefaults:
   sourceFingerprint:
   # If the source is a URL, it will be pulled only when at least
   # one reader is connected, saving bandwidth.
-  sourceOnDemand: {{ sourceOnDemand }}
+  sourceOnDemand: no
   # If sourceOnDemand is "yes", readers will be put on hold until the source is
   # ready or until this amount of time has passed.
   sourceOnDemandStartTimeout: 10s
@@ -775,6 +775,9 @@ paths:
   # example:
   # my_camera:
   #   source: rtsp://my_camera
+  cam:
+    source: {{ stream_source }}
+    sourceOnDemand: {{ sourceOnDemand }}
 
   # Settings under path "all_others" are applied to all paths that
   # do not match another entry.

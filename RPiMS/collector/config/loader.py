@@ -26,5 +26,5 @@ def config_load(path_to_config):
         return config_yaml
     except Exception as err:
         logger.error(err)
-        logger.error = ("Can't load RPiMS config file: %s", path_to_config)
+        logger.error("Can't load RPiMS config file: %s", path_to_config)
         sys.exit(255)

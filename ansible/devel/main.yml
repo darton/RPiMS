@@ -1,0 +1,81 @@
+---
+- hosts: all
+  become: yes
+  tasks:
+
+
+  # Find usb-mount instances
+  - name: Find usb-mount instances
+    command: systemctl list-units --type=service --all --no-legend "usb-mount@*.service"
+    register: usb_mount_units
+    changed_when: false
+    failed_when: false
+
+  # Extract instance names
+  - name: Extract usb-mount instance names
+    set_fact:
+      usb_mount_instances: "{{ usb_mount_units.stdout_lines | map('split', ' ') | map('first') | list }}"
+
+  # Build service list
+  - name: Build service list
+    set_fact:
+      cleanup_services: >
+        {{ [
+          'rpims.service',
+          'rpims-watcher.path',
+          'rpims-watcher.service',
+          'rpims-gunicorn.service',
+          'mediamtx.service',
+          'redis.service',
+          'nginx.service'
+        ] + (usb_mount_instances | default([])) }}
+
+  # Stop and disable services
+  - name: Stop and disable services
+    systemd:
+      name: "{{ item }}"
+      state: stopped
+      enabled: no
+    loop: "{{ cleanup_services }}"
+    failed_when: false
+
+  # Remove systemd unit files
+  - name: Remove systemd unit files
+    file:
+      path: "/etc/systemd/system/{{ item }}"
+      state: absent
+    loop:
+      - rpims.service
+      - rpims-watcher.path
+      - rpims-watcher.service
+      - rpims-gunicorn.service
+      - mediamtx.service
+      - redis.service
+      - nginx.service
+      - usb-mount@.service
+    failed_when: false
+
+  # Reload systemd
+  - name: Reload systemd
+    systemd:
+      daemon_reload: yes
+    failed_when: false
+
+  # Remove application directories
+  - name: Remove application directories
+    file:
+      path: "{{ item }}"
+      state: absent
+    loop:
+      - /opt/RPiMS
+      - /opt/mediamtx
+    failed_when: false
+
+  # Remove rpims user
+  - name: Remove rpims user
+    user:
+      name: rpims
+      state: absent
+      remove: yes
+    failed_when: false
+

@@ -7,12 +7,12 @@ redis_sysctl:
   net.core.somaxconn: 512
 
 mediamtx_version: "1.16.1"
-mediamtx_install_dir: "/usr/local/bin"
-mediamtx_config_dir: "/etc/mediamtx"
+mediamtx_install_dir: "/opt/mediamtx"
+mediamtx_config_dir: "{{ rpims_install_dir }}/config"
 mediamtx_service_name: "mediamtx"
 mediamtx_cache_dir: "~/.cache/mediamtx"
 mediamtx_recording_dir: "/mnt/usb"
-stream_source:
+stream_source: "rpiCamera"
 sourceOnDemand: "no"
 rtsp_enable: "yes"
 rtpm_enable: "no"
@@ -34,13 +34,13 @@ python_user_venv_packages:
   - RPi.bme280
   - smbus2
   - w1thermsensor
-  - "redis[hiredis]"
+  - redis[hiredis]
   - PyYAML
   - ruamel.yaml
   - luma.oled
   - luma.lcd
-  - adafruit-circuitpython-ads1x15
   - adafruit-circuitpython-dht
+  - adafruit-circuitpython-ads1x15
   - automationhat
   - setproctitle
   - rshell

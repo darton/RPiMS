@@ -15,7 +15,7 @@
   systemd:
     name: "{{ item | basename | regex_replace('.j2$', '') }}"
     enabled: true
-    state: started
+    state: restarted
   become: true
   with_fileglob:
     - "{{ role_path }}/templates/rpims/*.j2"

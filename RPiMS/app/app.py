@@ -36,10 +36,9 @@ logging.basicConfig(
 BASE_DIR = os.environ.get("RPIMS_DIR", os.getcwd())
 
 CONFIG_PATH = f"{BASE_DIR}/config/rpims.yaml"
-CONFIG_PATH2 = f"{BASE_DIR}/config/rpims2.yaml"
 ZABBIX_CONF = f"{BASE_DIR}/config/zabbix_rpims.conf"
 ZABBIX_PSK = f"{BASE_DIR}/config/zabbix_rpims.psk"
-MEDIAMTX_CONFIG = "/etc/mediamtx/mediamtx.yml"
+MEDIAMTX_CONFIG = f"{BASE_DIR}/config/mediamtx.yml"
 
 # Flask app initialization
 app = flask.Flask(__name__)

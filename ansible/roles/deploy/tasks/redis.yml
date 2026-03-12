@@ -23,3 +23,8 @@
   systemd:
     name: redis-server
     state: restarted
+
+- name: Flush Redis DB
+  command: redis-cli flushdb
+  become: true
+  #when: env == "prod"
