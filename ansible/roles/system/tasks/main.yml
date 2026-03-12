@@ -11,6 +11,11 @@
   apt:
     autoremove: yes
 
+- name: Clean APT cache (autoclean)
+  apt:
+    autoclean: yes
+  # Removes outdated package files from the cache
+
 - name: Setting time/zone
   timezone:
     name: "{{ timezone_name }}"
@@ -24,4 +29,3 @@
     path: /etc/hosts
     line: "{{ raspi_hosts_ip }}   {{ raspi_hostname }}"
     state: present
-

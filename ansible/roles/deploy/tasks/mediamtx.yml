@@ -98,7 +98,7 @@
     dest: "{{ mediamtx_tmp_dir }}"
     remote_src: yes
 
- name: Ensure "{{ mediamtx_install_dir }}" exists with correct ownership
+- name: Ensure "{{ mediamtx_install_dir }}" exists with correct ownership
   file:
     path: "{{ mediamtx_install_dir }}"
     state: directory

@@ -25,9 +25,7 @@
           'rpims-watcher.path',
           'rpims-watcher.service',
           'rpims-gunicorn.service',
-          'mediamtx.service',
-          'redis.service',
-          'nginx.service'
+          'mediamtx.service'
         ] + (usb_mount_instances | default([])) }}
 
   # Stop and disable services
@@ -50,8 +48,6 @@
       - rpims-watcher.service
       - rpims-gunicorn.service
       - mediamtx.service
-      - redis.service
-      - nginx.service
       - usb-mount@.service
     failed_when: false
 
