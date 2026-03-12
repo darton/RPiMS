@@ -2,8 +2,8 @@
 
 export TERM=xterm-256color
 IFS='; '
-SENSOR_TYPE="BME280 1"  #Use BME280 1,2 or 3
-str=$({{ rpims_install_dir }}/scripts/redis-get-data.py $SENSOR_TYPE)
+SENSOR=$(redis-cli keys \*|grep -E "_BME280" |head -n 1)
+str=$({{ rpims_install_dir }}/scripts/redis_get_data.py $SENSOR)
 read -r -a arr <<< "$str"
 SENSOR_TEMP=$(echo ${arr[0]}|awk -F[=] '{print $2" °C"}')
 SENSOR_HUM=$(echo ${arr[1]}|awk -F[=] '{print $2" %"}')

@@ -18,35 +18,45 @@ The script retrieves sensor data from the Redis database for the Zabbix agent
 """
 
 import sys
+import re
 import json
 import redis
 
-redis_db = redis.StrictRedis(host="localhost", port=6379, db=0, decode_responses=True)
+try:
+    redis_db = redis.Redis(host='localhost', port=6379, db=0, decode_responses=True)
+    redis_db.ping()
+except Exception:
+    sys.exit(0)
 
 rpims = json.loads(redis_db.get('rpims'))
 config = rpims['setup']
 
 
 def print_help():
-    """ Helper function """
-    print('You must use one parameter from list:\
-           BME280 id (where id is 1, 2 or 3),\
-           DHT,\
-           CPUTEMP,\
-           DS18B20,\
-           ds18b20 address')
+    """Helper function"""
+    options = [
+        "idn_BME280 (where n is 1, 2, 3)",
+        "DHT",
+        "CPUTEMP",
+        "DS18B20",
+        "ds18b20 address",
+    ]
 
+    print("You must use one parameter from the list:")
+    for opt in options:
+        print(" ", opt)
 
 if len(sys.argv) > 1:
-    if sys.argv[1] == 'BME280':
-        if config['use_bme280_sensor'] is True:
-            if len(sys.argv) == 3:
-                bme_id = sys.argv[2]
-                if redis_db.exists(f'id{bme_id}_BME280'):
-                    _bme280 = redis_db.hgetall(f'id{bme_id}_BME280')
-                    temperature = _bme280['temperature']
-                    humidity = _bme280['humidity']
-                    pressure = _bme280['pressure']
+    arg = sys.argv[1]
+    if re.fullmatch(r"id[123]_BME280", arg):
+         if config['use_bme280_sensor'] is True:
+            if len(sys.argv) == 2:
+                key = sys.argv[1]
+                if redis_db.exists(key):
+                    data = redis_db.hgetall(key)
+                    temperature = data['temperature']
+                    humidity = data['humidity']
+                    pressure = data['pressure']
                     print(
                             f"Temperature={float(temperature):0.2f};"
                             f"Humidity={float(humidity):0.2f};"
