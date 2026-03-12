@@ -51,7 +51,7 @@ def run_collector():
     start_display(ctx)
 
     if ctx.config.get('use_picamera'):
-        video_service('restart')
+        video_service('start')
     else:
         video_service('stop')
 

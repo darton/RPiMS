@@ -5,7 +5,6 @@ After=network.target
 [Service]
 Type=simple
 ExecStart={{ mediamtx_install_dir }}/mediamtx {{ mediamtx_config_dir }}/mediamtx.yml
-ExecReload=/bin/kill -HUP $MAINPID
 Restart=on-failure
 User=root
 Group=root
