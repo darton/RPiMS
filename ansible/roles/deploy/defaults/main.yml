@@ -6,7 +6,7 @@ redis_sysctl:
   vm.overcommit_memory: 1
   net.core.somaxconn: 512
 
-mediamtx_version: "1.16.1"
+mediamtx_version: "1.16.3"
 mediamtx_install_dir: "/opt/mediamtx"
 mediamtx_config_dir: "{{ rpims_install_dir }}/config"
 mediamtx_service_name: "mediamtx"
