@@ -35,8 +35,8 @@ def start_sensors(ctx):
     if ctx.config.get('use_ds18b20_sensor'):
         start_process(get_ds18b20_data, ctx)
 
-    if ctx.config.get('use_dht_sensor'):
-        start_process(get_dht_data, ctx)
+    #if ctx.config.get('use_dht_sensor'):
+    #    start_process(get_dht_data, ctx)
 
     if ctx.config.get('use_weather_station'):
         if ctx.rainfall_config.get('use'):
