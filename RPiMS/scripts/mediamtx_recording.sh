@@ -1,0 +1,46 @@
+#!/bin/bash
+
+SCRIPT_NAME="$(basename "$0")"
+URL="http://localhost:9997/v3/config/paths"
+HEADER="Content-Type: application/json"
+GET_ENDPOINT="get/cam"
+PATCH_ENDPOINT="patch/cam"
+
+record_status(){
+    curl -s "${URL}"/"$GET_ENDPOINT" | jq -r '.record'
+}
+
+record_off(){
+    rs=$(record_status)
+    if [[ $rs == 'true' ]]; then
+        response=$(curl -s -X PATCH "${URL}"/"$PATCH_ENDPOINT" \
+                -H '$HEADER' -d '{"record": false}')
+        r=$(echo $response | jq -r '.status')
+        if [[ $r == 'ok' ]]; then echo "recording was disabled"; fi
+    fi
+}
+
+record_on(){
+    rs=$(record_status)
+    if [[ $rs == 'false' ]]; then
+        response=$(curl -s -X PATCH "${URL}"/"$PATCH_ENDPOINT" \
+            -H '$HEADER' -d '{"record": true}')
+        r=$(echo $response | jq -r '.status')
+        if [[ $r == 'ok' ]]; then echo "recording was enabled"; fi
+    fi
+}
+
+show_help(){ echo "use $SCRIPT_NAME true|false"; }
+
+main(){
+    if [[ $arg == 'true' ]]; then
+        record_on
+    elif [[ $arg == 'false' ]]; then
+        record_off
+    else
+        show_help
+    fi
+}
+
+arg=$1
+main
