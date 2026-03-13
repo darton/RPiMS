@@ -484,12 +484,15 @@ def api_sensors_json(sensor_type):
 @app.route("/api/data/<data_type>")
 def api_types_json(data_type):
     redis_db = flask.current_app.config["REDIS_DB"]
-    data = get_data(redis_db)
+    _all = get_data(redis_db)
+    _all["config"]["zabbix_agent"].pop("TLSPSK", None)
+    _all["config"]["zabbix_agent"].pop("TLSPSKIdentity", None)
+    _all["config"]["zabbix_agent"].pop("TLSPSKFile", None)
 
     if data_type not in ("config", "system", "sensors"):
         return error_response("Unknown data type", 404)
 
-    return json_response(data[data_type])
+    return json_response(_all[data_type])
 
 
 # ===========
