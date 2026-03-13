@@ -16,7 +16,7 @@
 from execution import start_process
 from sensors.bme280 import get_bme280_data
 from sensors.ds18b20 import get_ds18b20_data
-#from sensors.dht import get_dht_data
+from sensors.dht import get_dht_data
 from sensors.cputemp import get_cputemp_data
 from sensors.rainfall import rainfall
 from sensors.windspeed import wind_speed
@@ -35,8 +35,8 @@ def start_sensors(ctx):
     if ctx.config.get('use_ds18b20_sensor'):
         start_process(get_ds18b20_data, ctx)
 
-    #if ctx.config.get('use_dht_sensor'):
-    #    start_process(get_dht_data, ctx)
+    if ctx.config.get('use_dht_sensor'):
+        start_process(get_dht_data, ctx)
 
     if ctx.config.get('use_weather_station'):
         if ctx.rainfall_config.get('use'):
