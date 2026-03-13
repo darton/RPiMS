@@ -81,7 +81,7 @@ Your control machine must be able to connect to each Raspberry Pi via SSH.
 Once the inventory is configured, start the installation:
 
 ```bash
-ansible-playbook ansible/playbook.yml
+ansible-playbook -i ansible/inventory/hosts.ini ansible/playbook.yml
 ```
 
 The playbook will:
