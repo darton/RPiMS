@@ -16,7 +16,7 @@
 import logging
 from signal import pause
 import json
-from config.loader import config_load
+from config.loader import load_config
 from system.redis_db import db_connect
 from models.context import AppContext
 from system.services import get_hostinfo, set_hostnamectl, video_service, zabbix_service
@@ -28,7 +28,7 @@ logger = logging.getLogger("RPiMS-collector")
 
 def run_collector():
     redis_db = db_connect('localhost', 0)
-    config_yaml = config_load('../config/rpims.yaml')
+    config_yaml = load_config('../config/rpims.yaml')
 
     ctx = AppContext(
         gpio=config_yaml.get("gpio"),
