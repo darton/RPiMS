@@ -55,11 +55,3 @@ def zabbix_sender_call(ctx, key, value):
             ],)
     except Exception as e:
         logger.error(f"Zabbix sender error: {e}")
-
-
-
-def mediamtx_keepalive():
-    try:
-        subprocess.check_call(["sudo", "systemctl", "restart", "mediamtx-keepalive.service"])
-    except Exception as e:
-        logger.error(f"Failed to trigger MediaMTX keepalive: {e}")
