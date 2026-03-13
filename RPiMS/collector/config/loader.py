@@ -66,5 +66,5 @@ def load_config(path_to_config: str | Path) -> dict:
         sys.exit(255)
 
     except Exception as err:
-        logger.exception("Unexpected error while loading configuration: %s", config_path)
+        logger.exception("Unexpected error while loading configuration: %s - %s", config_path, err)
         sys.exit(255)
