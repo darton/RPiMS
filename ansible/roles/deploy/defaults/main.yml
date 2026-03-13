@@ -35,7 +35,6 @@ python_user_venv_packages:
   - smbus2
   - w1thermsensor
   - redis[hiredis]
-  - PyYAML
   - ruamel.yaml
   - luma.oled
   - luma.lcd
