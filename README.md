@@ -3,9 +3,9 @@
 ## Description
 RPiMS is Raspberry Pi based Monitoring System.
 
-Supports sensors like door/window, motion, water, smoke and light sensors.
+Supports contact sensors like door, window, flood sensors or digital sensors like some motion and light sensors.
 
-Suppports I2C temperature, humidity and preassure BME280 sensors and 1-wire DS18B20 temperature sensors.
+Supports I2C temperature, humidity and preassure BME280 sensor,  1-wire DS18B20 temperature sensors.
 
 Supports for live video streaming from the Raspberry Pi camera, using MediaMTX as the streaming backend.
 
@@ -19,13 +19,26 @@ allowing the BME280 to be placed farther from the Raspberry Pi using a standard 
 ## Details
 Sensors are polled and measured values are saved to Redis database periodically.
 
-The Zabbix Agent periodicaly pull temperature,humidity and pressure sensor data from redis db and send to Zabbix Server. 
-
 When any of the doors sensors opens or closed then a message will be sent to the Zabbix server. 
 
 When the motion sensor detects motion a message will be sent to Zabbix server.
 
 Video stream will be turned on automaticly when use picamera sensor are set to enable in setup.
+
+### Integration with Zabbix
+
+RPiMS provides two independent methods of integration with Zabbix:
+
+- **Zabbix Agent mode**
+  A Zabbix Agent running on the Raspberry Pi periodically retrieves all sensor readings
+  and GPIO states from the RPiMS REST API and sends them to the Zabbix Server.
+
+- **Direct API polling mode**
+  The Zabbix Server can directly query the RPiMS REST API to collect all sensor values
+  and GPIO states without using a Zabbix Agent.
+
+Both integration methods are supported by dedicated Zabbix templates included in the repository.
+The templates contain predefined items, discovery rules, and triggers for all available sensors and GPIO inputs.
 
 
 ## Installing
