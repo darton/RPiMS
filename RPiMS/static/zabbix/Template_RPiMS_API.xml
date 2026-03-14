@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zabbix_export>
+  <version>6.0</version>
+  <date>2025-01-01T00:00:00Z</date>
+
+  <groups>
+    <group>
+      <name>Templates/Hardware</name>
+    </group>
+  </groups>
+
+  <templates>
+    <template>
+      <template>Template RPiMS API</template>
+      <name>Template RPiMS API</name>
+
+      <groups>
+        <group>
+          <name>Templates/Hardware</name>
+        </group>
+      </groups>
+
+      <items>
+        <item>
+          <name>RPiMS API JSON</name>
+          <key>rpims.api.json</key>
+          <type>19</type>
+          <value_type>4</value_type>
+          <url>http://{HOST.IP}/api/data/sensors/all</url>
+          <delay>30s</delay>
+        </item>
+
+        <item>
+          <name>CPU Temperature</name>
+          <key>rpims.cpu.temperature</key>
+          <type>19</type>
+          <value_type>0</value_type>
+          <units>°C</units>
+          <preprocessing>
+            <step>
+              <type>12</type>
+              <params>$.cpu.temperature</params>
+            </step>
+          </preprocessing>
+        </item>
+      </items>
+
+      <discovery_rules>
+
+        <!-- BME280 -->
+        <discovery_rule>
+          <name>BME280 Discovery</name>
+          <key>rpims.bme280.discovery</key>
+          <type>0</type>
+          <delay>60s</delay>
+
+          <preprocessing>
+            <step>
+              <type>12</type>
+              <params>$.bme280</params>
+            </step>
+            <step>
+              <type>13</type>
+              <params>{"data":[{"{#ID}":"{#KEY}"}]}</params>
+            </step>
+          </preprocessing>
+
+          <item_prototypes>
+            <item_prototype>
+              <name>Temperature {#ID}</name>
+              <key>rpims.bme280[{#ID},temperature]</key>
+              <type>19</type>
+              <value_type>0</value_type>
+              <units>°C</units>
+              <preprocessing>
+                <step>
+                  <type>12</type>
+                  <params>$.bme280.{#ID}.temperature</params>
+                </step>
+              </preprocessing>
+            </item_prototype>
+
+            <item_prototype>
+              <name>Humidity {#ID}</name>
+              <key>rpims.bme280[{#ID},humidity]</key>
+              <type>19</type>
+              <value_type>0</value_type>
+              <units>%</units>
+              <preprocessing>
+                <step>
+                  <type>12</type>
+                  <params>$.bme280.{#ID}.humidity</params>
+                </step>
+              </preprocessing>
+            </item_prototype>
+
+            <item_prototype>
+              <name>Pressure {#ID}</name>
+              <key>rpims.bme280[{#ID},pressure]</key>
+              <type>19</type>
+              <value_type>0</value_type>
+              <units>hPa</units>
+              <preprocessing>
+                <step>
+                  <type>12</type>
+                  <params>$.bme280.{#ID}.pressure</params>
+                </step>
+              </preprocessing>
+            </item_prototype>
+          </item_prototypes>
+
+          <graph_prototypes>
+            <graph_prototype>
+              <name>BME280 Temperature {#ID}</name>
+              <graph_items>
+                <graph_item>
+                  <item>
+                    <host>Template RPiMS API</host>
+                    <key>rpims.bme280[{#ID},temperature]</key>
+                  </item>
+                </graph_item>
+              </graph_items>
+            </graph_prototype>
+
+            <graph_prototype>
+              <name>BME280 Humidity {#ID}</name>
+              <graph_items>
+                <graph_item>
+                  <item>
+                    <host>Template RPiMS API</host>
+                    <key>rpims.bme280[{#ID},humidity]</key>
+                  </item>
+                </graph_item>
+              </graph_items>
+            </graph_prototype>
+
+            <graph_prototype>
+              <name>BME280 Pressure {#ID}</name>
+              <graph_items>
+                <graph_item>
+                  <item>
+                    <host>Template RPiMS API</host>
+                    <key>rpims.bme280[{#ID},pressure]</key>
+                  </item>
+                </graph_item>
+              </graph_items>
+            </graph_prototype>
+          </graph_prototypes>
+        </discovery_rule>
+
+        <!-- CONTACT SENSORS -->
+        <discovery_rule>
+          <name>Contact Sensors Discovery</name>
+          <key>rpims.contact.discovery</key>
+          <type>0</type>
+          <delay>60s</delay>
+
+          <preprocessing>
+            <step>
+              <type>12</type>
+              <params>$.contact_sensors</params>
+            </step>
+            <step>
+              <type>13</type>
+              <params>{"data":[{"{#GPIO}":"{#KEY}"}]}</params>
+            </step>
+          </preprocessing>
+
+          <item_prototypes>
+            <item_prototype>
+              <name>Contact {#GPIO}</name>
+              <key>rpims.contact[{#GPIO}]</key>
+              <type>19</type>
+              <value_type>3</value_type>
+              <preprocessing>
+                <step>
+                  <type>12</type>
+                  <params>$.contact_sensors.{#GPIO}</params>
+                </step>
+              </preprocessing>
+              <value_map>
+                <name>RPiMS Contact State</name>
+              </value_map>
+            </item_prototype>
+          </item_prototypes>
+
+          <trigger_prototypes>
+            <trigger_prototype>
+              <name>Contact {#GPIO} is OPEN</name>
+              <expression>{Template RPiMS API:rpims.contact[{#GPIO}].last()}=1</expression>
+              <severity>3</severity>
+            </trigger_prototype>
+            <trigger_prototype>
+              <name>Contact {#GPIO} open for 30s</name>
+              <expression>{Template RPiMS API:rpims.contact[{#GPIO}].min(30s)}=1</expression>
+              <severity>4</severity>
+            </trigger_prototype>
+          </trigger_prototypes>
+        </discovery_rule>
+
+        <!-- DIGITAL SENSORS -->
+        <discovery_rule>
+          <name>Digital Sensors Discovery</name>
+          <key>rpims.digital.discovery</key>
+          <type>0</type>
+          <delay>60s</delay>
+
+          <preprocessing>
+            <step>
+              <type>12</type>
+              <params>$.digital_sensors</params>
+            </step>
+            <step>
+              <type>13</type>
+              <params>{"data":[{"{#GPIO}":"{#KEY}"}]}</params>
+            </step>
+          </preprocessing>
+
+          <item_prototypes>
+            <item_prototype>
+              <name>Digital {#GPIO}</name>
+              <key>rpims.digital[{#GPIO}]</key>
+              <type>19</type>
+              <value_type>3</value_type>
+              <preprocessing>
+                <step>
+                  <type>12</type>
+                  <params>$.digital_sensors.{#GPIO}</params>
+                </step>
+              </preprocessing>
+              <value_map>
+                <name>RPiMS Digital State</name>
+              </value_map>
+            </item_prototype>
+          </item_prototypes>
+
+          <trigger_prototypes>
+            <trigger_prototype>
+              <name>Digital state change detected on {#GPIO}</name>
+              <expression>{Template RPiMS API:rpims.digital[{#GPIO}].last()}=1</expression>
+              <severity>3</severity>
+            </trigger_prototype>
+            <trigger_prototype>
+              <name>Continuous digital state high on {#GPIO} for 10s</name>
+              <expression>{Template RPiMS API:rpims.digital[{#GPIO}].min(10s)}=1</expression>
+              <severity>4</severity>
+            </trigger_prototype>
+          </trigger_prototypes>
+        </discovery_rule>
+
+      </discovery_rules>
+
+      <graphs>
+        <graph>
+          <name>BME280 Temperature – All Sensors</name>
+          <graph_items>
+            <graph_item>
+              <item>
+                <host>Template RPiMS API</host>
+                <key>rpims.bme280[{#ID},temperature]</key>
+              </item>
+            </graph_item>
+          </graph_items>
+        </graph>
+
+        <graph>
+          <name>BME280 Humidity – All Sensors</name>
+          <graph_items>
+            <graph_item>
+              <item>
+                <host>Template RPiMS API</host>
+                <key>rpims.bme280[{#ID},humidity]</key>
+              </item>
+            </graph_item>
+          </graph_items>
+        </graph>
+
+        <graph>
+          <name>BME280 Pressure – All Sensors</name>
+          <graph_items>
+            <graph_item>
+              <item>
+                <host>Template RPiMS API</host>
+                <key>rpims.bme280[{#ID},pressure]</key>
+              </item>
+            </graph_item>
+          </graph_items>
+        </graph>
+      </graphs>
+
+      <value_maps>
+
+        <value_map>
+          <name>RPiMS Contact State</name>
+          <mappings>
+            <mapping>
+              <value>0</value>
+              <newvalue>Closed</newvalue>
+            </mapping>
+            <mapping>
+              <value>1</value>
+              <newvalue>Open</newvalue>
+            </mapping>
+          </mappings>
+        </value_map>
+
+        <value_map>
+          <name>RPiMS Digital State</name>
+          <mappings>
+            <mapping>
+              <value>0</value>
+              <newvalue>State Low</newvalue>
+            </mapping>
+            <mapping>
+              <value>1</value>
+              <newvalue>State High</newvalue>
+            </mapping>
+          </mappings>
+        </value_map>
+
+      </value_maps>
+
+        <trigger>
+          <name>RPiMS API – not responding</name>
+          <expression>{Template RPiMS API:rpims.api.json.nodata(120s)}=1</expression>
+          <severity>5</severity>
+          <description>No data received from RPiMS API for more than 120 seconds.</description>
+        </trigger>
+
+    </template>
+  </templates>
+</zabbix_export>
+
