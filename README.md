@@ -340,6 +340,125 @@ Optional
 
 * [Python - YAML](https://realpython.com/python-yaml/#dump-to-a-string-a-file-or-a-stream)
 
+
+## Zabbix
+
+You need to import this templates into Zabbix server: 
+https://github.com/darton/RPiMS/blob/main/templates/rpims_zabbix_host_template.xml
+https://github.com/darton/RPiMS/blob/main/templates/rpims_zabbix_template.xml 
+
+In rpims_zabbix_template.xml template, the appropriate zabbix triggers for the temperature, humidity and door sensors are configured.
+Door sensor triggering is pre-configured for GPIO_20, GPIO_21 only, if you need more, please do trigger clone.
+RPiMS (rpims.py) uses zabbix_sender.sh to activate the appropriate triggers in zabbix for the door sensors.
+
+### Testing configuration for zabbix-agent 
+
+Testing the correct operation of the Zabbix agent
+
+```
+zabbix_get -s 127.0.0.1 -k "system.cpu.load[all,avg1]" --tls-connect psk --tls-psk-identity $(awk -F\= '/TLSPSKIdentity/ {print $2}' /opt/RPiMS/config/zabbix_rpims.conf) --tls-psk-file /opt/RPiMS/config/zabbix_rpims.psk
+
+```
+Sample commad result
+```
+0.881348
+```
+
+Testing RPiMS sensors
+```
+zabbix_get -s 127.0.0.1 -k rpims.sensors.json --tls-connect psk --tls-psk-identity $(awk -F\= '/TLSPSKIdentity/ {print $2}' /opt/RPiMS/config/zabbix_rpims.conf) --tls-psk-file /opt/RPiMS/config/zabbix_rpims.psk
+```
+Sample command results
+
+```
+{
+  "bme280": {
+    "id3": {
+      "humidity": "45.209",
+      "pressure": "955.032",
+      "temperature": "23.5"
+    }
+  },
+  "cpu": {
+    "temperature": "62.322"
+  },
+  "door_sensors": {
+    "GPIO_16": "open",
+    "GPIO_19": "open",
+    "GPIO_20": "open"
+  },
+  "motion_sensors": {
+    "GPIO_13": "nomotion",
+    "GPIO_5": "nomotion",
+    "GPIO_6": "nomotion"
+  }
+}
+
+```
+
+Testing method for old version of RPiMS template for Zabbix
+
+CPU Temperature sensor
+```
+zabbix_get -s 127.0.0.1 -k rpims.cputemp[2] --tls-connect psk --tls-psk-identity $(awk -F\= '/TLSPSKIdentity/ {print $2}' /opt/RPiMS/config/zabbix_rpims.conf) --tls-psk-file /opt/RPiMS/config/zabbix_rpims.psk
+```
+Sample result
+```
+62.809
+```
+
+BME280 sensor on i2C port
+Temperature
+```
+zabbix_get -s 127.0.0.1 -k rpims.id1_bme280[2] --tls-connect psk --tls-psk-identity $(awk -F\= '/TLSPSKIdentity/ {print $2}' /opt/RPiMS/config/zabbix_rpims.conf) --tls-psk-file /opt/RPiMS/config/zabbix_rpims.psk
+```
+Sample result
+```
+23.479
+```
+Humidity
+```
+zabbix_get -s 127.0.0.1 -k rpims.id1_bme280[4] --tls-connect psk --tls-psk-identity $(awk -F\= '/TLSPSKIdentity/ {print $2}' /opt/RPiMS/config/zabbix_rpims.conf) --tls-psk-file /opt/RPiMS/config/zabbix_rpims.psk
+```
+Sample result
+```
+44.952
+```
+Pressure
+```
+zabbix_get -s 127.0.0.1 -k rpims.id1_bme280[6] --tls-connect psk --tls-psk-identity $(awk -F\= '/TLSPSKIdentity/ {print $2}' /opt/RPiMS/config/zabbix_rpims.conf) --tls-psk-file /opt/RPiMS/config/zabbix_rpims.psk
+```
+Sample result
+```
+954.645
+```
+
+BME280 sensor on USB port
+Temperature
+```
+zabbix_get -s 127.0.0.1 -k rpims.id3_bme280[2] --tls-connect psk --tls-psk-identity $(awk -F\= '/TLSPSKIdentity/ {print $2}' /opt/RPiMS/config/zabbix_rpims.conf) --tls-psk-file /opt/RPiMS/config/zabbix_rpims.psk
+```
+Sample result
+```
+23.479
+```
+Humidity
+```
+zabbix_get -s 127.0.0.1 -k rpims.id3_bme280[4] --tls-connect psk --tls-psk-identity $(awk -F\= '/TLSPSKIdentity/ {print $2}' /opt/RPiMS/config/zabbix_rpims.conf) --tls-psk-file /opt/RPiMS/config/zabbix_rpims.psk
+```
+Sample result
+```
+44.952
+```
+Pressure
+```
+zabbix_get -s 127.0.0.1 -k rpims.id3_bme280[6] --tls-connect psk --tls-psk-identity $(awk -F\= '/TLSPSKIdentity/ {print $2}' /opt/RPiMS/config/zabbix_rpims.conf) --tls-psk-file /opt/RPiMS/config/zabbix_rpims.psk
+```
+Sample result
+```
+954.645
+```
+
 ## Configure if you have RTC (DS3231 I2C)
 
 1. I2C interface should be enabled. 
@@ -451,122 +570,3 @@ $ i2cdetect -y 1
   60: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
   70: -- -- -- -- -- -- 76 --
   ```
-
-
-### Zabbix
-
-You need to import this templates into Zabbix server: 
-https://github.com/darton/RPiMS/blob/main/templates/rpims_zabbix_host_template.xml
-https://github.com/darton/RPiMS/blob/main/templates/rpims_zabbix_template.xml 
-
-In rpims_zabbix_template.xml template, the appropriate zabbix triggers for the temperature, humidity and door sensors are configured.
-Door sensor triggering is pre-configured for GPIO_20, GPIO_21 only, if you need more, please do trigger clone.
-RPiMS (rpims.py) uses zabbix_sender.sh to activate the appropriate triggers in zabbix for the door sensors.
-
-## Testing configuration for zabbix-agent 
-
-Testing the correct operation of the Zabbix agent
-
-```
-zabbix_get -s 127.0.0.1 -k "system.cpu.load[all,avg1]" --tls-connect psk --tls-psk-identity $(awk -F\= '/TLSPSKIdentity/ {print $2}' /opt/RPiMS/config/zabbix_rpims.conf) --tls-psk-file /opt/RPiMS/config/zabbix_rpims.psk
-
-```
-Sample commad result
-```
-0.881348
-```
-
-Testing RPiMS sensors
-```
-zabbix_get -s 127.0.0.1 -k rpims.sensors.json --tls-connect psk --tls-psk-identity $(awk -F\= '/TLSPSKIdentity/ {print $2}' /opt/RPiMS/config/zabbix_rpims.conf) --tls-psk-file /opt/RPiMS/config/zabbix_rpims.psk
-```
-Sample command results
-
-```
-{
-  "bme280": {
-    "id3": {
-      "humidity": "45.209",
-      "pressure": "955.032",
-      "temperature": "23.5"
-    }
-  },
-  "cpu": {
-    "temperature": "62.322"
-  },
-  "door_sensors": {
-    "GPIO_16": "open",
-    "GPIO_19": "open",
-    "GPIO_20": "open"
-  },
-  "motion_sensors": {
-    "GPIO_13": "nomotion",
-    "GPIO_5": "nomotion",
-    "GPIO_6": "nomotion"
-  }
-}
-
-```
-
-Testing method for old version of RPiMS template for Zabbix
-
-CPU Temperature sensor
-```
-zabbix_get -s 127.0.0.1 -k rpims.cputemp[2] --tls-connect psk --tls-psk-identity $(awk -F\= '/TLSPSKIdentity/ {print $2}' /opt/RPiMS/config/zabbix_rpims.conf) --tls-psk-file /opt/RPiMS/config/zabbix_rpims.psk
-```
-Sample result
-```
-62.809
-```
-
-BME280 sensor on i2C port
-Temperature
-```
-zabbix_get -s 127.0.0.1 -k rpims.id1_bme280[2] --tls-connect psk --tls-psk-identity $(awk -F\= '/TLSPSKIdentity/ {print $2}' /opt/RPiMS/config/zabbix_rpims.conf) --tls-psk-file /opt/RPiMS/config/zabbix_rpims.psk
-```
-Sample result
-```
-23.479
-```
-Humidity
-```
-zabbix_get -s 127.0.0.1 -k rpims.id1_bme280[4] --tls-connect psk --tls-psk-identity $(awk -F\= '/TLSPSKIdentity/ {print $2}' /opt/RPiMS/config/zabbix_rpims.conf) --tls-psk-file /opt/RPiMS/config/zabbix_rpims.psk
-```
-Sample result
-```
-44.952
-```
-Pressure
-```
-zabbix_get -s 127.0.0.1 -k rpims.id1_bme280[6] --tls-connect psk --tls-psk-identity $(awk -F\= '/TLSPSKIdentity/ {print $2}' /opt/RPiMS/config/zabbix_rpims.conf) --tls-psk-file /opt/RPiMS/config/zabbix_rpims.psk
-```
-Sample result
-```
-954.645
-```
-
-BME280 sensor on USB port
-Temperature
-```
-zabbix_get -s 127.0.0.1 -k rpims.id3_bme280[2] --tls-connect psk --tls-psk-identity $(awk -F\= '/TLSPSKIdentity/ {print $2}' /opt/RPiMS/config/zabbix_rpims.conf) --tls-psk-file /opt/RPiMS/config/zabbix_rpims.psk
-```
-Sample result
-```
-23.479
-```
-Humidity
-```
-zabbix_get -s 127.0.0.1 -k rpims.id3_bme280[4] --tls-connect psk --tls-psk-identity $(awk -F\= '/TLSPSKIdentity/ {print $2}' /opt/RPiMS/config/zabbix_rpims.conf) --tls-psk-file /opt/RPiMS/config/zabbix_rpims.psk
-```
-Sample result
-```
-44.952
-```
-Pressure
-```
-zabbix_get -s 127.0.0.1 -k rpims.id3_bme280[6] --tls-connect psk --tls-psk-identity $(awk -F\= '/TLSPSKIdentity/ {print $2}' /opt/RPiMS/config/zabbix_rpims.conf) --tls-psk-file /opt/RPiMS/config/zabbix_rpims.psk
-```
-Sample result
-```
-954.645
-```
