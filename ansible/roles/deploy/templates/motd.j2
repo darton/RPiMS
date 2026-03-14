@@ -1,29 +1,35 @@
 #!/bin/bash
 
 export TERM=xterm-256color
-IFS='; '
-SENSOR=$(redis-cli --scan --pattern "*BME280"|head -n 1)
-SENSOR_TEMP="$(redis-cli hget $SENSOR temperature)°C"
-SENSOR_HUM="$(redis-cli hget $SENSOR humidity)%"
-SENSOR_PRESSURE="$(redis-cli hget $SENSOR pressure)hPa"
+
+GREEN=$(tput setaf 2)
+RED=$(tput setaf 1)
+RESET=$(tput sgr0)
+
+SENSOR=$(redis-cli --scan --pattern '*BME280' | head -n 1)
+SENSOR_TEMP="$(redis-cli hget "$SENSOR" temperature)°C"
+SENSOR_HUM="$(redis-cli hget "$SENSOR" humidity)%"
+SENSOR_PRESSURE="$(redis-cli hget "$SENSOR" pressure)hPa"
+
 CPU_TEMP=$(vcgencmd measure_temp|awk -F[=\'] '{print $2"°C"}')
 
-echo "$(tput setaf 2)
+# MOTD
+echo "${GREEN}
    .~~.   .~~.
-  '. \ ' ' / .'$(tput setaf 1)
+  '. \ ' ' / .'${RED}
    .~ .~~~..~.
-  : .~.'~'.~. :$(tput sgr0)  R P i M S - https://github.com/darton/RPiMS$(tput setaf 1)
-~ (   ) (   ) ~  $(tput sgr0)Room Pressure.....: $SENSOR_PRESSURE$(tput setaf 1)
-( : '~'.~.'~' : )$(tput sgr0)Room Humidity.....: $SENSOR_HUM$(tput setaf 1)
- ~ .~ (   ) ~. ~ $(tput sgr0)Room Temperature..: $SENSOR_TEMP$(tput setaf 1)
-  (  : '~' :  )  $(tput sgr0)CPU Temperature...: $CPU_TEMP$(tput setaf 1)
+  : .~.'~'.~. :${RESET}  R P i M S - https://github.com/darton/RPiMS${RED}
+~ (   ) (   ) ~  ${RESET}Room Pressure.....: $SENSOR_PRESSURE${RED}
+( : '~'.~.'~' : )${RESET}Room Humidity.....: $SENSOR_HUM${RED}
+ ~ .~ (   ) ~. ~ ${RESET}Room Temperature..: $SENSOR_TEMP${RED}
+  (  : '~' :  )  ${RESET}CPU Temperature...: $CPU_TEMP${RED}
    '~ .~~~. ~'
        '~'
-$(tput sgr0)"
+${RESET}"
 
 echo
 
-_IP=$(hostname -I) || true
-if [ "$_IP" ]; then
-  printf "RPiMS address is %s\n" "$_IP"
+
+if _IP=$(hostname -I 2>/dev/null); then
+    printf "RPiMS address is %s\n" "$_IP"
 fi
