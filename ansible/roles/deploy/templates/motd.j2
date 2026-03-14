@@ -1,7 +1,8 @@
+#!/bin/bash
 
 export TERM=xterm-256color
 IFS='; '
-SENSOR=$(redis-cli keys \*|grep BME280|head -n 1)
+SENSOR=$(redis-cli --scan --pattern "*BME280"|head -n 1)
 SENSOR_TEMP="$(redis-cli hget $SENSOR temperature)°C"
 SENSOR_HUM="$(redis-cli hget $SENSOR humidity)%"
 SENSOR_PRESSURE="$(redis-cli hget $SENSOR pressure)hPa"
