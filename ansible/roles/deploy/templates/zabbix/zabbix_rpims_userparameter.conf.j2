@@ -1,7 +1,9 @@
 #Uncomment the lines with the sensors you are using
-UserParameter=rpims.cputemp[*],sudo {{ rpims_install_dir }}/scripts/redis_get_data.py CPUTEMP | awk -F[=\;] '{print '$'"$1"}'
-#UserParameter=rpims.id1_bme280[*],sudo {{ rpims_install_dir }}/scripts/redis_get_data.py BME280 1| awk -F[=\;] '{print '$'"$1"}'
-#UserParameter=rpims.id2_bme280[*],sudo {{ rpims_install_dir }}/scripts/redis_get_data.py BME280 2| awk -F[=\;] '{print '$'"$1"}'
-#UserParameter=rpims.id3_bme280[*],sudo {{ rpims_install_dir }}/scripts/redis_get_data.py BME280 3| awk -F[=\;] '{print '$'"$1"}'
-#UserParameter=rpims.ds18b20[*],sudo {{ rpims_install_dir }}/scripts/redis_get_data.py DS18B20 | awk -F[=\;] '{print '$'"$1"}'
-#UserParameter=rpims.dht[*],sudo {{ rpims_install_dir }}/scripts/redis_get_data.py DHT | awk -F[=\;] '{print '$'"$1"}'
+
+#For current modern version of RPiMS templates for Zabbix
+UserParameter=rpims.sensors.json,curl -s http://127.0.0.1/api/data/sensors/all
+
+#####For old version of RPiMS templates for Zabbix
+#UserParameter=rpims.cputemp[*],curl -s http://127.0.0.1/api/data/sensors/cpu |jq -r '.temperature'
+#For BME280 sensor simple verion
+#UserParameter=rpims.id3_bme280[*],sh -c 'curl -s http://127.0.0.1/api/data/sensors/bme280 | jq -r --arg idx "$1" ".id3 | { \"1\": \"Temperature\", \"2\": .temperature, \"3\": \"Humidity\", \"4\": .humidity, \"5\": \"Pressure\", \"6\": .pressure }[\$idx]"' _ $1

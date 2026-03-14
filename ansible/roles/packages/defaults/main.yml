@@ -7,6 +7,7 @@ apt_packages:
   - redis-server
   - zabbix-agent
   - zabbix-sender
+  - zabbix-proxy-sqlite3
   - libmodbus5
   - ffmpeg
   - libcap-dev

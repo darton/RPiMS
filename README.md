@@ -461,64 +461,110 @@ $ i2cdetect -y 1
   70: -- -- -- -- -- -- 76 --
   ```
 
-## Configuration testing zabbix-agent
+## Testing configuration for zabbix-agent 
+
+Testing the correct operation of the Zabbix agent
 
 ```
-sudo apt-get  install zabbix-proxy-sqlite3
+zabbix_get -s 127.0.0.1 -k "system.cpu.load[all,avg1]" --tls-connect psk --tls-psk-identity $(awk -F\= '/TLSPSKIdentity/ {print $2}' /opt/RPiMS/config/zabbix_rpims.conf) --tls-psk-file /opt/RPiMS/config/zabbix_rpims.psk
+
+```
+Sample commad result
+```
+0.881348
+```
+
+Testing RPiMS sensors
+```
+zabbix_get -s 127.0.0.1 -k rpims.sensors.json --tls-connect psk --tls-psk-identity $(awk -F\= '/TLSPSKIdentity/ {print $2}' /opt/RPiMS/config/zabbix_rpims.conf) --tls-psk-file /opt/RPiMS/config/zabbix_rpims.psk
+```
+Sample command results
+
+```
+{
+  "bme280": {
+    "id3": {
+      "humidity": "45.209",
+      "pressure": "955.032",
+      "temperature": "23.5"
+    }
+  },
+  "cpu": {
+    "temperature": "62.322"
+  },
+  "door_sensors": {
+    "GPIO_16": "open",
+    "GPIO_19": "open",
+    "GPIO_20": "open"
+  },
+  "motion_sensors": {
+    "GPIO_13": "nomotion",
+    "GPIO_5": "nomotion",
+    "GPIO_6": "nomotion"
+  }
+}
 
 ```
 
-Testing Cpu temperature sensor
-```
-sudo zabbix_get -s 127.0.0.1 -k rpims.cputemp[2] --tls-connect=psk --tls-psk-identity="$(awk -F\= '/TLSPSKIdentity/ {print $2}' /var/www/html/conf/zabbix_agentd.conf)" --tls-psk-file=/var/www/html/conf/zabbix_agentd.psk
-```
+Testing method for old version of RPiMS template for Zabbix
 
-Testing first DS18B20 temperature sensor
+CPU Temperature sensor
 ```
-sudo zabbix_get -s 127.0.0.1 -k rpims.ds18b20[2] --tls-connect=psk --tls-psk-identity="$(awk -F\= '/TLSPSKIdentity/ {print $2}' /var/www/html/conf/zabbix_agentd.conf)" --tls-psk-file=/var/www/html/conf/zabbix_agentd.psk
+zabbix_get -s 127.0.0.1 -k rpims.cputemp[2] --tls-connect psk --tls-psk-identity $(awk -F\= '/TLSPSKIdentity/ {print $2}' /opt/RPiMS/config/zabbix_rpims.conf) --tls-psk-file /opt/RPiMS/config/zabbix_rpims.psk
 ```
-
-Testing second DS18B20 temperature sensor
+Sample result
 ```
-sudo zabbix_get -s 127.0.0.1 -k rpims.ds18b20[4] --tls-connect=psk --tls-psk-identity="$(awk -F\= '/TLSPSKIdentity/ {print $2}' /var/www/html/conf/zabbix_agentd.conf)" --tls-psk-file=/var/www/html/conf/zabbix_agentd.psk
+62.809
 ```
 
-Testing id1 BME280 sensor on i2C
+BME280 sensor on i2C port
+Temperature
 ```
-sudo zabbix_get -s 127.0.0.1 -k rpims.id1_bme280[2] --tls-connect=psk --tls-psk-identity="$(awk -F\= '/TLSPSKIdentity/ {print $2}' /var/www/html/conf/zabbix_agentd.conf)" --tls-psk-file=/var/www/html/conf/zabbix_agentd.psk
-
-sudo zabbix_get -s 127.0.0.1 -k rpims.id1_bme280[4] --tls-connect=psk --tls-psk-identity="$(awk -F\= '/TLSPSKIdentity/ {print $2}' /var/www/html/conf/zabbix_agentd.conf)" --tls-psk-file=/var/www/html/conf/zabbix_agentd.psk
-
-sudo zabbix_get -s 127.0.0.1 -k rpims.id1_bme280[6] --tls-connect=psk --tls-psk-identity="$(awk -F\= '/TLSPSKIdentity/ {print $2}' /var/www/html/conf/zabbix_agentd.conf)" --tls-psk-file=/var/www/html/conf/zabbix_agentd.psk
+zabbix_get -s 127.0.0.1 -k rpims.id1_bme280[2] --tls-connect psk --tls-psk-identity $(awk -F\= '/TLSPSKIdentity/ {print $2}' /opt/RPiMS/config/zabbix_rpims.conf) --tls-psk-file /opt/RPiMS/config/zabbix_rpims.psk
 ```
-
-Testing id2 BME280 sensor on USB port
+Sample result
 ```
-sudo zabbix_get -s 127.0.0.1 -k rpims.id2_bme280[2] --tls-connect=psk --tls-psk-identity="$(awk -F\= '/TLSPSKIdentity/ {print $2}' /var/www/html/conf/zabbix_agentd.conf)" --tls-psk-file=/var/www/html/conf/zabbix_agentd.psk
-
-sudo zabbix_get -s 127.0.0.1 -k rpims.id2_bme280[4] --tls-connect=psk --tls-psk-identity="$(awk -F\= '/TLSPSKIdentity/ {print $2}' /var/www/html/conf/zabbix_agentd.conf)" --tls-psk-file=/var/www/html/conf/zabbix_agentd.psk
-
-sudo zabbix_get -s 127.0.0.1 -k rpims.id2_bme280[6] --tls-connect=psk --tls-psk-identity="$(awk -F\= '/TLSPSKIdentity/ {print $2}' /var/www/html/conf/zabbix_agentd.conf)" --tls-psk-file=/var/www/html/conf/zabbix_agentd.psk
+23.479
 ```
-
-Testing id3 BME280 sensor on USB port
+Humidity
 ```
-sudo zabbix_get -s 127.0.0.1 -k rpims.id3_bme280[2] --tls-connect=psk --tls-psk-identity="$(awk -F\= '/TLSPSKIdentity/ {print $2}' /var/www/html/conf/zabbix_agentd.conf)" --tls-psk-file=/var/www/html/conf/zabbix_agentd.psk
-
-sudo zabbix_get -s 127.0.0.1 -k rpims.id3_bme280[4] --tls-connect=psk --tls-psk-identity="$(awk -F\= '/TLSPSKIdentity/ {print $2}' /var/www/html/conf/zabbix_agentd.conf)" --tls-psk-file=/var/www/html/conf/zabbix_agentd.psk
-
-sudo zabbix_get -s 127.0.0.1 -k rpims.id3_bme280[6] --tls-connect=psk --tls-psk-identity="$(awk -F\= '/TLSPSKIdentity/ {print $2}' /var/www/html/conf/zabbix_agentd.conf)" --tls-psk-file=/var/www/html/conf/zabbix_agentd.psk
+zabbix_get -s 127.0.0.1 -k rpims.id1_bme280[4] --tls-connect psk --tls-psk-identity $(awk -F\= '/TLSPSKIdentity/ {print $2}' /opt/RPiMS/config/zabbix_rpims.conf) --tls-psk-file /opt/RPiMS/config/zabbix_rpims.psk
 ```
-
-Testing DHT sensors
+Sample result
 ```
-sudo zabbix_get -s 127.0.0.1 -k rpims.dht[2] --tls-connect=psk --tls-psk-identity="$(awk -F\= '/TLSPSKIdentity/ {print $2}' /var/www/html/conf/zabbix_agentd.conf)" --tls-psk-file=/var/www/html/conf/zabbix_agentd.psk
-
-sudo zabbix_get -s 127.0.0.1 -k rpims.dht[4] --tls-connect=psk --tls-psk-identity="$(awk -F\= '/TLSPSKIdentity/ {print $2}' /var/www/html/conf/zabbix_agentd.conf)" --tls-psk-file=/var/www/html/conf/zabbix_agentd.psk
+44.952
+```
+Pressure
+```
+zabbix_get -s 127.0.0.1 -k rpims.id1_bme280[6] --tls-connect psk --tls-psk-identity $(awk -F\= '/TLSPSKIdentity/ {print $2}' /opt/RPiMS/config/zabbix_rpims.conf) --tls-psk-file /opt/RPiMS/config/zabbix_rpims.psk
+```
+Sample result
+```
+954.645
 ```
 
-Testing Cpu load
-
+BME280 sensor on USB port
+Temperature
 ```
-zabbix_get -s 127.0.0.1 -k "system.cpu.load[all,avg1]" --tls-connect=psk --tls-psk-identity="$(awk -F\= '/TLSPSKIdentity/ {print $2}' /var/www/html/conf/zabbix_agentd.conf)" --tls-psk-file=/var/www/html/conf/zabbix_agentd.psk
+zabbix_get -s 127.0.0.1 -k rpims.id3_bme280[2] --tls-connect psk --tls-psk-identity $(awk -F\= '/TLSPSKIdentity/ {print $2}' /opt/RPiMS/config/zabbix_rpims.conf) --tls-psk-file /opt/RPiMS/config/zabbix_rpims.psk
+```
+Sample result
+```
+23.479
+```
+Humidity
+```
+zabbix_get -s 127.0.0.1 -k rpims.id3_bme280[4] --tls-connect psk --tls-psk-identity $(awk -F\= '/TLSPSKIdentity/ {print $2}' /opt/RPiMS/config/zabbix_rpims.conf) --tls-psk-file /opt/RPiMS/config/zabbix_rpims.psk
+```
+Sample result
+```
+44.952
+```
+Pressure
+```
+zabbix_get -s 127.0.0.1 -k rpims.id3_bme280[6] --tls-connect psk --tls-psk-identity $(awk -F\= '/TLSPSKIdentity/ {print $2}' /opt/RPiMS/config/zabbix_rpims.conf) --tls-psk-file /opt/RPiMS/config/zabbix_rpims.psk
+```
+Sample result
+```
+954.645
 ```
