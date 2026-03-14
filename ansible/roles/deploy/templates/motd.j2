@@ -1,20 +1,17 @@
-#!/bin/bash
 
 export TERM=xterm-256color
 IFS='; '
-SENSOR=$(redis-cli keys \*|grep -E "_BME280" |head -n 1)
-str=$({{ rpims_install_dir }}/scripts/redis_get_data.py $SENSOR)
-read -r -a arr <<< "$str"
-SENSOR_TEMP=$(echo ${arr[0]}|awk -F[=] '{print $2" °C"}')
-SENSOR_HUM=$(echo ${arr[1]}|awk -F[=] '{print $2" %"}')
-SENSOR_PRESSURE=$(echo ${arr[2]}|awk -F[=] '{print $2" hPa"}')
-CPU_TEMP=$(vcgencmd measure_temp|awk -F[=\'] '{print $2" °C"}')
+SENSOR=$(redis-cli keys \*|grep BME280|head -n 1)
+SENSOR_TEMP="$(redis-cli hget $SENSOR temperature)°C"
+SENSOR_HUM="$(redis-cli hget $SENSOR humidity)%"
+SENSOR_PRESSURE="$(redis-cli hget $SENSOR pressure)hPa"
+CPU_TEMP=$(vcgencmd measure_temp|awk -F[=\'] '{print $2"°C"}')
 
 echo "$(tput setaf 2)
    .~~.   .~~.
   '. \ ' ' / .'$(tput setaf 1)
    .~ .~~~..~.
-  : .~.'~'.~. :$(tput sgr0)  Raspberry Pi Monitoring System$(tput setaf 1)
+  : .~.'~'.~. :$(tput sgr0)  R P i M S - https://github.com/darton/RPiMS$(tput setaf 1)
 ~ (   ) (   ) ~  $(tput sgr0)Room Pressure.....: $SENSOR_PRESSURE$(tput setaf 1)
 ( : '~'.~.'~' : )$(tput sgr0)Room Humidity.....: $SENSOR_HUM$(tput setaf 1)
  ~ .~ (   ) ~. ~ $(tput sgr0)Room Temperature..: $SENSOR_TEMP$(tput setaf 1)
