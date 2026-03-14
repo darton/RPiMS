@@ -85,7 +85,7 @@ $(function(){
   $('.gpioinputs').each(function() {
             var selectedGPIOtype = $(this).children("option:selected").val();
             var z = $(this).attr('id') + "_" + 'DS'
-            if (selectedGPIOtype == 'DoorSensor' || selectedGPIOtype == 'ShutdownButton' ) {
+            if (selectedGPIOtype == 'ContactSensor' || selectedGPIOtype == 'ShutdownButton' ) {
                 $("#" + z).show();
             }
             else {
@@ -99,7 +99,7 @@ $(function(){
   $('.gpioinputs').change(function(){
             var selectedGPIOtype = $(this).children("option:selected").val();
             var z = $(this).attr('id') + "_" + 'DS'
-            if (selectedGPIOtype == 'DoorSensor' || selectedGPIOtype == 'ShutdownButton') {
+            if (selectedGPIOtype == 'ContactSensor' || selectedGPIOtype == 'ShutdownButton') {
                 $("#" + z).show();
 		$("#" + z + "_HT").val("1");
             }

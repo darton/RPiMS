@@ -19,11 +19,11 @@ from gpio.buttons import init_system_buttons, setup_system_buttons_callbacks
 from gpio.leds import init_led_indicators
 
 def start_gpio(ctx):
-    if ctx.config.get('use_door_sensor'):
+    if ctx.config.get('use_contact_sensor'):
         ctx.door_sensors = init_door_sensors(ctx)
         setup_door_callbacks(ctx)
 
-    if ctx.config.get('use_motion_sensor'):
+    if ctx.config.get('use_digital_sensor'):
         ctx.motion_sensors = init_motion_sensors(ctx)
         setup_motion_callbacks(ctx)
 
@@ -31,5 +31,5 @@ def start_gpio(ctx):
         ctx.system_buttons = init_system_buttons(ctx)
         setup_system_buttons_callbacks(ctx)
 
-    if ctx.config.get('use_motion_led_indicator'):
+    if ctx.config.get('use_digital_led_indicator'):
         ctx.led_indicators = init_led_indicators(ctx)

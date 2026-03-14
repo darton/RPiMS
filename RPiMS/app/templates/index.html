@@ -50,19 +50,19 @@
     </div>
   </div>
 {% endif %}
-{% if data.config.setup.use_door_sensor: %}
-      <div class="sensors" id="door_sensors">
-        <div class="w3-container w3-margin">Door sensors</div>
-          {% for item in data.sensors.door_sensors: %}
+{% if data.config.setup.use_contact_sensor: %}
+      <div class="sensors" id="contact_sensors">
+        <div class="w3-container w3-margin">Contact Sensors</div>
+          {% for item in data.sensors.contact_sensors: %}
             <p>{{ data.config.gpio[item].name }} <span id = {{ item }} ></span></p> 
           {% endfor %}
         </p>
       </div>
 {% endif %}
-{% if data.config.setup.use_motion_sensor: %}
-      <div class="sensors" id="motion_sensors">
-        <div class="w3-container w3-margin">Motion sensors</div>
-          {% for item in data.sensors.motion_sensors: %}
+{% if data.config.setup.use_digital_sensor: %}
+      <div class="sensors" id="digital_sensors">
+        <div class="w3-container w3-margin">Digital Sensors</div>
+          {% for item in data.sensors.digital_sensors: %}
             <p>{{ data.config.gpio[item].name }} <span id = {{ item }} ></span></p> 
           {% endfor %}
         </p>

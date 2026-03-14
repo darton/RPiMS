@@ -39,9 +39,9 @@ def run_collector():
         redis_db=redis_db
     )
 
-    #redis_db.flushdb() #flush redis_db for development
-    #redis_db.set('rpims', json.dumps(config_yaml))#load config to redis_db in json format
-    redis_db.set('rpims', json.dumps(config_yaml), nx=True)#load config to redis_db in json format when no loaded
+    redis_db.flushdb() #flush redis_db for development
+    redis_db.set('rpims', json.dumps(config_yaml))#load config to redis_db in json format
+    #redis_db.set('rpims', json.dumps(config_yaml), nx=True)#load config to redis_db in json format when no loaded
 
     get_hostinfo()
     set_hostnamectl(**ctx.zabbix_agent)

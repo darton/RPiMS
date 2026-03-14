@@ -35,10 +35,10 @@
                         <label for="verbose">Verbose mode</label></p>
                         <p><input id="show_sys_info" name="show_sys_info" type="checkbox" {{'checked="checked"' if config.setup.show_sys_info else ""}} class="w3-check" value="true">
                         <label for="show_sys_info">Show system info</label></p>
-                        <p><input id="use_door_sensor" name="use_door_sensor" type="checkbox" {{'checked="checked"' if config.setup.use_door_sensor else ""}} class="w3-check" value="true">
-                        <label for="use_door_sensor">Use door sensors</label></p>
-                        <p><input id="use_motion_sensor" name="use_motion_sensor" type="checkbox" {{'checked="checked"' if config.setup.use_motion_sensor else ""}} class="w3-check" value="true">
-                        <label for= "use_motion_sensor">Use motion sensors</label></p>
+                        <p><input id="use_contact_sensor" name="use_contact_sensor" type="checkbox" {{'checked="checked"' if config.setup.use_contact_sensor else ""}} class="w3-check" value="true">
+                        <label for="use_contact_sensor">Use Contact Sensors</label></p>
+                        <p><input id="use_digital_sensor" name="use_digital_sensor" type="checkbox" {{'checked="checked"' if config.setup.use_digital_sensor else ""}} class="w3-check" value="true">
+                        <label for= "use_digital_sensor">Use Digital Sensors</label></p>
                     </div>
                 </div>
             </fieldset>
@@ -475,12 +475,12 @@
                             <div class='w3-third w3-container w3-margin-top'>
                                 <label for='{{ _gpio }}_TYPE'>Type:</label>
                                 <select name='{{ _gpio }}_type' class='gpioinputs w3-select' id='{{ _gpio }}_TYPE'>
-                                    <option {% if config.gpio[_gpio].type == 'DoorSensor' %} selected="selected" {% endif %} value='DoorSensor'>INPUT - Door Sensor</option>
-                                    <option {% if config.gpio[_gpio].type == 'MotionSensor' %} selected="selected" {% endif %} value='MotionSensor'>INPUT - Motion Sensor</option>
+                                    <option {% if config.gpio[_gpio].type == 'ContactSensor' %} selected="selected" {% endif %} value='ContactSensor'>INPUT - Contact</option>
+                                    <option {% if config.gpio[_gpio].type == 'DigitalSensor' %} selected="selected" {% endif %} value='DigitalSensor'>INPUT - Digital</option>
                                     <option {% if config.gpio[_gpio].type == 'ShutdownButton' %} selected="selected" {% endif %} value='ShutdownButton'>INPUT - Shutdown Button</option>
-                                    <option {% if config.gpio[_gpio].type == 'led' %} selected="selected" {% endif %} value='led'>OUT - LED</option>
-                                    <option {% if config.gpio[_gpio].type == 'door_led' %} selected="selected" {% endif %} value='door_led'>OUT - Door Indicator</option>
-                                    <option {% if config.gpio[_gpio].type == 'motion_led' %} selected="selected" {% endif %} value='motion_led'>OUT - Motion Indicator</option>
+                                    <option {% if config.gpio[_gpio].type == 'led' %} selected="selected" {% endif %} value='led'>OUT - Digital</option>
+                                    <option {% if config.gpio[_gpio].type == 'door_led' %} selected="selected" {% endif %} value='door_led'>OUT - Contact Indicator</option>
+                                    <option {% if config.gpio[_gpio].type == 'motion_led' %} selected="selected" {% endif %} value='motion_led'>OUT - Digital Indicator</option>
                                     <option {% if config.gpio[_gpio].type == 'Reserved' %} selected="selected" {% endif %} value='Reserved'>Reserved</option>
                                 </select>
                             </div>

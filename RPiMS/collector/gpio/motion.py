@@ -23,9 +23,9 @@ from gpio.helpers import (
 
 def init_motion_sensors(ctx):
     sensors = {}
-    if ctx.config.get('use_motion_sensor'):
+    if ctx.config.get('use_digital_sensor'):
         for name, cfg in ctx.gpio.items():
-            if cfg['type'] == 'MotionSensor':
+            if cfg['type'] == 'DigitalSensor':
                 sensors[name] = MotionSensor(cfg['pin'])
     return sensors
 
@@ -41,5 +41,5 @@ def setup_motion_callbacks(ctx):
         sensor.when_motion = lambda s=name: motion_sensor_when_motion(ctx, s)
         sensor.when_no_motion = lambda s=name: motion_sensor_when_no_motion(ctx, s)
 
-    if ctx.config.get('use_motion_led_indicator'):
+    if ctx.config.get('use_digital_led_indicator'):
         ctx.led_indicators['motion_led'].source = any_values(*ctx.motion_sensors.values())

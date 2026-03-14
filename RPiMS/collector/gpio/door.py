@@ -25,9 +25,9 @@ from gpio.helpers import (
 
 def init_door_sensors(ctx):
     sensors = {}
-    if ctx.config.get('use_door_sensor'):
+    if ctx.config.get('use_contact_sensor'):
         for name, cfg in ctx.gpio.items():
-            if cfg['type'] == 'DoorSensor':
+            if cfg['type'] == 'ContactSensor':
                 sensors[name] = Button(cfg['pin'], hold_time=int(cfg['hold_time']))
     return sensors
 
@@ -43,5 +43,5 @@ def setup_door_callbacks(ctx):
         sensor.when_held = lambda s=name: door_action_closed(ctx, s)
         sensor.when_released = lambda s=name: door_action_opened(ctx, s)
 
-    if ctx.config.get('use_door_led_indicator'):
+    if ctx.config.get('use_contact_led_indicator'):
         ctx.led_indicators['door_led'].source = all_values(*ctx.door_sensors.values())

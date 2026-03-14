@@ -85,11 +85,11 @@ def serial_displays(ctx):
 
                 # door and motion
                 values = ctx.redis_db.hgetall('GPIO')
-                doors_opened = any(v == 'open' for v in values.values())
-                motion_detected = any(v == 'motion' for v in values.values())
+                doors_opened = any(v == '1' for v in values.values())
+                motion_detected = any(v == '1' for v in values.values())
 
-                door_sensors = 'opened' if doors_opened else 'closed'
-                motion_sensors = 'yes' if motion_detected else 'no'
+                door_sensors = '1' if doors_opened else '0'
+                motion_sensors = '1' if motion_detected else '0'
 
                 # CPU temp
                 cputemp = ctx.redis_db.get('CPU_Temperature')

@@ -4,11 +4,11 @@ setup:
   verbose: false
   show_sys_info: true
   use_system_buttons: false
-  use_door_led_indicator: false
-  use_motion_led_indicator: false
-  use_door_sensor: false
-  use_motion_sensor: false
-  use_bme280_sensor: false
+  use_contact_led_indicator: false
+  use_digital_led_indicator: false
+  use_contact_sensor: true
+  use_digital_sensor: true
+  use_bme280_sensor: true
   use_ds18b20_sensor: false
   use_dht_sensor: false
   use_cpu_sensor: true
@@ -16,13 +16,13 @@ setup:
   use_zabbix_sender: false
   use_picamera: false
   use_picamera_recording: false
-  use_serial_display: false
+  use_serial_display: true
 zabbix_agent:
   TLSAccept: psk
   TLSConnect: psk
-  TLSPSK: 1ced28e14216cdedd61aae296c272fd8a613d3871847dd6059c97a4926486642
+  TLSPSK: ff70fbfb074adcec3a89e4e4e47f61031947d722b88cab9c5c1b9232696492c8
   TLSPSKFile: /opt/RPiMS/config/zabbix_rpims.psk
-  TLSPSKIdentity: 2bcd8a9dae10f112
+  TLSPSKIdentity: acea516a1191b9c5
   Timeout: 3
   hostname: rpims.home
   location: My Home
@@ -77,69 +77,69 @@ sensors:
       acquisition_time: 60
       agregation_time: 3600
       sensor_pin: 22
-      use: false
+      use: true
     WIND:
       DIRECTION:
         acquisition_time: 6
         adc_input: 1
         adc_type: AutomationPhat
         reference_voltage_adc_input: 2
-        use: false
+        use: true
       SPEED:
         acquisition_time: 6
         agregation_time: 3600
         sensor_pin: 23
-        use: false
+        use: true
 gpio:
   GPIO_5:
     pin: 5
-    type: MotionSensor
-    name: motion sensor in room 1
+    type: DigitalSensor
+    name: Motion sensor - Room
     hold_time: 1
   GPIO_6:
     pin: 6
-    type: MotionSensor
-    name: motion sensor in room 2
+    type: DigitalSensor
+    name: Light sensor - Room
     hold_time: 1
   GPIO_12:
     pin: 12
-    type: door_led
-    name: door led
-    hold_time: ''
+    type: ContactSensor
+    name: Door sensor - Room
+    hold_time: 1
   GPIO_13:
     pin: 13
-    type: MotionSensor
-    name: motion sensor in room 3
+    type: DigitalSensor
+    name: Motion sensor - Kitchen
     hold_time: 1
   GPIO_16:
     pin: 16
-    type: DoorSensor
-    name: door in room 1
-    hold_time: 1
+    type: ContactSensor
+    name: Flood sensor - Kitchen
+    hold_time: 5
   GPIO_18:
     pin: 18
-    type: motion_led
-    name: motion led
-    hold_time: ''
+    type: ContactSensor
+    name: Door sensor - Kitchen
+    hold_time: 1
   GPIO_19:
     pin: 19
-    type: DoorSensor
-    name: door in room 2
+    type: led
+    name: Relay  1
     hold_time: 1
   GPIO_20:
     pin: 20
-    type: DoorSensor
-    name: door in room 3
+    type: led
+    name: Relay 2
     hold_time: 1
   GPIO_21:
     pin: 21
-    type: Reserved
-    name: not used
+    type: motion_led
+    name: Digital Indicator
     hold_time: 1
   GPIO_26:
     pin: 26
-    type: Reserved
-    name: not used
+    type: door_led
+    name: Contact Indicator
     hold_time: 1
 serial_bus_display:
   bus_display_type: i2c

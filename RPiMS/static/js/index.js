@@ -1,3 +1,14 @@
+const DOOR_STATE = {
+    0: "close",
+    1: "open"
+};
+
+const MOTION_STATE = {
+    0: "nomotion",
+    1: "motion"
+};
+
+//$("#" + key).html(`${value} - ${DOOR_STATE[value]}`);
 
 function roundPrecised(number, precision) {
     var power = Math.pow(10, precision);
@@ -112,42 +123,46 @@ function getJsonData() {
 	$("#dht_sensor").hide();
     }
 
-    if (data['config']['setup']['use_door_sensor'] == true) {
-        $("#door_sensors").show();
-        for (var key in data['sensors']['door_sensors']){
-	    var value = data['sensors']['door_sensors'][key];
-	    $("#" + key).html(value);
-	    if (value == "open"){
+
+    if (data['config']['setup']['use_contact_sensor'] == true) {
+        $("#contact_sensors").show();
+        for (var key in data['sensors']['contact_sensors']){
+	    var value = Number(data['sensors']['contact_sensors'][key]);
+            var text = value === 1 ? "&nbsp open - 1" : "&nbsp close - 0";
+	    $("#" + key).html(text);
+	    if (value === 1){
 		$('#' + key).removeClass("value");
 		$('#' + key).addClass("alarm");
 	    }
-	    if (value == "close"){
+	    if (value === 0){
 		$('#' + key).removeClass("alarm");
 		$('#' + key).addClass("value");
 	    }
 	}
     }
-    else if (data['config']['setup']['use_door_sensor'] == false) {
-	$("#door_sensors").hide(); 
+    else if (data['config']['setup']['use_contact_sensor'] == false) {
+	$("#contact_sensors").hide(); 
     }
-	
-    if (data['config']['setup']['use_motion_sensor'] == true) {
-	$("#motion_sensors").show();
-	for (var key in data['sensors']['motion_sensors']){
-	    var value = data['sensors']['motion_sensors'][key];
-	    $("#" + key).html(value);
-	    if (value == "motion"){
+
+
+    if (data['config']['setup']['use_digital_sensor'] == true) {
+	$("#digital_sensors").show();
+	for (var key in data['sensors']['digital_sensors']){
+	    var value = Number(data['sensors']['digital_sensors'][key]);
+            var text = value === 1 ? "&nbsp motion - 1" : "&nbsp nomotion - 0";
+	    $("#" + key).html(text);
+	    if (value === 1){
 		$('#' + key).removeClass("value");
 		$('#' + key).addClass("alarm");
 	    }
-	    if (value == "nomotion"){
+	    if (value === 0){
 		$('#' + key).removeClass("alarm");
 		$('#' + key).addClass("value");
 	    }
 	}
     }
-    else if (data['config']['setup']['use_motion_sensor'] == false) {
-	$("#motion_sensors").hide(); 
+    else if (data['config']['setup']['use_digital_sensor'] == false) {
+	$("#digital_sensors").hide(); 
     }
 
 

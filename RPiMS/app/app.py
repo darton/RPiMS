@@ -120,6 +120,19 @@ def to_plain_dict(obj):
 # Utility functions
 # =================
 
+def normalize_numbers(obj):
+    if isinstance(obj, dict):
+        return {k: normalize_numbers(v) for k, v in obj.items()}
+    if isinstance(obj, list):
+        return [normalize_numbers(v) for v in obj]
+    if isinstance(obj, str):
+        try:
+            return float(obj) if "." in obj else int(obj)
+        except ValueError:
+            return obj
+    return obj
+
+
 def bool_to_yesno(value: bool) -> str:
     """Convert boolean to 'yes'/'no' string."""
     return "yes" if value else "no"
@@ -172,16 +185,16 @@ def load_dht_sensor(redis_db, config):
     return redis_db.hgetall("DHT")
 
 
-def load_door_sensor(redis_db, config):
-    if not config.get("setup", {}).get("use_door_sensor"):
+def load_contact_sensors(redis_db, config):
+    if not config.get("setup", {}).get("use_contact_sensor"):
         return None
-    return redis_db.hgetall("DOOR_SENSORS")
+    return redis_db.hgetall("CONTACT_SENSORS")
 
 
-def load_motion_sensor(redis_db, config):
-    if not config.get("setup", {}).get("use_motion_sensor"):
+def load_digital_sensors(redis_db, config):
+    if not config.get("setup", {}).get("use_digital_sensor"):
         return None
-    return redis_db.hgetall("MOTION_SENSORS")
+    return redis_db.hgetall("DIGITAL_SENSORS")
 
 
 def load_bme280_sensor(redis_db, config):
@@ -220,11 +233,11 @@ def get_sensors(redis_db, config):
     if (dht := load_dht_sensor(redis_db, config)):
         sensors["dht"] = dht
 
-    if (door := load_door_sensor(redis_db, config)):
-        sensors["door_sensors"] = door
+    if (contact := load_contact_sensors(redis_db, config)):
+        sensors["contact_sensors"] = contact
 
-    if (motion := load_motion_sensor(redis_db, config)):
-        sensors["motion_sensors"] = motion
+    if (digital := load_digital_sensors(redis_db, config)):
+        sensors["digital_sensors"] = digital
 
     if (bme := load_bme280_sensor(redis_db, config)):
         sensors["bme280"] = bme
@@ -446,6 +459,7 @@ def api():
 def api_json():
     redis_db = flask.current_app.config["REDIS_DB"]
     _all = get_data(redis_db)
+    _all = normalize_numbers(_all)
     _all["config"]["zabbix_agent"].pop("TLSPSK", None)
     _all["config"]["zabbix_agent"].pop("TLSPSKIdentity", None)
     _all["config"]["zabbix_agent"].pop("TLSPSKFile", None)
@@ -457,8 +471,8 @@ SENSOR_MAP = {
     "bme280": ("use_bme280_sensor", lambda d: d["sensors"]["bme280"]),
     "dht": ("use_dht_sensor", lambda d: d["sensors"]["dht"]),
     "ds18b20": ("use_ds18b20_sensor", lambda d: d["sensors"]["one_wire"]["ds18b20"]),
-    "door": ("use_door_sensor", lambda d: d["sensors"]["door_sensors"]),
-    "motion": ("use_motion_sensor", lambda d: d["sensors"]["motion_sensors"]),
+    "contact": ("use_contact_sensor", lambda d: d["sensors"]["contact_sensors"]),
+    "digital": ("use_digital_sensor", lambda d: d["sensors"]["digital_sensors"]),
     "weather-station": ("use_weather_station", lambda d: d["sensors"]["weather_station"]),
 }
 
@@ -467,6 +481,7 @@ SENSOR_MAP = {
 def api_sensors_json(sensor_type):
     redis_db = flask.current_app.config["REDIS_DB"]
     data = get_data(redis_db)
+    data = normalize_numbers(data)
 
     if sensor_type == "all":
         return json_response(data["sensors"])
@@ -485,6 +500,7 @@ def api_sensors_json(sensor_type):
 def api_sensor_by_id(sensor_type, sensor_id):
     redis_db = flask.current_app.config["REDIS_DB"]
     data = get_data(redis_db)
+    data = normalize_numbers(data)
 
     if sensor_type not in SENSOR_MAP:
         return error_response("Unknown sensor type", 404)
@@ -505,6 +521,7 @@ def api_sensor_by_id(sensor_type, sensor_id):
 def api_sensor_value(sensor_type, sensor_id, value):
     redis_db = flask.current_app.config["REDIS_DB"]
     data = get_data(redis_db)
+    data = normalize_numbers(data)
 
     if sensor_type not in SENSOR_MAP:
         return error_response("Unknown sensor type", 404)
@@ -562,8 +579,8 @@ def setup():
             key: bool(form.get(key))
             for key in [
                 "verbose", "show_sys_info", "use_system_buttons",
-                "use_door_led_indicator", "use_motion_led_indicator",
-                "use_door_sensor", "use_motion_sensor",
+                "use_contact_led_indicator", "use_digital_led_indicator",
+                "use_contact_sensor", "use_digital_sensor",
                 "use_bme280_sensor", "use_ds18b20_sensor",
                 "use_dht_sensor", "use_cpu_sensor",
                 "use_weather_station", "use_zabbix_sender",
