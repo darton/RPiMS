@@ -4,8 +4,8 @@
 UserParameter=rpims.sensors.json,curl -s http://127.0.0.1/api/data/sensors/all
 
 ##### For old version of RPiMS templates for Zabbix #####
-#UserParameter=rpims.cputemp[*],curl -s http://127.0.0.1/api/data/sensors/cpu |jq -r '.temperature'
+#UserParameter=rpims.cputemp[*],curl -s http://127.0.0.1/api/data/sensors/cpu/temperature | jq -r .
 #For BME280 sensors
-#UserParameter=rpims.id1_bme280[*],sh -c 'curl -s http://127.0.0.1/api/data/sensors/bme280 | jq -r --arg idx "$1" ".id3 | { \"1\": \"Temperature\", \"2\": .temperature, \"3\": \"Humidity\", \"4\": .humidity, \"5\": \"Pressure\", \"6\": .pressure }[\$idx]"' _ $1
-#UserParameter=rpims.id2_bme280[*],sh -c 'curl -s http://127.0.0.1/api/data/sensors/bme280 | jq -r --arg idx "$1" ".id3 | { \"1\": \"Temperature\", \"2\": .temperature, \"3\": \"Humidity\", \"4\": .humidity, \"5\": \"Pressure\", \"6\": .pressure }[\$idx]"' _ $1
-#UserParameter=rpims.id3_bme280[*],sh -c 'curl -s http://127.0.0.1/api/data/sensors/bme280 | jq -r --arg idx "$1" ".id3 | { \"1\": \"Temperature\", \"2\": .temperature, \"3\": \"Humidity\", \"4\": .humidity, \"5\": \"Pressure\", \"6\": .pressure }[\$idx]"' _ $1
+#UserParameter=rpims.id1_bme280[*],sh -c 'curl -s http://127.0.0.1/api/data/sensors/bme280/id1 | jq -r --arg idx "$1" "{ \"1\": \"Temperature\", \"2\": .temperature, \"3\": \"Humidity\", \"4\": .humidity, \"5\": \"Pressure\", \"6\": .pressure }[\$idx]"' _ $1
+#UserParameter=rpims.id2_bme280[*],sh -c 'curl -s http://127.0.0.1/api/data/sensors/bme280/id2 | jq -r --arg idx "$1" "{ \"1\": \"Temperature\", \"2\": .temperature, \"3\": \"Humidity\", \"4\": .humidity, \"5\": \"Pressure\", \"6\": .pressure }[\$idx]"' _ $1
+#UserParameter=rpims.id3_bme280[*],sh -c 'curl -s http://127.0.0.1/api/data/sensors/bme280/id3 | jq -r --arg idx "$1" "{ \"1\": \"Temperature\", \"2\": .temperature, \"3\": \"Humidity\", \"4\": .humidity, \"5\": \"Pressure\", \"6\": .pressure }[\$idx]"' _ $1

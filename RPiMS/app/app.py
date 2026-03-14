@@ -481,6 +481,51 @@ def api_sensors_json(sensor_type):
     return json_response(extractor(data))
 
 
+@app.route("/api/data/sensors/<sensor_type>/<sensor_id>")
+def api_sensor_by_id(sensor_type, sensor_id):
+    redis_db = flask.current_app.config["REDIS_DB"]
+    data = get_data(redis_db)
+
+    if sensor_type not in SENSOR_MAP:
+        return error_response("Unknown sensor type", 404)
+
+    flag, extractor = SENSOR_MAP[sensor_type]
+    if not data["config"].get("setup", {}).get(flag):
+        return error_response("Sensor disabled", 404)
+
+    sensors = extractor(data)
+
+    if sensor_id not in sensors:
+        return error_response("Unknown sensor id", 404)
+
+    return json_response(sensors[sensor_id])
+
+
+@app.route("/api/data/sensors/<sensor_type>/<sensor_id>/<value>")
+def api_sensor_value(sensor_type, sensor_id, value):
+    redis_db = flask.current_app.config["REDIS_DB"]
+    data = get_data(redis_db)
+
+    if sensor_type not in SENSOR_MAP:
+        return error_response("Unknown sensor type", 404)
+
+    flag, extractor = SENSOR_MAP[sensor_type]
+    if not data["config"].get("setup", {}).get(flag):
+        return error_response("Sensor disabled", 404)
+
+    sensors = extractor(data)
+
+    if sensor_id not in sensors:
+        return error_response("Unknown sensor id", 404)
+
+    sensor_data = sensors[sensor_id]
+
+    if value not in sensor_data:
+        return error_response("Unknown value", 404)
+
+    return json_response({value: sensor_data[value]})
+
+
 @app.route("/api/data/<data_type>")
 def api_types_json(data_type):
     redis_db = flask.current_app.config["REDIS_DB"]
