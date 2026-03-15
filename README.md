@@ -1,9 +1,13 @@
-# RPiMSv4 - with an installer based on Ansible
+# RPiMS is Raspberry Pi based Monitoring System.
+
+### RPiMSv4 - with an installer based on Ansible
 
 ## Description
-RPiMS is Raspberry Pi based Monitoring System.
 
-Supports contact sensors like door, window, flood sensors or digital sensors like some motion and light sensors.
+The system supports signal acquisition from two sensor classes:
+
+ - ** dry‑contact sensors providing potential‑free switch outputs, intended to interface with input circuits designed for contact closure detection, **
+ - ** digital sensors providing logic‑level outputs compliant with 3.3 V, representing binary high/low states. **
 
 Supports I2C temperature, humidity and preassure BME280 sensor,  1-wire DS18B20 temperature sensors.
 
@@ -25,7 +29,7 @@ When the motion sensor detects motion a message will be sent to Zabbix server.
 
 Video stream will be turned on automaticly when use picamera sensor are set to enable in setup.
 
-### Integration with Zabbix
+## Integration with Zabbix
 
 RPiMS provides two independent methods of integration with Zabbix:
 
@@ -151,6 +155,7 @@ redis.service, nginx.service, zabbix-agent
 
 ## Hardware setup - Raspberry Pi
 
+
  - ### Temperature, Humidity, Pressure Sensor BME280 - i2C on RPi
 ```
 RPi  [VCC 3V3 Pin 1] ----------------------------- [VCC]  BME280
@@ -252,10 +257,6 @@ RPi  [VCC 3V3 pin 1] ----------------------------- [VCC]  DS3231
 RPi   [GPIO.2 pin 3] ----------------------------- [SDA]  DS3231
 RPi   [GPIO.3 pin 5] ----------------------------- [SDC]  DS3231
 ```
-
-- Door/Window Sensors it is potential-free sensors like button.
-- Motion Sensors it is digital sensors with binary output signal (3.3V).
-
 
 ## B.o.M - Bill of Materials
 
