@@ -55,7 +55,7 @@ To writing an image to the SD card, use [Imager](https://www.raspberrypi.org/dow
 
 ---
 
-## Installing RPiMS Using Ansible
+## Installing RPiMS using Ansible
 
 The following steps must be performed **on the computer where Ansible is installed** (Linux, macOS, or Windows with WSL). 
 This machine acts as the **Ansible control node**, which will remotely install RPiMS on the Raspberry Pi devices defined in the inventory file.
