@@ -358,12 +358,12 @@ Optional
 ## Zabbix
 
 You need to import this templates into Zabbix server: 
-https://github.com/darton/RPiMS/blob/main/templates/rpims_zabbix_host_template.xml
-https://github.com/darton/RPiMS/blob/main/templates/rpims_zabbix_template.xml 
 
-In rpims_zabbix_template.xml template, the appropriate zabbix triggers for the temperature, humidity and door sensors are configured.
-Door sensor triggering is pre-configured for GPIO_20, GPIO_21 only, if you need more, please do trigger clone.
-RPiMS (rpims.py) uses zabbix_sender.sh to activate the appropriate triggers in zabbix for the door sensors.
+https://rpimsip/static/zabbix/Template_RPiMS_API.xml
+
+or
+
+https://rpimsip/static/zabbix/Template_RPiMS_Agent.xml
 
 ### Testing configuration for zabbix-agent 
 
