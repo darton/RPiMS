@@ -388,26 +388,25 @@ Sample command results
 {
   "bme280": {
     "id3": {
-      "humidity": "45.209",
-      "pressure": "955.032",
-      "temperature": "23.5"
+      "humidity": 33.625,
+      "pressure": 958.329,
+      "temperature": 23.603
     }
   },
+  "contact_sensors": {
+    "GPIO_12": 1,
+    "GPIO_16": 1,
+    "GPIO_18": 1
+  },
   "cpu": {
-    "temperature": "62.322"
+    "temperature": 63.296
   },
-  "door_sensors": {
-    "GPIO_16": "open",
-    "GPIO_19": "open",
-    "GPIO_20": "open"
-  },
-  "motion_sensors": {
-    "GPIO_13": "nomotion",
-    "GPIO_5": "nomotion",
-    "GPIO_6": "nomotion"
+  "digital_sensors": {
+    "GPIO_13": 0,
+    "GPIO_5": 0,
+    "GPIO_6": 0
   }
 }
-
 ```
 
 Testing method for old version of RPiMS template for Zabbix
