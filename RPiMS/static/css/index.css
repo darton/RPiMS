@@ -166,7 +166,7 @@ span {
   background-color: #00283f;
   color: white;
   padding: 8px;
-  margin: 10px;
+  margin: 5px;
   font-size: 4vw;
   text-align: center;
 }
@@ -193,3 +193,54 @@ ul {
     list-style-type:none;
 }
 
+/* --- SENSOR ROW LAYOUT  --- */
+
+#contact_sensors p {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 4px 0;
+    padding: 4px 20px 4px 0;
+    border-bottom: none;
+}
+
+#digital_sensors p {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 4px 0;
+    padding: 4px 20px 4px 0;
+    border-bottom: none;
+}
+
+#contact_sensors .sensor-name {
+    flex: 1 1 auto;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding-left: 20px;
+}
+
+#digital_sensors .sensor-name {
+    flex: 1 1 auto;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding-left: 20px;
+}
+
+#contact_sensors .sensor-state {
+    text-align: center;
+}
+
+#digital_sensors .sensor-state {
+    text-align: center;
+}
+
+/* select on iPhone look better */
+.w3-select {
+    width: 100% !important;
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+    box-sizing: border-box;
+}
