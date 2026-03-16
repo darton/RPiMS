@@ -22,7 +22,7 @@ import logging
 import flask
 import redis
 from ruamel.yaml import YAML
-
+from werkzeug.exceptions import HTTPException
 
 logging.basicConfig(
     level=logging.INFO,
@@ -161,7 +161,7 @@ def handle_exception(e):
     logger.error("Unhandled exception: %s", str(e))
 
     # If it's an HTTPException, return its own response
-    if isinstance(e, flask.exceptions.HTTPException):
+    if isinstance(e, HTTPException):
         return error_response(e.description, e.code)
 
     # Otherwise return generic 500

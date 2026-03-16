@@ -6,13 +6,13 @@
     <meta name="keywords" content="Raspberry Pi, Monitoring System, Sensors">
     <meta name="author" content="Dariusz Kowalczyk">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="/static/css/index.css?v=0016">
+    <link rel="stylesheet" href="/static/css/index.css?v=0019">
     <link rel="stylesheet" href="/static/css/w3.css?v=1">
     <link rel="stylesheet" href="/static/css/w3-colors-2020.css?v=1">
     <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
     <script src="/static/js/jquery.min.js?v=3.6.3"></script>
     <script defer src="/static/js/navbar.js?v=002"></script>
-    <script defer src="/static/js/index.js?v=043"></script>
+    <script defer src="/static/js/index.js?v=084"></script>
     <title>RPiMS</title>
   </head>
   <body>
@@ -29,7 +29,7 @@
 
 {% block page_content %}
    <div class="rpimsbg">
-{% if data.config.setup.show_sys_info: %}
+
      <!-- <div class="header"></div>-->
         <div class="sensors" style="text-align: left;" id="sys_info">
               <ul>
@@ -38,20 +38,20 @@
                 <li style="display:none;" id="CPU_Temperature">CPU Temperature: <span class="value" id="CPU_Temperature_value"> </span><span class="value" id="CPU_Temperature_unit"></span></li>
               </ul>
         </div>
-{% endif %}
-{% if data.config.setup.use_picamera: %}
-  <div class="sensors">
-    <div>
-        <a class="sensors" href="http://{{request.host.split(':')[0]}}:8889/cam">Camera Stream</a>
+
+
+    <div class="sensors" id="rpicamera">
+	<div>
+    	    <a class="sensors" href="http://{{request.host.split(':')[0]}}:8889/cam">Camera Stream</a>
+	</div>
+	<div>
+    	    <iframe src="http://{{request.host.split(':')[0]}}:8889/cam" style="width: 100%; aspect-ratio: 16 / 9; border: none;" allow="autoplay">
+    	    </iframe>
+	</div>
     </div>
-    <div>
-        <iframe src="http://{{request.host.split(':')[0]}}:8889/cam" style="width: 100%; aspect-ratio: 16 / 9; border: none;" allow="autoplay">
-        </iframe>
-    </div>
-  </div>
-{% endif %}
-{% if data.config.setup.use_contact_sensor: %}
-      <div class="sensors" id="contact_sensors">
+
+
+     <div class="sensors" id="contact_sensors">
         <div class="w3-container w3-margin">Contact Sensors</div>
           {% for item in data.sensors.contact_sensors: %}
             <p>
@@ -63,9 +63,9 @@
             </p>
           {% endfor %}
         </p>
-      </div>
-{% endif %}
-{% if data.config.setup.use_digital_sensor: %}
+     </div>
+
+
       <div class="sensors" id="digital_sensors">
         <div class="w3-container w3-margin">Digital Sensors</div>
           {% for item in data.sensors.digital_sensors: %}
@@ -79,8 +79,8 @@
           {% endfor %}
         </p>
       </div>
-{% endif %}
-{% if data.config.setup.use_dht_sensor: %}
+
+
       <div class="sensors" id="dht_sensor">
         <div class="w3-container w3-margin">{{ data.config.sensors.DHT.name }}</div>
         <div style="width: 100%; display: table;">
@@ -102,12 +102,11 @@
           </div>
         </div>
       </div>
-{% endif %}
-{% if data.config.setup.use_bme280_sensor: %}
-       <div id="bme280_sensors">
-  {% for item in data.config.sensors.BME280: %}
-  {% if data.config.sensors.BME280[item].use is true: %}
-        <div class='sensors'>
+
+
+    <div id="bme280_sensors">
+	{% for item in data.config.sensors.BME280: %}
+        <div class='sensors' id='{{item}}_BME280'>
           <div id='{{item}}' class='w3-container w3-margin'>{{ data.config.sensors.BME280[item].name }}</div>
           <div style='width: 100%; display: table;'>
             <div style='display: table-row';>
@@ -139,31 +138,15 @@
             </div>
           </div>
         </div>
-  {% endif %}
-  {% endfor %}
-       </div>
-{% endif %}
-{% if data.config.setup.use_ds18b20_sensor: %}
-{% for item in data.sensors.one_wire.ds18b20: %}
-      <div class='sensors ds18b20_sensors'>
-        <div class='w3-container w3-margin'>{{ data.config.sensors.ONE_WIRE.DS18B20.addresses.get(item).name if data.config.sensors.ONE_WIRE.DS18B20.addresses.get(item).name else item }}</div>
-          <div style='width: 100%; display: table;'>
-            <div style='display: table-row'>
-              <div class='gauge_ds18b20' id='DS18B20_{{item}}'>
-                <div class='gauge__body'>
-                  <div class='gauge__fill'></div>
-                  <div class='gauge__cover'></div>
-                </div>
-              </div>
-            </div>
-          </div>
-      </div>
-{% endfor %}
-{% endif %}
-{% if data.config.setup.use_weather_station: %}
-  <div>
-  {% if data.config.sensors.WEATHER.WIND.SPEED.use: %}
-  <div class="sensors">
+	{% endfor %}
+    </div>
+
+
+    <div id="ds18b20_container"></div>
+
+
+  <div id="weather_station">
+   <div class="sensors" id="div_wind_speed">
     <div class="w3-container w3-margin">Wind</div>
     <div style="width: 100%; display: table;">
       <div style="display: table-row">
@@ -190,10 +173,7 @@
         </div>
       </div>
     </div>
-  </div>
-  {% endif %}
-  {% if data.config.sensors.WEATHER.WIND.SPEED.use: %}
-  <div class="sensors">
+  <div class="sensors" >
     <div class="w3-container">
       <table class="w3-table">
         <tr><td>Wind speed: </td><td><span class="value" id="wind_speed"></span><span class="value"> km/h</span></td></tr>
@@ -204,27 +184,28 @@
       </table>
     </div>
   </div>
-  {% endif %}
-  {% if data.config.sensors.WEATHER.WIND.DIRECTION.use: %}
-   <div class="sensors">
+  </div>
+
+
+   <div class="sensors" id="wind_direction">
     <div class="w3-container">
       <table class="w3-table">
         <tr><td>Wind direction: </td><td><span class="value" id="average_wind_direction"></span><span class="value"> &#176 </span></td></tr>
       </table>
     </div>
   </div>
-  {% endif  %}
-  {% if data.config.sensors.WEATHER.RAINFALL.use: %}
-   <div class="sensors">
+
+
+  <div class="sensors" id="rainfall">
     <div class="w3-container">
       <table class="w3-table">
         <tr><td>Rainfall (Past 24h): </td><td><span class="value" id="daily_rainfall"></span><span class="value"> mm</span></td></tr>
       </table>
     </div>
   </div>
-  {% endif %}
+
   </div>
-{% endif %}
+
 {% endblock %}
    </div>
   </body>
