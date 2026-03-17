@@ -240,7 +240,6 @@ function updateSystemInfo(data) {
     const showSys = data.config.setup.show_sys_info;
     toggle("#sys_info", showSys);
     if (showSys) {
-        html("#hostip", sys.hostip ?? "");
         html("#hostname", sys.hostname ?? "");
         html("#location", sys.location ?? "");
     }
