@@ -15,7 +15,7 @@ let lastUsePicamera = null;
 function updateCamera(data) {
     const usePicamera = data.config.setup.use_picamera;
 
-    // jeśli stan się nie zmienił — nic nie rób
+    // if the condition has not changed - do nothing
     if (usePicamera === lastUsePicamera) {
         return;
     }
@@ -208,8 +208,8 @@ function updateDHTSensor(data){
 
     if (data.config.setup.use_dht_sensor) {
 	$("#dht_sensor").show();
-	var DHTTemperature = roundPrecised(data['sensors']['dht']['temperature'],1);
-	var DHTHumidity = Math.round(data['sensors']['dht']['humidity']);
+	var DHTTemperature = roundPrecised(data.sensors.dht.temperature,1);
+	var DHTHumidity = Math.round(data.sensors.dht.humidity);
 	//const gDHTt = document.querySelector("#gdhttemp");
 	//const gDHTh = document.querySelector("#gdhthum");
 	const gDHTt = $("#gdhttemp")[0];
@@ -238,22 +238,22 @@ function updateBME280Sensor(data){
 	var BME280_P = '_BME280_Pressure';
 
 	if (!data.sensors || !data.sensors.bme280) {
-    	    console.log("Brak danych BME280");
+    	    console.log("No data from BME280");
     	    return;
 	}
 
-	// brak konkretnego sensora?
+	// No specific sensor
 	const sensor = data.sensors.bme280[BME280_id];
 	if (!sensor) {
-    	    console.log("Brak danych dla sensora:", BME280_id);
+    	    console.log("No data from the sensor:", BME280_id);
     	    return;
 	}
 
-	// brak temperatury / wilgotności / ciśnienia?
+	// not temp / hum / press
 	if (sensor.temperature == null ||
     	    sensor.humidity == null ||
     	    sensor.pressure == null) {
-    	    console.log("Dane sensora niekompletne:", BME280_id);
+    	    console.log("Sensor data incomcomplete:", BME280_id);
     	    return;
 	}
 
@@ -325,7 +325,7 @@ function updateSystemInfo(data){
 
     if (data.config.setup.use_cpu_sensor) {
         $("#CPU_Temperature").show();
-        var CPUTEMP = data['sensors']['cpu']['temperature'];
+        var CPUTEMP = data.sensors.cpu.temperature;
 	if (!!CPUTEMP) {
 		$("#CPU_Temperature_value").html(roundPrecised(CPUTEMP,0));
 		$("#CPU_Temperature_unit").html("°C");
@@ -371,4 +371,4 @@ function getJsonData() {
   });
 }
 
-setInterval(getJsonData, 500);
+setInterval(getJsonData, 1000);
