@@ -540,7 +540,7 @@ def api_sensor_value(sensor_type, sensor_id, value):
     if value not in sensor_data:
         return error_response("Unknown value", 404)
 
-    return json_response({value: sensor_data[value]})
+    return json_response(sensor_data[value])
 
 
 @app.route("/api/data/<data_type>")
