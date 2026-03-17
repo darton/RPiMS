@@ -1,140 +1,43 @@
+// ===============================
+//  GENERATING RANDOM PSK
+// ===============================
 
-var tlspskidentityid = "TLSPSKIdentity";
-var tlspskid = "TLSPSK";
+// Generate a random hexadecimal string of given length
+function generateHexString(length) {
+    const hex = "0123456789abcdef";
+    return Array.from({ length }, () => hex[Math.floor(Math.random() * hex.length)]).join("");
+}
 
-/* Function to generate combination of PSK */
-function generateP(lenght) {
-        const RandomHex = size => [...Array(size)].map(() => Math.floor(Math.random() * 16).toString(16)).join('');
-        return RandomHex(lenght);
-        }
-
-
-function gfg_Run(psk_len,id) {
-            document.getElementById(id).value =  generateP(psk_len);
-        }
-
-
-function showFunction(id) {
-            var x = document.getElementById(id);
-            if (x.className.indexOf("w3-show") == -1) {
-                x.className = x.className.replace(" w3-hide", "");
-                x.className += " w3-show";
-            }
-          }
-
-
-function hideFunction(id) {
-            var x = document.getElementById(id);
-            if (x.className.indexOf("w3-hide") == -1) {
-                x.className = x.className.replace(" w3-show", "");
-                x.className += " w3-hide";
-            }
-          }
-
-
-function getDS18B20Sensors() {
-    $.getJSON("/api/data/sensors/ds18b20", function(ds18b20data) { for (var sensorId in ds18b20data) {  console.log('DS18B20_' + sensorId); }});
+// Fill an input field with a random PSK
+function fillRandomPSK(length, elementId) {
+    const el = document.getElementById(elementId);
+    if (!el) return; // Safety check
+    el.value = generateHexString(length);
 }
 
 
-//document.addEventListener("DOMContentLoaded", () => {
-$(function(){
 
-  var select2 = document.body.querySelector('#id2_BME280_serial_port_select')
-  var select3 = document.body.querySelector('#id3_BME280_serial_port_select')
+// ===============================
+//  SHOWING / HIDING SECTIONS
+// ===============================
 
-  var select3si = document.body.querySelector('#id3_BME280_serial_port_select').selectedIndex
-  for ( var i=0; i<select2.length; i++ ) {
-    if (select2.options[i].value == select3.options[select3si].value){
-	    select2.remove(i);
-    }
-  }
+// Toggle visibility of a section using W3.CSS classes
+function toggleSection(id, show) {
+    const el = document.getElementById(id);
+    if (!el) return;
 
-  var select2si = document.body.querySelector('#id2_BME280_serial_port_select').selectedIndex
-  for ( var i=0; i<select3.length; i++ ) {
-    if (select3.options[i].value == select2.options[select2si].value) {
-	    select3.remove(i);
-    }
-  }
+    el.classList.toggle("w3-show", show);
+    el.classList.toggle("w3-hide", !show);
+}
 
-  var id2_selectedport = $('#id2_BME280_serial_port_select').children("option:selected").val();
-  //var id2_selectedid = $('#id2_BME280_serial_port_select').attr('id');
-  var id3_selectedport = $('#id3_BME280_serial_port_select').children("option:selected").val();
-  //var id3_selectedid = $('#id3_BME280_serial_port_select').attr('id');
 
-  $('.serial-port').change(function() {
-    var selectedport = $(this).children("option:selected").val();
-    var selectedid = $(this).attr('id');
-    if (selectedid == 'id2_BME280_serial_port_select') {
-        $('#id3_BME280_serial_port_select').find('option[value='+ selectedport +']').remove();
-        $('#id3_BME280_serial_port_select').append($("<option></option>").attr("value", id2_selectedport).text(id2_selectedport));
-        id2_selectedport = $('#id2_BME280_serial_port_select').children("option:selected").val();
-        //console.log(selectedport,selectedid);
-    }
 
-    if (selectedid == 'id3_BME280_serial_port_select') {
-        $('#id2_BME280_serial_port_select').find('option[value='+ selectedport +']').remove();
-        $('#id2_BME280_serial_port_select').append($("<option></option>").attr("value", id3_selectedport).text(id3_selectedport));
-        id3_selectedport = $('#id3_BME280_serial_port_select').children("option:selected").val();
-        //console.log(selectedport,selectedid);
-    }
-  })
+// ===============================
+//  CHECKBOX-DRIVEN SECTIONS
+// ===============================
 
-  /* When the page is loaded it shows the input Hold Time for the GPIO Button input type.
-  Hides the field for another GPIO input type value.  */
-  $('.gpioinputs').each(function() {
-            var selectedGPIOtype = $(this).children("option:selected").val();
-            var z = $(this).attr('id') + "_" + 'DS'
-            if (selectedGPIOtype == 'ContactSensor' || selectedGPIOtype == 'ShutdownButton' ) {
-                $("#" + z).show();
-            }
-            else {
-                $("#" + z).hide();
-            }
-        });
-
-  /* Shows input Hold Time when GPIO input type is selected as Button,
-  and sets default hold time value to 1. 
-  Hides this field when other GPIO input type is selected. */
-  $('.gpioinputs').change(function(){
-            var selectedGPIOtype = $(this).children("option:selected").val();
-            var z = $(this).attr('id') + "_" + 'DS'
-            if (selectedGPIOtype == 'ContactSensor' || selectedGPIOtype == 'ShutdownButton') {
-                $("#" + z).show();
-		$("#" + z + "_HT").val("1");
-            }
-            else {
-                $("#" + z).hide();
-            }
-        });
-
-  /*
-  $('#id1_BME280_interface').change(function(){
-            var selectedInterfacetype = $(this).children("option:selected").val();
-            if (selectedInterfacetype == 'i2c') {
-                $("#id1_BME280_i2c_address").show();
-                $("#id1_BME280_serial_port").hide();
-            }
-            else {
-                $("#id1_BME280_i2c_address").hide();
-                $("#id1_BME280_serial_port").show();
-            }
-        });
-
-  $('#id1_BME280_interface').each(function(){
-            var selectedInterfacetype = $(this).children("option:selected").val();
-            if (selectedInterfacetype == 'i2c') {
-                $("#id1_BME280_i2c_address").show();
-                $("#id1_BME280_serial_port").hide();
-            }
-            else {
-                $("#id1_BME280_i2c_address").hide();
-                $("#id1_BME280_serial_port").show();
-            }
-        });
- */
-
-  var use_sensors = { 
+// Mapping: checkbox ID → section ID
+const SENSOR_SECTIONS = {
     use_zabbix_sender: "zabbix_config",
     use_serial_display: "serial_display",
     use_picamera: "picamera",
@@ -146,32 +49,121 @@ $(function(){
     id3_BME280_use: "id3_BME280",
     use_ds18b20_sensor: "DS18B20_sensor",
     use_cpu_sensor: "CPU_sensor"
-  };
+};
 
-  function shid(key,value){
-   $("#" + key).change(function() {
-    if(this.checked) {
-        showFunction(value)
-    }
-    if (!(this.checked)) {
-        hideFunction(value)
-    }
-  });
+// Bind a checkbox to a section it controls
+function toggleSectionByCheckbox(checkboxId, sectionId) {
+    const checkbox = document.getElementById(checkboxId);
+    const section = document.getElementById(sectionId);
 
-   $("#" + key).each(function() {
-    if(this.checked) {
-        showFunction(value)
-    }
-    if (!(this.checked)) {
-        hideFunction(value)
-    }
-   });
-  }
+    if (!checkbox || !section) return; // Safety check
 
-  for (var key in use_sensors) {
-    var value = use_sensors[key];
-    //console.log(key, value);
-    shid(key,value);
-  }
+    // Function that updates visibility based on checkbox state
+    const update = () => {
+        const show = checkbox.checked;
+        section.classList.toggle("w3-show", show);
+        section.classList.toggle("w3-hide", !show);
+    };
 
+    checkbox.addEventListener("change", update); // React to user clicks
+    update(); // Set initial state on page load
+}
+
+// Initialize all checkbox-driven sections
+function initSensorToggles() {
+    for (const [checkboxId, sectionId] of Object.entries(SENSOR_SECTIONS)) {
+        toggleSectionByCheckbox(checkboxId, sectionId);
+    }
+}
+
+
+
+// ===============================
+//  BME280 SELECT SYNCHRONIZATION
+// ===============================
+
+// Hide options in one select if they are selected in the other
+function syncSelects(selectA, selectB) {
+    const valA = selectA.value;
+    const valB = selectB.value;
+
+    // --- Python-style version (clear, explicit, recommended for readability) ---
+    for (let opt of selectA.options) {
+        opt.hidden = (opt.value === valB);
+    }
+
+    for (let opt of selectB.options) {
+        opt.hidden = (opt.value === valA);
+    }
+
+    /*
+    // --- Modern JavaScript version (short, idiomatic, optional) ---
+    [...selectA.options].forEach(opt => opt.hidden = opt.value === valB);
+    [...selectB.options].forEach(opt => opt.hidden = opt.value === valA);
+    */
+}
+
+// Initialize BME280 port selection logic
+function initBME280Selects() {
+    const s2 = document.getElementById("id2_BME280_serial_port_select");
+    const s3 = document.getElementById("id3_BME280_serial_port_select");
+
+    if (!s2 || !s3) return; // Safety check
+
+    const update = () => syncSelects(s2, s3);
+
+    s2.addEventListener("change", update);
+    s3.addEventListener("change", update);
+
+    update(); // Set initial state
+}
+
+
+
+// ===============================
+//  GPIO INPUT HANDLING
+// ===============================
+
+// Show additional settings for specific GPIO input types
+function initGPIOInputs() {
+    const inputs = document.querySelectorAll(".gpioinputs");
+
+    inputs.forEach(select => {
+        const baseId = `${select.id}_DS`;
+
+        // Update visibility and default values based on selected type
+        const update = () => {
+            const type = select.value;
+            const show = type === "ContactSensor" || type === "ShutdownButton";
+
+            const section = document.getElementById(baseId);
+            if (!section) return;
+
+            section.classList.toggle("w3-show", show);
+            section.classList.toggle("w3-hide", !show);
+
+            // Set default hold time if section becomes visible
+            if (show) {
+                const holdTime = document.getElementById(`${baseId}_HT`);
+                if (holdTime) holdTime.value = "1";
+            }
+        };
+
+        select.addEventListener("change", update);
+        update(); // Set initial state
+    });
+}
+
+
+
+// ===============================
+//  MAIN INITIALIZATION
+// ===============================
+
+// Run all initialization logic when the page is ready
+document.addEventListener("DOMContentLoaded", () => {
+    initSensorToggles();
+    initBME280Selects();
+    initGPIOInputs();
 });
+
