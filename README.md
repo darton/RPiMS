@@ -409,78 +409,6 @@ Sample command results
 }
 ```
 
-Testing method for old version of RPiMS template for Zabbix
-
-First of all you must uncomment lines with used sensors in /etc/zabbix/zabbix_agentd.conf.d/zabbix_rpims_userparameter.conf
-
-Next you must restart zabbix-agent manually from cli:
-```
-sudo systemctl restart zabbix-agent
-```
-Or check "Use zabbix sender" option and click Save on GUI.
-
-
-Test CPU Temperature sensor
-```
-zabbix_get -s 127.0.0.1 -k rpims.cputemp[2] --tls-connect psk --tls-psk-identity $(awk -F\= '/TLSPSKIdentity/ {print $2}' /opt/RPiMS/config/zabbix_rpims.conf) --tls-psk-file /opt/RPiMS/config/zabbix_rpims.psk
-```
-Sample result
-```
-62.809
-```
-
-Test BME280 sensor on i2C port
-Temperature
-```
-zabbix_get -s 127.0.0.1 -k rpims.id1_bme280[2] --tls-connect psk --tls-psk-identity $(awk -F\= '/TLSPSKIdentity/ {print $2}' /opt/RPiMS/config/zabbix_rpims.conf) --tls-psk-file /opt/RPiMS/config/zabbix_rpims.psk
-```
-Sample result
-```
-23.479
-```
-Humidity
-```
-zabbix_get -s 127.0.0.1 -k rpims.id1_bme280[4] --tls-connect psk --tls-psk-identity $(awk -F\= '/TLSPSKIdentity/ {print $2}' /opt/RPiMS/config/zabbix_rpims.conf) --tls-psk-file /opt/RPiMS/config/zabbix_rpims.psk
-```
-Sample result
-```
-44.952
-```
-Pressure
-```
-zabbix_get -s 127.0.0.1 -k rpims.id1_bme280[6] --tls-connect psk --tls-psk-identity $(awk -F\= '/TLSPSKIdentity/ {print $2}' /opt/RPiMS/config/zabbix_rpims.conf) --tls-psk-file /opt/RPiMS/config/zabbix_rpims.psk
-```
-Sample result
-```
-954.645
-```
-
-Test BME280 sensor on USB port 
-Temperature
-```
-zabbix_get -s 127.0.0.1 -k rpims.id3_bme280[2] --tls-connect psk --tls-psk-identity $(awk -F\= '/TLSPSKIdentity/ {print $2}' /opt/RPiMS/config/zabbix_rpims.conf) --tls-psk-file /opt/RPiMS/config/zabbix_rpims.psk
-```
-Sample result
-```
-23.479
-```
-Humidity
-```
-zabbix_get -s 127.0.0.1 -k rpims.id3_bme280[4] --tls-connect psk --tls-psk-identity $(awk -F\= '/TLSPSKIdentity/ {print $2}' /opt/RPiMS/config/zabbix_rpims.conf) --tls-psk-file /opt/RPiMS/config/zabbix_rpims.psk
-```
-Sample result
-```
-44.952
-```
-Pressure
-```
-zabbix_get -s 127.0.0.1 -k rpims.id3_bme280[6] --tls-connect psk --tls-psk-identity $(awk -F\= '/TLSPSKIdentity/ {print $2}' /opt/RPiMS/config/zabbix_rpims.conf) --tls-psk-file /opt/RPiMS/config/zabbix_rpims.psk
-```
-Sample result
-```
-954.645
-```
-
 ## Configure if you have RTC (DS3231 I2C)
 
 1. I2C interface should be enabled. 
@@ -493,7 +421,7 @@ Select Advaced Options -> I2C -> <Yes>
 2. Edit the configuration file to add a new device. 
 
 ```
-sudo vi /boot/config.txt
+sudo vi /boot/firmware/config.txt
 ```
 Add a new RTC device DS3231 to the device tree 
 
