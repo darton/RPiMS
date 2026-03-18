@@ -1,17 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="js-loading">
   <head>
     <meta charset="utf-8">
     <meta name="description" content="RPiMS - Raspberry Pi Monitoring System">
     <meta name="keywords" content="Raspberry Pi, Monitoring System, Sensors">
     <meta name="author" content="Dariusz Kowalczyk">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="/static/css/index.css?v=0019">
+    <link rel="stylesheet" href="/static/css/index.css?v=0021">
     <link rel="stylesheet" href="/static/css/w3.css?v=1">
     <link rel="stylesheet" href="/static/css/w3-colors-2020.css?v=1">
     <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
     <script defer src="/static/js/navbar.js?v=002"></script>
-    <script defer src="/static/js/index.js?v=101"></script>
+    <script defer src="/static/js/index.js?v=102"></script>
     <title>RPiMS</title>
   </head>
   <body>
@@ -207,5 +207,14 @@
 
 {% endblock %}
    </div>
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    document.documentElement.classList.remove('js-loading');
+  });
+</script>
+
+
   </body>
 </html>

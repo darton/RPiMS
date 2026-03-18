@@ -237,10 +237,15 @@ ul {
     text-align: center;
 }
 
-/* select on iPhone look better */
-.w3-select {
-    width: 100% !important;
-    padding-left: 12px !important;
-    padding-right: 12px !important;
-    box-sizing: border-box;
+/* animation available from the beginning */
+.rpimsbg,
+.sensors {
+  transition: opacity .3s ease;
+  opacity: 1;
+}
+
+/* state during js loading */
+html.js-loading .rpimsbg,
+html.js-loading .sensors {
+  opacity: 0;
 }

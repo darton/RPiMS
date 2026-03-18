@@ -6,12 +6,12 @@
     <meta name="keywords" content="Raspberry Pi, Monitoring System, Sensors">
     <meta name="author" content="Dariusz Kowalczyk">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="/static/css/index.css?v=0016">
+    <link rel="stylesheet" href="/static/css/setup.css?v=001">
     <link rel="stylesheet" href="/static/css/w3.css">
     <link rel="stylesheet" href="/static/css/w3-colors-2020.css">
     <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
     <script defer src="/static/js/navbar.js?v=002"></script>
-    <script defer src="/static/js/setup.js?v=039"></script>
+    <script defer src="/static/js/setup.js?v=041"></script>
     <title>RPiMS</title>
   </head>
   <body>
@@ -465,7 +465,7 @@
                     {% for _gpio in config.gpio: %}
                     <div class='w3-row rpims-navbar-color'>
                         <div class='w3-container w3-margin-top w3-margin-bottom'>
-                        <label>GPIO {{ _gpio }}<input name='{{ _gpio }}_pin' type='hidden' value='{{ config.gpio[_gpio].pin }}'></label>
+                        <span>GPIO {{ _gpio }}<input name='{{ _gpio }}_pin' type='hidden' value='{{ config.gpio[_gpio].pin }}'></span>
                         </div>
                     </div>
 

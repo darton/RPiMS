@@ -35,6 +35,31 @@ function setGaugeValue(gauge, value, divisor, unit) {
     if (cover) cover.textContent = `${display} ${unit}`;
 }
 
+
+async function fetchWithRetry(url, retries = 5, delay = 500) {
+    for (let i = 0; i < retries; i++) {
+        try {
+            const res = await fetch(url);
+            const data = await res.json();
+
+            // if the data is empty or incomplete – keep trying
+            if (!data || Object.keys(data).length === 0) {
+                await new Promise(r => setTimeout(r, delay));
+                continue;
+            }
+
+            return data;
+
+        } catch (e) {
+            await new Promise(r => setTimeout(r, delay));
+        }
+    }
+
+    console.warn("No data:", url);
+    return null;
+}
+
+
 // --- Camera --------------------------------------------------------------
 
 let lastUsePicamera = null;
@@ -257,23 +282,19 @@ function updateSystemInfo(data) {
 // --- Fetch loop ----------------------------------------------------------
 
 async function getJsonData() {
-    try {
-        const res = await fetch("/api/data/all");
-        const data = await res.json();
+    const data = await fetchWithRetry("/api/data/all", 10, 300);
 
-        updateSystemInfo(data);
-        updateContactSensors(data);
-        updateDigitalSensors(data);
-        updateCamera(data);
-        updateBME280Sensor(data);
-        updateDHTSensor(data);
-        updateWheatherStation(data);
-        updateds18b20v2(data);
-        updateDS18b20(data);
+    if (!data) return; // nie aktualizuj UI pustymi danymi
 
-    } catch (e) {
-        console.error("API error:", e);
-    }
+    updateSystemInfo(data);
+    updateContactSensors(data);
+    updateDigitalSensors(data);
+    updateCamera(data);
+    updateBME280Sensor(data);
+    updateDHTSensor(data);
+    updateWheatherStation(data);
+    updateds18b20v2(data);
+    updateDS18b20(data);
 }
 
 setInterval(getJsonData, 1000);
