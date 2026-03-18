@@ -23,9 +23,9 @@ allowing the BME280 to be placed farther from the Raspberry Pi using a standard 
 ## Details
 Sensors are polled and measured values are saved to Redis database periodically.
 
-When any of the doors sensors opens or closed then a message will be sent to the Zabbix server. 
+When any of the contact sensors opens or closed then a message will be sent to the Zabbix server.
 
-When the motion sensor detects motion a message will be sent to Zabbix server.
+When the digital sensor sets a high logic level, the message will be sent to the Zabbix server.
 
 Video stream will be turned on automaticly when use picamera sensor are set to enable in setup.
 
