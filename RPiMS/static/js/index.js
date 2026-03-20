@@ -194,7 +194,7 @@ function updateContactSensors(data) {
     Object.entries(data.sensors.contact_sensors).forEach(([id, val]) => {
         const el = qs("#" + id);
         const num = Number(val);
-        html(el, num ? "open - 1" : "close - 0");
+        html(el, num ? "open = 1" : "close = 0");
         el.classList.toggle("alarm", num === 1);
         el.classList.toggle("value", num === 0);
     });
@@ -210,7 +210,7 @@ function updateDigitalSensors(data) {
     Object.entries(data.sensors.digital_sensors).forEach(([id, val]) => {
         const el = qs("#" + id);
         const num = Number(val);
-        html(el, num ? "motion - 1" : "nomotion - 0");
+        html(el, num ? "high = 1" : "low = 0");
         el.classList.toggle("alarm", num === 1);
         el.classList.toggle("value", num === 0);
     });
