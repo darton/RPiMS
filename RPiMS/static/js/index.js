@@ -284,7 +284,7 @@ function updateSystemInfo(data) {
 async function getJsonData() {
     const data = await fetchWithRetry("/api/data/all", 10, 300);
 
-    if (!data) return; // nie aktualizuj UI pustymi danymi
+    if (!data) return; // do not update the UI with empty data
 
     updateSystemInfo(data);
     updateContactSensors(data);
