@@ -26,7 +26,7 @@ from ruamel.yaml import YAML
 from werkzeug.exceptions import HTTPException
 
 # rpims helpers
-from helpers import *
+import helpers
 
 
 logging.basicConfig(
@@ -428,26 +428,6 @@ def load_picamera_from_form(form, setup):
     return picamera
 
 
-"""
-def write_zabbix_config(agent):
-    lines = [
-        f"Server=127.0.0.1,{agent.get('zabbix_server','')}",
-        f"ServerActive={agent.get('zabbix_server_active','')}",
-        f"Hostname={agent.get('hostname','')}",
-        f"TLSPSKIdentity={agent.get('TLSPSKIdentity','')}",
-        f"TLSPSKFile={agent.get('TLSPSKFile','')}",
-        f"TLSConnect={agent.get('TLSConnect','')}",
-        f"TLSAccept={agent.get('TLSAccept','')}",
-        f"Timeout={agent.get('Timeout','')}",
-    ]
-    try:
-        with open(ZABBIX_CONF, "w", encoding="utf-8") as f:
-            f.write("\n".join(lines))
-    except Exception as e:
-        logger.error("Failed to write Zabbix config: %s", e)
-        raise
-"""
-
 def convert_zabbix_config(data):
     lines = [
         f"Server=127.0.0.1,{data.get('zabbix_server','')}",
@@ -462,9 +442,9 @@ def convert_zabbix_config(data):
     return("\n".join(lines))
 
 
-def write_zabbix_config(ZABBIX_CONF, zabbix_config):
+def write_zabbix_config(config_file, zabbix_config):
     try:
-        with open(ZABBIX_CONF, "w", encoding="utf-8") as f:
+        with open(config_file, "w", encoding="utf-8") as f:
             f.write(zabbix_config)
     except Exception as e:
         logger.error("Failed to write Zabbix config: %s", e)
@@ -678,14 +658,14 @@ def setup():
 
         # --- Write Zabbix config ---
         zabbix_agent_dict = config.get("zabbix_agent")
-        zabbix_agent_string = convert_zabbix_config(zabbix_agent_dict)
+        zabbix_agent_string = helpers.convert_zabbix_config(zabbix_agent_dict)
 
-        if file_differs_config(ZABBIX_CONF, zabbix_agent_string):
+        if helpers.file_differs_config(ZABBIX_CONF, zabbix_agent_string):
             write_zabbix_config(ZABBIX_CONF,zabbix_agent_string)
 
         # --- Write Zabbix PSK file ---
         zabbix_psk_string = zabbix_agent_dict.get("TLSPSK", "") or ""
-        if file_differs_config(ZABBIX_PSK, zabbix_psk_string):
+        if helpers.file_differs_config(ZABBIX_PSK, zabbix_psk_string):
             try:
                 with open(ZABBIX_PSK, "w", encoding="utf-8") as f:
                     f.write(zabbix_psk_string)
