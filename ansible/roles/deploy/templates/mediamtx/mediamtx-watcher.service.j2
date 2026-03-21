@@ -1,0 +1,10 @@
+[Unit]
+Description=MediaMTX restarter
+After=network.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/systemctl restart mediamtx.service
+
+[Install]
+WantedBy=multi-user.target

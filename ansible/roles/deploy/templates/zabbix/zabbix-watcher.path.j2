@@ -1,0 +1,9 @@
+[Unit]
+Description="Monitor the {{ rpims_install_dir }}/config/zabbix_rpims.conf file for changes"
+
+[Path]
+PathModified={{ rpims_install_dir }}/config/zabbix_rpims.conf
+PathModified={{ rpims_install_dir }}/config/zabbix_rpims.psk
+
+[Install]
+WantedBy=multi-user.target

@@ -79,13 +79,13 @@
                     <div class="w3-row w3-2020-green-sheen">
                         <div class="w3-half w3-container w3-margin-bottom">
                             <label for="TLSPSKIdentity">PSK identity:</label>
-                            <input id="TLSPSKIdentity" name="TLSPSKIdentity" class="w3-input" id="TLSPSKIdentity" type="text" value="{{ config.zabbix_agent.TLSPSKIdentity }}">
-                            <input class="w3-input w3-2020-classic-blue" type="button" onclick="gfg_Run(16,tlspskidentityid)" value="Generate PSK Identity">
+                            <input id="TLSPSKIdentity" name="TLSPSKIdentity" class="w3-input" type="text" value="{{ config.zabbix_agent.TLSPSKIdentity }}">
+                            <input class="w3-input w3-2020-classic-blue" type="button" onclick="fillRandomPSK(16,'TLSPSKIdentity')" value="Generate PSK Identity">
                         </div>
                         <div class="w3-half w3-container w3-margin-bottom">
                             <label for="TLSPSK">PSK:</label>
-                            <input id="TLSPSK" name="TLSPSK" class="w3-input" id="TLSPSK" type="text" value="{{ config.zabbix_agent.TLSPSK }}" >
-                            <input class="w3-input w3-2020-classic-blue" type="button" onclick="gfg_Run(64,tlspskid)" value="Generate PSK">
+                            <input id="TLSPSK" name="TLSPSK" class="w3-input" type="text" value="{{ config.zabbix_agent.TLSPSK }}" >
+                            <input class="w3-input w3-2020-classic-blue" type="button" onclick="fillRandomPSK(64,'TLSPSK')" value="Generate PSK">
                         </div>
                     </div>
                 </div>

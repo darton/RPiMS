@@ -1,0 +1,10 @@
+[Unit]
+Description=Zabbix restarter
+After=network.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/systemctl restart zabbix-agent.service
+
+[Install]
+WantedBy=multi-user.target

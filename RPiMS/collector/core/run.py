@@ -51,12 +51,12 @@ def run_collector():
     start_display(ctx)
 
     if ctx.config.get('use_picamera'):
-        video_service('restart')
+        video_service('start')
     else:
         video_service('stop')
 
     if ctx.config.get('use_zabbix_sender'):
-        zabbix_service('restart')
+        zabbix_service('start')
     else:
         zabbix_service('stop')
 

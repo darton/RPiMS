@@ -17,12 +17,17 @@
 import os
 import json
 import logging
+import copy
 
 # Third-party libraries
 import flask
 import redis
 from ruamel.yaml import YAML
 from werkzeug.exceptions import HTTPException
+
+# rpims helpers
+from helpers import *
+
 
 logging.basicConfig(
     level=logging.INFO,
@@ -277,6 +282,7 @@ def get_data(redis_db):
 
 def update_mediamtx_config(width, height, fps, recording, vflip, hflip):
     config = load_yaml_preserve(MEDIAMTX_CONFIG)
+    config_current = copy.deepcopy(config)
     if config is None:
         config = {}
 
@@ -297,7 +303,8 @@ def update_mediamtx_config(width, height, fps, recording, vflip, hflip):
     config["paths"]["cam"]["rpiCameraVFlip"] = bool_to_yesno(vflip)
     config["paths"]["cam"]["rpiCameraHFlip"] = bool_to_yesno(hflip)
 
-    save_yaml_preserve(MEDIAMTX_CONFIG, config)
+    if config_current != config:
+        save_yaml_preserve(MEDIAMTX_CONFIG, config)
 
 
 # ===========================
@@ -421,6 +428,7 @@ def load_picamera_from_form(form, setup):
     return picamera
 
 
+"""
 def write_zabbix_config(agent):
     lines = [
         f"Server=127.0.0.1,{agent.get('zabbix_server','')}",
@@ -435,6 +443,29 @@ def write_zabbix_config(agent):
     try:
         with open(ZABBIX_CONF, "w", encoding="utf-8") as f:
             f.write("\n".join(lines))
+    except Exception as e:
+        logger.error("Failed to write Zabbix config: %s", e)
+        raise
+"""
+
+def convert_zabbix_config(data):
+    lines = [
+        f"Server=127.0.0.1,{data.get('zabbix_server','')}",
+        f"ServerActive={data.get('zabbix_server_active','')}",
+        f"Hostname={data.get('hostname','')}",
+        f"TLSPSKIdentity={data.get('TLSPSKIdentity','')}",
+        f"TLSPSKFile={data.get('TLSPSKFile','')}",
+        f"TLSConnect={data.get('TLSConnect','')}",
+        f"TLSAccept={data.get('TLSAccept','')}",
+        f"Timeout={data.get('Timeout','')}",
+    ]
+    return("\n".join(lines))
+
+
+def write_zabbix_config(ZABBIX_CONF, zabbix_config):
+    try:
+        with open(ZABBIX_CONF, "w", encoding="utf-8") as f:
+            f.write(zabbix_config)
     except Exception as e:
         logger.error("Failed to write Zabbix config: %s", e)
         raise
@@ -566,6 +597,7 @@ def setup():
     redis_db = flask.current_app.config["REDIS_DB"]
     try:
         config = load_yaml_preserve(CONFIG_PATH)
+        config_current = copy.deepcopy(config)
         #config = to_plain_dict(config) if config is not None else {}
     except Exception as error:
         logger.error(str(error))
@@ -645,13 +677,20 @@ def setup():
         config["sensors"]["ONE_WIRE"] = ONE_WIRE
 
         # --- Write Zabbix config ---
-        zabbix_agent = config.get("zabbix_agent")
-        write_zabbix_config(zabbix_agent)
-        try:
-            with open(ZABBIX_PSK, "w", encoding="utf-8") as f:
-                f.write(zabbix_agent.get("TLSPSK", "") or "")
-        except Exception as e:
-            logger.error("Failed to write Zabbix PSK: %s", e)
+        zabbix_agent_dict = config.get("zabbix_agent")
+        zabbix_agent_string = convert_zabbix_config(zabbix_agent_dict)
+
+        if file_differs_config(ZABBIX_CONF, zabbix_agent_string):
+            write_zabbix_config(ZABBIX_CONF,zabbix_agent_string)
+
+        # --- Write Zabbix PSK file ---
+        zabbix_psk_string = zabbix_agent_dict.get("TLSPSK", "") or ""
+        if file_differs_config(ZABBIX_PSK, zabbix_psk_string):
+            try:
+                with open(ZABBIX_PSK, "w", encoding="utf-8") as f:
+                    f.write(zabbix_psk_string)
+            except Exception as e:
+                logger.error("Failed to write Zabbix PSK: %s", e)
 
 
         # --- Save config to Redis for RPiMS main page ---
@@ -664,7 +703,8 @@ def setup():
         # --- Save to YAML ---
         try:
             # Save YAML without losing comments in other files; config is plain dict
-            save_yaml_preserve(CONFIG_PATH, config, explicit_start=True)
+            if config_current != config:
+                save_yaml_preserve(CONFIG_PATH, config, explicit_start=True)
         except Exception as e:
             logger.error("Failed to save config to %s: %s",CONFIG_PATH, e)
 

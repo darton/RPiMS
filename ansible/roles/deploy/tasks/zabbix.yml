@@ -90,3 +90,27 @@
     name: zabbix-agent
     state: stopped
     enabled: false
+
+- name: Install zabbix-watcher.service
+  template:
+    src: "zabbix/zabbix-watcher.service.j2"
+    dest: "/etc/systemd/system/zabbix-watcher.service"
+    mode: "0644"
+
+- name: Install zabbix-watcher.path
+  template:
+    src: "zabbix/zabbix-watcher.path.j2"
+    dest: "/etc/systemd/system/zabbix-watcher.path"
+    mode: "0644"
+
+- name: Enable and start zabbix-watcher.service
+  systemd:
+    name: "zabbix-watcher.service"
+    enabled: no
+    #state: started
+
+- name: Enable and start zabbix-watcher.path
+  systemd:
+    name: "zabbix-watcher.path"
+    enabled: yes
+    state: started

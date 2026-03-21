@@ -130,6 +130,18 @@
     dest: "/etc/systemd/system/mediamtx.service"
     mode: "0644"
 
+- name: Install mediamtx-watcher.service
+  template:
+    src: "mediamtx/mediamtx-watcher.service.j2"
+    dest: "/etc/systemd/system/mediamtx-watcher.service"
+    mode: "0644"
+
+- name: Install mediamtx-watcher.path
+  template:
+    src: "mediamtx/mediamtx-watcher.path.j2"
+    dest: "/etc/systemd/system/mediamtx-watcher.path"
+    mode: "0644"
+
 - name: Reload systemd
   systemd:
     daemon_reload: yes
@@ -139,6 +151,18 @@
     name: "mediamtx.service"
     enabled: no
     #state: started
+
+- name: Enable and start mediamtx-watcher.service
+  systemd:
+    name: "mediamtx-watcher.service"
+    enabled: no
+    #state: started
+
+- name: Enable and start mediamtx-watcher.path
+  systemd:
+    name: "mediamtx-watcher.path"
+    enabled: yes
+    state: started
 
 # ---------------------------------------
 # CLEANUP

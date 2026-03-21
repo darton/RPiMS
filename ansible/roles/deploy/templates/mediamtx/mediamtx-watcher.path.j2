@@ -1,0 +1,8 @@
+[Unit]
+Description="Monitor the {{ mediamtx_config_dir }}/mediamtx.yml file for changes"
+
+[Path]
+PathModified={{ mediamtx_config_dir }}/mediamtx.yml
+
+[Install]
+WantedBy=multi-user.target
