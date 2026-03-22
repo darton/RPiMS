@@ -658,7 +658,7 @@ def setup():
 
         # --- Write Zabbix config ---
         zabbix_agent_dict = config.get("zabbix_agent")
-        zabbix_agent_string = helpers.convert_zabbix_config(zabbix_agent_dict)
+        zabbix_agent_string = convert_zabbix_config(zabbix_agent_dict)
 
         if helpers.file_differs_config(ZABBIX_CONF, zabbix_agent_string):
             write_zabbix_config(ZABBIX_CONF,zabbix_agent_string)
