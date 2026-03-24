@@ -99,7 +99,6 @@ td {
   height: 100%;
   background: #009578;
   transform-origin: center top;
-  transform: rotate(0.25turn);
   transition: transform 0.2s ease-out;
 }
 
@@ -248,4 +247,18 @@ ul {
 html.js-loading .rpimsbg,
 html.js-loading .sensors {
   opacity: 0;
+}
+
+/* --- DS18B20 dynamic colors --- */
+
+.gauge_ds18b20.gauge-cold .gauge__fill {
+    background-color: #3fa9f5 !important; /* niebieski */
+}
+
+.gauge_ds18b20.gauge-normal .gauge__fill {
+    background-color: #4caf50 !important; /* zielony */
+}
+
+.gauge_ds18b20.gauge-hot .gauge__fill {
+    background-color: #f44336 !important; /* czerwony */
 }
