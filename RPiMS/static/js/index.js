@@ -114,8 +114,7 @@ function updateWheatherStation(data) {
 }
 
 // --- DS18B20 v2 ----------------------------------------------------------
-
-function updateds18b20v2(data) {
+function updateDS18B20v2(data) {
     if (!data.config.setup.use_ds18b20_sensor || !data.sensors.one_wire) return;
 
     const container = qs("#ds18b20_container");
@@ -138,7 +137,22 @@ function updateds18b20v2(data) {
 
     keys.forEach(addr => {
         const name = addresses[addr]?.name || addr;
-        const temp = values?.[addr] ?? "--";
+
+        const raw = values?.[addr]?.temperature;
+        const temp = raw !== undefined ? raw.toFixed(1) : "--";
+
+        // temperature range
+        const min = 0;
+        const max = 50;
+
+        let v = (raw - min) / (max - min);
+        v = Math.max(0, Math.min(1, v));
+        const angle = v * 0.5; // half circle
+
+        // gauge color
+        let gaugeColor = "gauge-normal";
+        if (raw < 18) gaugeColor = "gauge-cold";
+        else if (raw > 24) gaugeColor = "gauge-hot";
 
         container.insertAdjacentHTML("beforeend", `
             <div class='sensors ds18b20_sensors'>
@@ -146,24 +160,24 @@ function updateds18b20v2(data) {
                     <b>${name}</b> (${addr})
                     <div style='width: 100%; display: table;'>
                         <div style='display: table-row'>
-                            <div class='gauge_ds18b20' id='DS18B20_${addr}'>
+                            <div class='gauge_ds18b20 ${gaugeColor}' id='DS18B20_${addr}'>
                                 <div class='gauge__body'>
-                                    <div class='gauge__fill'></div>
-                                    <div class='gauge__cover'></div>
+                                    <div class='gauge__fill' style='transform: rotate(${angle}turn)'></div>
+                                    <div class='gauge__cover'>${temp} °C</div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class='ds18b20_value'>${temp} °C</div>
                 </div>
             </div>
         `);
     });
 }
 
+
 // --- DS18B20 gauges ------------------------------------------------------
 
-function updateDS18b20(data) {
+function updateDS18B20(data) {
     const use = data.config.setup.use_ds18b20_sensor && data.sensors.one_wire;
     qsa(".ds18b20_sensors").forEach(el => toggle(el, use));
     if (!use) return;
@@ -293,8 +307,7 @@ async function getJsonData() {
     updateBME280Sensor(data);
     updateDHTSensor(data);
     updateWheatherStation(data);
-    updateds18b20v2(data);
-    updateDS18b20(data);
+    updateDS18B20v2(data);
 }
 
 setInterval(getJsonData, 1000);
