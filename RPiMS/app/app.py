@@ -675,7 +675,8 @@ def setup():
 
         # --- Save config to Redis for RPiMS main page ---
         try:
-            redis_db.set("rpims", json.dumps(config))
+            if config_current != config:
+                redis_db.set("rpims", json.dumps(config))
         except Exception as e:
             logger.error("Failed to save rpims to Redis: %s", e)
 

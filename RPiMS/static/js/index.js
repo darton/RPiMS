@@ -113,7 +113,7 @@ function updateWheatherStation(data) {
     }
 }
 
-// --- DS18B20 v2 ----------------------------------------------------------
+// --- DS18B20 v2 gauges ----------------------------------------------------------
 function updateDS18B20v2(data) {
     if (!data.config.setup.use_ds18b20_sensor || !data.sensors.one_wire) return;
 
@@ -174,30 +174,6 @@ function updateDS18B20v2(data) {
     });
 }
 
-
-// --- DS18B20 gauges ------------------------------------------------------
-
-function updateDS18B20(data) {
-    const use = data.config.setup.use_ds18b20_sensor && data.sensors.one_wire;
-    qsa(".ds18b20_sensors").forEach(el => toggle(el, use));
-    if (!use) return;
-
-    const sensors = data.sensors.one_wire.ds18b20;
-
-    Object.entries(sensors).forEach(([id, obj]) => {
-        const gauge = qs(`#DS18B20_${id}`);
-        const temp = roundPrecised(obj.temperature, 1);
-
-        if (temp) {
-            show(gauge);
-            setGaugeValue(gauge, temp / 100, 100, "°C");
-        } else {
-            hide(gauge);
-            setGaugeValue(gauge, 0, 1, "");
-        }
-    });
-}
-
 // --- Contact sensors -----------------------------------------------------
 
 function updateContactSensors(data) {
@@ -233,15 +209,46 @@ function updateDigitalSensors(data) {
 // --- DHT -----------------------------------------------------------------
 
 function updateDHTSensor(data) {
-    const use = data.config.setup.use_dht_sensor;
+    // Safely read the "use" flag; fallback to false if anything is missing
+    const use = data?.config?.setup?.use_dht_sensor ?? false;
+
+    // Show or hide the DHT sensor section
     toggle("#dht_sensor", use);
+
+    // If sensor is not used, stop early
     if (!use) return;
 
-    const t = roundPrecised(data.sensors.dht.temperature, 1);
-    const h = Math.round(data.sensors.dht.humidity);
+    // Ensure the DHT sensor data exists
+    const dht = data?.sensors?.dht;
 
-    setGaugeValue(qs("#gdhttemp"), t / 100, 100, "°C");
-    setGaugeValue(qs("#gdhthum"), h / 100, 100, "%");
+    // If no DHT data at all, show fallback text
+    if (!dht) {
+        setGaugeValue(qs("#gdhttemp"), 0, 100, "No data");
+        setGaugeValue(qs("#gdhthum"), 0, 100, "No data");
+        return;
+    }
+
+    const temp = dht.temperature;
+    const hum = dht.humidity;
+
+    // If values are missing or invalid, show fallback
+    if (typeof temp !== "number" || typeof hum !== "number") {
+        setGaugeValue(qs("#gdhttemp"), 0, 100, "No data");
+        setGaugeValue(qs("#gdhthum"), 0, 100, "No data");
+        return;
+    }
+
+    // Round and normalize values
+    const t = roundPrecised(temp, 1);
+    const h = Math.round(hum);
+
+    // Protect against NaN or Infinity
+    const tNorm = isFinite(t) ? t / 100 : 0;
+    const hNorm = isFinite(h) ? h / 100 : 0;
+
+    // Update gauge widgets
+    setGaugeValue(qs("#gdhttemp"), tNorm, 100, "°C");
+    setGaugeValue(qs("#gdhthum"), hNorm, 100, "%");
 }
 
 // --- BME280 --------------------------------------------------------------

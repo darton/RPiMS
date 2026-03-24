@@ -249,16 +249,45 @@ html.js-loading .sensors {
   opacity: 0;
 }
 
+
+/* --- DHT dynamic colors --- */
+.gauge_dht.gauge-normal .gauge__fill {
+    background-color: #4caf50 !important; /* green */
+}
+
+.gauge_dht.gauge-cold .gauge__fill {
+    background-color: #3fa9f5 !important; /* blue */
+}
+
+.gauge_dht.gauge-hot .gauge__fill {
+    background-color: #f44336 !important; /* red */
+}
+
+
+/* --- BME280 dynamic colors --- */
+.gauge_bme280.gauge-normal .gauge__fill {
+    background-color: #4caf50 !important; /* green */
+}
+
+.gauge_bme280.gauge-cold .gauge__fill {
+    background-color: #3fa9f5 !important; /* blue */
+}
+
+.gauge_bme280.gauge-hot .gauge__fill {
+    background-color: #f44336 !important; /* red */
+}
+
+
 /* --- DS18B20 dynamic colors --- */
 
 .gauge_ds18b20.gauge-cold .gauge__fill {
-    background-color: #3fa9f5 !important; /* niebieski */
+    background-color: #3fa9f5 !important; /* blue */
 }
 
 .gauge_ds18b20.gauge-normal .gauge__fill {
-    background-color: #4caf50 !important; /* zielony */
+    background-color: #4caf50 !important; /* gree */
 }
 
 .gauge_ds18b20.gauge-hot .gauge__fill {
-    background-color: #f44336 !important; /* czerwony */
+    background-color: #f44336 !important; /* red */
 }

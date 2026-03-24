@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="/static/css/w3-colors-2020.css?v=1">
     <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
     <script defer src="/static/js/navbar.js?v=002"></script>
-    <script defer src="/static/js/index.js?v=116"></script>
+    <script defer src="/static/js/index.js?v=119"></script>
     <title>RPiMS</title>
   </head>
   <body>
@@ -84,14 +84,14 @@
         <div class="w3-container w3-margin">{{ data.config.sensors.DHT.name }}</div>
         <div style="width: 100%; display: table;">
           <div style="display: table-row">
-            <div class="gauge_dht" id="gdhttemp" style="width: 50%; display: table-cell";>
+            <div class='gauge_dht gauge-normal' id='gdhttemp' style='width: 50%; display: table-cell';>
               <div class="gauge__body">
                 <div class="gauge__fill"></div>
                 <div class="gauge__cover"></div>
               </div>
               <div class="sensors">Temp</div>
             </div>
-            <div class="gauge" id="gdhthum" style="width: 50%; display: table-cell";>
+            <div class='gauge_dht gauge-normal' id='gdhthum' style='width: 50%; display: table-cell';>
               <div class="gauge__body">
                 <div class="gauge__fill"></div>
                 <div class="gauge__cover"></div>
@@ -110,7 +110,7 @@
           <div style='width: 100%; display: table;'>
             <div style='display: table-row';>
 
-              <div class='gauge_bme280' id='{{item}}_BME280_Temperature'>
+              <div class='gauge_bme280 gauge-normal' id='{{item}}_BME280_Temperature'>
                 <div class='gauge__body'>
                     <div class='gauge__fill'></div>
                     <div class='gauge__cover'></div>
@@ -118,7 +118,7 @@
                 <div class='sensors'>Temp</div>
               </div>
 
-              <div class='gauge_bme280' id='{{item}}_BME280_Humidity'>
+              <div class='gauge_bme280 gauge-normal' id='{{item}}_BME280_Humidity'>
                 <div class='gauge__body'>
                     <div class='gauge__fill'></div>
                     <div class='gauge__cover'></div>
@@ -126,7 +126,7 @@
                 <div class='sensors'>Hum</div>
               </div>
 
-              <div class='gauge_bme280' id='{{item}}_BME280_Pressure'>
+              <div class='gauge_bme280 gauge-normal' id='{{item}}_BME280_Pressure'>
                 <div class='gauge__body'>
                     <div class='gauge__fill'></div>
                     <div class='gauge__cover'></div>
