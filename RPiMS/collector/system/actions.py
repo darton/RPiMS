@@ -42,7 +42,7 @@ def old_zabbix_sender_call(message, sensor_id):
 
 
 def zabbix_sender_call(ctx, key, value):
-    if not ctx.config.get('use_zabbix_sender'):
+    if not ctx.config.get('use_zabbix_agent'):
         return
 
     try:

@@ -38,7 +38,7 @@ function toggleSection(id, show) {
 
 // Mapping: checkbox ID → section ID
 const SENSOR_SECTIONS = {
-    use_zabbix_sender: "zabbix_config",
+    use_zabbix_agent: "zabbix_config",
     use_serial_display: "serial_display",
     use_picamera: "picamera",
     use_weather_station: "weather_station",

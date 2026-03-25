@@ -595,7 +595,7 @@ def setup():
                 "use_contact_sensor", "use_digital_sensor",
                 "use_bme280_sensor", "use_ds18b20_sensor",
                 "use_dht_sensor", "use_cpu_sensor",
-                "use_weather_station", "use_zabbix_sender",
+                "use_weather_station", "use_zabbix_agent",
                 "use_picamera", "use_picamera_recording",
                 "use_serial_display"
             ]

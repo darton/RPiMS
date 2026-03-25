@@ -28,7 +28,7 @@ def door_action_closed(ctx, door_id):
     if ctx.config.get('verbose'):
         logger.info('The %s has been closed!', door_id)
 
-    if ctx.config.get('use_zabbix_sender'):
+    if ctx.config.get('use_zabbix_agent'):
         zabbix_sender_call(ctx, 'info_when_door_has_been_closed', door_id)
 
 
@@ -40,7 +40,7 @@ def door_status_close(ctx, door_id):
     if ctx.config.get('verbose'):
         logger.info('The %s is closed!', door_id)
 
-    if ctx.config.get('use_zabbix_sender'):
+    if ctx.config.get('use_zabbix_agent'):
         zabbix_sender_call(ctx, 'info_when_door_is_closed', door_id)
 
 
@@ -53,7 +53,7 @@ def door_action_opened(ctx, door_id):
     if ctx.config.get('verbose'):
         logger.info('The %s has been opened!', door_id)
 
-    if ctx.config.get('use_zabbix_sender'):
+    if ctx.config.get('use_zabbix_agent'):
         zabbix_sender_call(ctx, 'info_when_door_has_been_opened', door_id)
 
 
@@ -66,7 +66,7 @@ def door_status_open(ctx, door_id):
     if ctx.config.get('verbose'):
         logger.info('The %s is opened!', door_id)
 
-    if ctx.config.get('use_zabbix_sender'):
+    if ctx.config.get('use_zabbix_agent'):
         zabbix_sender_call(ctx, 'info_when_door_is_opened', door_id)
 
 
@@ -79,7 +79,7 @@ def motion_sensor_when_motion(ctx, ms_id):
     if ctx.config.get('verbose'):
         logger.info('The %s: motion was detected!', ms_id)
 
-    if ctx.config.get('use_zabbix_sender'):
+    if ctx.config.get('use_zabbix_agent'):
         zabbix_sender_call(ctx, 'info_when_motion', ms_id)
 
 

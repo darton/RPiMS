@@ -55,7 +55,7 @@ def run_collector():
     else:
         video_service('stop')
 
-    if ctx.config.get('use_zabbix_sender'):
+    if ctx.config.get('use_zabbix_agent'):
         zabbix_service('start')
     else:
         zabbix_service('stop')

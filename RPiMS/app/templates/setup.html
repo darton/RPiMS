@@ -45,8 +45,8 @@
                 <legend>Zabbix Agent configuration</legend>
                 <div class="w3-row rpims-navbar-color">
                         <div class="w3-container  w3-margin-top w3-margin-bottom">
-                            <input id="use_zabbix_sender" name="use_zabbix_sender" type="checkbox" {{'checked="checked"' if config.setup.use_zabbix_sender else ""}} class="w3-check" value="true">
-                            <label for="use_zabbix_sender">Use zabbix sender</label>
+                            <input id="use_zabbix_agent" name="use_zabbix_agent" type="checkbox" {{'checked="checked"' if config.setup.use_zabbix_agent else ""}} class="w3-check" value="true">
+                            <label for="use_zabbix_agent">Use Zabbix Agent</label>
                         </div>
                 </div>
                 <div id="zabbix_config">
@@ -91,11 +91,11 @@
                 </div>
             </fieldset>
             <fieldset>
-                <legend>Serial display configuration</legend>
+                <legend>Serial Display configuration</legend>
                 <div class="w3-row rpims-navbar-color">
                     <div class="w3-container w3-margin-top w3-margin-bottom">
                         <input id="use_serial_display" name="use_serial_display" type="checkbox" {{'checked="checked"' if config.setup.use_serial_display else ""}} class="w3-check" id="use_serial_display" value="true">
-                        <label for="use_serial_display">Use serial display</label>
+                        <label for="use_serial_display">Use Serial Display</label>
                     </div>
                 </div>
                 <div id="serial_display" class="w3-row w3-2020-green-sheen">
@@ -360,7 +360,7 @@
                 </div>
             </fieldset>
             <fieldset>
-                <legend>Weather sensor configuration</legend>
+                <legend>Weather sensors configuration</legend>
                 <div class="w3-row rpims-navbar-color">
                     <div class="w3-container w3-margin-top w3-margin-bottom">
                         <input name="use_weather_station" type="checkbox" {{'checked="checked"' if config.setup.use_weather_station else ""}} class="w3-check" id="use_weather_station" value="true">

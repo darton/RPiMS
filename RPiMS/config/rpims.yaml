@@ -13,7 +13,7 @@ setup:
   use_dht_sensor: false
   use_cpu_sensor: true
   use_weather_station: false
-  use_zabbix_sender: false
+  use_zabbix_agent: false
   use_picamera: false
   use_picamera_recording: false
   use_serial_display: true
