@@ -24,6 +24,7 @@ import flask
 import redis
 from ruamel.yaml import YAML
 from werkzeug.exceptions import HTTPException
+from prometheus_client import CollectorRegistry, Gauge, generate_latest, CONTENT_TYPE_LATEST
 
 # rpims helpers
 import helpers
@@ -695,6 +696,88 @@ def setup():
     DS18B20 = redis_db.hgetall("DS18B20")
     return flask.render_template("setup.html", config=config, _DS18B20=DS18B20)
 
+
+
+@app.route("/metrics")
+def metrics():
+    registry = CollectorRegistry()
+    redis_db = flask.current_app.config["REDIS_DB"]
+
+    # --- METRICS ---
+    g_bme_temp = Gauge("bme280_temperature", "Temperature from BME280", ["sensor"], registry=registry)
+    g_bme_hum = Gauge("bme280_humidity", "Humidity from BME280", ["sensor"], registry=registry)
+    g_bme_press = Gauge("bme280_pressure", "Pressure from BME280", ["sensor"], registry=registry)
+
+    g_ds18b20 = Gauge("ds18b20_temperature", "Temperature from DS18B20 sensors", ["sensor"], registry=registry)
+
+    g_cpu = Gauge("cpu_temperature", "CPU temperature", registry=registry)
+
+    g_contact = Gauge("contact_sensor", "Contact sensor state", ["gpio"], registry=registry)
+    g_digital = Gauge("digital_sensor", "Digital sensor state", ["gpio"], registry=registry)
+
+    g_memused = Gauge("memory_used_percent", "Memory usage percent", registry=registry)
+    g_fsused = Gauge("filesystem_used_percent", "Filesystem usage percent", registry=registry)
+    g_uptime = Gauge("system_uptime_seconds", "System uptime", registry=registry)
+
+    # --- BME280 (dynamic detection) ---
+    for key in redis_db.scan_iter("id*_BME280"):
+        data = redis_db.hgetall(key)
+        if not data:
+            continue
+
+        sensor_id = key.split("_")[0]   # id1, id2, id3...
+
+        if "temperature" in data:
+            g_bme_temp.labels(sensor=sensor_id).set(float(data["temperature"]))
+
+        if "humidity" in data:
+            g_bme_hum.labels(sensor=sensor_id).set(float(data["humidity"]))
+
+        if "pressure" in data:
+            g_bme_press.labels(sensor=sensor_id).set(float(data["pressure"]))
+
+    # --- DS18B20 --
+    sensors = redis_db.hgetall("DS18B20")
+    for sensor_id, temp in sensors.items():
+        g_ds18b20.labels(sensor=sensor_id).set(float(temp))
+
+    # --- CONTACT SENSORS ---
+    data = redis_db.hgetall("CONTACT_SENSORS")
+    for gpio, state in data.items():
+        if state is None:
+            continue
+        g_contact.labels(gpio=gpio).set(int(state))
+
+    # --- DIGITAL SENSORS ---
+    data = redis_db.hgetall("DIGITAL_SENSORS")
+    for gpio, state in data.items():
+        if state is None:
+            continue
+        g_digital.labels(gpio=gpio).set(int(state))
+
+    # --- CPU TEMP ---
+    raw = redis_db.get("CPU_Temperature")
+    if raw is not None:
+        g_cpu.set(float(raw))
+
+    # --- UPTIME ---
+    raw = redis_db.get("uptime")
+    if raw:
+        h, m, s = raw.split(":")
+        seconds = int(h) * 3600 + int(m) * 60 + int(s)
+        g_uptime.set(seconds)
+
+    # --- MEMORY USED --- 
+    raw = redis_db.get("memused")
+    if raw:
+        g_memused.set(float(raw))
+
+    # --- FS USED ---
+    raw = redis_db.get("fsused")
+    if raw:
+        g_fsused.set(float(raw))
+
+    return flask.Response(generate_latest(registry), mimetype=CONTENT_TYPE_LATEST)
 
 # ==============
 # Error handlers
