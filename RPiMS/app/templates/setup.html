@@ -461,11 +461,10 @@
                 <legend>GPIO configuration</legend>
                 <h2 class="rpims-navbar-color"><input onclick="toggleShowHide('gpio')" type="button" value="GPIO" class="w3-btn w3-block w3-left-align"></h2>
                 <div id="gpio" class="w3-row w3-hide">
-                    <br>
                     {% for _gpio in config.gpio: %}
                     <div class='w3-row rpims-navbar-color'>
                         <div class='w3-container w3-margin-top w3-margin-bottom'>
-                        <span>GPIO {{ _gpio }}<input name='{{ _gpio }}_pin' type='hidden' value='{{ config.gpio[_gpio].pin }}'></span>
+                        <span>{{ _gpio }}<input name='{{ _gpio }}_pin' type='hidden' value='{{ config.gpio[_gpio].pin }}'></span>
                         </div>
                     </div>
 
