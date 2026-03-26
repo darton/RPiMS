@@ -44,6 +44,29 @@ RPiMS provides two independent methods of integration with Zabbix:
 Both integration methods are supported by dedicated Zabbix templates included in the repository.
 The templates contain predefined items, discovery rules, and triggers for all available sensors and GPIO inputs.
 
+## Prometheus Integration
+
+RPiMS provides a built‑in `/metrics` endpoint compatible with Prometheus.
+The endpoint exposes real‑time system and sensor data collected by RPiMS and stored in Redis.
+Prometheus can scrape this endpoint to monitor the Raspberry Pi and all connected sensors.
+
+The exported metrics include:
+
+- CPU temperature
+- contact sensors
+- digital input states
+- DS18B20 temperature sensors
+- BME280 sensors (temperature, humidity, pressure)
+- system statistics such as RAM usage, disk usage, and uptime
+
+The metrics endpoint is available at:
+
+```
+http://<RPiMS_ipaddress>/metrics
+```
+
+This makes RPiMS fully compatible with Prometheus and Grafana, enabling dashboard creation for monitoring system health, environmental conditions, and IoT sensor states.
+
 
 ## Installing
 
@@ -122,7 +145,7 @@ The playbook will:
 
 ### Setup RPiMS
 ```
-http://rpiipaddress/setup
+http://RPiMS_ipaddress/setup
 ```
 
 ![RPiMS setup](https://github.com/darton/RPiMS/blob/main/documentation/RPiMS_SETUP.png)
@@ -130,7 +153,7 @@ http://rpiipaddress/setup
 ### Main page
 
 ```
-http://rpiipaddress
+http://RPiMS_ipaddress
 ```
 ![RPiMS](https://github.com/darton/RPiMS/blob/main/documentation/RPiMS_MAIN.png)
 
@@ -139,7 +162,7 @@ http://rpiipaddress
 
 This endpoint returns a JSON dictionary of all enabled sensors: 
 ```
-http://rpiaddress/api/data/sensors/all
+http://RPiMS_ipaddress/api/data/sensors/all
 ```
 ![RPiMS](https://github.com/darton/RPiMS/blob/main/documentation/RPiMS_API_SENSORS.png)
 ### Systemd services used:
@@ -147,8 +170,6 @@ http://rpiaddress/api/data/sensors/all
 rpims.service, rpims-gunicorn.service, rpims-watcher.service, rpims-watcher.path,
 redis.service, nginx.service, zabbix-agent
 ```
-
-
 
 ## Known issues
 * After changing "RPiMS hostname" it is necessary to reboot Raspberry Pi OS for proper operation of zabbix-agent.
