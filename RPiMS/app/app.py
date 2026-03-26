@@ -710,7 +710,7 @@ def metrics():
 
     g_ds18b20 = Gauge("ds18b20_temperature", "Temperature from DS18B20 sensors", ["sensor"], registry=registry)
 
-    g_cpu = Gauge("cpu_temperature", "CPU temperature", registry=registry)
+    g_cpu = Gauge("cpu_temperature", "CPU temperature", ["sensor"], registry=registry)
 
     g_contact = Gauge("contact_sensor", "Contact sensor state", ["gpio"], registry=registry)
     g_digital = Gauge("digital_sensor", "Digital sensor state", ["gpio"], registry=registry)
@@ -758,7 +758,7 @@ def metrics():
     # --- CPU TEMP ---
     raw = redis_db.get("CPU_Temperature")
     if raw is not None:
-        g_cpu.set(float(raw))
+        g_cpu.labels(sensor="cpu").set(float(raw))
 
     # --- UPTIME ---
     raw = redis_db.get("uptime")
