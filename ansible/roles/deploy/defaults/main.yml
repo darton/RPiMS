@@ -48,3 +48,4 @@ python_user_venv_packages:
   - gunicorn
   - packaging
   - pyserial
+  - prometheus_client
