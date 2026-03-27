@@ -700,8 +700,11 @@ def setup():
 
 @app.route("/metrics")
 def metrics():
-    registry = CollectorRegistry()
     redis_db = flask.current_app.config["REDIS_DB"]
+    config_raw = redis_db.get("rpims")
+    config = json.loads(config_raw)
+
+    registry = CollectorRegistry()
 
     # --- METRICS ---
     g_bme_temp = Gauge("bme280_temperature", "Temperature from BME280", ["sensor"], registry=registry)
@@ -742,18 +745,20 @@ def metrics():
         g_ds18b20.labels(sensor=sensor_id).set(float(temp))
 
     # --- CONTACT SENSORS ---
-    data = redis_db.hgetall("CONTACT_SENSORS")
-    for gpio, state in data.items():
-        if state is None:
-            continue
-        g_contact.labels(gpio=gpio).set(int(state))
+    if config.get("setup", {}).get("use_contact_sensor"):
+        data = redis_db.hgetall("CONTACT_SENSORS")
+        for gpio, state in data.items():
+            if state is None:
+                continue
+            g_contact.labels(gpio=gpio).set(int(state))
 
     # --- DIGITAL SENSORS ---
-    data = redis_db.hgetall("DIGITAL_SENSORS")
-    for gpio, state in data.items():
-        if state is None:
-            continue
-        g_digital.labels(gpio=gpio).set(int(state))
+    if config.get("setup", {}).get("use_digital_sensor"):
+        data = redis_db.hgetall("DIGITAL_SENSORS")
+        for gpio, state in data.items():
+            if state is None:
+                continue
+            g_digital.labels(gpio=gpio).set(int(state))
 
     # --- CPU TEMP ---
     raw = redis_db.get("CPU_Temperature")
