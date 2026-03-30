@@ -1,6 +1,6 @@
 # RPiMS is Raspberry Pi based Monitoring System.
 
-### RPiMSv4 - with an installer based on Ansible
+### RPiMSv5 - with an installer based on Ansible
 
 ## Description
 
