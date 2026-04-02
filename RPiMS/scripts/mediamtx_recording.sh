@@ -12,8 +12,13 @@
 #  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #  GNU General Public License for more details.
 
-SCRIPT_NAME="${BASH_SOURCE[0]}##*/"
-SCRIPT_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/$(basename "${BASH_SOURCE[0]}")"
+SCRIPT_NAME="${BASH_SOURCE[0]##*/}"
+
+SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P) || {
+    printf "ERROR Cannot determine the script directory\n"; exit 1
+}
+
+SCRIPT_PATH="${SCRIPT_DIR}/${SCRIPT_NAME}"
 
 URL="http://localhost:9997/v3/config/paths"
 HEADER="Content-Type: application/json"
