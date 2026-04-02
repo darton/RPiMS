@@ -12,7 +12,9 @@
 #  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #  GNU General Public License for more details.
 
-SCRIPT_NAME="$(basename "$0")"
+SCRIPT_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/$(basename "${BASH_SOURCE[0]}")"
+
+SCRIPT_NAME="$(basename "${BASH_SOURCE[0]}")"
 URL="http://localhost:9997/v3/config/paths"
 HEADER="Content-Type: application/json"
 GET_ENDPOINT="get/cam"
